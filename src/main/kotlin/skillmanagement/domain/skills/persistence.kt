@@ -13,5 +13,12 @@ data class SkillDocument(
     val label: SkillLabel
 )
 
-fun SkillDocument.toSkill() = Skill(id = id, label = label)
-fun Skill.toDocument() = SkillDocument(id = id, label = label)
+fun SkillDocument.toSkill() = Skill(
+    id = id,
+    label = label
+)
+
+fun Skill.toDocument() = SkillDocument(
+    id = id,
+    label = label
+)

@@ -46,5 +46,5 @@ private abstract class AbstractDockerContainerExtension<T : Container> : BeforeA
 }
 
 private sealed class Container(image: String) : GenericContainer<Container>(image), CloseableResource {
-    class MongoDb : Container("mongo:4.0")
+    class MongoDb : Container("mongo:4.2.3")
 }

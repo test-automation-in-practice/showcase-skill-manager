@@ -19,4 +19,9 @@ fun ProjectDocument.toProject() = Project(
     label = label,
     description = description
 )
-fun Project.toDocument() = ProjectDocument(id = id, label = label, description = description)
+
+fun Project.toDocument() = ProjectDocument(
+    id = id,
+    label = label,
+    description = description
+)

@@ -19,7 +19,7 @@ class AddEmployee(
             firstName = firstName,
             lastName = lastName,
             skills = emptyMap(),
-            projects = emptyMap()
+            projects = emptyList()
         )
         insertEmployeeIntoDataStore(employee)
         return employee

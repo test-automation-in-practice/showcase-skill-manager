@@ -1,10 +1,10 @@
 package skillmanagement.domain.projects.get
 
+import skillmanagement.domain.TechnicalFunction
 import skillmanagement.domain.projects.Project
 import skillmanagement.domain.projects.ProjectDocument
 import skillmanagement.domain.projects.ProjectRepository
 import skillmanagement.domain.projects.toProject
-import skillmanagement.domain.TechnicalFunction
 import java.util.*
 
 @TechnicalFunction
@@ -16,8 +16,9 @@ class GetProjectFromDataStore(
         .map(ProjectDocument::toProject)
         .orElse(null)
 
-    operator fun invoke(ids: Collection<UUID>): Set<Project> = repository.findAllById(ids)
+    operator fun invoke(ids: Collection<UUID>): Map<UUID, Project> = repository.findAllById(ids)
         .map(ProjectDocument::toProject)
-        .toSet()
+        .map { it.id to it }
+        .toMap()
 
 }

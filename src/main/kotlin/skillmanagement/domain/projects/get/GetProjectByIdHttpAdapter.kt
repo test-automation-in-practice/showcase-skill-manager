@@ -1,6 +1,7 @@
 package skillmanagement.domain.projects.get
 
 import org.springframework.http.ResponseEntity
+import org.springframework.http.ResponseEntity.*
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -19,9 +20,9 @@ class GetProjectByIdHttpAdapter(
     fun get(@PathVariable id: UUID): ResponseEntity<ProjectResource> {
         val project = getProjectById(id)
         if (project != null) {
-            return ResponseEntity.ok(project.toResource())
+            return ok(project.toResource())
         }
-        return ResponseEntity.noContent().build()
+        return noContent().build()
     }
 
 }

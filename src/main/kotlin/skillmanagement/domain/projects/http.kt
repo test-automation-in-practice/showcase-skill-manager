@@ -1,8 +1,10 @@
 package skillmanagement.domain.projects
 
 import org.springframework.hateoas.RepresentationModel
+import org.springframework.hateoas.server.core.Relation
 import org.springframework.hateoas.server.mvc.BasicLinkBuilder.linkToCurrentMapping
 
+@Relation(itemRelation = "project", collectionRelation = "projects")
 data class ProjectResource(
     val label: ProjectLabel,
     val description: ProjectDescription

@@ -11,8 +11,8 @@ data class Employee(
     val id: UUID,
     val firstName: FirstName,
     val lastName: LastName,
-    val skills: Map<Skill, SkillAssignment>,
-    val projects: Map<Project, ProjectAssignment>
+    val skills: Map<Skill, Knowledge>,
+    val projects: List<ProjectAssignment>
 )
 
 data class FirstName @JsonCreator constructor(
@@ -27,7 +27,7 @@ data class LastName @JsonCreator constructor(
     override fun toString() = value
 }
 
-data class SkillAssignment(
+data class Knowledge(
     val level: SkillLevel
 )
 
@@ -37,8 +37,9 @@ data class SkillLevel @JsonCreator constructor(
     override fun toString() = value.toString()
 }
 
-// TODO: what if an employee was assigned to the same project multiple times over the years?
 data class ProjectAssignment(
+    val id: UUID,
+    val project: Project,
     val contribution: ProjectContribution,
     val startDate: LocalDate,
     val endDate: LocalDate?
