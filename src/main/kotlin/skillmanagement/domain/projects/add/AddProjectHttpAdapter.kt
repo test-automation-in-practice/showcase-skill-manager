@@ -1,0 +1,32 @@
+package skillmanagement.domain.projects.add
+
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import skillmanagement.domain.projects.ProjectDescription
+import skillmanagement.domain.projects.ProjectLabel
+import skillmanagement.domain.projects.ProjectResource
+import skillmanagement.domain.projects.toResource
+import skillmanagement.domain.HttpAdapter
+
+@HttpAdapter
+@RequestMapping("/api/projects")
+class AddProjectHttpAdapter(
+    private val addProject: AddProject
+) {
+
+    @PostMapping
+    fun post(@RequestBody request: Request): ProjectResource {
+        val project = addProject(
+            label = request.label,
+            description = request.description
+        )
+        return project.toResource()
+    }
+
+    data class Request(
+        val label: ProjectLabel,
+        val description: ProjectDescription
+    )
+
+}
