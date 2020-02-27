@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonValue
 import skillmanagement.domain.projects.Project
 import skillmanagement.domain.skills.Skill
 import java.time.LocalDate
-import java.util.*
+import java.util.UUID
 
 data class Employee(
     val id: UUID,
     val firstName: FirstName,
     val lastName: LastName,
-    val skills: Map<Skill, Knowledge>,
+    val skills: List<SkillKnowledge>,
     val projects: List<ProjectAssignment>
 )
 
@@ -27,13 +27,15 @@ data class LastName @JsonCreator constructor(
     override fun toString() = value
 }
 
-data class Knowledge(
+data class SkillKnowledge(
+    val skill: Skill,
     val level: SkillLevel
 )
 
 data class SkillLevel @JsonCreator constructor(
     @JsonValue private val value: Int
 ) {
+    fun toInt() = value
     override fun toString() = value.toString()
 }
 

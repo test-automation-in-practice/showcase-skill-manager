@@ -1,17 +1,27 @@
 package skillmanagement.domain.employees.add
 
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import skillmanagement.common.insert
 import skillmanagement.domain.TechnicalFunction
 import skillmanagement.domain.employees.Employee
-import skillmanagement.domain.employees.EmployeeRepository
-import skillmanagement.domain.employees.toDocument
 
 @TechnicalFunction
 class InsertEmployeeIntoDataStore(
-    private val repository: EmployeeRepository
+    private val jdbcTemplate: NamedParameterJdbcTemplate
 ) {
 
     operator fun invoke(employee: Employee) {
-        repository.insert(employee.toDocument())
+        require(employee.skills.isEmpty()) { "Skills are not supported for inserting new employees!" }
+        require(employee.projects.isEmpty()) { "Projects are not supported for inserting new employees!" }
+
+        jdbcTemplate.insert(
+            tableName = "employees",
+            columnValueMapping = listOf(
+                "id" to employee.id.toString(),
+                "first_name" to employee.firstName.toString(),
+                "last_name" to employee.lastName.toString()
+            )
+        )
     }
 
 }

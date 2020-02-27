@@ -1,17 +1,22 @@
 package skillmanagement.domain.projects.add
 
-import skillmanagement.domain.projects.Project
-import skillmanagement.domain.projects.ProjectRepository
-import skillmanagement.domain.projects.toDocument
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import skillmanagement.common.insert
 import skillmanagement.domain.TechnicalFunction
+import skillmanagement.domain.projects.Project
 
 @TechnicalFunction
 class InsertProjectIntoDataStore(
-    private val repository: ProjectRepository
+    private val jdbcTemplate: NamedParameterJdbcTemplate
 ) {
 
-    operator fun invoke(project: Project) {
-        repository.insert(project.toDocument())
-    }
+    operator fun invoke(project: Project) = jdbcTemplate.insert(
+        tableName = "projects",
+        columnValueMapping = listOf(
+            "id" to "${project.id}",
+            "label" to "${project.label}",
+            "description" to "${project.description}"
+        )
+    )
 
 }

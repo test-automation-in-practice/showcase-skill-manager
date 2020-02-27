@@ -1,6 +1,5 @@
 package skillmanagement.domain.skills.find
 
-import org.springframework.data.domain.Page
 import skillmanagement.domain.BusinessFunction
 import skillmanagement.domain.skills.Skill
 

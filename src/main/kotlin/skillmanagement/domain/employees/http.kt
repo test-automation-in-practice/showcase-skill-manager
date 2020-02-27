@@ -5,10 +5,9 @@ import org.springframework.hateoas.server.core.Relation
 import org.springframework.hateoas.server.mvc.BasicLinkBuilder.linkToCurrentMapping
 import skillmanagement.domain.projects.ProjectDescription
 import skillmanagement.domain.projects.ProjectLabel
-import skillmanagement.domain.skills.Skill
 import skillmanagement.domain.skills.SkillLabel
 import java.time.LocalDate
-import java.util.*
+import java.util.UUID
 
 @Relation(itemRelation = "employee", collectionRelation = "employees")
 data class EmployeeResource(
@@ -42,16 +41,15 @@ fun Employee.toResource(): EmployeeResource {
     return resource
 }
 
-fun Map<Skill, Knowledge>.toSkillResources(employeeId: UUID) = this
-    .toList()
+fun List<SkillKnowledge>.toSkillResources(employeeId: UUID) = this
     .map { it.toResources(employeeId) }
 
-fun Pair<Skill, Knowledge>.toResources(employeeId: UUID) =
+fun SkillKnowledge.toResources(employeeId: UUID) =
     SkillAssignmentResource(
-        label = first.label,
-        level = second.level
+        label = skill.label,
+        level = level
     ).apply {
-        add(linkToCurrentMapping().slash("api/employees/${employeeId}/skills/${first.id}").withSelfRel())
+        add(linkToCurrentMapping().slash("api/employees/${employeeId}/skills/${skill.id}").withSelfRel())
         add(linkToCurrentMapping().slash("api/employees/${employeeId}").withRel("employee"))
     }
 

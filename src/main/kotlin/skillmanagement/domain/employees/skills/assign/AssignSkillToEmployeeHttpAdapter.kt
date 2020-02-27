@@ -1,7 +1,8 @@
 package skillmanagement.domain.employees.skills.assign
 
 import org.springframework.http.ResponseEntity
-import org.springframework.http.ResponseEntity.*
+import org.springframework.http.ResponseEntity.notFound
+import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -13,7 +14,7 @@ import skillmanagement.domain.employees.skills.assign.AssignSkillToEmployeeResul
 import skillmanagement.domain.employees.skills.assign.AssignSkillToEmployeeResult.SkillNotFound
 import skillmanagement.domain.employees.skills.assign.AssignSkillToEmployeeResult.SuccessfullyAssigned
 import skillmanagement.domain.employees.toResources
-import java.util.*
+import java.util.UUID
 
 @HttpAdapter
 @RequestMapping("/api/employees/{employeeId}/skills/{skillId}")
@@ -29,11 +30,7 @@ class AssignSkillToEmployeeHttpAdapter(
     ): ResponseEntity<SkillAssignmentResource> =
         when (val result = assignSkillToEmployee(employeeId, skillId, request.level)) {
             EmployeeNotFound, SkillNotFound -> notFound().build()
-            is SuccessfullyAssigned -> {
-                val pair = result.skill to result.knowledge
-                val resource = pair.toResources(employeeId)
-                ok(resource)
-            }
+            is SuccessfullyAssigned -> ok(result.skillKnowledge.toResources(employeeId))
         }
 
     data class Request(

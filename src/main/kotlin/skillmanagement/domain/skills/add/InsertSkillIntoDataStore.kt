@@ -1,17 +1,21 @@
 package skillmanagement.domain.skills.add
 
-import skillmanagement.domain.skills.Skill
-import skillmanagement.domain.skills.SkillRepository
-import skillmanagement.domain.skills.toDocument
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import skillmanagement.common.insert
 import skillmanagement.domain.TechnicalFunction
+import skillmanagement.domain.skills.Skill
 
 @TechnicalFunction
 class InsertSkillIntoDataStore(
-    private val repository: SkillRepository
+    private val jdbcTemplate: NamedParameterJdbcTemplate
 ) {
 
-    operator fun invoke(skill: Skill) {
-        repository.insert(skill.toDocument())
-    }
+    operator fun invoke(skill: Skill) = jdbcTemplate.insert(
+        tableName = "skills",
+        columnValueMapping = listOf(
+            "id" to "${skill.id}",
+            "label" to "${skill.label}"
+        )
+    )
 
 }

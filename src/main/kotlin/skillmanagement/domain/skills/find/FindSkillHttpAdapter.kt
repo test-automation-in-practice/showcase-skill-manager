@@ -1,6 +1,5 @@
 package skillmanagement.domain.skills.find
 
-import org.springframework.data.domain.Page
 import org.springframework.hateoas.Link
 import org.springframework.hateoas.PagedModel
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo

@@ -1,16 +1,18 @@
 package skillmanagement.domain.employees.delete
 
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import skillmanagement.domain.TechnicalFunction
-import skillmanagement.domain.employees.EmployeeRepository
 import java.util.*
 
 @TechnicalFunction
 class DeleteEmployeeFromDataStore(
-    private val repository: EmployeeRepository
+    private val jdbcTemplate: NamedParameterJdbcTemplate
 ) {
 
+    private val statement = "DELETE FROM employees WHERE id = :id"
+
     operator fun invoke(id: UUID) {
-        repository.deleteById(id)
+        jdbcTemplate.update(statement, mapOf("id" to "$id"))
     }
 
 }

@@ -1,16 +1,18 @@
 package skillmanagement.domain.projects.delete
 
-import skillmanagement.domain.projects.ProjectRepository
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import skillmanagement.domain.TechnicalFunction
-import java.util.*
+import java.util.UUID
 
 @TechnicalFunction
 class DeleteProjectFromDataStore(
-    private val repository: ProjectRepository
+    private val jdbcTemplate: NamedParameterJdbcTemplate
 ) {
 
+    private val statement = "DELETE FROM projects WHERE id = :id"
+
     operator fun invoke(id: UUID) {
-        repository.deleteById(id)
+        jdbcTemplate.update(statement, mapOf("id" to "$id"))
     }
 
 }

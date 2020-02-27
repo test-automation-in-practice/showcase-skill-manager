@@ -1,27 +1,27 @@
 package skillmanagement.domain.skills.find
 
-import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import skillmanagement.domain.TechnicalFunction
 import skillmanagement.domain.skills.Skill
-import skillmanagement.domain.skills.SkillDocument
-import skillmanagement.domain.skills.SkillRepository
-import skillmanagement.domain.skills.toSkill
 
 @TechnicalFunction
 class FindSkillsInDataStore(
-    private val repository: SkillRepository
+    private val jdbcTemplate: NamedParameterJdbcTemplate
 ) {
 
     operator fun invoke(pageNumber: Int, pageSize: Int): Page<Skill> {
-        val pageable = PageRequest.of(
-            pageNumber,
-            pageSize,
-            Sort.Direction.ASC,
-            "label"
-        )
-        return repository.findAll(pageable).map(SkillDocument::toSkill)
+        TODO()
     }
 
+}
+
+// TODO
+interface Page<T> {
+    val content: Collection<T>
+    val size: Int
+    val number: Int
+    val totalElements: Long
+    val totalPages: Int
+    val isFirst: Boolean
+    val isLast: Boolean
 }

@@ -18,7 +18,7 @@ class AddEmployee(
             id = idGenerator.generateId(),
             firstName = firstName,
             lastName = lastName,
-            skills = emptyMap(),
+            skills = emptyList(),
             projects = emptyList()
         )
         insertEmployeeIntoDataStore(employee)
