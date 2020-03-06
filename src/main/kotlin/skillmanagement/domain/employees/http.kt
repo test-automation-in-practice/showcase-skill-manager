@@ -6,20 +6,27 @@ import org.springframework.hateoas.server.mvc.BasicLinkBuilder.linkToCurrentMapp
 import skillmanagement.domain.projects.ProjectDescription
 import skillmanagement.domain.projects.ProjectLabel
 import skillmanagement.domain.skills.SkillLabel
+import java.time.Instant
 import java.time.LocalDate
 import java.util.UUID
 
 @Relation(itemRelation = "employee", collectionRelation = "employees")
 data class EmployeeResource(
+    val id: UUID,
     val firstName: FirstName,
     val lastName: LastName,
+    val title: Title,
+    val email: EmailAddress,
+    val telephone: TelephoneNumber,
     val skills: List<SkillAssignmentResource>,
-    val projects: List<ProjectAssignmentResource>
+    val projects: List<ProjectAssignmentResource>,
+    val lastUpdate: Instant
 ) : RepresentationModel<EmployeeResource>()
 
 data class SkillAssignmentResource(
     val label: SkillLabel,
-    val level: SkillLevel
+    val level: SkillLevel,
+    val secret: Boolean
 ) : RepresentationModel<SkillAssignmentResource>()
 
 data class ProjectAssignmentResource(
@@ -32,10 +39,15 @@ data class ProjectAssignmentResource(
 
 fun Employee.toResource(): EmployeeResource {
     val resource = EmployeeResource(
+        id = id,
         firstName = firstName,
         lastName = lastName,
+        title = title,
+        email = email,
+        telephone = telephone,
         skills = skills.toSkillResources(id),
-        projects = projects.toProjectResources(id)
+        projects = projects.toProjectResources(id),
+        lastUpdate = lastUpdate
     )
     resource.add(linkToCurrentMapping().slash("api/employees/${id}").withSelfRel())
     return resource
@@ -47,7 +59,8 @@ fun List<SkillKnowledge>.toSkillResources(employeeId: UUID) = this
 fun SkillKnowledge.toResources(employeeId: UUID) =
     SkillAssignmentResource(
         label = skill.label,
-        level = level
+        level = level,
+        secret = secret
     ).apply {
         add(linkToCurrentMapping().slash("api/employees/${employeeId}/skills/${skill.id}").withSelfRel())
         add(linkToCurrentMapping().slash("api/employees/${employeeId}").withRel("employee"))

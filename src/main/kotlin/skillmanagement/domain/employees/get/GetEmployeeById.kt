@@ -2,7 +2,7 @@ package skillmanagement.domain.employees.get
 
 import skillmanagement.domain.BusinessFunction
 import skillmanagement.domain.employees.Employee
-import java.util.*
+import java.util.UUID
 
 @BusinessFunction
 class GetEmployeeById(

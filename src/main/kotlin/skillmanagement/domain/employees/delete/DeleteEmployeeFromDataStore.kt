@@ -1,18 +1,19 @@
 package skillmanagement.domain.employees.delete
 
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import org.springframework.transaction.annotation.Transactional
+import skillmanagement.common.deleteById
 import skillmanagement.domain.TechnicalFunction
-import java.util.*
+import java.util.UUID
 
 @TechnicalFunction
 class DeleteEmployeeFromDataStore(
     private val jdbcTemplate: NamedParameterJdbcTemplate
 ) {
 
-    private val statement = "DELETE FROM employees WHERE id = :id"
-
+    @Transactional
     operator fun invoke(id: UUID) {
-        jdbcTemplate.update(statement, mapOf("id" to "$id"))
+        jdbcTemplate.deleteById(table = "employees", id = id)
     }
 
 }

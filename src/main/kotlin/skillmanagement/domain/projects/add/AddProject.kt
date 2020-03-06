@@ -1,10 +1,10 @@
 package skillmanagement.domain.projects.add
 
 import org.springframework.util.IdGenerator
+import skillmanagement.domain.BusinessFunction
 import skillmanagement.domain.projects.Project
 import skillmanagement.domain.projects.ProjectDescription
 import skillmanagement.domain.projects.ProjectLabel
-import skillmanagement.domain.BusinessFunction
 
 @BusinessFunction
 class AddProject(

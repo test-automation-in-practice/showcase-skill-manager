@@ -1,8 +1,8 @@
 package skillmanagement.domain.projects.get
 
-import skillmanagement.domain.projects.Project
 import skillmanagement.domain.BusinessFunction
-import java.util.*
+import skillmanagement.domain.projects.Project
+import java.util.UUID
 
 @BusinessFunction
 class GetProjectById(

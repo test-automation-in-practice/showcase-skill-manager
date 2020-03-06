@@ -2,7 +2,7 @@ package skillmanagement.domain.projects
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
-import java.util.*
+import java.util.UUID
 
 data class Project(
     val id: UUID,

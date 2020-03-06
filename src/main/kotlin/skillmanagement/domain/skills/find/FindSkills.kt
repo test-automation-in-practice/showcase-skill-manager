@@ -8,8 +8,9 @@ class FindSkills(
     private val findSkillsInDataStore: FindSkillsInDataStore
 ) {
 
-    operator fun invoke(pageNumber: Int, pageSize: Int): Page<Skill> {
-        return findSkillsInDataStore(pageNumber, pageSize)
+    // TODO: Security + query parameter + pagination
+    operator fun invoke(): List<Skill> {
+        return findSkillsInDataStore()
     }
 
 }

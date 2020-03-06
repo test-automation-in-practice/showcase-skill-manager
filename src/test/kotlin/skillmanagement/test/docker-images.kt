@@ -1,12 +1,12 @@
 package skillmanagement.test
 
-import skillmanagement.test.Container.MongoDb
 import org.junit.jupiter.api.extension.BeforeAllCallback
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace
 import org.junit.jupiter.api.extension.ExtensionContext.Store.CloseableResource
 import org.testcontainers.containers.GenericContainer
+import skillmanagement.test.Container.MongoDb
 import kotlin.annotation.AnnotationTarget.CLASS
 
 @Retention

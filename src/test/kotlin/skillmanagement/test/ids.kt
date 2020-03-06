@@ -4,7 +4,10 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.util.IdGenerator
-import java.util.*
+import java.util.ArrayDeque
+import java.util.Deque
+import java.util.NoSuchElementException
+import java.util.UUID
 import java.util.UUID.fromString
 
 fun uuid(): UUID = UUID.randomUUID()

@@ -1,7 +1,7 @@
 package skillmanagement.domain.employees.delete
 
 import skillmanagement.domain.BusinessFunction
-import java.util.*
+import java.util.UUID
 
 @BusinessFunction
 class DeleteEmployeeById(

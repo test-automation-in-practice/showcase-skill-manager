@@ -1,9 +1,9 @@
 package skillmanagement.domain.skills.add
 
 import org.springframework.util.IdGenerator
+import skillmanagement.domain.BusinessFunction
 import skillmanagement.domain.skills.Skill
 import skillmanagement.domain.skills.SkillLabel
-import skillmanagement.domain.BusinessFunction
 
 @BusinessFunction
 class AddSkill(

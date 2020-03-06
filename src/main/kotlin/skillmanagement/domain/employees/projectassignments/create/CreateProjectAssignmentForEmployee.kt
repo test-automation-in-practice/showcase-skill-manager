@@ -1,4 +1,4 @@
-package skillmanagement.domain.employees.projects.assign
+package skillmanagement.domain.employees.projectassignments.create
 
 import org.springframework.util.IdGenerator
 import skillmanagement.domain.BusinessFunction
@@ -10,7 +10,7 @@ import java.time.LocalDate
 import java.util.UUID
 
 @BusinessFunction
-class AssignProjectToEmployee(
+class CreateProjectAssignmentForEmployee(
     private val idGenerator: IdGenerator,
     private val getEmployeeById: GetEmployeeById,
     private val getProjectById: GetProjectById,

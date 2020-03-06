@@ -1,14 +1,15 @@
 package skillmanagement.domain.skills.get
 
 import org.springframework.http.ResponseEntity
-import org.springframework.http.ResponseEntity.*
+import org.springframework.http.ResponseEntity.noContent
+import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import skillmanagement.domain.HttpAdapter
 import skillmanagement.domain.skills.SkillResource
 import skillmanagement.domain.skills.toResource
-import skillmanagement.domain.HttpAdapter
-import java.util.*
+import java.util.UUID
 
 @HttpAdapter
 @RequestMapping("/api/skills/{id}")

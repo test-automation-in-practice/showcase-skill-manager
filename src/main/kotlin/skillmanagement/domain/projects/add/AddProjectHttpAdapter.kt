@@ -1,13 +1,15 @@
 package skillmanagement.domain.projects.add
 
+import org.springframework.http.HttpStatus.CREATED
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseStatus
+import skillmanagement.domain.HttpAdapter
 import skillmanagement.domain.projects.ProjectDescription
 import skillmanagement.domain.projects.ProjectLabel
 import skillmanagement.domain.projects.ProjectResource
 import skillmanagement.domain.projects.toResource
-import skillmanagement.domain.HttpAdapter
 
 @HttpAdapter
 @RequestMapping("/api/projects")
@@ -16,6 +18,7 @@ class AddProjectHttpAdapter(
 ) {
 
     @PostMapping
+    @ResponseStatus(CREATED)
     fun post(@RequestBody request: Request): ProjectResource {
         val project = addProject(
             label = request.label,
