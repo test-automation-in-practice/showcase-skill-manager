@@ -37,6 +37,7 @@ dependencies {
     testImplementation("com.ninja-squad:springmockk:1.1.3")
     testImplementation("org.testcontainers:testcontainers:1.12.4")
     testImplementation("net.jqwik:jqwik:1.2.0")
+    testImplementation("com.tngtech.archunit:archunit:0.13.1")
 }
 
 tasks.withType<Test> {
