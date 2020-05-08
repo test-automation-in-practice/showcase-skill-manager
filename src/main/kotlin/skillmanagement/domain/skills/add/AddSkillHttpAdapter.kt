@@ -19,9 +19,7 @@ class AddSkillHttpAdapter(
     @PostMapping
     @ResponseStatus(CREATED)
     fun post(@RequestBody request: Request): SkillResource {
-        val skill = addSkill(
-            label = request.label
-        )
+        val skill = addSkill(request.label)
         return skill.toResource()
     }
 

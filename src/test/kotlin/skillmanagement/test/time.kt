@@ -13,6 +13,13 @@ import java.util.NoSuchElementException
 fun instant(value: String): Instant = Instant.parse(value)
 
 /**
+ * Creates a [Clock] which will return the same timestamps every time
+ * it is invoked.
+ */
+fun fixedClock(timestamps: String): Clock =
+    Clock.fixed(Instant.parse(timestamps), ZoneId.of("UTC"))
+
+/**
  * Creates a [Clock] which will return a pre defined sequence of timestamps.
  *
  * If all defined timestamps are used up, an exception will be thrown.
