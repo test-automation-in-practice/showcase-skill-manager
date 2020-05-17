@@ -2,9 +2,9 @@ package skillmanagement.domain.skills.add
 
 import io.mockk.every
 import io.mockk.mockk
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
@@ -14,31 +14,30 @@ import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 import skillmanagement.domain.skills.Skill
+import skillmanagement.domain.skills.SkillLabel
 import skillmanagement.test.TechnologyIntegrationTest
+import skillmanagement.test.andDocument
 import skillmanagement.test.fixedClock
 import skillmanagement.test.strictJson
 import skillmanagement.test.uuid
 import java.time.Clock
 
-private const val baseUrl = "http://localhost"
-
 @WithMockUser
 @TechnologyIntegrationTest
 @WebMvcTest(AddSkillHttpAdapter::class)
 @Import(TestConfiguration::class)
+@AutoConfigureRestDocs("build/generated-snippets/skills/add", uriPort = 80)
 internal class AddSkillHttpAdapterTests(
     @Autowired val mockMvc: MockMvc,
     @Autowired val addSkill: AddSkill
 ) {
 
-    @BeforeEach
-    fun setupStubs() {
-        every { addSkill(any()) }
-            .answers { Skill(uuid("14ae4e75-5cf6-4b30-9fc2-7037bd428584"), firstArg()) }
-    }
+    val skill = Skill(uuid("14ae4e75-5cf6-4b30-9fc2-7037bd428584"), SkillLabel("Kotlin"))
 
     @Test
     fun `well formed request leads to correct response`() {
+        every { addSkill(SkillLabel("Kotlin")) } returns skill
+
         mockMvc
             .post("/api/skills") {
                 contentType = APPLICATION_JSON
@@ -55,7 +54,7 @@ internal class AddSkillHttpAdapterTests(
                           "label": "Kotlin",
                           "_links": {
                             "self": {
-                              "href": "$baseUrl/api/skills/14ae4e75-5cf6-4b30-9fc2-7037bd428584"
+                              "href": "http://localhost/api/skills/14ae4e75-5cf6-4b30-9fc2-7037bd428584"
                             }
                           }
                         }
@@ -63,6 +62,7 @@ internal class AddSkillHttpAdapterTests(
                     }
                 }
             }
+            .andDocument("created")
     }
 
     @Test
@@ -92,7 +92,9 @@ internal class AddSkillHttpAdapterTests(
                     }
                 }
             }
+            .andDocument("bad-request")
     }
+
 }
 
 private class TestConfiguration {
