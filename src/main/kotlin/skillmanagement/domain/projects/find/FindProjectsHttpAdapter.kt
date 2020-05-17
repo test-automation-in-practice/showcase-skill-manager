@@ -22,7 +22,7 @@ class FindProjectsHttpAdapter(
         val content = projects.map(Project::toResource)
         val selfLink = linkToCurrentMapping().slash("api/projects").withSelfRel()
 
-        return CollectionModel(content, selfLink)
+        return CollectionModel.of(content, selfLink)
     }
 
 }

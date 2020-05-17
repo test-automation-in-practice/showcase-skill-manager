@@ -39,6 +39,7 @@ private abstract class AbstractDockerContainerExtension<T : Container> : BeforeA
 
     protected abstract fun createResource(): T
 
+    @Suppress("UNCHECKED_CAST")
     private var ExtensionContext.container: T?
         get() = getStore(namespace).get("container") as T?
         set(value) = getStore(namespace).put("container", value)

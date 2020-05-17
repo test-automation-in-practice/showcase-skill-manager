@@ -22,7 +22,7 @@ class FindSkillHttpAdapter(
         val content = skills.map(Skill::toResource)
         val selfLink = linkToCurrentMapping().slash("api/skills").withSelfRel()
 
-        return CollectionModel(content, selfLink)
+        return CollectionModel.of(content, selfLink)
     }
 
 }

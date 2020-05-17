@@ -22,7 +22,7 @@ class FindEmployeesHttpAdapter(
         val content = employees.map(Employee::toResource)
         val selfLink = linkToCurrentMapping().slash("api/employees").withSelfRel()
 
-        return CollectionModel(content, selfLink)
+        return CollectionModel.of(content, selfLink)
     }
 
 }
