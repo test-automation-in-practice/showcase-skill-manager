@@ -1,6 +1,6 @@
 package skillmanagement.domain.skills.delete
 
-import org.springframework.http.HttpStatus
+import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -15,7 +15,7 @@ class DeleteSkillByIdHttpAdapter(
 ) {
 
     @DeleteMapping
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(NO_CONTENT)
     fun delete(@PathVariable id: UUID) {
         deleteSkillById(id)
     }

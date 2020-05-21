@@ -13,13 +13,12 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
-import skillmanagement.domain.skills.Skill
 import skillmanagement.domain.skills.SkillLabel
+import skillmanagement.domain.skills.skill_kotlin
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.andDocument
 import skillmanagement.test.fixedClock
 import skillmanagement.test.strictJson
-import skillmanagement.test.uuid
 import java.time.Clock
 
 @WithMockUser
@@ -32,11 +31,9 @@ internal class AddSkillHttpAdapterTests(
     @Autowired val addSkill: AddSkill
 ) {
 
-    val skill = Skill(uuid("14ae4e75-5cf6-4b30-9fc2-7037bd428584"), SkillLabel("Kotlin"))
-
     @Test
     fun `well formed request leads to correct response`() {
-        every { addSkill(SkillLabel("Kotlin")) } returns skill
+        every { addSkill(SkillLabel("Kotlin")) } returns skill_kotlin
 
         mockMvc
             .post("/api/skills") {
@@ -50,11 +47,11 @@ internal class AddSkillHttpAdapterTests(
                     strictJson {
                         """
                         {
-                          "id": "14ae4e75-5cf6-4b30-9fc2-7037bd428584",
+                          "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
                           "label": "Kotlin",
                           "_links": {
                             "self": {
-                              "href": "http://localhost/api/skills/14ae4e75-5cf6-4b30-9fc2-7037bd428584"
+                              "href": "http://localhost/api/skills/3f7985b9-f5f0-4662-bda9-1dcde01f5f3b"
                             }
                           }
                         }

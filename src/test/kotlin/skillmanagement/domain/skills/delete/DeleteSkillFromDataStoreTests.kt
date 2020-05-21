@@ -1,50 +1,49 @@
-package skillmanagement.domain.skills.add
+package skillmanagement.domain.skills.delete
 
 import io.kotlintest.shouldBe
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
-import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest
-import org.springframework.dao.DuplicateKeyException
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import skillmanagement.domain.skills.Skill
+import skillmanagement.domain.skills.SkillLabel
+import skillmanagement.domain.skills.add.InsertSkillIntoDataStore
 import skillmanagement.domain.skills.get.GetSkillFromDataStore
-import skillmanagement.domain.skills.skill_java
-import skillmanagement.domain.skills.skill_kotlin
 import skillmanagement.test.TechnologyIntegrationTest
+import skillmanagement.test.stringOfLength
 import skillmanagement.test.uuid
 
 @JdbcTest
 @TestInstance(PER_CLASS)
 @TechnologyIntegrationTest
-internal class InsertSkillIntoDataStoreTests(
+internal class DeleteSkillFromDataStoreTests(
     @Autowired val jdbcTemplate: NamedParameterJdbcTemplate
 ) {
 
     val getSkill = GetSkillFromDataStore(jdbcTemplate)
     val insertSkillIntoDataStore = InsertSkillIntoDataStore(jdbcTemplate)
 
-    @Test
-    fun `inserts complete Skill data into data store`() {
-        val skill = skill_kotlin.copy(id = uuid())
+    val deleteSkillFromDataStore = DeleteSkillFromDataStore(jdbcTemplate)
 
-        getSkill(skill.id) shouldBe null
-        insertSkillIntoDataStore(skill)
-        getSkill(skill.id) shouldBe skill
+    @Test
+    fun `does not fail if skill with id does not exist`() {
+        val id = uuid()
+        getSkill(id) shouldBe null
+        deleteSkillFromDataStore(id)
     }
 
     @Test
-    fun `fails when trying to insert skill with existing ID`() {
+    fun `deletes existing skill from data store`() {
         val id = uuid()
+        val skill = Skill(id, SkillLabel(stringOfLength(10)))
 
-        val skill1 = skill_kotlin.copy(id = id)
-        val skill2 = skill_java.copy(id = id)
-
-        insertSkillIntoDataStore(skill1)
-        assertThrows<DuplicateKeyException> {
-            insertSkillIntoDataStore(skill2)
-        }
+        getSkill(id) shouldBe null
+        insertSkillIntoDataStore(skill)
+        getSkill(id) shouldBe skill
+        deleteSkillFromDataStore(id)
+        getSkill(id) shouldBe null
     }
 
 }
