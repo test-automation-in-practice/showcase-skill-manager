@@ -10,9 +10,10 @@ object ProjectRowMapper : RowMapper<Project> {
         Project(id = rs.id, label = rs.label, description = rs.description)
 
     private val ResultSet.id: UUID
-        get() = getString("id").let { UUID.fromString(it) }
+        get() = UUID.fromString(getString("id"))
     private val ResultSet.label: ProjectLabel
-        get() = getString("label").let(::ProjectLabel)
+        get() = ProjectLabel(getString("label"))
     private val ResultSet.description: ProjectDescription
-        get() = getString("description").let(::ProjectDescription)
+        get() = ProjectDescription(getString("description"))
+
 }

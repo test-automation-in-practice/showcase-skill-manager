@@ -17,7 +17,7 @@ class SetSkillKnowledgeOfEmployee(
     private val setEmployeeSkillInDataStore: SetEmployeeSkillInDataStore
 ) {
 
-    // TODO: Security - Only invokable by Employee-Admins
+    // TODO: Security - Only invokable by Employee themselves or Employee-Admins
     operator fun invoke(
         employeeId: UUID,
         skillId: UUID,

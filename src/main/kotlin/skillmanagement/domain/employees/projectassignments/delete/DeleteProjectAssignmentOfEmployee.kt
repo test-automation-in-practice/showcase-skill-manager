@@ -13,7 +13,7 @@ class DeleteProjectAssignmentOfEmployee(
     private val deleteProjectAssignmentFromDataStore: DeleteProjectAssignmentFromDataStore
 ) {
 
-    // TODO: Security - Only invokable by Employee-Admins
+    // TODO: Security - Only invokable by Employee themselves or Employee-Admins
     operator fun invoke(employeeId: UUID, assignmentId: UUID): DeleteProjectAssignmentOfEmployeeResult {
         val employee = getEmployeeById(employeeId) ?: return EmployeeNotFound
         val assignment = employee.projects.singleOrNull { it.id == assignmentId } ?: return ProjectAssignmentNotFound

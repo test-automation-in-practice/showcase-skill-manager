@@ -37,24 +37,20 @@ data class ProjectAssignmentResource(
     val endDate: LocalDate?
 ) : RepresentationModel<SkillAssignmentResource>()
 
-fun Employee.toResource(): EmployeeResource {
-    val resource = EmployeeResource(
+fun Employee.toResource(): EmployeeResource =
+    EmployeeResource(
         id = id,
         firstName = firstName,
         lastName = lastName,
         title = title,
         email = email,
         telephone = telephone,
-        skills = skills.toSkillResources(id),
-        projects = projects.toProjectResources(id),
+        skills = skills.map { it.toResources(id) },
+        projects = projects.map { it.toResources(id) },
         lastUpdate = lastUpdate
-    )
-    resource.add(linkToCurrentMapping().slash("api/employees/${id}").withSelfRel())
-    return resource
-}
-
-fun List<SkillKnowledge>.toSkillResources(employeeId: UUID) = this
-    .map { it.toResources(employeeId) }
+    ).apply {
+        add(linkToCurrentMapping().slash("api/employees/${id}").withSelfRel())
+    }
 
 fun SkillKnowledge.toResources(employeeId: UUID) =
     SkillAssignmentResource(
@@ -65,9 +61,6 @@ fun SkillKnowledge.toResources(employeeId: UUID) =
         add(linkToCurrentMapping().slash("api/employees/${employeeId}/skills/${skill.id}").withSelfRel())
         add(linkToCurrentMapping().slash("api/employees/${employeeId}").withRel("employee"))
     }
-
-fun List<ProjectAssignment>.toProjectResources(employeeId: UUID) =
-    map { it.toResources(employeeId) }
 
 fun ProjectAssignment.toResources(employeeId: UUID) =
     ProjectAssignmentResource(

@@ -26,19 +26,20 @@ object EmployeeRowMapper : RowMapper<Employee> {
     )
 
     private val ResultSet.id: UUID
-        get() = getString("id").let { UUID.fromString(it) }
+        get() = UUID.fromString(getString("id"))
     private val ResultSet.firstName: FirstName
-        get() = getString("first_name").let(::FirstName)
+        get() = FirstName(getString("first_name"))
     private val ResultSet.lastName: LastName
-        get() = getString("last_name").let(::LastName)
+        get() = LastName(getString("last_name"))
     private val ResultSet.title: Title
-        get() = getString("title").let(::Title)
+        get() = Title(getString("title"))
     private val ResultSet.email: EmailAddress
-        get() = getString("email").let(::EmailAddress)
+        get() = EmailAddress(getString("email"))
     private val ResultSet.telephone: TelephoneNumber
-        get() = getString("telephone").let(::TelephoneNumber)
+        get() = TelephoneNumber(getString("telephone"))
     private val ResultSet.lastUpdate: Instant
-        get() = getString("last_update_utc").let { Instant.parse(it) }
+        get() = Instant.parse(getString("last_update_utc"))
+
 }
 
 object SkillKnowledgeRowMapper : RowMapper<SkillKnowledge> {
@@ -54,13 +55,14 @@ object SkillKnowledgeRowMapper : RowMapper<SkillKnowledge> {
         )
 
     private val ResultSet.skillId: UUID
-        get() = getString("skill_id").let { UUID.fromString(it) }
+        get() = UUID.fromString(getString("skill_id"))
     private val ResultSet.skillLabel: SkillLabel
-        get() = getString("label").let(::SkillLabel)
+        get() = SkillLabel(getString("label"))
     private val ResultSet.level: SkillLevel
-        get() = getInt("level").let(::SkillLevel)
+        get() = SkillLevel(getInt("level"))
     private val ResultSet.secret: Boolean
         get() = getBoolean("secret")
+
 }
 
 object ProjectAssignmentRowMapper : RowMapper<ProjectAssignment> {
@@ -79,17 +81,18 @@ object ProjectAssignmentRowMapper : RowMapper<ProjectAssignment> {
         )
 
     private val ResultSet.id: UUID
-        get() = getString("id").let { UUID.fromString(it) }
+        get() = UUID.fromString(getString("id"))
     private val ResultSet.projectId: UUID
-        get() = getString("project_id").let { UUID.fromString(it) }
+        get() = UUID.fromString(getString("project_id"))
     private val ResultSet.projectLabel: ProjectLabel
-        get() = getString("label").let(::ProjectLabel)
+        get() = ProjectLabel(getString("label"))
     private val ResultSet.projectDescription: ProjectDescription
-        get() = getString("description").let(::ProjectDescription)
+        get() = ProjectDescription(getString("description"))
     private val ResultSet.contribution: ProjectContribution
-        get() = getString("contribution").let(::ProjectContribution)
+        get() = ProjectContribution(getString("contribution"))
     private val ResultSet.startDate: LocalDate
-        get() = getString("start_date").let { LocalDate.parse(it) }
+        get() = LocalDate.parse(getString("start_date"))
     private val ResultSet.endDate: LocalDate?
-        get() = getString("end_date")?.let { LocalDate.parse(it) }
+        get() = LocalDate.parse(getString("end_date"))
+
 }

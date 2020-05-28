@@ -17,7 +17,7 @@ class CreateProjectAssignmentForEmployee(
     private val insertProjectAssignmentIntoDataStore: InsertProjectAssignmentIntoDataStore
 ) {
 
-    // TODO: Security - Only invokable by Employee-Admins
+    // TODO: Security - Only invokable by Employee themselves or Employee-Admins
     operator fun invoke(
         employeeId: UUID,
         projectId: UUID,

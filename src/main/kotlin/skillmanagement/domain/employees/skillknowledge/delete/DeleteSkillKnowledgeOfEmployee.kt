@@ -13,7 +13,7 @@ class DeleteSkillKnowledgeOfEmployee(
     private val deleteSkillKnowledgeFromDataStore: DeleteSkillKnowledgeFromDataStore
 ) {
 
-    // TODO: Security - Only invokable by Employee-Admins
+    // TODO: Security - Only invokable by Employee themselves or Employee-Admins
     operator fun invoke(employeeId: UUID, skillId: UUID): DeleteSkillKnowledgeOfEmployeeResult {
         val employee = getEmployeeById(employeeId) ?: return EmployeeNotFound
         val knowledge = employee.skills.singleOrNull { it.skill.id == skillId } ?: return SkillKnowledgeNotFound

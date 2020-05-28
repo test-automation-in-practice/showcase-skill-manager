@@ -11,8 +11,5 @@ data class SkillResource(
     val label: SkillLabel
 ) : RepresentationModel<SkillResource>()
 
-fun Skill.toResource(): SkillResource {
-    val resource = SkillResource(id, label)
-    resource.add(linkToCurrentMapping().slash("api/skills/${id}").withSelfRel())
-    return resource
-}
+fun Skill.toResource(): SkillResource = SkillResource(id, label)
+    .apply { add(linkToCurrentMapping().slash("api/skills/${id}").withSelfRel()) }

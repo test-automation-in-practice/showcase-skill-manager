@@ -10,7 +10,8 @@ object SkillRowMapper : RowMapper<Skill> {
         Skill(id = rs.id, label = rs.label)
 
     private val ResultSet.id: UUID
-        get() = getString("id").let { UUID.fromString(it) }
+        get() = UUID.fromString(getString("id"))
     private val ResultSet.label: SkillLabel
-        get() = getString("label").let(::SkillLabel)
+        get() = SkillLabel(getString("label"))
+
 }
