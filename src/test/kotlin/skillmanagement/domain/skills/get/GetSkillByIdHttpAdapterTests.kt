@@ -20,7 +20,6 @@ import skillmanagement.test.strictJson
 import skillmanagement.test.uuid
 import java.time.Clock
 
-
 @WithMockUser
 @TechnologyIntegrationTest
 @WebMvcTest(GetSkillByIdHttpAdapter::class)
