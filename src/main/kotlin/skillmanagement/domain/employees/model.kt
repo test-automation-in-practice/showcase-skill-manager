@@ -2,6 +2,9 @@ package skillmanagement.domain.employees
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
+import skillmanagement.domain.Validation.Companion.validate
+import skillmanagement.domain.isGreaterThanOrEqualTo
+import skillmanagement.domain.isLessThanOrEqualTo
 import skillmanagement.domain.projects.Project
 import skillmanagement.domain.skills.Skill
 import java.time.Instant
@@ -27,8 +30,8 @@ data class Employee(
     val title: Title,
     val email: EmailAddress,
     val telephone: TelephoneNumber,
-    val skills: List<SkillKnowledge>,
-    val projects: List<ProjectAssignment>,
+    val skills: List<SkillKnowledge>?,
+    val projects: List<ProjectAssignment>?,
     val lastUpdate: Instant
 )
 
@@ -74,8 +77,17 @@ data class SkillKnowledge(
 data class SkillLevel @JsonCreator constructor(
     @JsonValue private val value: Int
 ) {
+
+    init {
+        validate(value, "Skill Level") {
+            isGreaterThanOrEqualTo(1)
+            isLessThanOrEqualTo(10)
+        }
+    }
+
     fun toInt() = value
     override fun toString() = value.toString()
+
 }
 
 // TODO:

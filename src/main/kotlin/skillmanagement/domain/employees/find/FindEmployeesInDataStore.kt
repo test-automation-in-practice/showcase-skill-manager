@@ -1,21 +1,21 @@
-package skillmanagement.domain.employees.get
+package skillmanagement.domain.employees.find
 
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.transaction.annotation.Transactional
 import skillmanagement.domain.TechnicalFunction
 import skillmanagement.domain.employees.Employee
 import skillmanagement.domain.employees.EmployeeRowMapper
-import java.util.UUID
 
 @TechnicalFunction
-class GetEmployeeFromDataStore(
+class FindEmployeesInDataStore(
     private val jdbcTemplate: NamedParameterJdbcTemplate
 ) {
 
-    private val employeeQuery = "SELECT * FROM employees WHERE id = :id"
+    private val employeesQuery = "SELECT * FROM employees"
 
     @Transactional(readOnly = true)
-    operator fun invoke(id: UUID): Employee? =
-        jdbcTemplate.query(employeeQuery, mapOf("id" to "$id"), EmployeeRowMapper).firstOrNull()
+    operator fun invoke(): List<Employee> {
+        return jdbcTemplate.query(employeesQuery, EmployeeRowMapper)
+    }
 
 }

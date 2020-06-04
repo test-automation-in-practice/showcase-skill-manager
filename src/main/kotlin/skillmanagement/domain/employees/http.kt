@@ -1,5 +1,7 @@
 package skillmanagement.domain.employees
 
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.core.Relation
 import org.springframework.hateoas.server.mvc.BasicLinkBuilder.linkToCurrentMapping
@@ -10,6 +12,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.util.UUID
 
+@JsonInclude(NON_NULL)
 @Relation(itemRelation = "employee", collectionRelation = "employees")
 data class EmployeeResource(
     val id: UUID,
@@ -18,8 +21,8 @@ data class EmployeeResource(
     val title: Title,
     val email: EmailAddress,
     val telephone: TelephoneNumber,
-    val skills: List<SkillAssignmentResource>,
-    val projects: List<ProjectAssignmentResource>,
+    val skills: List<SkillAssignmentResource>?,
+    val projects: List<ProjectAssignmentResource>?,
     val lastUpdate: Instant
 ) : RepresentationModel<EmployeeResource>()
 
@@ -45,8 +48,8 @@ fun Employee.toResource(): EmployeeResource =
         title = title,
         email = email,
         telephone = telephone,
-        skills = skills.map { it.toResources(id) },
-        projects = projects.map { it.toResources(id) },
+        skills = skills?.map { it.toResources(id) },
+        projects = projects?.map { it.toResources(id) },
         lastUpdate = lastUpdate
     ).apply {
         add(linkToCurrentMapping().slash("api/employees/${id}").withSelfRel())
@@ -73,3 +76,8 @@ fun ProjectAssignment.toResources(employeeId: UUID) =
         add(linkToCurrentMapping().slash("api/employees/${employeeId}/projects/${id}").withSelfRel())
         add(linkToCurrentMapping().slash("api/employees/${employeeId}").withRel("employee"))
     }
+
+val Set<String>?.skills: Boolean
+    get() = this?.contains("skills") ?: false
+val Set<String>?.projects: Boolean
+    get() = this?.contains("projects") ?: false

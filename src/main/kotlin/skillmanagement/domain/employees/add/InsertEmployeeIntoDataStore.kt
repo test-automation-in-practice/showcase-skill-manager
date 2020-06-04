@@ -13,8 +13,8 @@ class InsertEmployeeIntoDataStore(
 
     @Transactional
     operator fun invoke(employee: Employee) {
-        require(employee.skills.isEmpty()) { "Skills are not supported for inserting new employees!" }
-        require(employee.projects.isEmpty()) { "Projects are not supported for inserting new employees!" }
+        require(employee.skills.isNullOrEmpty()) { "Skills are not supported for inserting new employees!" }
+        require(employee.projects.isNullOrEmpty()) { "Projects are not supported for inserting new employees!" }
 
         jdbcTemplate.insert(
             table = "employees",
