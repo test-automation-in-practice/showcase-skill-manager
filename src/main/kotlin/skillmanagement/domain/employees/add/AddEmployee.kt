@@ -32,8 +32,6 @@ class AddEmployee(
             title = title,
             email = email,
             telephone = telephone,
-            skills = emptyList(),
-            projects = emptyList(),
             lastUpdate = clock.instant()
         )
         insertEmployeeIntoDataStore(employee)

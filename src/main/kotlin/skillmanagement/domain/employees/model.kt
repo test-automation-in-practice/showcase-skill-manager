@@ -30,8 +30,8 @@ data class Employee(
     val title: Title,
     val email: EmailAddress,
     val telephone: TelephoneNumber,
-    val skills: List<SkillKnowledge>?,
-    val projects: List<ProjectAssignment>?,
+    val skills: List<SkillKnowledge>? = null,
+    val projects: List<ProjectAssignment>? = null,
     val lastUpdate: Instant
 )
 

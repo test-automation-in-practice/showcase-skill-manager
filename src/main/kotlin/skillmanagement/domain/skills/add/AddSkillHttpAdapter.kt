@@ -10,6 +10,9 @@ import skillmanagement.domain.skills.SkillLabel
 import skillmanagement.domain.skills.SkillResource
 import skillmanagement.domain.skills.toResource
 
+/**
+ * Exposes [AddSkill] over HTTP.
+ */
 @HttpAdapter
 @RequestMapping("/api/skills")
 class AddSkillHttpAdapter(

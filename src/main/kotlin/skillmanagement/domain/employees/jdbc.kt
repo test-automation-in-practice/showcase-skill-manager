@@ -20,8 +20,6 @@ object EmployeeRowMapper : RowMapper<Employee> {
         title = rs.title,
         email = rs.email,
         telephone = rs.telephone,
-        skills = null,
-        projects = null,
         lastUpdate = rs.lastUpdate
     )
 

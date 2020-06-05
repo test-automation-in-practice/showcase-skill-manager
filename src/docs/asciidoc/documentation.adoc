@@ -1,0 +1,7 @@
+= Resources
+
+include::_skills.adoc[]
+
+include::_projects.adoc[]
+
+include::_employees.adoc[]

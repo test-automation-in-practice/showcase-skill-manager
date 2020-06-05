@@ -5,7 +5,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
 plugins {
     id("org.springframework.boot") version "2.3.0.RELEASE"
     id("io.spring.dependency-management") version "1.0.9.RELEASE"
-    id("org.asciidoctor.convert") version "1.5.9.2"
+    id("org.asciidoctor.jvm.convert") version "3.1.0"
     kotlin("jvm") version "1.3.72"
     kotlin("plugin.spring") version "1.3.72"
 }
@@ -47,7 +47,7 @@ dependencies {
 
 tasks {
     asciidoctor {
-        outputDir = file("$buildDir/docs")
+        baseDirFollowsSourceDir()
         options(
             mapOf(
                 "doctype" to "book",
@@ -56,13 +56,17 @@ tasks {
         )
         attributes(
             mapOf(
-                "snippets" to file("build/generated-snippets"),
+                "snippets" to file("$buildDir/generated-snippets"),
                 "source-highlighter" to "coderay",
                 "toc" to "left",
                 "toclevels" to "3",
                 "sectlinks" to "true"
             )
         )
+
+    }
+    asciidoctorj {
+        fatalWarnings("include file not found")
     }
     compileKotlin {
         kotlinOptions {
