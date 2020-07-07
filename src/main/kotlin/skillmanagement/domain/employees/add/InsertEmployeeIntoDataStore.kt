@@ -12,13 +12,14 @@ class InsertEmployeeIntoDataStore(
 ) {
 
     private val statement = """
-        INSERT INTO employees (id, data, skill_ids, project_ids)
-        VALUES (:id, :data, :skillIds, :projectIds)
+        INSERT INTO employees (id, version, data, skill_ids, project_ids)
+        VALUES (:id, :version, :data, :skillIds, :projectIds)
         """
 
     operator fun invoke(employee: Employee) {
         val parameters = mapOf(
             "id" to employee.id.toString(),
+            "version" to employee.version,
             "data" to objectMapper.writeValueAsString(employee),
             "skillIds" to employee.skills.joinToString { it.skill.id.toString() },
             "projectIds" to employee.projects.joinToString { it.project.id.toString() }

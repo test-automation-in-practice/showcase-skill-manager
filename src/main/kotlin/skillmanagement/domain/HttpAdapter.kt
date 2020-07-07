@@ -1,6 +1,7 @@
 package skillmanagement.domain
 
 import org.springframework.stereotype.Controller
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.ResponseBody
 import kotlin.annotation.AnnotationTarget.CLASS
 
@@ -8,4 +9,5 @@ import kotlin.annotation.AnnotationTarget.CLASS
 @ResponseBody
 @Retention
 @Target(CLASS)
+@Transactional
 annotation class HttpAdapter

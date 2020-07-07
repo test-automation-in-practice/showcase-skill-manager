@@ -38,6 +38,7 @@ val project_demo_2_assignment = ProjectAssignment(
 
 val employee_max_mustermann = Employee(
     id = uuid("eb9b6560-9061-424a-87fd-350327b64d13"),
+    version = 1,
     firstName = FirstName("Max"),
     lastName = LastName("Mustermann"),
     title = Title("Managing Consultant"),

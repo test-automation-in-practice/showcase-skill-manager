@@ -27,6 +27,7 @@ class AddEmployee(
     ): Employee {
         val employee = Employee(
             id = idGenerator.generateId(),
+            version = 1,
             firstName = firstName,
             lastName = lastName,
             title = title,

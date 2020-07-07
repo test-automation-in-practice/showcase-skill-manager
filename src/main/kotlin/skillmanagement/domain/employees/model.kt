@@ -25,6 +25,7 @@ import java.util.UUID
 
 data class Employee(
     val id: UUID,
+    val version: Int,
     val firstName: FirstName,
     val lastName: LastName,
     val title: Title,

@@ -15,22 +15,28 @@ class UpdateEmployeeInDataStore(
 
     private val statement = """
         UPDATE employees
-        SET data = :data, skill_ids = :skillIds, project_ids = :projectIds
-        WHERE id = :id
+        SET version = :version, data = :data, skill_ids = :skillIds, project_ids = :projectIds
+        WHERE id = :id AND version = :expectedVersion
         """
 
-    operator fun invoke(employee: Employee) {
-        doUpdateEmployee(employee.copy(lastUpdate = clock.instant()))
-    }
+    @Throws(ConcurrentEmployeeUpdateException::class)
+    operator fun invoke(employee: Employee) = doUpdateEmployee(
+        employee = employee.copy(version = employee.version + 1, lastUpdate = clock.instant()),
+        expectedVersion = employee.version
+    )
 
-    private fun doUpdateEmployee(employee: Employee) {
+    private fun doUpdateEmployee(employee: Employee, expectedVersion: Int) {
         val parameters = mapOf(
             "id" to employee.id.toString(),
+            "version" to employee.version,
             "data" to objectMapper.writeValueAsString(employee),
             "skillIds" to employee.skills.joinToString { it.skill.id.toString() },
-            "projectIds" to employee.projects.joinToString { it.project.id.toString() }
+            "projectIds" to employee.projects.joinToString { it.project.id.toString() },
+            "expectedVersion" to expectedVersion
         )
-        jdbcTemplate.update(statement, parameters)
+        if (jdbcTemplate.update(statement, parameters) == 0) throw ConcurrentEmployeeUpdateException()
     }
 
 }
+
+class ConcurrentEmployeeUpdateException : RuntimeException()
