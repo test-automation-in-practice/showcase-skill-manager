@@ -21,7 +21,7 @@ class DeleteSkillKnowledgeOfEmployeesEventListener(
         log.info { "Handling $event" }
         val skillId = event.skill.id
         findEmployees(EmployeesWithSkill(skillId))
-            .onEach { log.info { "Removing skill knowledge of skill [$skillId] from employee [${it.id}]" } }
+            .onEach { log.info { "Removing knowledge of skill [$skillId] from employee [${it.id}]" } }
             .map { it.removeSkillKnowledgeBySkillId(skillId) }
             .forEach { updateEmployeeInDataStore(it) }
     }

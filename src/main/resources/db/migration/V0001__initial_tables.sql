@@ -20,6 +20,3 @@ CREATE TABLE employees
     project_ids CLOB,
     PRIMARY KEY (id)
 );
-
---CREATE INDEX idx_employee_skill_ids ON employees(skill_ids);
---CREATE INDEX idx_employee_project_ids ON employees(project_ids);
