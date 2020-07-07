@@ -1,23 +1,24 @@
 package skillmanagement.domain.skills.add
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
-import org.springframework.transaction.annotation.Transactional
-import skillmanagement.common.insert
 import skillmanagement.domain.TechnicalFunction
 import skillmanagement.domain.skills.Skill
 
 @TechnicalFunction
 class InsertSkillIntoDataStore(
-    private val jdbcTemplate: NamedParameterJdbcTemplate
+    private val jdbcTemplate: NamedParameterJdbcTemplate,
+    private val objectMapper: ObjectMapper
 ) {
 
-    @Transactional
-    operator fun invoke(skill: Skill) = jdbcTemplate.insert(
-        table = "skills",
-        columnValues = listOf(
-            "id" to "${skill.id}",
-            "label" to "${skill.label}"
+    private val statement = "INSERT INTO skills (id, data) VALUES (:id, :data)"
+
+    operator fun invoke(skill: Skill) {
+        val parameters = mapOf(
+            "id" to skill.id.toString(),
+            "data" to objectMapper.writeValueAsString(skill)
         )
-    )
+        jdbcTemplate.update(statement, parameters)
+    }
 
 }

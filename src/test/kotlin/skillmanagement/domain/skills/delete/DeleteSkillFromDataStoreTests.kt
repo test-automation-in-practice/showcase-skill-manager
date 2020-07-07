@@ -1,5 +1,6 @@
 package skillmanagement.domain.skills.delete
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.kotlintest.shouldBe
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -22,8 +23,9 @@ internal class DeleteSkillFromDataStoreTests(
     @Autowired val jdbcTemplate: NamedParameterJdbcTemplate
 ) {
 
-    val getSkill = GetSkillFromDataStore(jdbcTemplate)
-    val insertSkillIntoDataStore = InsertSkillIntoDataStore(jdbcTemplate)
+    val objectMapper = jacksonObjectMapper()
+    val getSkill = GetSkillFromDataStore(jdbcTemplate, objectMapper)
+    val insertSkillIntoDataStore = InsertSkillIntoDataStore(jdbcTemplate, objectMapper)
 
     val deleteSkillFromDataStore = DeleteSkillFromDataStore(jdbcTemplate)
 

@@ -1,5 +1,6 @@
 package skillmanagement.domain.skills.find
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.kotlintest.matchers.collections.shouldContainExactly
 import io.kotlintest.shouldBe
 import org.junit.jupiter.api.Test
@@ -20,8 +21,9 @@ internal class FindSkillsInDataStoreTests(
     @Autowired val jdbcTemplate: NamedParameterJdbcTemplate
 ) {
 
-    val insertSkillIntoDataStore = InsertSkillIntoDataStore(jdbcTemplate)
-    val findSkills = FindSkillsInDataStore(jdbcTemplate)
+    val objectMapper = jacksonObjectMapper()
+    val insertSkillIntoDataStore = InsertSkillIntoDataStore(jdbcTemplate, objectMapper)
+    val findSkills = FindSkillsInDataStore(jdbcTemplate, objectMapper)
 
     @Test
     fun `returns empty list if there are no Skills`() {

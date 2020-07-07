@@ -1,5 +1,6 @@
 package skillmanagement.domain.skills.add
 
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.kotlintest.shouldBe
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -22,8 +23,9 @@ internal class InsertSkillIntoDataStoreTests(
     @Autowired val jdbcTemplate: NamedParameterJdbcTemplate
 ) {
 
-    val getSkill = GetSkillFromDataStore(jdbcTemplate)
-    val insertSkillIntoDataStore = InsertSkillIntoDataStore(jdbcTemplate)
+    val objectMapper = jacksonObjectMapper()
+    val getSkill = GetSkillFromDataStore(jdbcTemplate, objectMapper)
+    val insertSkillIntoDataStore = InsertSkillIntoDataStore(jdbcTemplate, objectMapper)
 
     @Test
     fun `inserts complete Skill data into data store`() {

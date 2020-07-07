@@ -1,21 +1,26 @@
 package skillmanagement.domain.skills.find
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
+import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
-import org.springframework.transaction.annotation.Transactional
 import skillmanagement.domain.TechnicalFunction
 import skillmanagement.domain.skills.Skill
-import skillmanagement.domain.skills.SkillRowMapper
 
 @TechnicalFunction
 class FindSkillsInDataStore(
-    private val jdbcTemplate: NamedParameterJdbcTemplate
+    private val jdbcTemplate: NamedParameterJdbcTemplate,
+    private val objectMapper: ObjectMapper
 ) {
 
-    private val query = "SELECT * FROM skills"
+    private val query = "SELECT data FROM skills"
 
-    @Transactional(readOnly = true)
+    private val rowMapper: RowMapper<Skill> = RowMapper { rs, _ ->
+        objectMapper.readValue<Skill>(rs.getString("data"))
+    }
+
     operator fun invoke(): List<Skill> {
-        return jdbcTemplate.query(query, SkillRowMapper)
+        return jdbcTemplate.query(query, emptyMap<String, Any>(), rowMapper)
     }
 
 }

@@ -2,9 +2,14 @@ package skillmanagement.domain.employees.projectassignments.create
 
 import org.springframework.util.IdGenerator
 import skillmanagement.domain.BusinessFunction
+import skillmanagement.domain.employees.Employee
 import skillmanagement.domain.employees.ProjectAssignment
 import skillmanagement.domain.employees.ProjectContribution
 import skillmanagement.domain.employees.get.GetEmployeeById
+import skillmanagement.domain.employees.projectassignments.create.AssignProjectToEmployeeResult.EmployeeNotFound
+import skillmanagement.domain.employees.projectassignments.create.AssignProjectToEmployeeResult.ProjectNotFound
+import skillmanagement.domain.employees.projectassignments.create.AssignProjectToEmployeeResult.SuccessfullyAssigned
+import skillmanagement.domain.employees.update.UpdateEmployeeInDataStore
 import skillmanagement.domain.projects.get.GetProjectById
 import java.time.LocalDate
 import java.util.UUID
@@ -14,7 +19,7 @@ class CreateProjectAssignmentForEmployee(
     private val idGenerator: IdGenerator,
     private val getEmployeeById: GetEmployeeById,
     private val getProjectById: GetProjectById,
-    private val insertProjectAssignmentIntoDataStore: InsertProjectAssignmentIntoDataStore
+    private val updateEmployeeInDataStore: UpdateEmployeeInDataStore
 ) {
 
     // TODO: Security - Only invokable by Employee themselves or Employee-Admins
@@ -25,8 +30,8 @@ class CreateProjectAssignmentForEmployee(
         startDate: LocalDate,
         endDate: LocalDate?
     ): AssignProjectToEmployeeResult {
-        val employee = getEmployeeById(employeeId) ?: return AssignProjectToEmployeeResult.EmployeeNotFound
-        val project = getProjectById(projectId) ?: return AssignProjectToEmployeeResult.ProjectNotFound
+        val employee = getEmployeeById(employeeId) ?: return EmployeeNotFound
+        val project = getProjectById(projectId) ?: return ProjectNotFound
 
         val assignment = ProjectAssignment(
             id = idGenerator.generateId(),
@@ -35,10 +40,13 @@ class CreateProjectAssignmentForEmployee(
             startDate = startDate,
             endDate = endDate
         )
-        insertProjectAssignmentIntoDataStore(employee, assignment)
 
-        return AssignProjectToEmployeeResult.SuccessfullyAssigned(assignment)
+        updateEmployeeInDataStore(employee.addProjectAssignment(assignment))
+        return SuccessfullyAssigned(assignment)
     }
+
+    private fun Employee.addProjectAssignment(assignment: ProjectAssignment): Employee =
+        copy(projects = projects + assignment)
 
 }
 
