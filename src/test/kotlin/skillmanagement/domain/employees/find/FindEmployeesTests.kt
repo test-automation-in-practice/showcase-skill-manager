@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 import skillmanagement.domain.employees.employee_max_mustermann
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.UnitTest
+import skillmanagement.test.uuid
 
 @UnitTest
 @ResetMocksAfterEachTest
@@ -23,7 +24,7 @@ internal class FindEmployeesTests {
 
     @Test
     fun `returns whatever the underlying data store returns`() {
-        val queryParameter = QueryParameter()
+        val queryParameter = EmployeesWithSkill(uuid())
         every { findEmployeesInDataStore(queryParameter) } returns listOf(employee_max_mustermann)
         findEmployees(queryParameter) shouldBe listOf(employee_max_mustermann)
     }

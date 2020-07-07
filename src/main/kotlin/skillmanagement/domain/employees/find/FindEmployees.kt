@@ -10,13 +10,13 @@ class FindEmployees(
 ) {
 
     // TODO: Security + query parameter + pagination
-    operator fun invoke(parameter: QueryParameter = QueryParameter()): List<Employee> {
-        return findEmployeesInDataStore(parameter)
+    operator fun invoke(query: FindEmployeeQuery = NoOpQuery): List<Employee> {
+        return findEmployeesInDataStore(query)
     }
 
 }
 
-data class QueryParameter(
-    val skillId: UUID? = null,
-    val projectId: UUID? = null
-)
+sealed class FindEmployeeQuery
+data class EmployeesWithSkill(val skillId: UUID) : FindEmployeeQuery()
+data class EmployeesWhoWorkedOnProject(val projectId: UUID) : FindEmployeeQuery()
+object NoOpQuery : FindEmployeeQuery()

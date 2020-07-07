@@ -3,12 +3,12 @@ package skillmanagement.domain.employees.projectassignments.delete
 import mu.KotlinLogging.logger
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
+import skillmanagement.domain.employees.find.EmployeesWhoWorkedOnProject
 import skillmanagement.domain.employees.find.FindEmployees
-import skillmanagement.domain.employees.find.QueryParameter
 import skillmanagement.domain.employees.update.UpdateEmployeeInDataStore
 import skillmanagement.domain.projects.ProjectDeletedEvent
 
-@Component // TODO: custom stereotype?
+@Component
 class DeleteProjectAssignmentsOfEmployeesEventListener(
     private val findEmployees: FindEmployees,
     private val updateEmployeeInDataStore: UpdateEmployeeInDataStore
@@ -20,7 +20,7 @@ class DeleteProjectAssignmentsOfEmployeesEventListener(
     fun handle(event: ProjectDeletedEvent) {
         log.info { "Handling $event" }
         val projectId = event.project.id
-        findEmployees(QueryParameter(projectId = projectId))
+        findEmployees(EmployeesWhoWorkedOnProject(projectId))
             .onEach { log.info { "Removing projects assignments of project [$projectId] from employee [${it.id}]" } }
             .map { it.removeProjectAssignmentsByProjectId(projectId) }
             .forEach { updateEmployeeInDataStore(it) }
