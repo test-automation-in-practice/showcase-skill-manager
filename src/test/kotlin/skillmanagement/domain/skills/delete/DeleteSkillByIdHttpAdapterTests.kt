@@ -1,5 +1,6 @@
 package skillmanagement.domain.skills.delete
 
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Import
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.delete
+import skillmanagement.domain.skills.delete.DeleteSkillByIdResult.SuccessfullyDeleted
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.andDocument
 import skillmanagement.test.fixedClock
@@ -31,6 +33,7 @@ internal class DeleteSkillByIdHttpAdapterTests(
 
     @Test
     fun `well formed request leads to correct response`() {
+        every { deleteSkillById(skillId) } returns SuccessfullyDeleted
         mockMvc
             .delete("/api/skills/$skillId")
             .andExpect {
@@ -46,7 +49,7 @@ internal class DeleteSkillByIdHttpAdapterTests(
 
 private class TestConfiguration {
     @Bean
-    fun deleteSkillById(): DeleteSkillById = mockk(relaxUnitFun = true)
+    fun deleteSkillById(): DeleteSkillById = mockk()
 
     @Bean
     fun clock(): Clock = fixedClock("2020-05-21T12:34:56.789Z")

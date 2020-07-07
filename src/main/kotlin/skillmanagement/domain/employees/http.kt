@@ -48,8 +48,8 @@ fun Employee.toResource(): EmployeeResource =
         title = title,
         email = email,
         telephone = telephone,
-        skills = skills?.map { it.toResources(id) },
-        projects = projects?.map { it.toResources(id) },
+        skills = skills.map { it.toResources(id) },
+        projects = projects.map { it.toResources(id) },
         lastUpdate = lastUpdate
     ).apply {
         add(linkToCurrentMapping().slash("api/employees/${id}").withSelfRel())

@@ -19,8 +19,22 @@ class FindEmployeesInDataStore(
         objectMapper.readValue<Employee>(rs.getString("data"))
     }
 
-    operator fun invoke(): List<Employee> {
-        return jdbcTemplate.query(query, emptyMap<String, Any>(), rowMapper)
+    operator fun invoke(parameter: QueryParameter): List<Employee> =
+        when (val whereCondition = parameter.toWhereCondition()) {
+            null -> jdbcTemplate.query(query, rowMapper)
+            else -> jdbcTemplate.query("$query $whereCondition", rowMapper)
+        }
+
+    private fun QueryParameter.toWhereCondition(): String? {
+        val conditions = mutableListOf<String>()
+        if (skillId != null) {
+            conditions.add("skill_ids LIKE '%$skillId%'")
+        }
+        if (projectId != null) {
+            conditions.add("project_ids LIKE '%$projectId%'")
+        }
+        if (conditions.isEmpty()) return null
+        return conditions.joinToString(prefix = "WHERE ", separator = " AND ")
     }
 
 }

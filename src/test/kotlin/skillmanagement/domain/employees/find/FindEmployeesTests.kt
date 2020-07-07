@@ -17,14 +17,15 @@ internal class FindEmployeesTests {
 
     @Test
     fun `returns empty list of no employees were found`() {
-        every { findEmployeesInDataStore() } returns emptyList()
+        every { findEmployeesInDataStore(any()) } returns emptyList()
         findEmployees() shouldBe emptyList()
     }
 
     @Test
-    fun `expandable data is not included by default`() {
-        every { findEmployeesInDataStore() } returns listOf(employee_max_mustermann)
-        findEmployees() shouldBe listOf(employee_max_mustermann)
+    fun `returns whatever the underlying data store returns`() {
+        val queryParameter = QueryParameter()
+        every { findEmployeesInDataStore(queryParameter) } returns listOf(employee_max_mustermann)
+        findEmployees(queryParameter) shouldBe listOf(employee_max_mustermann)
     }
 
 }

@@ -13,7 +13,11 @@ class UpdateEmployeeInDataStore(
     private val clock: Clock
 ) {
 
-    private val statement = "UPDATE employees SET data = :data WHERE id = :id"
+    private val statement = """
+        UPDATE employees
+        SET data = :data, skill_ids = :skillIds, project_ids = :projectIds
+        WHERE id = :id
+        """
 
     operator fun invoke(employee: Employee) {
         doUpdateEmployee(employee.copy(lastUpdate = clock.instant()))
@@ -22,7 +26,9 @@ class UpdateEmployeeInDataStore(
     private fun doUpdateEmployee(employee: Employee) {
         val parameters = mapOf(
             "id" to employee.id.toString(),
-            "data" to objectMapper.writeValueAsString(employee)
+            "data" to objectMapper.writeValueAsString(employee),
+            "skillIds" to employee.skills.joinToString { it.skill.id.toString() },
+            "projectIds" to employee.projects.joinToString { it.project.id.toString() }
         )
         jdbcTemplate.update(statement, parameters)
     }

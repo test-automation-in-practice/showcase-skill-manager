@@ -11,7 +11,7 @@ class PublishEvent(
     private val log = logger {}
 
     operator fun invoke(event: Event) {
-        log.info { "publishing $event" }
+        log.info { "Publishing $event" }
         applicationEventPublisher.publishEvent(event)
     }
 

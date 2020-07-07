@@ -11,12 +11,17 @@ class InsertEmployeeIntoDataStore(
     private val objectMapper: ObjectMapper
 ) {
 
-    private val statement = "INSERT INTO employees (id, data) VALUES (:id, :data)"
+    private val statement = """
+        INSERT INTO employees (id, data, skill_ids, project_ids)
+        VALUES (:id, :data, :skillIds, :projectIds)
+        """
 
     operator fun invoke(employee: Employee) {
         val parameters = mapOf(
             "id" to employee.id.toString(),
-            "data" to objectMapper.writeValueAsString(employee)
+            "data" to objectMapper.writeValueAsString(employee),
+            "skillIds" to employee.skills.joinToString { it.skill.id.toString() },
+            "projectIds" to employee.projects.joinToString { it.project.id.toString() }
         )
         jdbcTemplate.update(statement, parameters)
     }

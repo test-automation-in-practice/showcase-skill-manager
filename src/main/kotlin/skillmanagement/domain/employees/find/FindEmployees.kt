@@ -2,6 +2,7 @@ package skillmanagement.domain.employees.find
 
 import skillmanagement.domain.BusinessFunction
 import skillmanagement.domain.employees.Employee
+import java.util.UUID
 
 @BusinessFunction
 class FindEmployees(
@@ -9,8 +10,13 @@ class FindEmployees(
 ) {
 
     // TODO: Security + query parameter + pagination
-    operator fun invoke(): List<Employee> {
-        return findEmployeesInDataStore()
+    operator fun invoke(parameter: QueryParameter = QueryParameter()): List<Employee> {
+        return findEmployeesInDataStore(parameter)
     }
 
 }
+
+data class QueryParameter(
+    val skillId: UUID? = null,
+    val projectId: UUID? = null
+)
