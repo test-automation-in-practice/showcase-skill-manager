@@ -1,7 +1,6 @@
 package skillmanagement.domain.employees.skillknowledge.set
 
 import skillmanagement.domain.BusinessFunction
-import skillmanagement.domain.employees.Employee
 import skillmanagement.domain.employees.SkillKnowledge
 import skillmanagement.domain.employees.SkillLevel
 import skillmanagement.domain.employees.get.GetEmployeeById
@@ -37,12 +36,6 @@ class SetSkillKnowledgeOfEmployee(
 
         updateEmployeeInDataStore(employee.setSkillKnowledge(skillKnowledge))
         return SuccessfullyAssigned(skillKnowledge)
-    }
-
-    private fun Employee.setSkillKnowledge(skillKnowledge: SkillKnowledge): Employee {
-        val skillId = skillKnowledge.skill.id
-        val updatedSkills = skills.filter { it.skill.id != skillId } + skillKnowledge
-        return copy(skills = updatedSkills)
     }
 
 }

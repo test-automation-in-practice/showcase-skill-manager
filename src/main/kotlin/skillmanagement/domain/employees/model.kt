@@ -33,7 +33,30 @@ data class Employee(
     val skills: List<SkillKnowledge>,
     val projects: List<ProjectAssignment>,
     val lastUpdate: Instant
-)
+) {
+
+    fun hasSkillKnowledgeBySkillId(skillId: UUID): Boolean =
+        skills.any { it.skill.id == skillId }
+
+    fun setSkillKnowledge(skillKnowledge: SkillKnowledge): Employee =
+        copy(skills = skills.filter { it.skill.id != skillKnowledge.skill.id } + skillKnowledge)
+
+    fun removeSkillKnowledgeBySkillId(skillId: UUID): Employee =
+        copy(skills = skills.filter { it.skill.id != skillId })
+
+    fun hasProjectAssignmentById(assignmentId: UUID): Boolean =
+        projects.any { it.id == assignmentId }
+
+    fun addProjectAssignment(projectAssignment: ProjectAssignment): Employee =
+        copy(projects = projects + projectAssignment)
+
+    fun removeProjectAssignmentById(assignmentId: UUID): Employee =
+        copy(projects = projects.filter { it.id != assignmentId })
+
+    fun removeProjectAssignmentsByProjectId(projectId: UUID): Employee =
+        copy(projects = projects.filter { it.project.id != projectId })
+
+}
 
 data class FirstName @JsonCreator constructor(
     @JsonValue private val value: String

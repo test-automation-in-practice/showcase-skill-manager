@@ -1,7 +1,6 @@
 package skillmanagement.domain.employees.projectassignments.delete
 
 import skillmanagement.domain.BusinessFunction
-import skillmanagement.domain.employees.Employee
 import skillmanagement.domain.employees.get.GetEmployeeById
 import skillmanagement.domain.employees.projectassignments.delete.DeleteProjectAssignmentOfEmployeeResult.EmployeeNotFound
 import skillmanagement.domain.employees.projectassignments.delete.DeleteProjectAssignmentOfEmployeeResult.ProjectAssignmentNotFound
@@ -18,19 +17,13 @@ class DeleteProjectAssignmentOfEmployee(
     // TODO: Security - Only invokable by Employee themselves or Employee-Admins
     operator fun invoke(employeeId: UUID, assignmentId: UUID): DeleteProjectAssignmentOfEmployeeResult {
         val employee = getEmployeeById(employeeId) ?: return EmployeeNotFound
-        if (!employee.hasProjectAssignment(assignmentId)) {
+        if (!employee.hasProjectAssignmentById(assignmentId)) {
             return ProjectAssignmentNotFound
         }
 
         updateEmployeeInDataStore(employee.removeProjectAssignmentById(assignmentId))
         return SuccessfullyDeleted
     }
-
-    private fun Employee.hasProjectAssignment(assignmentId: UUID): Boolean =
-        projects.any { it.id == assignmentId }
-
-    private fun Employee.removeProjectAssignmentById(assignmentId: UUID): Employee =
-        copy(projects = projects.filter { it.id != assignmentId })
 
 }
 

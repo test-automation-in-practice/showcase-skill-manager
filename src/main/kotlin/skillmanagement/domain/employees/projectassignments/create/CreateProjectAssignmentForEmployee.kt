@@ -2,7 +2,6 @@ package skillmanagement.domain.employees.projectassignments.create
 
 import org.springframework.util.IdGenerator
 import skillmanagement.domain.BusinessFunction
-import skillmanagement.domain.employees.Employee
 import skillmanagement.domain.employees.ProjectAssignment
 import skillmanagement.domain.employees.ProjectContribution
 import skillmanagement.domain.employees.get.GetEmployeeById
@@ -44,9 +43,6 @@ class CreateProjectAssignmentForEmployee(
         updateEmployeeInDataStore(employee.addProjectAssignment(assignment))
         return SuccessfullyAssigned(assignment)
     }
-
-    private fun Employee.addProjectAssignment(assignment: ProjectAssignment): Employee =
-        copy(projects = projects + assignment)
 
 }
 
