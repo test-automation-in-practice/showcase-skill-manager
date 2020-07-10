@@ -2,6 +2,7 @@ package skillmanagement.domain.employees
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL
+import org.springframework.hateoas.CollectionModel
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.core.Relation
 import org.springframework.hateoas.server.mvc.BasicLinkBuilder.linkToCurrentMapping
@@ -13,6 +14,8 @@ import skillmanagement.domain.skills.linkToSkill
 import java.time.Instant
 import java.time.LocalDate
 import java.util.UUID
+
+private const val RESOURCE_BASE = "api/employees"
 
 @JsonInclude(NON_NULL)
 @Relation(itemRelation = "employee", collectionRelation = "employees")
@@ -41,6 +44,12 @@ data class ProjectAssignmentResource(
     val startDate: LocalDate,
     val endDate: LocalDate?
 ) : RepresentationModel<SkillAssignmentResource>()
+
+fun Collection<Employee>.toResource(): CollectionModel<EmployeeResource> {
+    val content = map(Employee::toResource)
+    val selfLink = linkToEmployees().withSelfRel()
+    return CollectionModel.of(content, selfLink)
+}
 
 fun Employee.toResource() = EmployeeResource(
     id = id,
@@ -79,13 +88,15 @@ fun ProjectAssignment.toResources(employeeId: UUID) = ProjectAssignmentResource(
     add(linkToProject(project.id).withRel("project"))
 }
 
+fun linkToEmployees() =
+    linkToCurrentMapping().slash(RESOURCE_BASE)
+
 fun linkToEmployee(id: UUID) =
-    linkToCurrentMapping().slash(pathToEmployee(id))
+    linkToCurrentMapping().slash("$RESOURCE_BASE/$id")
 
 fun linkToSkillKnowledge(employeeId: UUID, skillId: UUID) =
-    linkToCurrentMapping().slash("${pathToEmployee(employeeId)}/skills/$skillId")
+    linkToCurrentMapping().slash("$RESOURCE_BASE/$employeeId/skills/$skillId")
 
 fun linkToProjectAssignment(employeeId: UUID, assignmentId: UUID) =
-    linkToCurrentMapping().slash("${pathToEmployee(employeeId)}/projects/$assignmentId")
+    linkToCurrentMapping().slash("$RESOURCE_BASE/$employeeId/projects/$assignmentId")
 
-private fun pathToEmployee(id: UUID) = "api/employees/$id"
