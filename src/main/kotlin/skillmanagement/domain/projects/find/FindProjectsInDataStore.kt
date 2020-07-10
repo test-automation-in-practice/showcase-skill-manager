@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import skillmanagement.common.searchTerms
 import skillmanagement.domain.TechnicalFunction
 import skillmanagement.domain.projects.Project
 
@@ -13,14 +14,28 @@ class FindProjectsInDataStore(
     private val objectMapper: ObjectMapper
 ) {
 
-    private val query = "SELECT data FROM projects"
+    private val allProjectsQuery = "SELECT data FROM projects"
+    private val projectsWithLabelLikeQuery = "SELECT data FROM projects WHERE keywords LIKE :keywords"
 
     private val rowMapper: RowMapper<Project> = RowMapper { rs, _ ->
         objectMapper.readValue<Project>(rs.getString("data"))
     }
 
-    operator fun invoke(): List<Project> {
-        return jdbcTemplate.query(query, emptyMap<String, Any>(), rowMapper)
+    operator fun invoke(query: FindProjectsQuery): List<Project> = when (query) {
+        is NoOpQuery -> queryAllProjects()
+        is ProjectsWithLabelLike -> queryProjectsWithLabelLike(query)
+    }
+
+    private fun queryAllProjects(): List<Project> =
+        jdbcTemplate.query(allProjectsQuery, emptyMap<String, Any>(), rowMapper)
+
+    private fun queryProjectsWithLabelLike(query: ProjectsWithLabelLike): List<Project> {
+        val searchTerms = searchTerms(query.searchTerms)
+            .takeIf { it.isNotEmpty() }
+            ?: return emptyList()
+
+        val keywords = searchTerms.joinToString(prefix = "%", separator = "%", postfix = "%")
+        return jdbcTemplate.query(projectsWithLabelLikeQuery, mapOf("keywords" to keywords), rowMapper)
     }
 
 }

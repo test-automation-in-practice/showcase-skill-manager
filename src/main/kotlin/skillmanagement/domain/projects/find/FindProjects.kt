@@ -9,8 +9,12 @@ class FindProjects(
 ) {
 
     // TODO: Security + query parameter + pagination
-    operator fun invoke(): List<Project> {
-        return findProjectsInDataStore()
+    operator fun invoke(query: FindProjectsQuery = NoOpQuery): List<Project> {
+        return findProjectsInDataStore(query)
     }
 
 }
+
+sealed class FindProjectsQuery
+data class ProjectsWithLabelLike(val searchTerms: String) : FindProjectsQuery()
+object NoOpQuery : FindProjectsQuery()

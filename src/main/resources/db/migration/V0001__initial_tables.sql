@@ -8,8 +8,9 @@ CREATE TABLE skills
 
 CREATE TABLE projects
 (
-    id   VARCHAR(36 CHAR) NOT NULL,
-    data CLOB NOT NULL,
+    id       VARCHAR(36 CHAR) NOT NULL,
+    data     CLOB NOT NULL,
+    keywords CLOB,
     PRIMARY KEY (id)
 );
 
