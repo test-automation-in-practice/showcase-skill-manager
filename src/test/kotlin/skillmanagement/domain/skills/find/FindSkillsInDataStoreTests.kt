@@ -27,20 +27,29 @@ internal class FindSkillsInDataStoreTests(
 
     @Test
     fun `returns empty list if there are no Skills`() {
-        findSkills() shouldBe emptyList()
+        findSkills(NoOpQuery) shouldBe emptyList()
     }
 
     @Test
     fun `returns single entry list if there is only one Skill`() {
         insertSkillIntoDataStore(skill_kotlin)
-        findSkills() shouldContainExactly listOf(skill_kotlin)
+        findSkills(NoOpQuery) shouldContainExactly listOf(skill_kotlin)
     }
 
     @Test
     fun `returns multi entry list if there are multiple Skills`() {
         insertSkillIntoDataStore(skill_kotlin)
         insertSkillIntoDataStore(skill_python)
-        findSkills() shouldContainExactly setOf(skill_kotlin, skill_python)
+        findSkills(NoOpQuery) shouldContainExactly setOf(skill_kotlin, skill_python)
+    }
+
+    @Test
+    fun `returns matching skills for label like query`() {
+        insertSkillIntoDataStore(skill_kotlin)
+        insertSkillIntoDataStore(skill_python)
+        findSkills(SkillsWithLabelLike("otl")) shouldContainExactly setOf(skill_kotlin)
+        findSkills(SkillsWithLabelLike("Kotlin")) shouldContainExactly setOf(skill_kotlin)
+        findSkills(SkillsWithLabelLike("kotlin")) shouldContainExactly setOf(skill_kotlin)
     }
 
 }

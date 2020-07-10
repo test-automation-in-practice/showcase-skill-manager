@@ -9,8 +9,12 @@ class FindSkills(
 ) {
 
     // TODO: Security + query parameter + pagination
-    operator fun invoke(): List<Skill> {
-        return findSkillsInDataStore()
+    operator fun invoke(query: FindSkillsQuery = NoOpQuery): List<Skill> {
+        return findSkillsInDataStore(query)
     }
 
 }
+
+sealed class FindSkillsQuery
+data class SkillsWithLabelLike(val searchTerms: String) : FindSkillsQuery()
+object NoOpQuery : FindSkillsQuery()

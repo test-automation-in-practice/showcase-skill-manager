@@ -17,14 +17,21 @@ internal class FindSkillsTests {
 
     @Test
     fun `returns empty list if there are no Skills`() {
-        every { findSkillsInDataStore() } returns emptyList()
+        every { findSkillsInDataStore(NoOpQuery) } returns emptyList()
         findSkills() shouldBe emptyList()
     }
 
     @Test
     fun `returns all found Skills`() {
-        every { findSkillsInDataStore() } returns listOf(skill_kotlin, skill_python)
+        every { findSkillsInDataStore(NoOpQuery) } returns listOf(skill_kotlin, skill_python)
         findSkills() shouldContainInOrder listOf(skill_kotlin, skill_python)
+    }
+
+    @Test
+    fun `delegates with given query`() {
+        val query = SkillsWithLabelLike("kotlin")
+        every { findSkillsInDataStore(query) } returns listOf(skill_kotlin)
+        findSkills(query) shouldContainInOrder listOf(skill_kotlin)
     }
 
 }

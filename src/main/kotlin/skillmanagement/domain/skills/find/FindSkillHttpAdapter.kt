@@ -4,6 +4,7 @@ import org.springframework.hateoas.CollectionModel
 import org.springframework.hateoas.server.mvc.BasicLinkBuilder.linkToCurrentMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import skillmanagement.domain.HttpAdapter
 import skillmanagement.domain.skills.Skill
 import skillmanagement.domain.skills.SkillResource
@@ -16,8 +17,11 @@ class FindSkillHttpAdapter(
 ) {
 
     @GetMapping
-    fun get(): CollectionModel<SkillResource> {
-        val skills = findSkills()
+    fun get(@RequestParam query: String?): CollectionModel<SkillResource> {
+        val skills = when (query?.trim()) {
+            null, "" -> findSkills()
+            else -> findSkills(SkillsWithLabelLike(query))
+        }
 
         val content = skills.map(Skill::toResource)
         val selfLink = linkToCurrentMapping().slash("api/skills").withSelfRel()
