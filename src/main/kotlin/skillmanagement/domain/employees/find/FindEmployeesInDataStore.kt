@@ -2,28 +2,32 @@ package skillmanagement.domain.employees.find
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import skillmanagement.domain.TechnicalFunction
 import skillmanagement.domain.employees.Employee
 
 @TechnicalFunction
 class FindEmployeesInDataStore(
-    private val jdbcTemplate: JdbcTemplate,
+    private val jdbcTemplate: NamedParameterJdbcTemplate,
     private val objectMapper: ObjectMapper
 ) {
+
+    private val allQuery = "SELECT data FROM employees"
+    private val allQueryForSkill = "SELECT data FROM employees WHERE skill_ids LIKE :skillId"
+    private val allQueryForProject = "SELECT data FROM employees WHERE project_ids LIKE :projectId"
 
     private val rowMapper: RowMapper<Employee> = RowMapper { rs, _ ->
         objectMapper.readValue<Employee>(rs.getString("data"))
     }
 
     operator fun invoke(query: FindEmployeeQuery): List<Employee> {
-        val queryString = when (query) {
-            is NoOpQuery -> "SELECT data FROM employees"
-            is EmployeesWithSkill -> "SELECT data FROM employees WHERE skill_ids LIKE '%${query.skillId}%'"
-            is EmployeesWhoWorkedOnProject -> "SELECT data FROM employees WHERE project_ids LIKE '%${query.projectId}%'"
+        val (queryString, parameters) = when (query) {
+            is NoOpQuery -> allQuery to emptyMap()
+            is EmployeesWithSkill -> allQueryForSkill to mapOf("skillId" to "%${query.skillId}%")
+            is EmployeesWhoWorkedOnProject -> allQueryForProject to mapOf("projectId" to "%${query.projectId}%")
         }
-        return jdbcTemplate.query(queryString, rowMapper)
+        return jdbcTemplate.query(queryString, parameters, rowMapper)
     }
 
 }
