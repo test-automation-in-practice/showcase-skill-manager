@@ -7,7 +7,9 @@ import org.springframework.hateoas.server.core.Relation
 import org.springframework.hateoas.server.mvc.BasicLinkBuilder.linkToCurrentMapping
 import skillmanagement.domain.projects.ProjectDescription
 import skillmanagement.domain.projects.ProjectLabel
+import skillmanagement.domain.projects.linkToProject
 import skillmanagement.domain.skills.SkillLabel
+import skillmanagement.domain.skills.linkToSkill
 import java.time.Instant
 import java.time.LocalDate
 import java.util.UUID
@@ -40,44 +42,50 @@ data class ProjectAssignmentResource(
     val endDate: LocalDate?
 ) : RepresentationModel<SkillAssignmentResource>()
 
-fun Employee.toResource(): EmployeeResource =
-    EmployeeResource(
-        id = id,
-        firstName = firstName,
-        lastName = lastName,
-        title = title,
-        email = email,
-        telephone = telephone,
-        skills = skills.map { it.toResources(id) },
-        projects = projects.map { it.toResources(id) },
-        lastUpdate = lastUpdate
-    ).apply {
-        add(linkToCurrentMapping().slash("api/employees/${id}").withSelfRel())
-    }
+fun Employee.toResource() = EmployeeResource(
+    id = id,
+    firstName = firstName,
+    lastName = lastName,
+    title = title,
+    email = email,
+    telephone = telephone,
+    skills = skills.map { it.toResources(id) },
+    projects = projects.map { it.toResources(id) },
+    lastUpdate = lastUpdate
+).apply {
+    add(linkToEmployee(id).withSelfRel())
+    add(linkToEmployee(id).withRel("delete"))
+}
 
-fun SkillKnowledge.toResources(employeeId: UUID) =
-    SkillAssignmentResource(
-        label = skill.label,
-        level = level,
-        secret = secret
-    ).apply {
-        add(linkToCurrentMapping().slash("api/employees/${employeeId}/skills/${skill.id}").withSelfRel())
-        add(linkToCurrentMapping().slash("api/employees/${employeeId}").withRel("employee"))
-    }
+fun SkillKnowledge.toResources(employeeId: UUID) = SkillAssignmentResource(
+    label = skill.label,
+    level = level,
+    secret = secret
+).apply {
+    add(linkToSkillKnowledge(employeeId, skill.id).withSelfRel())
+    add(linkToEmployee(employeeId).withRel("employee"))
+    add(linkToSkill(skill.id).withRel("skill"))
+}
 
-fun ProjectAssignment.toResources(employeeId: UUID) =
-    ProjectAssignmentResource(
-        label = project.label,
-        description = project.description,
-        contribution = contribution,
-        startDate = startDate,
-        endDate = endDate
-    ).apply {
-        add(linkToCurrentMapping().slash("api/employees/${employeeId}/projects/${id}").withSelfRel())
-        add(linkToCurrentMapping().slash("api/employees/${employeeId}").withRel("employee"))
-    }
+fun ProjectAssignment.toResources(employeeId: UUID) = ProjectAssignmentResource(
+    label = project.label,
+    description = project.description,
+    contribution = contribution,
+    startDate = startDate,
+    endDate = endDate
+).apply {
+    add(linkToProjectAssignment(employeeId, id).withSelfRel())
+    add(linkToEmployee(employeeId).withRel("employee"))
+    add(linkToProject(project.id).withRel("project"))
+}
 
-val Set<String>?.skills: Boolean
-    get() = this?.contains("skills") ?: false
-val Set<String>?.projects: Boolean
-    get() = this?.contains("projects") ?: false
+fun linkToEmployee(id: UUID) =
+    linkToCurrentMapping().slash(pathToEmployee(id))
+
+fun linkToSkillKnowledge(employeeId: UUID, skillId: UUID) =
+    linkToCurrentMapping().slash("${pathToEmployee(employeeId)}/skills/$skillId")
+
+fun linkToProjectAssignment(employeeId: UUID, assignmentId: UUID) =
+    linkToCurrentMapping().slash("${pathToEmployee(employeeId)}/projects/$assignmentId")
+
+private fun pathToEmployee(id: UUID) = "api/employees/$id"

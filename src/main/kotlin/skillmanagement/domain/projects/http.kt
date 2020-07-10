@@ -12,5 +12,14 @@ data class ProjectResource(
     val description: ProjectDescription
 ) : RepresentationModel<ProjectResource>()
 
-fun Project.toResource(): ProjectResource = ProjectResource(id, label, description)
-    .apply { add(linkToCurrentMapping().slash("api/projects/${id}").withSelfRel()) }
+fun Project.toResource() = ProjectResource(
+    id = id,
+    label = label,
+    description = description
+).apply {
+    add(linkToProject(id).withSelfRel())
+    add(linkToProject(id).withRel("delete"))
+}
+
+fun linkToProject(id: UUID) =
+    linkToCurrentMapping().slash("api/projects/${id}")
