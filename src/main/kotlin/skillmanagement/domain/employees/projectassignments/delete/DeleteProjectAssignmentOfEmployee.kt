@@ -5,6 +5,7 @@ import skillmanagement.domain.employees.get.GetEmployeeById
 import skillmanagement.domain.employees.projectassignments.delete.DeleteProjectAssignmentOfEmployeeResult.EmployeeNotFound
 import skillmanagement.domain.employees.projectassignments.delete.DeleteProjectAssignmentOfEmployeeResult.ProjectAssignmentNotFound
 import skillmanagement.domain.employees.projectassignments.delete.DeleteProjectAssignmentOfEmployeeResult.SuccessfullyDeleted
+import skillmanagement.domain.employees.update.RetryOnConcurrentUpdate
 import skillmanagement.domain.employees.update.UpdateEmployeeInDataStore
 import java.util.UUID
 
@@ -15,6 +16,7 @@ class DeleteProjectAssignmentOfEmployee(
 ) {
 
     // TODO: Security - Only invokable by Employee themselves or Employee-Admins
+    @RetryOnConcurrentUpdate
     operator fun invoke(employeeId: UUID, assignmentId: UUID): DeleteProjectAssignmentOfEmployeeResult {
         val employee = getEmployeeById(employeeId) ?: return EmployeeNotFound
         if (!employee.hasProjectAssignmentById(assignmentId)) {

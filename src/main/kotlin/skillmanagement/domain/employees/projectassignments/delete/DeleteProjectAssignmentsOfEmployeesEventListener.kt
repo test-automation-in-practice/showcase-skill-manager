@@ -5,13 +5,12 @@ import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 import skillmanagement.domain.employees.find.EmployeesWhoWorkedOnProject
 import skillmanagement.domain.employees.find.FindEmployees
-import skillmanagement.domain.employees.update.UpdateEmployeeInDataStore
 import skillmanagement.domain.projects.ProjectDeletedEvent
 
 @Component
 class DeleteProjectAssignmentsOfEmployeesEventListener(
     private val findEmployees: FindEmployees,
-    private val updateEmployeeInDataStore: UpdateEmployeeInDataStore
+    private val deleteProjectAssignmentOfEmployee: DeleteProjectAssignmentOfEmployee
 ) {
 
     private val log = logger {}
@@ -22,8 +21,11 @@ class DeleteProjectAssignmentsOfEmployeesEventListener(
         val projectId = event.project.id
         findEmployees(EmployeesWhoWorkedOnProject(projectId))
             .onEach { log.info { "Removing projects assignments of project [$projectId] from employee [${it.id}]" } }
-            .map { it.removeProjectAssignmentsByProjectId(projectId) }
-            .forEach { updateEmployeeInDataStore(it) }
+            .forEach { employee ->
+                employee.projects
+                    .filter { it.project.id == projectId }
+                    .forEach { assignment -> deleteProjectAssignmentOfEmployee(employee.id, assignment.id) }
+            }
     }
 
 }

@@ -7,6 +7,7 @@ import skillmanagement.domain.employees.get.GetEmployeeById
 import skillmanagement.domain.employees.skillknowledge.set.SetSkillKnowledgeOfEmployeeResult.EmployeeNotFound
 import skillmanagement.domain.employees.skillknowledge.set.SetSkillKnowledgeOfEmployeeResult.SkillNotFound
 import skillmanagement.domain.employees.skillknowledge.set.SetSkillKnowledgeOfEmployeeResult.SuccessfullyAssigned
+import skillmanagement.domain.employees.update.RetryOnConcurrentUpdate
 import skillmanagement.domain.employees.update.UpdateEmployeeInDataStore
 import skillmanagement.domain.skills.get.GetSkillById
 import java.util.UUID
@@ -19,6 +20,7 @@ class SetSkillKnowledgeOfEmployee(
 ) {
 
     // TODO: Security - Only invokable by Employee themselves or Employee-Admins
+    @RetryOnConcurrentUpdate
     operator fun invoke(
         employeeId: UUID,
         skillId: UUID,
