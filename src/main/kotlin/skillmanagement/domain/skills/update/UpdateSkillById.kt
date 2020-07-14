@@ -1,7 +1,9 @@
 package skillmanagement.domain.skills.update
 
 import skillmanagement.domain.BusinessFunction
+import skillmanagement.domain.PublishEvent
 import skillmanagement.domain.skills.Skill
+import skillmanagement.domain.skills.SkillUpdatedEvent
 import skillmanagement.domain.skills.get.GetSkillById
 import skillmanagement.domain.skills.update.UpdateSkillByIdResult.SkillNotFound
 import skillmanagement.domain.skills.update.UpdateSkillByIdResult.SuccessfullyUpdated
@@ -10,7 +12,8 @@ import java.util.UUID
 @BusinessFunction
 class UpdateSkillById(
     private val getSkillById: GetSkillById,
-    private val updateSkillInDataStore: UpdateSkillInDataStore
+    private val updateSkillInDataStore: UpdateSkillInDataStore,
+    private val publishEvent: PublishEvent
 ) {
 
     // TODO: Security - Who can change Skills?
@@ -22,6 +25,7 @@ class UpdateSkillById(
         assertNoInvalidModifications(currentSkill, modifiedSkill)
 
         val updatedSkill = updateSkillInDataStore(modifiedSkill)
+        publishEvent(SkillUpdatedEvent(updatedSkill))
         return SuccessfullyUpdated(updatedSkill)
     }
 

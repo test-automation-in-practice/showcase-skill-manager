@@ -1,4 +1,4 @@
-package skillmanagement.domain.employees.skillknowledge.delete
+package skillmanagement.domain.employees.skillknowledge.update
 
 import mu.KotlinLogging.logger
 import org.springframework.context.event.EventListener
@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component
 import skillmanagement.domain.employees.find.EmployeesWithSkill
 import skillmanagement.domain.employees.find.FindEmployeeIds
 import skillmanagement.domain.employees.update.UpdateEmployeeById
-import skillmanagement.domain.skills.SkillDeletedEvent
+import skillmanagement.domain.skills.SkillUpdatedEvent
 
 @Component
-class DeleteSkillKnowledgeOfEmployeesEventListener(
+class UpdateSkillKnowledgeOfEmployeesEventListener(
     private val findEmployeeIds: FindEmployeeIds,
     private val updateEmployeeById: UpdateEmployeeById
 ) {
@@ -17,13 +17,13 @@ class DeleteSkillKnowledgeOfEmployeesEventListener(
     private val log = logger {}
 
     @EventListener
-    fun handle(event: SkillDeletedEvent) {
+    fun handle(event: SkillUpdatedEvent) {
         log.info { "Handling $event" }
         val skillId = event.skill.id
         findEmployeeIds(EmployeesWithSkill(skillId))
-            .onEach { log.info { "Removing knowledge of skill [$skillId] from employee [${it}]" } }
+            .onEach { log.info { "Updating knowledge of skill [$skillId] of employee [${it}]" } }
             .forEach { employeeId ->
-                updateEmployeeById(employeeId) { it.removeSkillKnowledgeBySkillId(skillId) }
+                updateEmployeeById(employeeId) { it.updateSkillKnowledgeOfSkill(event.skill) }
             }
     }
 

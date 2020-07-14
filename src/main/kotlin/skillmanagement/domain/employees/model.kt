@@ -42,6 +42,14 @@ data class Employee(
     fun setSkillKnowledge(skillKnowledge: SkillKnowledge): Employee =
         copy(skills = skills.filter { it.skill.id != skillKnowledge.skill.id } + skillKnowledge)
 
+    fun updateSkillKnowledgeOfSkill(skill: Skill): Employee =
+        copy(skills = skills.map {
+            when (it.skill.id) {
+                skill.id -> it.copy(skill = skill)
+                else -> it
+            }
+        })
+
     fun removeSkillKnowledgeBySkillId(skillId: UUID): Employee =
         copy(skills = skills.filter { it.skill.id != skillId })
 
