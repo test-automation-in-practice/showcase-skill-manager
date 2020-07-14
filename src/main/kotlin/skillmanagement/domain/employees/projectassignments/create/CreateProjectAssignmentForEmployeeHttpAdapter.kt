@@ -14,7 +14,7 @@ import skillmanagement.domain.employees.ProjectContribution
 import skillmanagement.domain.employees.projectassignments.create.AssignProjectToEmployeeResult.EmployeeNotFound
 import skillmanagement.domain.employees.projectassignments.create.AssignProjectToEmployeeResult.ProjectNotFound
 import skillmanagement.domain.employees.projectassignments.create.AssignProjectToEmployeeResult.SuccessfullyAssigned
-import skillmanagement.domain.employees.toResources
+import skillmanagement.domain.employees.toResource
 import java.time.LocalDate
 import java.util.UUID
 
@@ -42,7 +42,7 @@ class CreateProjectAssignmentForEmployeeHttpAdapter(
         log.info { "Result: $result" }
         return when (result) {
             EmployeeNotFound, ProjectNotFound -> notFound().build()
-            is SuccessfullyAssigned -> ok(result.assignment.toResources(employeeId))
+            is SuccessfullyAssigned -> ok(result.assignment.toResource(employeeId))
         }
     }
 

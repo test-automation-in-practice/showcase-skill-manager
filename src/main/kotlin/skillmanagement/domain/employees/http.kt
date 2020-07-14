@@ -26,16 +26,16 @@ data class EmployeeResource(
     val title: Title,
     val email: EmailAddress,
     val telephone: TelephoneNumber,
-    val skills: List<SkillAssignmentResource>?,
+    val skills: List<SkillKnowledgeResource>?,
     val projects: List<ProjectAssignmentResource>?,
     val lastUpdate: Instant
 ) : RepresentationModel<EmployeeResource>()
 
-data class SkillAssignmentResource(
+data class SkillKnowledgeResource(
     val label: SkillLabel,
     val level: SkillLevel,
     val secret: Boolean
-) : RepresentationModel<SkillAssignmentResource>()
+) : RepresentationModel<SkillKnowledgeResource>()
 
 data class ProjectAssignmentResource(
     val label: ProjectLabel,
@@ -43,7 +43,7 @@ data class ProjectAssignmentResource(
     val contribution: ProjectContribution,
     val startDate: LocalDate,
     val endDate: LocalDate?
-) : RepresentationModel<SkillAssignmentResource>()
+) : RepresentationModel<SkillKnowledgeResource>()
 
 fun Collection<Employee>.toResource(): CollectionModel<EmployeeResource> {
     val content = map(Employee::toResource)
@@ -58,15 +58,15 @@ fun Employee.toResource() = EmployeeResource(
     title = title,
     email = email,
     telephone = telephone,
-    skills = skills.map { it.toResources(id) },
-    projects = projects.map { it.toResources(id) },
+    skills = skills.map { it.toResource(id) },
+    projects = projects.map { it.toResource(id) },
     lastUpdate = lastUpdate
 ).apply {
     add(linkToEmployee(id).withSelfRel())
     add(linkToEmployee(id).withRel("delete"))
 }
 
-fun SkillKnowledge.toResources(employeeId: UUID) = SkillAssignmentResource(
+fun SkillKnowledge.toResource(employeeId: UUID) = SkillKnowledgeResource(
     label = skill.label,
     level = level,
     secret = secret
@@ -76,7 +76,7 @@ fun SkillKnowledge.toResources(employeeId: UUID) = SkillAssignmentResource(
     add(linkToSkill(skill.id).withRel("skill"))
 }
 
-fun ProjectAssignment.toResources(employeeId: UUID) = ProjectAssignmentResource(
+fun ProjectAssignment.toResource(employeeId: UUID) = ProjectAssignmentResource(
     label = project.label,
     description = project.description,
     contribution = contribution,
