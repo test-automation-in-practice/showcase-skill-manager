@@ -5,7 +5,7 @@ import skillmanagement.domain.employees.get.GetEmployeeById
 import skillmanagement.domain.employees.skillknowledge.delete.DeleteSkillKnowledgeOfEmployeeResult.EmployeeNotFound
 import skillmanagement.domain.employees.skillknowledge.delete.DeleteSkillKnowledgeOfEmployeeResult.SkillKnowledgeNotFound
 import skillmanagement.domain.employees.skillknowledge.delete.DeleteSkillKnowledgeOfEmployeeResult.SuccessfullyDeleted
-import skillmanagement.domain.employees.update.RetryOnConcurrentUpdate
+import skillmanagement.domain.employees.update.RetryOnConcurrentEmployeeUpdate
 import skillmanagement.domain.employees.update.UpdateEmployeeInDataStore
 import java.util.UUID
 
@@ -16,7 +16,7 @@ class DeleteSkillKnowledgeOfEmployee(
 ) {
 
     // TODO: Security - Only invokable by Employee themselves or Employee-Admins
-    @RetryOnConcurrentUpdate
+    @RetryOnConcurrentEmployeeUpdate
     operator fun invoke(employeeId: UUID, skillId: UUID): DeleteSkillKnowledgeOfEmployeeResult {
         val employee = getEmployeeById(employeeId) ?: return EmployeeNotFound
         if (!employee.hasSkillKnowledgeBySkillId(skillId)) {

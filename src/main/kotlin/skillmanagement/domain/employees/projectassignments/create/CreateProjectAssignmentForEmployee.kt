@@ -8,7 +8,7 @@ import skillmanagement.domain.employees.get.GetEmployeeById
 import skillmanagement.domain.employees.projectassignments.create.AssignProjectToEmployeeResult.EmployeeNotFound
 import skillmanagement.domain.employees.projectassignments.create.AssignProjectToEmployeeResult.ProjectNotFound
 import skillmanagement.domain.employees.projectassignments.create.AssignProjectToEmployeeResult.SuccessfullyAssigned
-import skillmanagement.domain.employees.update.RetryOnConcurrentUpdate
+import skillmanagement.domain.employees.update.RetryOnConcurrentEmployeeUpdate
 import skillmanagement.domain.employees.update.UpdateEmployeeInDataStore
 import skillmanagement.domain.projects.get.GetProjectById
 import java.time.LocalDate
@@ -23,7 +23,7 @@ class CreateProjectAssignmentForEmployee(
 ) {
 
     // TODO: Security - Only invokable by Employee themselves or Employee-Admins
-    @RetryOnConcurrentUpdate
+    @RetryOnConcurrentEmployeeUpdate
     operator fun invoke(
         employeeId: UUID,
         projectId: UUID,

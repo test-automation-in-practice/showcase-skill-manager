@@ -54,9 +54,6 @@ data class Employee(
     fun removeProjectAssignmentById(assignmentId: UUID): Employee =
         copy(projects = projects.filter { it.id != assignmentId })
 
-    fun removeProjectAssignmentsByProjectId(projectId: UUID): Employee =
-        copy(projects = projects.filter { it.project.id != projectId })
-
 }
 
 data class FirstName @JsonCreator constructor(
