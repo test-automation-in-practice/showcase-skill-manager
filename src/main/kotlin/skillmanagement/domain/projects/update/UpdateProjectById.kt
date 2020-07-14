@@ -1,7 +1,9 @@
 package skillmanagement.domain.projects.update
 
 import skillmanagement.domain.BusinessFunction
+import skillmanagement.domain.PublishEvent
 import skillmanagement.domain.projects.Project
+import skillmanagement.domain.projects.ProjectUpdatedEvent
 import skillmanagement.domain.projects.get.GetProjectById
 import skillmanagement.domain.projects.update.UpdateProjectByIdResult.ProjectNotFound
 import skillmanagement.domain.projects.update.UpdateProjectByIdResult.SuccessfullyUpdated
@@ -10,7 +12,8 @@ import java.util.UUID
 @BusinessFunction
 class UpdateProjectById(
     private val getProjectById: GetProjectById,
-    private val updateProjectInDataStore: UpdateProjectInDataStore
+    private val updateProjectInDataStore: UpdateProjectInDataStore,
+    private val publishEvent: PublishEvent
 ) {
 
     // TODO: Security - Who can change Projects?
@@ -22,6 +25,7 @@ class UpdateProjectById(
         assertNoInvalidModifications(currentProject, modifiedProject)
 
         val updatedProject = updateProjectInDataStore(modifiedProject)
+        publishEvent(ProjectUpdatedEvent(updatedProject))
         return SuccessfullyUpdated(updatedProject)
     }
 

@@ -59,8 +59,19 @@ data class Employee(
     fun addProjectAssignment(projectAssignment: ProjectAssignment): Employee =
         copy(projects = projects + projectAssignment)
 
+    fun updateProjectAssignmentsOfProject(project: Project): Employee =
+        copy(projects = projects.map {
+            when (it.project.id) {
+                project.id -> it.copy(project = project)
+                else -> it
+            }
+        })
+
     fun removeProjectAssignmentById(assignmentId: UUID): Employee =
         copy(projects = projects.filter { it.id != assignmentId })
+
+    fun removeProjectAssignmentsByProjectId(projectId: UUID): Employee =
+        copy(projects = projects.filter { it.project.id != projectId })
 
 }
 
