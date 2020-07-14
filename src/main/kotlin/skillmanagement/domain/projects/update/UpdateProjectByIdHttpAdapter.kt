@@ -33,10 +33,7 @@ class UpdateProjectByIdHttpAdapter(
         @RequestBody request: ChangeData
     ): ResponseEntity<ProjectResource> {
         val result = updateProjectById(projectId) {
-            it.copy(
-                label = request.label,
-                description = request.description
-            )
+            it.merge(request)
         }
         return when (result) {
             ProjectNotFound -> notFound().build()

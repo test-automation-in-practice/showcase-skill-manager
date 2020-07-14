@@ -32,7 +32,7 @@ class UpdateSkillByIdHttpAdapter(
         @RequestBody request: ChangeData
     ): ResponseEntity<SkillResource> {
         val result = updateSkillById(skillId) {
-            it.copy(label = request.label)
+            it.merge(request)
         }
         return when (result) {
             SkillNotFound -> notFound().build()

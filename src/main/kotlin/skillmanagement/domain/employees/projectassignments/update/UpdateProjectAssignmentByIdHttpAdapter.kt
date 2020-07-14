@@ -35,11 +35,7 @@ class UpdateProjectAssignmentByIdHttpAdapter(
         @RequestBody request: ChangeData
     ): ResponseEntity<ProjectAssignmentResource> {
         val result = updateProjectAssignmentById(employeeId, assignmentId) {
-            it.copy(
-                contribution = request.contribution,
-                startDate = request.startDate,
-                endDate = request.endDate
-            )
+            it.merge(request)
         }
         return when (result) {
             is EmployeeNotFound -> notFound().build()

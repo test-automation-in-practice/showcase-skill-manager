@@ -34,10 +34,7 @@ class UpdateSkillKnowledgeByIdHttpAdapter(
         @RequestBody request: ChangeData
     ): ResponseEntity<SkillKnowledgeResource> {
         val result = updateSkillKnowledgeById(employeeId, skillId) {
-            it.copy(
-                level = request.level,
-                secret = request.secret
-            )
+            it.merge(request)
         }
         return when (result) {
             is EmployeeNotFound -> notFound().build()
