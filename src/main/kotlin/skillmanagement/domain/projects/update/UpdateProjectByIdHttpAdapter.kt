@@ -1,5 +1,6 @@
 package skillmanagement.domain.projects.update
 
+import com.github.fge.jsonpatch.JsonPatch
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.notFound
 import org.springframework.http.ResponseEntity.ok
@@ -8,7 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import skillmanagement.common.ApplyPatch
 import skillmanagement.domain.HttpAdapter
+import skillmanagement.domain.projects.Project
 import skillmanagement.domain.projects.ProjectDescription
 import skillmanagement.domain.projects.ProjectLabel
 import skillmanagement.domain.projects.ProjectResource
@@ -20,13 +23,14 @@ import java.util.UUID
 @HttpAdapter
 @RequestMapping("/api/projects/{projectId}")
 class UpdateProjectByIdHttpAdapter(
-    private val updateProjectById: UpdateProjectById
+    private val updateProjectById: UpdateProjectById,
+    private val applyPatch: ApplyPatch
 ) {
 
     @PutMapping
     fun put(
         @PathVariable projectId: UUID,
-        @RequestBody request: PutRequest
+        @RequestBody request: ChangeData
     ): ResponseEntity<ProjectResource> {
         val result = updateProjectById(projectId) {
             it.copy(
@@ -40,16 +44,13 @@ class UpdateProjectByIdHttpAdapter(
         }
     }
 
-    @PatchMapping
+    @PatchMapping(consumes = ["application/json-patch+json"])
     fun patch(
         @PathVariable projectId: UUID,
-        @RequestBody request: PatchRequest
+        @RequestBody patch: JsonPatch
     ): ResponseEntity<ProjectResource> {
         val result = updateProjectById(projectId) {
-            it.copy(
-                label = request.label ?: it.label,
-                description = request.description ?: it.description
-            )
+            it.merge(applyPatch(patch, it.toChangeData()))
         }
         return when (result) {
             ProjectNotFound -> notFound().build()
@@ -57,14 +58,15 @@ class UpdateProjectByIdHttpAdapter(
         }
     }
 
-    data class PutRequest(
+    data class ChangeData(
         val label: ProjectLabel,
         val description: ProjectDescription
     )
 
-    data class PatchRequest(
-        val label: ProjectLabel?,
-        val description: ProjectDescription?
-    )
+    private fun Project.toChangeData(): ChangeData =
+        ChangeData(label = label, description = description)
+
+    private fun Project.merge(changes: ChangeData): Project =
+        copy(label = changes.label, description = changes.description)
 
 }

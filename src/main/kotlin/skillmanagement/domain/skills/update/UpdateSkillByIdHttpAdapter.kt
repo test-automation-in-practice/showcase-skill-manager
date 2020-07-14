@@ -1,5 +1,6 @@
 package skillmanagement.domain.skills.update
 
+import com.github.fge.jsonpatch.JsonPatch
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.notFound
 import org.springframework.http.ResponseEntity.ok
@@ -8,7 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import skillmanagement.common.ApplyPatch
 import skillmanagement.domain.HttpAdapter
+import skillmanagement.domain.skills.Skill
 import skillmanagement.domain.skills.SkillLabel
 import skillmanagement.domain.skills.SkillResource
 import skillmanagement.domain.skills.toResource
@@ -19,13 +22,14 @@ import java.util.UUID
 @HttpAdapter
 @RequestMapping("/api/skills/{skillId}")
 class UpdateSkillByIdHttpAdapter(
-    private val updateSkillById: UpdateSkillById
+    private val updateSkillById: UpdateSkillById,
+    private val applyPatch: ApplyPatch
 ) {
 
     @PutMapping
     fun put(
         @PathVariable skillId: UUID,
-        @RequestBody request: PutRequest
+        @RequestBody request: ChangeData
     ): ResponseEntity<SkillResource> {
         val result = updateSkillById(skillId) {
             it.copy(label = request.label)
@@ -36,13 +40,13 @@ class UpdateSkillByIdHttpAdapter(
         }
     }
 
-    @PatchMapping
+    @PatchMapping(consumes = ["application/json-patch+json"])
     fun patch(
         @PathVariable skillId: UUID,
-        @RequestBody request: PatchRequest
+        @RequestBody patch: JsonPatch
     ): ResponseEntity<SkillResource> {
         val result = updateSkillById(skillId) {
-            it.copy(label = request.label ?: it.label)
+            it.merge(applyPatch(patch, it.toChangeData()))
         }
         return when (result) {
             SkillNotFound -> notFound().build()
@@ -50,12 +54,11 @@ class UpdateSkillByIdHttpAdapter(
         }
     }
 
-    data class PutRequest(
+    data class ChangeData(
         val label: SkillLabel
     )
 
-    data class PatchRequest(
-        val label: SkillLabel?
-    )
+    private fun Skill.toChangeData(): ChangeData = ChangeData(label = label)
+    private fun Skill.merge(changes: ChangeData): Skill = copy(label = changes.label)
 
 }

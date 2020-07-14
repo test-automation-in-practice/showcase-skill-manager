@@ -1,5 +1,6 @@
 package skillmanagement.domain.employees.skillknowledge.update
 
+import com.github.fge.jsonpatch.JsonPatch
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.notFound
 import org.springframework.http.ResponseEntity.ok
@@ -8,7 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import skillmanagement.common.ApplyPatch
 import skillmanagement.domain.HttpAdapter
+import skillmanagement.domain.employees.SkillKnowledge
 import skillmanagement.domain.employees.SkillKnowledgeResource
 import skillmanagement.domain.employees.SkillLevel
 import skillmanagement.domain.employees.skillknowledge.update.UpdateSkillKnowledgeResult.EmployeeNotFound
@@ -20,14 +23,15 @@ import java.util.UUID
 @HttpAdapter
 @RequestMapping("/api/employees/{employeeId}/skills/{skillId}")
 class UpdateSkillKnowledgeByIdHttpAdapter(
-    private val updateSkillKnowledgeById: UpdateSkillKnowledgeById
+    private val updateSkillKnowledgeById: UpdateSkillKnowledgeById,
+    private val applyPatch: ApplyPatch
 ) {
 
     @PutMapping
     fun put(
         @PathVariable employeeId: UUID,
         @PathVariable skillId: UUID,
-        @RequestBody request: PutRequest
+        @RequestBody request: ChangeData
     ): ResponseEntity<SkillKnowledgeResource> {
         val result = updateSkillKnowledgeById(employeeId, skillId) {
             it.copy(
@@ -42,17 +46,14 @@ class UpdateSkillKnowledgeByIdHttpAdapter(
         }
     }
 
-    @PatchMapping
+    @PatchMapping(consumes = ["application/json-patch+json"])
     fun patch(
         @PathVariable employeeId: UUID,
         @PathVariable skillId: UUID,
-        @RequestBody request: PatchRequest
+        @RequestBody patch: JsonPatch
     ): ResponseEntity<SkillKnowledgeResource> {
         val result = updateSkillKnowledgeById(employeeId, skillId) {
-            it.copy(
-                level = request.level ?: it.level,
-                secret = request.secret ?: it.secret
-            )
+            it.merge(applyPatch(patch, it.toChangeData()))
         }
         return when (result) {
             is EmployeeNotFound -> notFound().build()
@@ -61,14 +62,15 @@ class UpdateSkillKnowledgeByIdHttpAdapter(
         }
     }
 
-    data class PutRequest(
+    data class ChangeData(
         val level: SkillLevel,
         val secret: Boolean
     )
 
-    data class PatchRequest(
-        val level: SkillLevel?,
-        val secret: Boolean?
-    )
+    private fun SkillKnowledge.toChangeData(): ChangeData =
+        ChangeData(level = level, secret = secret)
+
+    private fun SkillKnowledge.merge(changes: ChangeData): SkillKnowledge =
+        copy(level = changes.level, secret = changes.secret)
 
 }

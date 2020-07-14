@@ -7,6 +7,7 @@ import mu.KotlinLogging.logger
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.ResponseEntity
+import org.springframework.http.ResponseEntity.badRequest
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -34,9 +35,22 @@ class GlobalRestControllerAdvice(
                 details = cause.problems
             )
             log.info(e) { "Received bad request, responding with: $body" }
-            return ResponseEntity.badRequest().body(body)
+            return badRequest().body(body)
         }
         throw e
+    }
+
+    @ExceptionHandler(InvalidPatchException::class)
+    fun handle(e: InvalidPatchException, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
+        val body = errorResponse(
+            clock = clock,
+            request = request,
+            status = BAD_REQUEST,
+            message = "Invalid Patch",
+            details = e.cause?.message?.let { listOf(it) }
+        )
+        log.info(e) { "Received bad request, responding with: $body" }
+        return badRequest().body(body)
     }
 
 }
