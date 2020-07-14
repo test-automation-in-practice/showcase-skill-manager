@@ -56,6 +56,10 @@ data class Employee(
     fun hasProjectAssignmentById(assignmentId: UUID): Boolean =
         projects.any { it.id == assignmentId }
 
+    fun setProjectAssignment(projectAssignment: ProjectAssignment): Employee = this
+        .removeProjectAssignmentById(projectAssignment.id)
+        .addProjectAssignment(projectAssignment)
+
     fun addProjectAssignment(projectAssignment: ProjectAssignment): Employee =
         copy(projects = projects + projectAssignment)
 
