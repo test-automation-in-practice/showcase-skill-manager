@@ -14,11 +14,12 @@ class InsertSkillIntoDataStore(
     private val objectMapper: ObjectMapper
 ) {
 
-    private val statement = "INSERT INTO skills (id, data, keywords) VALUES (:id, :data, :keywords)"
+    private val statement = "INSERT INTO skills (id, version, data, keywords) VALUES (:id, :version, :data, :keywords)"
 
     operator fun invoke(skill: Skill) {
         val parameters = mapOf(
             "id" to skill.id.toString(),
+            "version" to skill.version,
             "data" to objectMapper.writeValueAsString(skill),
             "keywords" to possibleSearchTerms(skill.label)
         )

@@ -6,19 +6,23 @@ import skillmanagement.domain.PublishEvent
 import skillmanagement.domain.skills.Skill
 import skillmanagement.domain.skills.SkillAddedEvent
 import skillmanagement.domain.skills.SkillLabel
+import java.time.Clock
 
 @BusinessFunction
 class AddSkill(
     private val idGenerator: IdGenerator,
     private val insertSkillIntoDataStore: InsertSkillIntoDataStore,
-    private val publishEvent: PublishEvent
+    private val publishEvent: PublishEvent,
+    private val clock: Clock
 ) {
 
     // TODO: Security - Only invokable by Skill-Admins
     operator fun invoke(label: SkillLabel): Skill {
         val skill = Skill(
             id = idGenerator.generateId(),
-            label = label
+            version = 1,
+            label = label,
+            lastUpdate = clock.instant()
         )
         insertSkillIntoDataStore(skill)
         publishEvent(SkillAddedEvent(skill))
