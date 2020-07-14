@@ -13,11 +13,13 @@ class InsertProjectIntoDataStore(
     private val objectMapper: ObjectMapper
 ) {
 
-    private val statement = "INSERT INTO projects (id, data, keywords) VALUES (:id, :data, :keywords)"
+    private val statement =
+        "INSERT INTO projects (id, version, data, keywords) VALUES (:id, :version, :data, :keywords)"
 
     operator fun invoke(project: Project) {
         val parameters = mapOf(
             "id" to project.id.toString(),
+            "version" to project.version,
             "data" to objectMapper.writeValueAsString(project),
             "keywords" to possibleSearchTerms(project.label)
         )
