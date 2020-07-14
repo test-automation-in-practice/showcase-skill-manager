@@ -2,7 +2,9 @@ package skillmanagement.common
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL
+import com.fasterxml.jackson.databind.exc.MismatchedInputException
 import com.fasterxml.jackson.databind.exc.ValueInstantiationException
+import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
 import mu.KotlinLogging.logger
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatus.BAD_REQUEST
@@ -47,11 +49,28 @@ class GlobalRestControllerAdvice(
             request = request,
             status = BAD_REQUEST,
             message = "Invalid Patch",
-            details = e.cause?.message?.let { listOf(it) }
+            details = detailsFor(e)
         )
-        log.info(e) { "Received bad request, responding with: $body" }
+        log.warn(e) { "Received bad request, responding with: $body" }
         return badRequest().body(body)
     }
+
+    private fun detailsFor(e: InvalidPatchException): List<String>? =
+        when (val cause = e.cause) {
+            is ValueInstantiationException -> {
+                when (val causeOfCause = cause.cause) {
+                    is ValidationException -> causeOfCause.problems
+                    else -> causeOfCause?.message?.let { listOf(it) }
+                }
+            }
+            is MissingKotlinParameterException -> {
+                listOf("Parameter '${cause.parameter.name}' is not allowed to be 'null'!")
+            }
+            is MismatchedInputException -> {
+                listOf("Patch value is of unsupported data type!")
+            }
+            else -> cause?.message?.let { listOf(it) }
+        }
 
 }
 
