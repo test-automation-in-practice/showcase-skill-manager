@@ -36,7 +36,8 @@ class AssignSkillKnowledgeOfEmployee(
             secret = secret
         )
 
-        updateEmployeeInDataStore(employee.setSkillKnowledge(skillKnowledge))
+        val updatedEmployee = employee.setSkillKnowledge(skillKnowledge)
+        updateEmployeeInDataStore(updatedEmployee)
         return SuccessfullyAssigned(skillKnowledge)
     }
 
