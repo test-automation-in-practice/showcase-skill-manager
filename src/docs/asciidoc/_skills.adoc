@@ -25,6 +25,11 @@ In case there are no skills to be found, the response will look like this:
 
 include::{snippets}/skills/find/empty/http-response.adoc[]
 
+Existing skills can also be searched using the `query` parameter:
+
+include::{snippets}/skills/find/with-query/http-request.adoc[]
+include::{snippets}/skills/find/with-query/http-response.adoc[]
+
 === Getting Skills by ID
 
 An existing skill be got by sending a request like this:
@@ -35,6 +40,22 @@ include::{snippets}/skills/get-by-id/found/http-response.adoc[]
 In case the specified skill does not exist, the response will look like this:
 
 include::{snippets}/skills/get-by-id/not-found/http-response.adoc[]
+
+=== Updating Skills by ID
+
+An existing skill can be completely updated by sending a request like this:
+
+include::{snippets}/skills/update/put/updated/http-request.adoc[]
+include::{snippets}/skills/update/put/updated/http-response.adoc[]
+
+In case the specified skill does not exist, the response will look like this:
+
+include::{snippets}/skills/update/put/not-found/http-response.adoc[]
+
+For partial updates JSON Patch is also supported:
+
+include::{snippets}/skills/update/patch/updated/http-request.adoc[]
+include::{snippets}/skills/update/patch/updated/http-response.adoc[]
 
 === Deleting Skills by ID
 
