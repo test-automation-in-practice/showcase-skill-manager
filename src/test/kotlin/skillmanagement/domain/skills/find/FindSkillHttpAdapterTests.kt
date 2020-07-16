@@ -2,6 +2,7 @@ package skillmanagement.domain.skills.find
 
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
@@ -108,6 +109,31 @@ internal class FindSkillHttpAdapterTests(
                 }
             }
             .andDocument("multiple")
+    }
+
+    @Test
+    fun `invokes find with query for non-blank query parameter`() {
+        every { findSkills(any()) } returns listOf(skill_java)
+
+        mockMvc
+            .get("/api/skills?query=jav")
+            .andExpect { status { isOk } }
+            .andDocument("with-query")
+
+        val expectedQuery = SkillsWithLabelLike("jav")
+        verify { findSkills(expectedQuery) }
+    }
+
+    @Test
+    fun `invokes find without query for blank query parameter`() {
+        every { findSkills() } returns listOf(skill_java, skill_kotlin)
+
+        mockMvc
+            .get("/api/skills?query=")
+            .andExpect { status { isOk } }
+            .andDocument("with-blank-query")
+
+        verify { findSkills() }
     }
 
 }

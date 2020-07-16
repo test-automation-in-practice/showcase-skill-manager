@@ -54,4 +54,10 @@ internal class FindSkillsInDataStoreTests(
         findSkills(SkillsWithLabelLike("kotlin")) shouldContainExactly setOf(skill_kotlin)
     }
 
+    @Test
+    fun `returns empty list of empty search terms`() {
+        insertSkillIntoDataStore(skill_kotlin)
+        findSkills(SkillsWithLabelLike("")) shouldBe emptyList()
+    }
+
 }
