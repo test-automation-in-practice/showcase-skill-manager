@@ -1,0 +1,11 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+metrics:
+  total-number-of-skills:
+    update:
+      rate: "PT1M"
+      delay: "PT10S"
