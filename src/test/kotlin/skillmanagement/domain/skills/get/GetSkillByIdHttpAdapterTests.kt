@@ -60,6 +60,7 @@ internal class GetSkillByIdHttpAdapterTests(
                         {
                           "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
                           "label": "Kotlin",
+                          "tags": ["cool", "language"],
                           "_links": {
                             "self": {
                               "href": "http://localhost/api/skills/3f7985b9-f5f0-4662-bda9-1dcde01f5f3b"

@@ -2,6 +2,7 @@ package skillmanagement.domain.skills.add
 
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
@@ -14,12 +15,15 @@ import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 import skillmanagement.domain.skills.SkillLabel
+import skillmanagement.domain.skills.Tag
 import skillmanagement.domain.skills.skill_kotlin
+import skillmanagement.domain.skills.skill_python
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.andDocument
 import skillmanagement.test.fixedClock
 import skillmanagement.test.strictJson
 import java.time.Clock
+import java.util.Collections.emptySortedSet
 
 @WithMockUser
 @TechnologyIntegrationTest
@@ -33,12 +37,12 @@ internal class AddSkillHttpAdapterTests(
 
     @Test
     fun `well formed request leads to correct response`() {
-        every { addSkill(SkillLabel("Kotlin")) } returns skill_kotlin
+        every { addSkill(any(), any()) } returns skill_kotlin
 
         mockMvc
             .post("/api/skills") {
                 contentType = APPLICATION_JSON
-                content = """{ "label": "Kotlin" }"""
+                content = """{ "label": "Kotlin", "tags": ["language", "cool"] }"""
             }
             .andExpect {
                 status { isCreated }
@@ -49,6 +53,7 @@ internal class AddSkillHttpAdapterTests(
                         {
                           "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
                           "label": "Kotlin",
+                          "tags": ["cool", "language"],
                           "_links": {
                             "self": {
                               "href": "http://localhost/api/skills/3f7985b9-f5f0-4662-bda9-1dcde01f5f3b"
@@ -63,6 +68,45 @@ internal class AddSkillHttpAdapterTests(
                 }
             }
             .andDocument("created")
+
+        verify { addSkill(SkillLabel("Kotlin"), sortedSetOf(Tag("language"), Tag("cool"))) }
+    }
+
+    @Test
+    fun `tags are optional`() {
+        every { addSkill(any(), any()) } returns skill_python
+
+        mockMvc
+            .post("/api/skills") {
+                contentType = APPLICATION_JSON
+                content = """{ "label": "Python" }"""
+            }
+            .andExpect {
+                status { isCreated }
+                content {
+                    contentType(HAL_JSON)
+                    strictJson {
+                        """
+                        {
+                          "id": "6935e550-d041-418a-9070-e37431069232",
+                          "label": "Python",
+                          "tags": [],
+                          "_links": {
+                            "self": {
+                              "href": "http://localhost/api/skills/6935e550-d041-418a-9070-e37431069232"
+                            },
+                            "delete": {
+                              "href": "http://localhost/api/skills/6935e550-d041-418a-9070-e37431069232"
+                            }
+                          }
+                        }
+                        """
+                    }
+                }
+            }
+            .andDocument("created")
+
+        verify { addSkill(SkillLabel("Python"), emptySortedSet()) }
     }
 
     @Test

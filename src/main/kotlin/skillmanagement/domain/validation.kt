@@ -50,6 +50,12 @@ fun Validation<String>.isNotBlank() {
     }
 }
 
+fun Validation<String>.matchesPattern(pattern: Regex) {
+    if (!value.matches(pattern)) {
+        addProblem("must match pattern: $pattern")
+    }
+}
+
 fun Validation<String>.hasMaxLengthOf(maxLength: Int) {
     if (value.length > maxLength) {
         addProblem("must not be longer than $maxLength characters, but is ${value.length} characters long!")

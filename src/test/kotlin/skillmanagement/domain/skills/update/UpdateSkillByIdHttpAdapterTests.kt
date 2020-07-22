@@ -48,7 +48,7 @@ internal class UpdateSkillByIdHttpAdapterTests(
         mockMvc
             .put("/api/skills/${skill.id}") {
                 contentType = APPLICATION_JSON
-                content = """{ "label": "Kotlin (Language)" }"""
+                content = """{ "label": "Kotlin (Language)", "tags": ["language"] }"""
             }
             .andExpect {
                 status { isOk }
@@ -59,6 +59,7 @@ internal class UpdateSkillByIdHttpAdapterTests(
                         {
                           "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
                           "label": "Kotlin (Language)",
+                          "tags": ["language"],
                           "_links": {
                             "self": {
                               "href": "http://localhost/api/skills/3f7985b9-f5f0-4662-bda9-1dcde01f5f3b"
@@ -82,7 +83,7 @@ internal class UpdateSkillByIdHttpAdapterTests(
         mockMvc
             .put("/api/skills/${skill.id}") {
                 contentType = APPLICATION_JSON
-                content = """{ "label": "Kotlin (Language)" }"""
+                content = """{ "label": "Kotlin (Language)", "tags": [] }"""
             }
             .andExpect {
                 status { isNotFound }
@@ -107,6 +108,15 @@ internal class UpdateSkillByIdHttpAdapterTests(
                         "op": "replace",
                         "path": "/label",
                         "value": "Kotlin (Language)"
+                      },
+                      {
+                        "op": "remove",
+                        "path": "/tags/0"
+                      },
+                      {
+                        "op": "add",
+                        "path": "/tags/-",
+                        "value": "current"
                       }
                     ]
                     """
@@ -120,6 +130,7 @@ internal class UpdateSkillByIdHttpAdapterTests(
                         {
                           "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
                           "label": "Kotlin (Language)",
+                          "tags": ["current", "language"],
                           "_links": {
                             "self": {
                               "href": "http://localhost/api/skills/3f7985b9-f5f0-4662-bda9-1dcde01f5f3b"

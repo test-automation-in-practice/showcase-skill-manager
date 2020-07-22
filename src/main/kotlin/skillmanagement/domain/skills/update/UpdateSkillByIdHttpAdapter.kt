@@ -14,9 +14,11 @@ import skillmanagement.domain.HttpAdapter
 import skillmanagement.domain.skills.Skill
 import skillmanagement.domain.skills.SkillLabel
 import skillmanagement.domain.skills.SkillResource
+import skillmanagement.domain.skills.Tag
 import skillmanagement.domain.skills.toResource
 import skillmanagement.domain.skills.update.UpdateSkillByIdResult.SkillNotFound
 import skillmanagement.domain.skills.update.UpdateSkillByIdResult.SuccessfullyUpdated
+import java.util.SortedSet
 import java.util.UUID
 
 @HttpAdapter
@@ -55,10 +57,11 @@ class UpdateSkillByIdHttpAdapter(
     }
 
     data class ChangeData(
-        val label: SkillLabel
+        val label: SkillLabel,
+        val tags: SortedSet<Tag>
     )
 
-    private fun Skill.toChangeData(): ChangeData = ChangeData(label = label)
-    private fun Skill.merge(changes: ChangeData): Skill = copy(label = changes.label)
+    private fun Skill.toChangeData(): ChangeData = ChangeData(label = label, tags = tags)
+    private fun Skill.merge(changes: ChangeData): Skill = copy(label = changes.label, tags = changes.tags)
 
 }

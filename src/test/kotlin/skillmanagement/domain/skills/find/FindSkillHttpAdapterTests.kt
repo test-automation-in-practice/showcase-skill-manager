@@ -75,6 +75,7 @@ internal class FindSkillHttpAdapterTests(
                               {
                                 "id": "f8948935-dab6-4c33-80d0-9f66ae546a7c",
                                 "label": "Java",
+                                "tags": ["language"],
                                 "_links": {
                                   "self": {
                                     "href": "http://localhost/api/skills/f8948935-dab6-4c33-80d0-9f66ae546a7c"
@@ -87,6 +88,7 @@ internal class FindSkillHttpAdapterTests(
                               {
                                 "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
                                 "label": "Kotlin",
+                                "tags": ["cool", "language"],
                                 "_links": {
                                   "self": {
                                     "href": "http://localhost/api/skills/3f7985b9-f5f0-4662-bda9-1dcde01f5f3b"

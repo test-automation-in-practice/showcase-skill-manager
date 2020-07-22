@@ -20,6 +20,7 @@ import skillmanagement.domain.PublishEvent
 import skillmanagement.domain.skills.Skill
 import skillmanagement.domain.skills.SkillLabel
 import skillmanagement.domain.skills.SkillUpdatedEvent
+import skillmanagement.domain.skills.Tag
 import skillmanagement.domain.skills.get.GetSkillById
 import skillmanagement.domain.skills.update.UpdateSkillByIdResult.SkillNotFound
 import skillmanagement.domain.skills.update.UpdateSkillByIdResult.SuccessfullyUpdated
@@ -36,6 +37,7 @@ internal class UpdateSkillByIdTests {
         id = id,
         version = 2,
         label = SkillLabel("Old Label"),
+        tags = sortedSetOf(Tag("old")),
         lastUpdate = instant("2020-07-16T12:34:56.789Z")
     )
 
@@ -51,14 +53,18 @@ internal class UpdateSkillByIdTests {
 
         @Test
         fun `updating an existing skill stores it in the data store and publishes an event`() {
-            val expectedChangedSkill = skill.copy(label = SkillLabel("New Label"))
+            val change: (Skill) -> (Skill) = {
+                it.copy(label = SkillLabel("New Label"), tags = sortedSetOf(Tag("new")))
+            }
+
+            val expectedChangedSkill = change(skill)
             val expectedUpdatedSkill = expectedChangedSkill
                 .copy(version = 3, lastUpdate = instant("2020-07-16T12:35:06.789Z"))
 
             every { getSkillById(id) } returns skill
             every { updateSkillInDataStore(expectedChangedSkill) } answers { simulateUpdate(firstArg()) }
 
-            val result = updateSkillById(id) { it.copy(label = SkillLabel("New Label")) }
+            val result = updateSkillById(id, change)
 
             result shouldBe SuccessfullyUpdated(expectedUpdatedSkill)
             verify { publishEvent(SkillUpdatedEvent(expectedUpdatedSkill)) }

@@ -18,6 +18,7 @@ import skillmanagement.domain.projects.ProjectDescription
 import skillmanagement.domain.projects.ProjectLabel
 import skillmanagement.domain.projects.add.AddProject
 import skillmanagement.domain.skills.SkillLabel
+import skillmanagement.domain.skills.Tag
 import skillmanagement.domain.skills.add.AddSkill
 import java.time.Clock
 import java.time.LocalDate
@@ -34,7 +35,7 @@ class TestDataInserter(
 ) : ApplicationRunner {
 
     override fun run(args: ApplicationArguments?) {
-        val kotlin = addSkill(SkillLabel("Kotlin"))
+        val kotlin = addSkill(SkillLabel("Kotlin"), sortedSetOf(Tag("language"), Tag("cool")))
         val starlink = addProject(ProjectLabel("Starlink"), ProjectDescription("Lorem ipsum .."))
 
         val maxMustermann = addEmployee(
