@@ -60,6 +60,8 @@ CREATE (FindSkillsInDataStore:TechnicalFunction {name:'FindSkillsInDataStore', f
 CREATE (GetSkillById:BusinessFunction {name:'GetSkillById', fullName:'skillmanagement.domain.skills.get.GetSkillById'})
 CREATE (GetSkillByIdHttpAdapter:HttpAdapter {name:'GetSkillByIdHttpAdapter', fullName:'skillmanagement.domain.skills.get.GetSkillByIdHttpAdapter'})
 CREATE (GetSkillFromDataStore:TechnicalFunction {name:'GetSkillFromDataStore', fullName:'skillmanagement.domain.skills.get.GetSkillFromDataStore'})
+CREATE (GetTotalNumberOfSkillsFromDataStore:TechnicalFunction {name:'GetTotalNumberOfSkillsFromDataStore', fullName:'skillmanagement.domain.skills.metrics.GetTotalNumberOfSkillsFromDataStore'})
+CREATE (TotalNumberOfSkills:MetricProvider {name:'TotalNumberOfSkills', fullName:'skillmanagement.domain.skills.metrics.TotalNumberOfSkills'})
 CREATE (UpdateSkillById:BusinessFunction {name:'UpdateSkillById', fullName:'skillmanagement.domain.skills.update.UpdateSkillById'})
 CREATE (UpdateSkillByIdHttpAdapter:HttpAdapter {name:'UpdateSkillByIdHttpAdapter', fullName:'skillmanagement.domain.skills.update.UpdateSkillByIdHttpAdapter'})
 CREATE (UpdateSkillInDataStore:TechnicalFunction {name:'UpdateSkillInDataStore', fullName:'skillmanagement.domain.skills.update.UpdateSkillInDataStore'})
@@ -177,6 +179,8 @@ CREATE (FindSkills)-[:USES]->(FindSkillsInDataStore)
 CREATE (GetSkillById)-[:USES]->(GetSkillFromDataStore)
 
 CREATE (GetSkillByIdHttpAdapter)-[:USES]->(GetSkillById)
+
+CREATE (TotalNumberOfSkills)-[:USES]->(GetTotalNumberOfSkillsFromDataStore)
 
 CREATE (UpdateSkillById)-[:USES]->(GetSkillById),
        (UpdateSkillById)-[:USES]->(UpdateSkillInDataStore),

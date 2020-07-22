@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.stereotype.Component
 import skillmanagement.domain.BusinessFunction
 import skillmanagement.domain.HttpAdapter
+import skillmanagement.domain.MetricProvider
 import skillmanagement.domain.TechnicalFunction
 import java.io.File
 import kotlin.reflect.KClass
@@ -26,12 +27,18 @@ class BuildDependencyGraph {
     private val httpAdapters = classes.extract(HttpAdapter::class, ClassType.HttpAdapter)
     private val businessFunctions = classes.extract(BusinessFunction::class, ClassType.BusinessFunction)
     private val technicalFunctions = classes.extract(TechnicalFunction::class, ClassType.TechnicalFunction)
+    private val metricProviders = classes.extract(MetricProvider::class, ClassType.MetricProvider)
     private val components = classes.extract(Component::class, ClassType.Component)
         .removeClasseByName("TestDataInserter")
         .removeClasseByName("HttpAdapter")
         .removeClasseByName("BusinessFunction")
         .removeClasseByName("TechnicalFunction")
-    private val allClassesWithTypes = (httpAdapters + businessFunctions + technicalFunctions + components)
+        .removeClasseByName("MetricProvider")
+    private val allClassesWithTypes = httpAdapters
+        .plus(businessFunctions)
+        .plus(technicalFunctions)
+        .plus(metricProviders)
+        .plus(components)
         .sortedBy { it.clazz.name }
 
     @Test
@@ -106,4 +113,4 @@ abstract class AbstractGraphDataGenerator {
 
 data class ClassWithClassType(val clazz: JavaClass, val type: ClassType)
 data class ClassWithDependencies(val clazz: JavaClass, val dependencies: List<JavaClass>)
-enum class ClassType { HttpAdapter, BusinessFunction, TechnicalFunction, Component }
+enum class ClassType { HttpAdapter, BusinessFunction, TechnicalFunction, MetricProvider, Component }
