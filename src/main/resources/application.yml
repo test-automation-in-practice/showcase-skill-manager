@@ -5,7 +5,18 @@ management:
         include: '*'
 
 metrics:
-  total-number-of-skills:
-    update:
-      rate: "PT1M"
-      delay: "PT10S"
+  employees:
+    total:
+      update:
+        rate: "PT1M"
+        delay: "PT10S"
+  projects:
+    total:
+      update:
+        rate: "PT1M"
+        delay: "PT10S"
+  skills:
+    total:
+      update:
+        rate: "PT1M"
+        delay: "PT10S"

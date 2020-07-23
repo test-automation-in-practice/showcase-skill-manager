@@ -9,8 +9,8 @@ import skillmanagement.common.stereotypes.TechnicalFunction
 import java.util.concurrent.atomic.AtomicLong
 import javax.annotation.PostConstruct
 
-private const val RATE_PROPERTY = "\${metrics.total-number-of-employees.update.rate}"
-private const val DELAY_PROPERTY = "\${metrics.total-number-of-employees.update.delay}"
+private const val RATE_PROPERTY = "\${metrics.employees.total.update.rate}"
+private const val DELAY_PROPERTY = "\${metrics.employees.total.update.delay}"
 
 @MetricProvider
 class TotalNumberOfEmployees(
