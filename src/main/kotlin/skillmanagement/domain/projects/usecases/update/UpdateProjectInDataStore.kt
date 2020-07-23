@@ -1,11 +1,11 @@
-package skillmanagement.domain.projects.update
+package skillmanagement.domain.projects.usecases.update
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import skillmanagement.common.searchTerms
 import skillmanagement.domain.TechnicalFunction
-import skillmanagement.domain.projects.Project
-import skillmanagement.domain.projects.ProjectLabel
+import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectLabel
 import java.time.Clock
 
 @TechnicalFunction

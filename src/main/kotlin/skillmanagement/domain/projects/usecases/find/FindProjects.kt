@@ -1,7 +1,7 @@
-package skillmanagement.domain.projects.find
+package skillmanagement.domain.projects.usecases.find
 
 import skillmanagement.domain.BusinessFunction
-import skillmanagement.domain.projects.Project
+import skillmanagement.domain.projects.model.Project
 
 @BusinessFunction
 class FindProjects(

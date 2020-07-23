@@ -1,4 +1,4 @@
-package skillmanagement.domain.projects.add
+package skillmanagement.domain.projects.usecases.add
 
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.web.bind.annotation.PostMapping
@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import skillmanagement.domain.HttpAdapter
-import skillmanagement.domain.projects.ProjectDescription
-import skillmanagement.domain.projects.ProjectLabel
-import skillmanagement.domain.projects.ProjectResource
-import skillmanagement.domain.projects.toResource
+import skillmanagement.domain.projects.model.ProjectDescription
+import skillmanagement.domain.projects.model.ProjectLabel
+import skillmanagement.domain.projects.model.ProjectResource
+import skillmanagement.domain.projects.model.toResource
 
 @HttpAdapter
 @RequestMapping("/api/projects")

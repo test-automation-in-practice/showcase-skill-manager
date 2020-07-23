@@ -1,4 +1,4 @@
-package skillmanagement.domain.projects.update
+package skillmanagement.domain.projects.usecases.update
 
 import org.springframework.retry.annotation.Backoff
 import org.springframework.retry.annotation.Retryable

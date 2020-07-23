@@ -1,4 +1,4 @@
-package skillmanagement.domain.projects
+package skillmanagement.domain.projects.model
 
 import skillmanagement.test.uuid
 import java.time.Instant

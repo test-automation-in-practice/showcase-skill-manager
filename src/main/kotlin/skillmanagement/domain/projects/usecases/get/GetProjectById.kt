@@ -1,7 +1,7 @@
-package skillmanagement.domain.projects.get
+package skillmanagement.domain.projects.usecases.get
 
 import skillmanagement.domain.BusinessFunction
-import skillmanagement.domain.projects.Project
+import skillmanagement.domain.projects.model.Project
 import java.util.UUID
 
 @BusinessFunction

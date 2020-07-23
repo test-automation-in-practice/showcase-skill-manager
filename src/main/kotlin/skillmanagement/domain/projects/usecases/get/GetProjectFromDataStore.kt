@@ -1,11 +1,11 @@
-package skillmanagement.domain.projects.get
+package skillmanagement.domain.projects.usecases.get
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import skillmanagement.domain.TechnicalFunction
-import skillmanagement.domain.projects.Project
+import skillmanagement.domain.projects.model.Project
 import java.util.UUID
 
 @TechnicalFunction

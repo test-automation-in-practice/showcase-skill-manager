@@ -1,4 +1,4 @@
-package skillmanagement.domain.projects.delete
+package skillmanagement.domain.projects.usecases.delete
 
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import skillmanagement.domain.TechnicalFunction

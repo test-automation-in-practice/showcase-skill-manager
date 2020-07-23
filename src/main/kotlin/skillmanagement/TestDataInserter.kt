@@ -14,9 +14,9 @@ import skillmanagement.domain.employees.Title
 import skillmanagement.domain.employees.add.AddEmployee
 import skillmanagement.domain.employees.projectassignments.create.CreateProjectAssignmentForEmployee
 import skillmanagement.domain.employees.skillknowledge.assign.AssignSkillKnowledgeOfEmployee
-import skillmanagement.domain.projects.ProjectDescription
-import skillmanagement.domain.projects.ProjectLabel
-import skillmanagement.domain.projects.add.AddProject
+import skillmanagement.domain.projects.model.ProjectDescription
+import skillmanagement.domain.projects.model.ProjectLabel
+import skillmanagement.domain.projects.usecases.add.AddProject
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.Tag
 import skillmanagement.domain.skills.usecases.add.AddSkill

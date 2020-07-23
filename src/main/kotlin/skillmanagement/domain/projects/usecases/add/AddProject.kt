@@ -1,12 +1,12 @@
-package skillmanagement.domain.projects.add
+package skillmanagement.domain.projects.usecases.add
 
 import org.springframework.util.IdGenerator
 import skillmanagement.domain.BusinessFunction
 import skillmanagement.domain.PublishEvent
-import skillmanagement.domain.projects.Project
-import skillmanagement.domain.projects.ProjectAddedEvent
-import skillmanagement.domain.projects.ProjectDescription
-import skillmanagement.domain.projects.ProjectLabel
+import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectAddedEvent
+import skillmanagement.domain.projects.model.ProjectDescription
+import skillmanagement.domain.projects.model.ProjectLabel
 import java.time.Clock
 
 @BusinessFunction

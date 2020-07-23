@@ -10,7 +10,7 @@ import skillmanagement.domain.employees.projectassignments.create.AssignProjectT
 import skillmanagement.domain.employees.projectassignments.create.AssignProjectToEmployeeResult.SuccessfullyAssigned
 import skillmanagement.domain.employees.update.RetryOnConcurrentEmployeeUpdate
 import skillmanagement.domain.employees.update.UpdateEmployeeInDataStore
-import skillmanagement.domain.projects.get.GetProjectById
+import skillmanagement.domain.projects.usecases.get.GetProjectById
 import java.time.LocalDate
 import java.util.UUID
 

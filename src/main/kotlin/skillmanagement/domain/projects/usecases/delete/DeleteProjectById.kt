@@ -1,11 +1,11 @@
-package skillmanagement.domain.projects.delete
+package skillmanagement.domain.projects.usecases.delete
 
 import skillmanagement.domain.BusinessFunction
 import skillmanagement.domain.PublishEvent
-import skillmanagement.domain.projects.ProjectDeletedEvent
-import skillmanagement.domain.projects.delete.DeleteProjectByIdResult.ProjectNotFound
-import skillmanagement.domain.projects.delete.DeleteProjectByIdResult.SuccessfullyDeleted
-import skillmanagement.domain.projects.get.GetProjectById
+import skillmanagement.domain.projects.model.ProjectDeletedEvent
+import skillmanagement.domain.projects.usecases.delete.DeleteProjectByIdResult.ProjectNotFound
+import skillmanagement.domain.projects.usecases.delete.DeleteProjectByIdResult.SuccessfullyDeleted
+import skillmanagement.domain.projects.usecases.get.GetProjectById
 import java.util.UUID
 
 @BusinessFunction

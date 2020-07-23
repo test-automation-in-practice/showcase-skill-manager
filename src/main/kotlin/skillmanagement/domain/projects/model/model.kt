@@ -1,4 +1,4 @@
-package skillmanagement.domain.projects
+package skillmanagement.domain.projects.model
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue

@@ -1,12 +1,12 @@
-package skillmanagement.domain.projects.update
+package skillmanagement.domain.projects.usecases.update
 
 import skillmanagement.domain.BusinessFunction
 import skillmanagement.domain.PublishEvent
-import skillmanagement.domain.projects.Project
-import skillmanagement.domain.projects.ProjectUpdatedEvent
-import skillmanagement.domain.projects.get.GetProjectById
-import skillmanagement.domain.projects.update.UpdateProjectByIdResult.ProjectNotFound
-import skillmanagement.domain.projects.update.UpdateProjectByIdResult.SuccessfullyUpdated
+import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectUpdatedEvent
+import skillmanagement.domain.projects.usecases.get.GetProjectById
+import skillmanagement.domain.projects.usecases.update.UpdateProjectByIdResult.ProjectNotFound
+import skillmanagement.domain.projects.usecases.update.UpdateProjectByIdResult.SuccessfullyUpdated
 import java.util.UUID
 
 @BusinessFunction

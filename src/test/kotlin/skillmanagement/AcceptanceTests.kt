@@ -26,9 +26,9 @@ import skillmanagement.domain.employees.FirstName
 import skillmanagement.domain.employees.LastName
 import skillmanagement.domain.employees.TelephoneNumber
 import skillmanagement.domain.employees.Title
-import skillmanagement.domain.projects.ProjectDescription
-import skillmanagement.domain.projects.ProjectLabel
-import skillmanagement.domain.projects.ProjectResource
+import skillmanagement.domain.projects.model.ProjectDescription
+import skillmanagement.domain.projects.model.ProjectLabel
+import skillmanagement.domain.projects.model.ProjectResource
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.SkillResource
 import skillmanagement.test.End2EndTest

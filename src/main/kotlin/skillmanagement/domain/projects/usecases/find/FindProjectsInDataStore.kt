@@ -1,4 +1,4 @@
-package skillmanagement.domain.projects.find
+package skillmanagement.domain.projects.usecases.find
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import skillmanagement.common.searchTerms
 import skillmanagement.domain.TechnicalFunction
-import skillmanagement.domain.projects.Project
+import skillmanagement.domain.projects.model.Project
 
 @TechnicalFunction
 class FindProjectsInDataStore(

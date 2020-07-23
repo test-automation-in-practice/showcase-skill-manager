@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 import skillmanagement.domain.employees.find.EmployeesWhoWorkedOnProject
 import skillmanagement.domain.employees.find.FindEmployeeIds
 import skillmanagement.domain.employees.update.UpdateEmployeeById
-import skillmanagement.domain.projects.ProjectUpdatedEvent
+import skillmanagement.domain.projects.model.ProjectUpdatedEvent
 
 @Component
 class UpdateProjectAssignmentsOfEmployeesEventListener(

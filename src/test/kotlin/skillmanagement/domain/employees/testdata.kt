@@ -1,7 +1,7 @@
 package skillmanagement.domain.employees
 
-import skillmanagement.domain.projects.project_demo_2
-import skillmanagement.domain.projects.project_starlink
+import skillmanagement.domain.projects.model.project_demo_2
+import skillmanagement.domain.projects.model.project_starlink
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_python
 import skillmanagement.test.uuid

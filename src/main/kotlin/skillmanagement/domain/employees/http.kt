@@ -6,9 +6,9 @@ import org.springframework.hateoas.CollectionModel
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.core.Relation
 import org.springframework.hateoas.server.mvc.BasicLinkBuilder.linkToCurrentMapping
-import skillmanagement.domain.projects.ProjectDescription
-import skillmanagement.domain.projects.ProjectLabel
-import skillmanagement.domain.projects.linkToProject
+import skillmanagement.domain.projects.model.ProjectDescription
+import skillmanagement.domain.projects.model.ProjectLabel
+import skillmanagement.domain.projects.model.linkToProject
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.linkToSkill
 import java.time.Instant

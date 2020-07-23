@@ -1,4 +1,4 @@
-package skillmanagement.domain.projects.update
+package skillmanagement.domain.projects.usecases.update
 
 import com.github.fge.jsonpatch.JsonPatch
 import org.springframework.http.ResponseEntity
@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.ApplyPatch
 import skillmanagement.domain.HttpAdapter
-import skillmanagement.domain.projects.Project
-import skillmanagement.domain.projects.ProjectDescription
-import skillmanagement.domain.projects.ProjectLabel
-import skillmanagement.domain.projects.ProjectResource
-import skillmanagement.domain.projects.toResource
-import skillmanagement.domain.projects.update.UpdateProjectByIdResult.ProjectNotFound
-import skillmanagement.domain.projects.update.UpdateProjectByIdResult.SuccessfullyUpdated
+import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectDescription
+import skillmanagement.domain.projects.model.ProjectLabel
+import skillmanagement.domain.projects.model.ProjectResource
+import skillmanagement.domain.projects.model.toResource
+import skillmanagement.domain.projects.usecases.update.UpdateProjectByIdResult.ProjectNotFound
+import skillmanagement.domain.projects.usecases.update.UpdateProjectByIdResult.SuccessfullyUpdated
 import java.util.UUID
 
 @HttpAdapter
