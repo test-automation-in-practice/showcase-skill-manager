@@ -17,9 +17,9 @@ import skillmanagement.domain.employees.skillknowledge.assign.AssignSkillKnowled
 import skillmanagement.domain.projects.ProjectDescription
 import skillmanagement.domain.projects.ProjectLabel
 import skillmanagement.domain.projects.add.AddProject
-import skillmanagement.domain.skills.SkillLabel
-import skillmanagement.domain.skills.Tag
-import skillmanagement.domain.skills.add.AddSkill
+import skillmanagement.domain.skills.model.SkillLabel
+import skillmanagement.domain.skills.model.Tag
+import skillmanagement.domain.skills.usecases.add.AddSkill
 import java.time.Clock
 import java.time.LocalDate
 

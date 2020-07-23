@@ -9,7 +9,7 @@ import skillmanagement.domain.employees.skillknowledge.assign.SetSkillKnowledgeO
 import skillmanagement.domain.employees.skillknowledge.assign.SetSkillKnowledgeOfEmployeeResult.SuccessfullyAssigned
 import skillmanagement.domain.employees.update.RetryOnConcurrentEmployeeUpdate
 import skillmanagement.domain.employees.update.UpdateEmployeeInDataStore
-import skillmanagement.domain.skills.get.GetSkillById
+import skillmanagement.domain.skills.usecases.get.GetSkillById
 import java.util.UUID
 
 @BusinessFunction

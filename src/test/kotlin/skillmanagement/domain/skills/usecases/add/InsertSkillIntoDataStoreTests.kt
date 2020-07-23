@@ -1,42 +1,54 @@
-package skillmanagement.domain.skills.metrics
+package skillmanagement.domain.skills.usecases.add
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.kotlintest.shouldBe
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
+import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson
+import org.springframework.dao.DuplicateKeyException
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import skillmanagement.domain.skills.model.skill_java
 import skillmanagement.domain.skills.model.skill_kotlin
-import skillmanagement.domain.skills.usecases.add.InsertSkillIntoDataStore
-import skillmanagement.domain.skills.usecases.delete.DeleteSkillFromDataStore
+import skillmanagement.domain.skills.usecases.get.GetSkillFromDataStore
 import skillmanagement.test.TechnologyIntegrationTest
+import skillmanagement.test.uuid
 
 @JdbcTest
 @AutoConfigureJson
 @TestInstance(PER_CLASS)
 @TechnologyIntegrationTest
-internal class GetTotalNumberOfSkillsFromDataStoreTests(
+internal class InsertSkillIntoDataStoreTests(
     @Autowired val jdbcTemplate: NamedParameterJdbcTemplate,
     @Autowired val objectMapper: ObjectMapper
 ) {
 
+    val getSkill = GetSkillFromDataStore(jdbcTemplate, objectMapper)
     val insertSkillIntoDataStore = InsertSkillIntoDataStore(jdbcTemplate, objectMapper)
-    val deleteSkillFromDataStore = DeleteSkillFromDataStore(jdbcTemplate)
-    val getTotalNumberOfSkillsFromDataStore = GetTotalNumberOfSkillsFromDataStore(jdbcTemplate.jdbcTemplate)
 
     @Test
-    fun `returns the total number of skill in the data store`() {
-        getTotalNumberOfSkillsFromDataStore() shouldBe 0
-        insertSkillIntoDataStore(skill_kotlin)
-        getTotalNumberOfSkillsFromDataStore() shouldBe 1
-        insertSkillIntoDataStore(skill_java)
-        getTotalNumberOfSkillsFromDataStore() shouldBe 2
-        deleteSkillFromDataStore(skill_java.id)
-        getTotalNumberOfSkillsFromDataStore() shouldBe 1
+    fun `inserts complete Skill data into data store`() {
+        val skill = skill_kotlin.copy(id = uuid())
+
+        getSkill(skill.id) shouldBe null
+        insertSkillIntoDataStore(skill)
+        getSkill(skill.id) shouldBe skill
+    }
+
+    @Test
+    fun `fails when trying to insert skill with existing ID`() {
+        val id = uuid()
+
+        val skill1 = skill_kotlin.copy(id = id)
+        val skill2 = skill_java.copy(id = id)
+
+        insertSkillIntoDataStore(skill1)
+        assertThrows<DuplicateKeyException> {
+            insertSkillIntoDataStore(skill2)
+        }
     }
 
 }

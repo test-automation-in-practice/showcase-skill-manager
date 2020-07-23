@@ -2,8 +2,8 @@ package skillmanagement.domain.employees
 
 import skillmanagement.domain.projects.project_demo_2
 import skillmanagement.domain.projects.project_starlink
-import skillmanagement.domain.skills.skill_kotlin
-import skillmanagement.domain.skills.skill_python
+import skillmanagement.domain.skills.model.skill_kotlin
+import skillmanagement.domain.skills.model.skill_python
 import skillmanagement.test.uuid
 import java.time.Instant
 import java.time.LocalDate

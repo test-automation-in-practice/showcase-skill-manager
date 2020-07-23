@@ -6,7 +6,7 @@ import skillmanagement.domain.Validation.Companion.validate
 import skillmanagement.domain.isGreaterThanOrEqualTo
 import skillmanagement.domain.isLessThanOrEqualTo
 import skillmanagement.domain.projects.Project
-import skillmanagement.domain.skills.Skill
+import skillmanagement.domain.skills.model.Skill
 import java.time.Instant
 import java.time.LocalDate
 import java.util.UUID

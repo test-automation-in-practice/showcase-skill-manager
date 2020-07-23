@@ -8,7 +8,7 @@ import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.TestFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.json.JsonTest
-import skillmanagement.domain.skills.Skill
+import skillmanagement.domain.skills.model.Skill
 
 @JsonTest
 abstract class AbstractJsonDeserializationTests<T> {

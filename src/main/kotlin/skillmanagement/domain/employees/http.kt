@@ -9,8 +9,8 @@ import org.springframework.hateoas.server.mvc.BasicLinkBuilder.linkToCurrentMapp
 import skillmanagement.domain.projects.ProjectDescription
 import skillmanagement.domain.projects.ProjectLabel
 import skillmanagement.domain.projects.linkToProject
-import skillmanagement.domain.skills.SkillLabel
-import skillmanagement.domain.skills.linkToSkill
+import skillmanagement.domain.skills.model.SkillLabel
+import skillmanagement.domain.skills.model.linkToSkill
 import java.time.Instant
 import java.time.LocalDate
 import java.util.UUID

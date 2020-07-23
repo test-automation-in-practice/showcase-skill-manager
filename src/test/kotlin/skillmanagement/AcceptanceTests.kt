@@ -29,8 +29,8 @@ import skillmanagement.domain.employees.Title
 import skillmanagement.domain.projects.ProjectDescription
 import skillmanagement.domain.projects.ProjectLabel
 import skillmanagement.domain.projects.ProjectResource
-import skillmanagement.domain.skills.SkillLabel
-import skillmanagement.domain.skills.SkillResource
+import skillmanagement.domain.skills.model.SkillLabel
+import skillmanagement.domain.skills.model.SkillResource
 import skillmanagement.test.End2EndTest
 import kotlin.reflect.KClass
 

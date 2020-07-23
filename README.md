@@ -48,6 +48,7 @@
 
 ```
 {
-  "label": "Kotlin"
+  "label": "Kotlin",
+  "tags": ["cool", "language"],
 }
 ```

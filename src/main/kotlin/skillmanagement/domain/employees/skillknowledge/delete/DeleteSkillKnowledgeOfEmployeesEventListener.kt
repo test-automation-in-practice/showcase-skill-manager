@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 import skillmanagement.domain.employees.find.EmployeesWithSkill
 import skillmanagement.domain.employees.find.FindEmployeeIds
 import skillmanagement.domain.employees.update.UpdateEmployeeById
-import skillmanagement.domain.skills.SkillDeletedEvent
+import skillmanagement.domain.skills.model.SkillDeletedEvent
 
 @Component
 class DeleteSkillKnowledgeOfEmployeesEventListener(
