@@ -16,6 +16,7 @@ import skillmanagement.domain.employees.model.ProjectAssignment
 import skillmanagement.domain.employees.model.ProjectContribution
 import skillmanagement.domain.employees.model.toResource
 import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentResult.EmployeeNotFound
+import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentResult.ProjectAssignmentNotChanged
 import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentResult.ProjectAssignmentNotFound
 import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentResult.SuccessfullyUpdatedProjectAssignment
 import java.time.LocalDate
@@ -51,6 +52,7 @@ class UpdateProjectAssignmentByIdHttpAdapter(
     ): ResponseEntity<EmployeeResource> =
         when (val result = updateProjectAssignmentById(employeeId, assignmentId, block)) {
             EmployeeNotFound, ProjectAssignmentNotFound -> notFound().build()
+            is ProjectAssignmentNotChanged -> ok(result.employee.toResource())
             is SuccessfullyUpdatedProjectAssignment -> ok(result.employee.toResource())
         }
 

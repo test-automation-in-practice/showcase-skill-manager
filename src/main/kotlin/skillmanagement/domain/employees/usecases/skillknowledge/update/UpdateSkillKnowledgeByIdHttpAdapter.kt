@@ -16,6 +16,7 @@ import skillmanagement.domain.employees.model.SkillKnowledge
 import skillmanagement.domain.employees.model.SkillLevel
 import skillmanagement.domain.employees.model.toResource
 import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSkillKnowledgeResult.EmployeeNotFound
+import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSkillKnowledgeResult.SkillKnowledgeNotChanged
 import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSkillKnowledgeResult.SkillKnowledgeNotFound
 import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSkillKnowledgeResult.SuccessfullyUpdatedSkillKnowledge
 import java.util.UUID
@@ -50,6 +51,7 @@ class UpdateSkillKnowledgeByIdHttpAdapter(
     ): ResponseEntity<EmployeeResource> =
         when (val result = updateSkillKnowledgeById(employeeId, skillId, block)) {
             EmployeeNotFound, SkillKnowledgeNotFound -> notFound().build()
+            is SkillKnowledgeNotChanged -> ok(result.employee.toResource())
             is SuccessfullyUpdatedSkillKnowledge -> ok(result.employee.toResource())
         }
 
