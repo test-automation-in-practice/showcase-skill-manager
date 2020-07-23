@@ -1,7 +1,7 @@
 package skillmanagement.domain.projects.usecases.update
 
-import skillmanagement.domain.BusinessFunction
-import skillmanagement.domain.PublishEvent
+import skillmanagement.common.events.PublishEvent
+import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.model.ProjectUpdatedEvent
 import skillmanagement.domain.projects.usecases.get.GetProjectById

@@ -1,7 +1,7 @@
 package skillmanagement.domain.employees.usecases.projectassignments.create
 
 import org.springframework.util.IdGenerator
-import skillmanagement.domain.BusinessFunction
+import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.ProjectAssignment
 import skillmanagement.domain.employees.model.ProjectContribution
 import skillmanagement.domain.employees.usecases.get.GetEmployeeById

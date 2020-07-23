@@ -1,6 +1,6 @@
 package skillmanagement.domain.skills.usecases.find
 
-import skillmanagement.domain.BusinessFunction
+import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.skills.model.Skill
 
 @BusinessFunction

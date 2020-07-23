@@ -1,4 +1,4 @@
-package skillmanagement.domain
+package skillmanagement.common.stereotypes
 
 import org.springframework.stereotype.Component
 import kotlin.annotation.AnnotationTarget.CLASS

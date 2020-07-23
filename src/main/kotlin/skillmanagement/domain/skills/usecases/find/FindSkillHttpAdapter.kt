@@ -4,7 +4,7 @@ import org.springframework.hateoas.CollectionModel
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import skillmanagement.domain.HttpAdapter
+import skillmanagement.common.stereotypes.HttpAdapter
 import skillmanagement.domain.skills.model.SkillResource
 import skillmanagement.domain.skills.model.toResource
 

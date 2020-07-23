@@ -1,4 +1,4 @@
-package skillmanagement.domain
+package skillmanagement.common.stereotypes
 
 import org.springframework.stereotype.Controller
 import org.springframework.transaction.annotation.Transactional

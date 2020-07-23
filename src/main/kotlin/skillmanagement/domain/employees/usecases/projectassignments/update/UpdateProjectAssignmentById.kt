@@ -1,6 +1,6 @@
 package skillmanagement.domain.employees.usecases.projectassignments.update
 
-import skillmanagement.domain.BusinessFunction
+import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.ProjectAssignment
 import skillmanagement.domain.employees.usecases.get.GetEmployeeById
 import skillmanagement.domain.employees.usecases.update.RetryOnConcurrentEmployeeUpdate

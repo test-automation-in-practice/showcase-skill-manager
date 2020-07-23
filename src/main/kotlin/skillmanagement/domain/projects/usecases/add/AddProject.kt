@@ -1,8 +1,8 @@
 package skillmanagement.domain.projects.usecases.add
 
 import org.springframework.util.IdGenerator
-import skillmanagement.domain.BusinessFunction
-import skillmanagement.domain.PublishEvent
+import skillmanagement.common.events.PublishEvent
+import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.model.ProjectAddedEvent
 import skillmanagement.domain.projects.model.ProjectDescription

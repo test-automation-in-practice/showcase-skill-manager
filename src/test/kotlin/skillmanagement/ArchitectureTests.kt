@@ -1,6 +1,5 @@
 package skillmanagement
 
-import com.tngtech.archunit.core.domain.JavaClasses
 import com.tngtech.archunit.core.importer.ClassFileImporter
 import com.tngtech.archunit.core.importer.ImportOption.DoNotIncludeArchives
 import com.tngtech.archunit.core.importer.ImportOption.DoNotIncludeJars
@@ -17,33 +16,45 @@ import skillmanagement.test.UnitTest
 @TestInstance(PER_CLASS)
 internal class ArchitectureTests {
 
-    // General Setup
-    private val basePackage = this::class.java.packageName
     private val options = ImportOptions()
         .with(DoNotIncludeJars())
         .with(DoNotIncludeArchives())
         .with(DoNotIncludeTests())
-    private val allClasses: JavaClasses = ClassFileImporter(options).importPackages(basePackage)
-    private val domainClasses: JavaClasses = ClassFileImporter(options).importPackages("$basePackage.domain")
+
+    private val basePackage = this::class.java.packageName
+    private val domainPackage = "$basePackage.domain"
+    private val commonPackage = "$basePackage.common"
 
     @Test
     fun `no cyclic dependencies between packages`() {
         SlicesRuleDefinition.slices()
             .matching("(**)")
             .should().beFreeOfCycles()
-            .check(allClasses)
+            .check(classesOf(basePackage))
     }
 
     @Test
     fun `sub domains boundaries are respected`() {
         Architectures.layeredArchitecture()
-            .layer("employees").definedBy("$basePackage.domain.employees..")
-            .layer("projects").definedBy("$basePackage.domain.projects..")
-            .layer("skills").definedBy("$basePackage.domain.skills..")
+            .layer("employees").definedBy("$domainPackage.employees..")
+            .layer("projects").definedBy("$domainPackage.projects..")
+            .layer("skills").definedBy("$domainPackage.skills..")
             .whereLayer("projects").mayOnlyBeAccessedByLayers("employees")
             .whereLayer("skills").mayOnlyBeAccessedByLayers("employees")
             .whereLayer("employees").mayNotBeAccessedByAnyLayer()
-            .check(domainClasses)
+            .check(classesOf(domainPackage))
     }
 
+    @Test
+    fun `common package does not rely on domain package`() {
+        Architectures.layeredArchitecture()
+            .layer("common").definedBy("$commonPackage..")
+            .layer("domain").definedBy("$domainPackage..")
+            .whereLayer("common").mayOnlyBeAccessedByLayers("domain")
+            .whereLayer("domain").mayNotBeAccessedByAnyLayer()
+            .check(classesOf(commonPackage, domainPackage))
+    }
+
+    private fun classesOf(vararg packages: String) =
+        ClassFileImporter(options).importPackages(*packages)
 }

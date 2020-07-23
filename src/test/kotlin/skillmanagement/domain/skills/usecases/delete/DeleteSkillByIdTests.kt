@@ -6,7 +6,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
-import skillmanagement.domain.PublishEvent
+import skillmanagement.common.events.PublishEvent
 import skillmanagement.domain.skills.model.SkillDeletedEvent
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.usecases.delete.DeleteSkillByIdResult.SkillNotFound

@@ -1,6 +1,6 @@
 package skillmanagement.domain.employees.usecases.skillknowledge.update
 
-import skillmanagement.domain.BusinessFunction
+import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.SkillKnowledge
 import skillmanagement.domain.employees.usecases.get.GetEmployeeById
 import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSkillKnowledgeResult.EmployeeNotFound

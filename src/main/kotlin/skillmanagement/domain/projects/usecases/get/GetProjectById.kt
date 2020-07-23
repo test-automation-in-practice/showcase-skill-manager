@@ -1,6 +1,6 @@
 package skillmanagement.domain.projects.usecases.get
 
-import skillmanagement.domain.BusinessFunction
+import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.projects.model.Project
 import java.util.UUID
 

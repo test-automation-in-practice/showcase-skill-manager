@@ -2,7 +2,7 @@ package skillmanagement.domain.employees.usecases.find
 
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
-import skillmanagement.domain.TechnicalFunction
+import skillmanagement.common.stereotypes.TechnicalFunction
 import java.util.UUID
 
 @TechnicalFunction

@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
-import skillmanagement.common.searchTerms
-import skillmanagement.domain.TechnicalFunction
+import skillmanagement.common.search.searchTerms
+import skillmanagement.common.stereotypes.TechnicalFunction
 import skillmanagement.domain.skills.model.Skill
 
 @TechnicalFunction

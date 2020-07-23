@@ -9,10 +9,10 @@ import com.tngtech.archunit.core.importer.ImportOption.DoNotIncludeTests
 import com.tngtech.archunit.core.importer.ImportOptions
 import org.junit.jupiter.api.Test
 import org.springframework.stereotype.Component
-import skillmanagement.domain.BusinessFunction
-import skillmanagement.domain.HttpAdapter
-import skillmanagement.domain.MetricProvider
-import skillmanagement.domain.TechnicalFunction
+import skillmanagement.common.stereotypes.BusinessFunction
+import skillmanagement.common.stereotypes.HttpAdapter
+import skillmanagement.common.stereotypes.MetricProvider
+import skillmanagement.common.stereotypes.TechnicalFunction
 import java.io.File
 import kotlin.reflect.KClass
 

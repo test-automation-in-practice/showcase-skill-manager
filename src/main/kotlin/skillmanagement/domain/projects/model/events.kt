@@ -1,6 +1,6 @@
 package skillmanagement.domain.projects.model
 
-import skillmanagement.domain.Event
+import skillmanagement.common.events.Event
 
 data class ProjectAddedEvent(val project: Project) : Event
 data class ProjectUpdatedEvent(val project: Project) : Event

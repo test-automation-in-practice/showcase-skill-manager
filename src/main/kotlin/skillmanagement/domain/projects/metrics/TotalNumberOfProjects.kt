@@ -4,8 +4,8 @@ import io.micrometer.core.instrument.MeterRegistry
 import mu.KotlinLogging.logger
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.scheduling.annotation.Scheduled
-import skillmanagement.domain.MetricProvider
-import skillmanagement.domain.TechnicalFunction
+import skillmanagement.common.stereotypes.MetricProvider
+import skillmanagement.common.stereotypes.TechnicalFunction
 import java.util.concurrent.atomic.AtomicLong
 import javax.annotation.PostConstruct
 

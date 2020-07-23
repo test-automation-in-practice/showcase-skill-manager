@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
-import skillmanagement.domain.HttpAdapter
+import skillmanagement.common.stereotypes.HttpAdapter
 import skillmanagement.domain.employees.model.EmployeeResource
 import skillmanagement.domain.employees.model.toResource
 import java.util.UUID

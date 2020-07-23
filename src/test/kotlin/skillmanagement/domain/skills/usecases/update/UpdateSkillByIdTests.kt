@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.retry.annotation.EnableRetry
-import skillmanagement.domain.PublishEvent
+import skillmanagement.common.events.PublishEvent
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.SkillUpdatedEvent

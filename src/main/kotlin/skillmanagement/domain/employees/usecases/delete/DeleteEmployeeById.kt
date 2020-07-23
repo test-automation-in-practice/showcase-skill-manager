@@ -1,6 +1,6 @@
 package skillmanagement.domain.employees.usecases.delete
 
-import skillmanagement.domain.BusinessFunction
+import skillmanagement.common.stereotypes.BusinessFunction
 import java.util.UUID
 
 @BusinessFunction

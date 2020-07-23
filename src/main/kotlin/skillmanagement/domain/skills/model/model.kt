@@ -2,10 +2,10 @@ package skillmanagement.domain.skills.model
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
-import skillmanagement.domain.Validation.Companion.validate
-import skillmanagement.domain.hasMaxLengthOf
-import skillmanagement.domain.isNotBlank
-import skillmanagement.domain.matchesPattern
+import skillmanagement.common.validation.Validation.Companion.validate
+import skillmanagement.common.validation.hasMaxLengthOf
+import skillmanagement.common.validation.isNotBlank
+import skillmanagement.common.validation.matchesPattern
 import java.time.Instant
 import java.util.SortedSet
 import java.util.UUID

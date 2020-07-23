@@ -1,7 +1,7 @@
 package skillmanagement.domain.skills.usecases.delete
 
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
-import skillmanagement.domain.TechnicalFunction
+import skillmanagement.common.stereotypes.TechnicalFunction
 import java.util.UUID
 
 @TechnicalFunction

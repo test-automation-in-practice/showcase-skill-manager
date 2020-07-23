@@ -1,4 +1,4 @@
-package skillmanagement.common
+package skillmanagement.common.search
 
 import java.text.Normalizer.Form.NFD
 import java.text.Normalizer.normalize

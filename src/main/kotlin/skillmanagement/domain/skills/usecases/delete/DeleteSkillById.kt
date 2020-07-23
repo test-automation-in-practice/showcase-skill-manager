@@ -1,7 +1,7 @@
 package skillmanagement.domain.skills.usecases.delete
 
-import skillmanagement.domain.BusinessFunction
-import skillmanagement.domain.PublishEvent
+import skillmanagement.common.events.PublishEvent
+import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.skills.model.SkillDeletedEvent
 import skillmanagement.domain.skills.usecases.delete.DeleteSkillByIdResult.SkillNotFound
 import skillmanagement.domain.skills.usecases.delete.DeleteSkillByIdResult.SuccessfullyDeleted

@@ -15,7 +15,7 @@ import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.put
-import skillmanagement.common.ApplyPatch
+import skillmanagement.common.http.patch.ApplyPatch
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.usecases.update.UpdateSkillByIdResult.SkillNotFound

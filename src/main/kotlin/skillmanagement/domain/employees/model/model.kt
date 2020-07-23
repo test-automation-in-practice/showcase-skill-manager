@@ -2,9 +2,9 @@ package skillmanagement.domain.employees.model
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
-import skillmanagement.domain.Validation.Companion.validate
-import skillmanagement.domain.isGreaterThanOrEqualTo
-import skillmanagement.domain.isLessThanOrEqualTo
+import skillmanagement.common.validation.Validation.Companion.validate
+import skillmanagement.common.validation.isGreaterThanOrEqualTo
+import skillmanagement.common.validation.isLessThanOrEqualTo
 import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.skills.model.Skill
 import java.time.Instant

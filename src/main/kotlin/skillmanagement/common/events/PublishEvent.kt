@@ -1,7 +1,8 @@
-package skillmanagement.domain
+package skillmanagement.common.events
 
 import mu.KotlinLogging.logger
 import org.springframework.context.ApplicationEventPublisher
+import skillmanagement.common.stereotypes.TechnicalFunction
 
 @TechnicalFunction
 class PublishEvent(
@@ -16,5 +17,3 @@ class PublishEvent(
     }
 
 }
-
-interface Event

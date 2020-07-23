@@ -6,7 +6,7 @@ import io.mockk.mockk
 import io.mockk.verifyOrder
 import org.junit.jupiter.api.Test
 import org.springframework.util.IdGenerator
-import skillmanagement.domain.PublishEvent
+import skillmanagement.common.events.PublishEvent
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillAddedEvent
 import skillmanagement.domain.skills.model.SkillLabel

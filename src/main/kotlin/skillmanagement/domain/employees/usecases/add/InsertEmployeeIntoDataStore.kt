@@ -2,7 +2,7 @@ package skillmanagement.domain.employees.usecases.add
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
-import skillmanagement.domain.TechnicalFunction
+import skillmanagement.common.stereotypes.TechnicalFunction
 import skillmanagement.domain.employees.model.Employee
 
 @TechnicalFunction

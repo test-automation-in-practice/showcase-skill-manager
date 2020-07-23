@@ -1,7 +1,7 @@
 package skillmanagement.domain.employees.usecases.add
 
 import org.springframework.util.IdGenerator
-import skillmanagement.domain.BusinessFunction
+import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.EmailAddress
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.FirstName

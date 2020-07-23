@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import skillmanagement.common.ApplyPatch
-import skillmanagement.domain.HttpAdapter
+import skillmanagement.common.http.patch.ApplyPatch
+import skillmanagement.common.stereotypes.HttpAdapter
 import skillmanagement.domain.employees.model.ProjectAssignment
 import skillmanagement.domain.employees.model.ProjectAssignmentResource
 import skillmanagement.domain.employees.model.ProjectContribution

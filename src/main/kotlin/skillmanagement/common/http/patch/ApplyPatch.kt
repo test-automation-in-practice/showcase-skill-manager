@@ -1,10 +1,10 @@
-package skillmanagement.common
+package skillmanagement.common.http.patch
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.github.fge.jsonpatch.JsonPatch
-import skillmanagement.domain.TechnicalFunction
+import skillmanagement.common.stereotypes.TechnicalFunction
 
 @TechnicalFunction
 class ApplyPatch(
@@ -21,5 +21,3 @@ class ApplyPatch(
     }
 
 }
-
-class InvalidPatchException(cause: Throwable) : RuntimeException(cause)

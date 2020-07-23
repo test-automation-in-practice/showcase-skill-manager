@@ -3,7 +3,7 @@ package skillmanagement.test.contracts
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
-import skillmanagement.domain.ValidationException
+import skillmanagement.common.validation.ValidationException
 
 interface MatchesPatternStringTypeContract : StringTypeContract {
 
