@@ -1,9 +1,11 @@
 package skillmanagement.domain.employees.usecases.add
 
 import org.springframework.util.IdGenerator
+import skillmanagement.common.events.PublishEvent
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.EmailAddress
 import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeAddedEvent
 import skillmanagement.domain.employees.model.FirstName
 import skillmanagement.domain.employees.model.LastName
 import skillmanagement.domain.employees.model.TelephoneNumber
@@ -14,6 +16,7 @@ import java.time.Clock
 class AddEmployee(
     private val idGenerator: IdGenerator,
     private val insertEmployeeIntoDataStore: InsertEmployeeIntoDataStore,
+    private val publishEvent: PublishEvent,
     private val clock: Clock
 ) {
 
@@ -38,6 +41,7 @@ class AddEmployee(
             lastUpdate = clock.instant()
         )
         insertEmployeeIntoDataStore(employee)
+        publishEvent(EmployeeAddedEvent(employee))
         return employee
     }
 

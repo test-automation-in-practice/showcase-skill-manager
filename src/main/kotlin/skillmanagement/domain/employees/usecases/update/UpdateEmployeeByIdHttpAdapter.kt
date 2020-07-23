@@ -19,8 +19,9 @@ import skillmanagement.domain.employees.model.LastName
 import skillmanagement.domain.employees.model.TelephoneNumber
 import skillmanagement.domain.employees.model.Title
 import skillmanagement.domain.employees.model.toResource
-import skillmanagement.domain.employees.usecases.update.UpdateEmplyeeByIdResult.EmployeeNotFound
-import skillmanagement.domain.employees.usecases.update.UpdateEmplyeeByIdResult.SuccessfullyUpdated
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotChanged
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotFound
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdatedEmployee
 import java.util.UUID
 
 @HttpAdapter
@@ -39,8 +40,9 @@ class UpdateEmployeeByIdHttpAdapter(
             it.merge(request)
         }
         return when (result) {
-            is EmployeeNotFound -> notFound().build()
-            is SuccessfullyUpdated -> ok(result.employee.toResource())
+            is NotUpdatedBecauseEmployeeNotFound -> notFound().build()
+            is NotUpdatedBecauseEmployeeNotChanged -> ok(result.employee.toResource())
+            is SuccessfullyUpdatedEmployee -> ok(result.employee.toResource())
         }
     }
 
@@ -53,8 +55,9 @@ class UpdateEmployeeByIdHttpAdapter(
             it.merge(applyPatch(patch, it.toChangeData()))
         }
         return when (result) {
-            is EmployeeNotFound -> notFound().build()
-            is SuccessfullyUpdated -> ok(result.employee.toResource())
+            is NotUpdatedBecauseEmployeeNotFound -> notFound().build()
+            is NotUpdatedBecauseEmployeeNotChanged -> ok(result.employee.toResource())
+            is SuccessfullyUpdatedEmployee -> ok(result.employee.toResource())
         }
     }
 

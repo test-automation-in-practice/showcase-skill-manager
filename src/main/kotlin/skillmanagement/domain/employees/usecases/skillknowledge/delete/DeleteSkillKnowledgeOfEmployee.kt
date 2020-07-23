@@ -1,30 +1,31 @@
 package skillmanagement.domain.employees.usecases.skillknowledge.delete
 
 import skillmanagement.common.stereotypes.BusinessFunction
-import skillmanagement.domain.employees.usecases.get.GetEmployeeById
+import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.usecases.skillknowledge.delete.DeleteSkillKnowledgeOfEmployeeResult.EmployeeNotFound
 import skillmanagement.domain.employees.usecases.skillknowledge.delete.DeleteSkillKnowledgeOfEmployeeResult.SkillKnowledgeNotFound
-import skillmanagement.domain.employees.usecases.skillknowledge.delete.DeleteSkillKnowledgeOfEmployeeResult.SuccessfullyDeleted
-import skillmanagement.domain.employees.usecases.update.RetryOnConcurrentEmployeeUpdate
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeInDataStore
+import skillmanagement.domain.employees.usecases.skillknowledge.delete.DeleteSkillKnowledgeOfEmployeeResult.SuccessfullyDeletedSkillKnowledge
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeById
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotChanged
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotFound
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdatedEmployee
 import java.util.UUID
 
 @BusinessFunction
 class DeleteSkillKnowledgeOfEmployee(
-    private val getEmployeeById: GetEmployeeById,
-    private val updateEmployeeInDataStore: UpdateEmployeeInDataStore
+    private val updateEmployeeById: UpdateEmployeeById
 ) {
 
     // TODO: Security - Only invokable by Employee themselves or Employee-Admins
-    @RetryOnConcurrentEmployeeUpdate
     operator fun invoke(employeeId: UUID, skillId: UUID): DeleteSkillKnowledgeOfEmployeeResult {
-        val employee = getEmployeeById(employeeId) ?: return EmployeeNotFound
-        if (!employee.hasSkillKnowledgeBySkillId(skillId)) {
-            return SkillKnowledgeNotFound
+        val updateResult = updateEmployeeById(employeeId) {
+            it.removeSkillKnowledgeBySkillId(skillId)
         }
-
-        updateEmployeeInDataStore(employee.removeSkillKnowledgeBySkillId(skillId))
-        return SuccessfullyDeleted
+        return when (updateResult) {
+            is NotUpdatedBecauseEmployeeNotFound -> EmployeeNotFound
+            is NotUpdatedBecauseEmployeeNotChanged -> SkillKnowledgeNotFound
+            is SuccessfullyUpdatedEmployee -> SuccessfullyDeletedSkillKnowledge(updateResult.employee)
+        }
     }
 
 }
@@ -32,5 +33,5 @@ class DeleteSkillKnowledgeOfEmployee(
 sealed class DeleteSkillKnowledgeOfEmployeeResult {
     object EmployeeNotFound : DeleteSkillKnowledgeOfEmployeeResult()
     object SkillKnowledgeNotFound : DeleteSkillKnowledgeOfEmployeeResult()
-    object SuccessfullyDeleted : DeleteSkillKnowledgeOfEmployeeResult()
+    data class SuccessfullyDeletedSkillKnowledge(val employee: Employee) : DeleteSkillKnowledgeOfEmployeeResult()
 }

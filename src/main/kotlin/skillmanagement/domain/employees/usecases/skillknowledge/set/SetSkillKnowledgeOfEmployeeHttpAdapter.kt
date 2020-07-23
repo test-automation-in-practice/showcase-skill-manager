@@ -1,4 +1,4 @@
-package skillmanagement.domain.employees.usecases.skillknowledge.assign
+package skillmanagement.domain.employees.usecases.skillknowledge.set
 
 import mu.KotlinLogging.logger
 import org.springframework.http.ResponseEntity
@@ -9,18 +9,18 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.stereotypes.HttpAdapter
-import skillmanagement.domain.employees.model.SkillKnowledgeResource
+import skillmanagement.domain.employees.model.EmployeeResource
 import skillmanagement.domain.employees.model.SkillLevel
 import skillmanagement.domain.employees.model.toResource
-import skillmanagement.domain.employees.usecases.skillknowledge.assign.SetSkillKnowledgeOfEmployeeResult.EmployeeNotFound
-import skillmanagement.domain.employees.usecases.skillknowledge.assign.SetSkillKnowledgeOfEmployeeResult.SkillNotFound
-import skillmanagement.domain.employees.usecases.skillknowledge.assign.SetSkillKnowledgeOfEmployeeResult.SuccessfullyAssigned
+import skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnowledgeOfEmployeeResult.EmployeeNotFound
+import skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnowledgeOfEmployeeResult.SkillNotFound
+import skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnowledgeOfEmployeeResult.SuccessfullyAssigned
 import java.util.UUID
 
 @HttpAdapter
 @RequestMapping("/api/employees/{employeeId}/skills")
-class AssignSkillKnowledgeOfEmployeeHttpAdapter(
-    private val assignSkillKnowledgeOfEmployee: AssignSkillKnowledgeOfEmployee
+class SetSkillKnowledgeOfEmployeeHttpAdapter(
+    private val setSkillKnowledgeOfEmployee: SetSkillKnowledgeOfEmployee
 ) {
 
     private val log = logger {}
@@ -29,9 +29,9 @@ class AssignSkillKnowledgeOfEmployeeHttpAdapter(
     fun post(
         @PathVariable employeeId: UUID,
         @RequestBody request: Request
-    ): ResponseEntity<SkillKnowledgeResource> {
+    ): ResponseEntity<EmployeeResource> {
         log.info { "Setting knowledge for skill [${request.skillId}] of employee [$employeeId]" }
-        val result = assignSkillKnowledgeOfEmployee(
+        val result = setSkillKnowledgeOfEmployee(
             employeeId = employeeId,
             skillId = request.skillId,
             level = request.level,
@@ -40,7 +40,7 @@ class AssignSkillKnowledgeOfEmployeeHttpAdapter(
         log.info { "Result: $result" }
         return when (result) {
             EmployeeNotFound, SkillNotFound -> notFound().build()
-            is SuccessfullyAssigned -> ok(result.skillKnowledge.toResource(employeeId))
+            is SuccessfullyAssigned -> ok(result.employee.toResource())
         }
     }
 

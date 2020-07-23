@@ -13,7 +13,7 @@ import skillmanagement.domain.employees.model.TelephoneNumber
 import skillmanagement.domain.employees.model.Title
 import skillmanagement.domain.employees.usecases.add.AddEmployee
 import skillmanagement.domain.employees.usecases.projectassignments.create.CreateProjectAssignmentForEmployee
-import skillmanagement.domain.employees.usecases.skillknowledge.assign.AssignSkillKnowledgeOfEmployee
+import skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnowledgeOfEmployee
 import skillmanagement.domain.projects.model.ProjectDescription
 import skillmanagement.domain.projects.model.ProjectLabel
 import skillmanagement.domain.projects.usecases.add.AddProject
@@ -30,7 +30,7 @@ class TestDataInserter(
     private val addSkill: AddSkill,
     private val addProject: AddProject,
     private val addEmployee: AddEmployee,
-    private val assignSkillKnowledgeOfEmployee: AssignSkillKnowledgeOfEmployee,
+    private val setSkillKnowledgeOfEmployee: SetSkillKnowledgeOfEmployee,
     private val createProjectAssignmentForEmployee: CreateProjectAssignmentForEmployee
 ) : ApplicationRunner {
 
@@ -46,7 +46,7 @@ class TestDataInserter(
             telephone = TelephoneNumber("+49 555 123456")
         )
 
-        assignSkillKnowledgeOfEmployee(
+        setSkillKnowledgeOfEmployee(
             employeeId = maxMustermann.id,
             skillId = kotlin.id,
             level = SkillLevel(7),

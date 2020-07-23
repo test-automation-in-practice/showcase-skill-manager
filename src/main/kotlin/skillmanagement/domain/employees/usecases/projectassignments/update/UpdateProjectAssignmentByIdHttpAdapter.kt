@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.http.patch.ApplyPatch
 import skillmanagement.common.stereotypes.HttpAdapter
+import skillmanagement.domain.employees.model.EmployeeResource
 import skillmanagement.domain.employees.model.ProjectAssignment
-import skillmanagement.domain.employees.model.ProjectAssignmentResource
 import skillmanagement.domain.employees.model.ProjectContribution
 import skillmanagement.domain.employees.model.toResource
 import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentResult.EmployeeNotFound
 import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentResult.ProjectAssignmentNotFound
-import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentResult.SuccessfullyUpdated
+import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentResult.SuccessfullyUpdatedProjectAssignment
 import java.time.LocalDate
 import java.util.UUID
 
@@ -33,32 +33,26 @@ class UpdateProjectAssignmentByIdHttpAdapter(
         @PathVariable employeeId: UUID,
         @PathVariable assignmentId: UUID,
         @RequestBody request: ChangeData
-    ): ResponseEntity<ProjectAssignmentResource> {
-        val result = updateProjectAssignmentById(employeeId, assignmentId) {
-            it.merge(request)
-        }
-        return when (result) {
-            is EmployeeNotFound -> notFound().build()
-            is ProjectAssignmentNotFound -> notFound().build()
-            is SuccessfullyUpdated -> ok(result.assignment.toResource(employeeId))
-        }
-    }
+    ): ResponseEntity<EmployeeResource> =
+        handleUpdate(employeeId, assignmentId) { it.merge(request) }
 
     @PatchMapping(consumes = ["application/json-patch+json"])
     fun patch(
         @PathVariable employeeId: UUID,
         @PathVariable assignmentId: UUID,
         @RequestBody patch: JsonPatch
-    ): ResponseEntity<ProjectAssignmentResource> {
-        val result = updateProjectAssignmentById(employeeId, assignmentId) {
-            it.merge(applyPatch(patch, it.toChangeData()))
+    ): ResponseEntity<EmployeeResource> =
+        handleUpdate(employeeId, assignmentId) { it.merge(applyPatch(patch, it.toChangeData())) }
+
+    private fun handleUpdate(
+        employeeId: UUID,
+        assignmentId: UUID,
+        block: (ProjectAssignment) -> ProjectAssignment
+    ): ResponseEntity<EmployeeResource> =
+        when (val result = updateProjectAssignmentById(employeeId, assignmentId, block)) {
+            EmployeeNotFound, ProjectAssignmentNotFound -> notFound().build()
+            is SuccessfullyUpdatedProjectAssignment -> ok(result.employee.toResource())
         }
-        return when (result) {
-            is EmployeeNotFound -> notFound().build()
-            is ProjectAssignmentNotFound -> notFound().build()
-            is SuccessfullyUpdated -> ok(result.assignment.toResource(employeeId))
-        }
-    }
 
     data class ChangeData(
         val contribution: ProjectContribution,

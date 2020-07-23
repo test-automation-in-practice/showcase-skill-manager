@@ -24,11 +24,11 @@ CREATE (DeleteProjectAssignmentsOfEmployeesEventListener:Component {name:'Delete
 CREATE (UpdateProjectAssignmentById:BusinessFunction {name:'UpdateProjectAssignmentById', fullName:'skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentById'})
 CREATE (UpdateProjectAssignmentByIdHttpAdapter:HttpAdapter {name:'UpdateProjectAssignmentByIdHttpAdapter', fullName:'skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentByIdHttpAdapter'})
 CREATE (UpdateProjectAssignmentsOfEmployeesEventListener:Component {name:'UpdateProjectAssignmentsOfEmployeesEventListener', fullName:'skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentsOfEmployeesEventListener'})
-CREATE (AssignSkillKnowledgeOfEmployee:BusinessFunction {name:'AssignSkillKnowledgeOfEmployee', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.assign.AssignSkillKnowledgeOfEmployee'})
-CREATE (AssignSkillKnowledgeOfEmployeeHttpAdapter:HttpAdapter {name:'AssignSkillKnowledgeOfEmployeeHttpAdapter', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.assign.AssignSkillKnowledgeOfEmployeeHttpAdapter'})
 CREATE (DeleteSkillKnowledgeOfEmployee:BusinessFunction {name:'DeleteSkillKnowledgeOfEmployee', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.delete.DeleteSkillKnowledgeOfEmployee'})
 CREATE (DeleteSkillKnowledgeOfEmployeeHttpAdapter:HttpAdapter {name:'DeleteSkillKnowledgeOfEmployeeHttpAdapter', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.delete.DeleteSkillKnowledgeOfEmployeeHttpAdapter'})
 CREATE (DeleteSkillKnowledgeOfEmployeesEventListener:Component {name:'DeleteSkillKnowledgeOfEmployeesEventListener', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.delete.DeleteSkillKnowledgeOfEmployeesEventListener'})
+CREATE (SetSkillKnowledgeOfEmployee:BusinessFunction {name:'SetSkillKnowledgeOfEmployee', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnowledgeOfEmployee'})
+CREATE (SetSkillKnowledgeOfEmployeeHttpAdapter:HttpAdapter {name:'SetSkillKnowledgeOfEmployeeHttpAdapter', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnowledgeOfEmployeeHttpAdapter'})
 CREATE (UpdateSkillKnowledgeById:BusinessFunction {name:'UpdateSkillKnowledgeById', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSkillKnowledgeById'})
 CREATE (UpdateSkillKnowledgeByIdHttpAdapter:HttpAdapter {name:'UpdateSkillKnowledgeByIdHttpAdapter', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSkillKnowledgeByIdHttpAdapter'})
 CREATE (UpdateSkillKnowledgeOfEmployeesEventListener:Component {name:'UpdateSkillKnowledgeOfEmployeesEventListener', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSkillKnowledgeOfEmployeesEventListener'})
@@ -71,11 +71,14 @@ CREATE (UpdateSkillByIdHttpAdapter:HttpAdapter {name:'UpdateSkillByIdHttpAdapter
 CREATE (UpdateSkillInDataStore:TechnicalFunction {name:'UpdateSkillInDataStore', fullName:'skillmanagement.domain.skills.usecases.update.UpdateSkillInDataStore'})
 CREATE (TotalNumberOfEmployees)-[:USES]->(GetTotalNumberOfEmployeesFromDataStore)
 
-CREATE (AddEmployee)-[:USES]->(InsertEmployeeIntoDataStore)
+CREATE (AddEmployee)-[:USES]->(InsertEmployeeIntoDataStore),
+       (AddEmployee)-[:USES]->(PublishEvent)
 
 CREATE (AddEmployeeHttpAdapter)-[:USES]->(AddEmployee)
 
-CREATE (DeleteEmployeeById)-[:USES]->(DeleteEmployeeFromDataStore)
+CREATE (DeleteEmployeeById)-[:USES]->(GetEmployeeById),
+       (DeleteEmployeeById)-[:USES]->(DeleteEmployeeFromDataStore),
+       (DeleteEmployeeById)-[:USES]->(PublishEvent)
 
 CREATE (DeleteEmployeeByIdHttpAdapter)-[:USES]->(DeleteEmployeeById)
 
@@ -89,22 +92,19 @@ CREATE (GetEmployeeById)-[:USES]->(GetEmployeeFromDataStore)
 
 CREATE (GetEmployeeByIdHttpAdapter)-[:USES]->(GetEmployeeById)
 
-CREATE (CreateProjectAssignmentForEmployee)-[:USES]->(GetEmployeeById),
-       (CreateProjectAssignmentForEmployee)-[:USES]->(GetProjectById),
-       (CreateProjectAssignmentForEmployee)-[:USES]->(UpdateEmployeeInDataStore)
+CREATE (CreateProjectAssignmentForEmployee)-[:USES]->(GetProjectById),
+       (CreateProjectAssignmentForEmployee)-[:USES]->(UpdateEmployeeById)
 
 CREATE (CreateProjectAssignmentForEmployeeHttpAdapter)-[:USES]->(CreateProjectAssignmentForEmployee)
 
-CREATE (DeleteProjectAssignmentOfEmployee)-[:USES]->(GetEmployeeById),
-       (DeleteProjectAssignmentOfEmployee)-[:USES]->(UpdateEmployeeInDataStore)
+CREATE (DeleteProjectAssignmentOfEmployee)-[:USES]->(UpdateEmployeeById)
 
 CREATE (DeleteProjectAssignmentOfEmployeeHttpAdapter)-[:USES]->(DeleteProjectAssignmentOfEmployee)
 
 CREATE (DeleteProjectAssignmentsOfEmployeesEventListener)-[:USES]->(FindEmployeeIds),
        (DeleteProjectAssignmentsOfEmployeesEventListener)-[:USES]->(UpdateEmployeeById)
 
-CREATE (UpdateProjectAssignmentById)-[:USES]->(GetEmployeeById),
-       (UpdateProjectAssignmentById)-[:USES]->(UpdateEmployeeInDataStore)
+CREATE (UpdateProjectAssignmentById)-[:USES]->(UpdateEmployeeById)
 
 CREATE (UpdateProjectAssignmentByIdHttpAdapter)-[:USES]->(UpdateProjectAssignmentById),
        (UpdateProjectAssignmentByIdHttpAdapter)-[:USES]->(ApplyPatch)
@@ -112,22 +112,19 @@ CREATE (UpdateProjectAssignmentByIdHttpAdapter)-[:USES]->(UpdateProjectAssignmen
 CREATE (UpdateProjectAssignmentsOfEmployeesEventListener)-[:USES]->(FindEmployeeIds),
        (UpdateProjectAssignmentsOfEmployeesEventListener)-[:USES]->(UpdateEmployeeById)
 
-CREATE (AssignSkillKnowledgeOfEmployee)-[:USES]->(GetEmployeeById),
-       (AssignSkillKnowledgeOfEmployee)-[:USES]->(GetSkillById),
-       (AssignSkillKnowledgeOfEmployee)-[:USES]->(UpdateEmployeeInDataStore)
-
-CREATE (AssignSkillKnowledgeOfEmployeeHttpAdapter)-[:USES]->(AssignSkillKnowledgeOfEmployee)
-
-CREATE (DeleteSkillKnowledgeOfEmployee)-[:USES]->(GetEmployeeById),
-       (DeleteSkillKnowledgeOfEmployee)-[:USES]->(UpdateEmployeeInDataStore)
+CREATE (DeleteSkillKnowledgeOfEmployee)-[:USES]->(UpdateEmployeeById)
 
 CREATE (DeleteSkillKnowledgeOfEmployeeHttpAdapter)-[:USES]->(DeleteSkillKnowledgeOfEmployee)
 
 CREATE (DeleteSkillKnowledgeOfEmployeesEventListener)-[:USES]->(FindEmployeeIds),
        (DeleteSkillKnowledgeOfEmployeesEventListener)-[:USES]->(UpdateEmployeeById)
 
-CREATE (UpdateSkillKnowledgeById)-[:USES]->(GetEmployeeById),
-       (UpdateSkillKnowledgeById)-[:USES]->(UpdateEmployeeInDataStore)
+CREATE (SetSkillKnowledgeOfEmployee)-[:USES]->(GetSkillById),
+       (SetSkillKnowledgeOfEmployee)-[:USES]->(UpdateEmployeeById)
+
+CREATE (SetSkillKnowledgeOfEmployeeHttpAdapter)-[:USES]->(SetSkillKnowledgeOfEmployee)
+
+CREATE (UpdateSkillKnowledgeById)-[:USES]->(UpdateEmployeeById)
 
 CREATE (UpdateSkillKnowledgeByIdHttpAdapter)-[:USES]->(UpdateSkillKnowledgeById),
        (UpdateSkillKnowledgeByIdHttpAdapter)-[:USES]->(ApplyPatch)
@@ -136,7 +133,8 @@ CREATE (UpdateSkillKnowledgeOfEmployeesEventListener)-[:USES]->(FindEmployeeIds)
        (UpdateSkillKnowledgeOfEmployeesEventListener)-[:USES]->(UpdateEmployeeById)
 
 CREATE (UpdateEmployeeById)-[:USES]->(GetEmployeeById),
-       (UpdateEmployeeById)-[:USES]->(UpdateEmployeeInDataStore)
+       (UpdateEmployeeById)-[:USES]->(UpdateEmployeeInDataStore),
+       (UpdateEmployeeById)-[:USES]->(PublishEvent)
 
 CREATE (UpdateEmployeeByIdHttpAdapter)-[:USES]->(UpdateEmployeeById),
        (UpdateEmployeeByIdHttpAdapter)-[:USES]->(ApplyPatch)

@@ -1,30 +1,31 @@
 package skillmanagement.domain.employees.usecases.projectassignments.delete
 
 import skillmanagement.common.stereotypes.BusinessFunction
-import skillmanagement.domain.employees.usecases.get.GetEmployeeById
+import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.usecases.projectassignments.delete.DeleteProjectAssignmentOfEmployeeResult.EmployeeNotFound
 import skillmanagement.domain.employees.usecases.projectassignments.delete.DeleteProjectAssignmentOfEmployeeResult.ProjectAssignmentNotFound
-import skillmanagement.domain.employees.usecases.projectassignments.delete.DeleteProjectAssignmentOfEmployeeResult.SuccessfullyDeleted
-import skillmanagement.domain.employees.usecases.update.RetryOnConcurrentEmployeeUpdate
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeInDataStore
+import skillmanagement.domain.employees.usecases.projectassignments.delete.DeleteProjectAssignmentOfEmployeeResult.SuccessfullyDeletedProjectAssignment
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeById
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotChanged
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotFound
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdatedEmployee
 import java.util.UUID
 
 @BusinessFunction
 class DeleteProjectAssignmentOfEmployee(
-    private val getEmployeeById: GetEmployeeById,
-    private val updateEmployeeInDataStore: UpdateEmployeeInDataStore
+    private val updateEmployeeById: UpdateEmployeeById
 ) {
 
     // TODO: Security - Only invokable by Employee themselves or Employee-Admins
-    @RetryOnConcurrentEmployeeUpdate
     operator fun invoke(employeeId: UUID, assignmentId: UUID): DeleteProjectAssignmentOfEmployeeResult {
-        val employee = getEmployeeById(employeeId) ?: return EmployeeNotFound
-        if (!employee.hasProjectAssignmentById(assignmentId)) {
-            return ProjectAssignmentNotFound
+        val updateResult = updateEmployeeById(employeeId) {
+            it.removeProjectAssignmentById(assignmentId)
         }
-
-        updateEmployeeInDataStore(employee.removeProjectAssignmentById(assignmentId))
-        return SuccessfullyDeleted
+        return when (updateResult) {
+            is NotUpdatedBecauseEmployeeNotFound -> EmployeeNotFound
+            is NotUpdatedBecauseEmployeeNotChanged -> ProjectAssignmentNotFound
+            is SuccessfullyUpdatedEmployee -> SuccessfullyDeletedProjectAssignment(updateResult.employee)
+        }
     }
 
 }
@@ -32,5 +33,5 @@ class DeleteProjectAssignmentOfEmployee(
 sealed class DeleteProjectAssignmentOfEmployeeResult {
     object EmployeeNotFound : DeleteProjectAssignmentOfEmployeeResult()
     object ProjectAssignmentNotFound : DeleteProjectAssignmentOfEmployeeResult()
-    object SuccessfullyDeleted : DeleteProjectAssignmentOfEmployeeResult()
+    data class SuccessfullyDeletedProjectAssignment(val employee: Employee) : DeleteProjectAssignmentOfEmployeeResult()
 }

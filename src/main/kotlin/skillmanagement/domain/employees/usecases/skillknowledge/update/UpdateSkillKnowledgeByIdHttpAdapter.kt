@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.http.patch.ApplyPatch
 import skillmanagement.common.stereotypes.HttpAdapter
+import skillmanagement.domain.employees.model.EmployeeResource
 import skillmanagement.domain.employees.model.SkillKnowledge
-import skillmanagement.domain.employees.model.SkillKnowledgeResource
 import skillmanagement.domain.employees.model.SkillLevel
 import skillmanagement.domain.employees.model.toResource
 import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSkillKnowledgeResult.EmployeeNotFound
 import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSkillKnowledgeResult.SkillKnowledgeNotFound
-import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSkillKnowledgeResult.SuccessfullyUpdated
+import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSkillKnowledgeResult.SuccessfullyUpdatedSkillKnowledge
 import java.util.UUID
 
 @HttpAdapter
@@ -32,32 +32,26 @@ class UpdateSkillKnowledgeByIdHttpAdapter(
         @PathVariable employeeId: UUID,
         @PathVariable skillId: UUID,
         @RequestBody request: ChangeData
-    ): ResponseEntity<SkillKnowledgeResource> {
-        val result = updateSkillKnowledgeById(employeeId, skillId) {
-            it.merge(request)
-        }
-        return when (result) {
-            is EmployeeNotFound -> notFound().build()
-            is SkillKnowledgeNotFound -> notFound().build()
-            is SuccessfullyUpdated -> ok(result.knowledge.toResource(employeeId))
-        }
-    }
+    ): ResponseEntity<EmployeeResource> =
+        handleUpdate(employeeId, skillId) { it.merge(request) }
 
     @PatchMapping(consumes = ["application/json-patch+json"])
     fun patch(
         @PathVariable employeeId: UUID,
         @PathVariable skillId: UUID,
         @RequestBody patch: JsonPatch
-    ): ResponseEntity<SkillKnowledgeResource> {
-        val result = updateSkillKnowledgeById(employeeId, skillId) {
-            it.merge(applyPatch(patch, it.toChangeData()))
+    ): ResponseEntity<EmployeeResource> =
+        handleUpdate(employeeId, skillId) { it.merge(applyPatch(patch, it.toChangeData())) }
+
+    private fun handleUpdate(
+        employeeId: UUID,
+        skillId: UUID,
+        block: (SkillKnowledge) -> SkillKnowledge
+    ): ResponseEntity<EmployeeResource> =
+        when (val result = updateSkillKnowledgeById(employeeId, skillId, block)) {
+            EmployeeNotFound, SkillKnowledgeNotFound -> notFound().build()
+            is SuccessfullyUpdatedSkillKnowledge -> ok(result.employee.toResource())
         }
-        return when (result) {
-            is EmployeeNotFound -> notFound().build()
-            is SkillKnowledgeNotFound -> notFound().build()
-            is SuccessfullyUpdated -> ok(result.knowledge.toResource(employeeId))
-        }
-    }
 
     data class ChangeData(
         val level: SkillLevel,

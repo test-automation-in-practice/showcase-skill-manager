@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.stereotypes.HttpAdapter
-import skillmanagement.domain.employees.model.ProjectAssignmentResource
+import skillmanagement.domain.employees.model.EmployeeResource
 import skillmanagement.domain.employees.model.ProjectContribution
 import skillmanagement.domain.employees.model.toResource
 import skillmanagement.domain.employees.usecases.projectassignments.create.AssignProjectToEmployeeResult.EmployeeNotFound
 import skillmanagement.domain.employees.usecases.projectassignments.create.AssignProjectToEmployeeResult.ProjectNotFound
-import skillmanagement.domain.employees.usecases.projectassignments.create.AssignProjectToEmployeeResult.SuccessfullyAssigned
+import skillmanagement.domain.employees.usecases.projectassignments.create.AssignProjectToEmployeeResult.SuccessfullyCreatedProjectAssignment
 import java.time.LocalDate
 import java.util.UUID
 
@@ -30,7 +30,7 @@ class CreateProjectAssignmentForEmployeeHttpAdapter(
     fun post(
         @PathVariable employeeId: UUID,
         @RequestBody request: Request
-    ): ResponseEntity<ProjectAssignmentResource> {
+    ): ResponseEntity<EmployeeResource> {
         log.info { "Assigning project [${request.projectId}] of employee [$employeeId]" }
         val result = createProjectAssignmentForEmployee(
             employeeId = employeeId,
@@ -42,7 +42,7 @@ class CreateProjectAssignmentForEmployeeHttpAdapter(
         log.info { "Result: $result" }
         return when (result) {
             EmployeeNotFound, ProjectNotFound -> notFound().build()
-            is SuccessfullyAssigned -> ok(result.assignment.toResource(employeeId))
+            is SuccessfullyCreatedProjectAssignment -> ok(result.employee.toResource())
         }
     }
 
