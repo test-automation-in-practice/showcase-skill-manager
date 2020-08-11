@@ -28,6 +28,9 @@ class DeleteProjectAssignmentOfEmployee(
         }
     }
 
+    private fun Employee.removeProjectAssignmentById(assignmentId: UUID): Employee =
+        copy(projects = projects.filter { it.id != assignmentId })
+
 }
 
 sealed class DeleteProjectAssignmentOfEmployeeResult {

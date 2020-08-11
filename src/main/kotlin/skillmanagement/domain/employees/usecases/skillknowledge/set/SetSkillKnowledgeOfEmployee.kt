@@ -44,6 +44,9 @@ class SetSkillKnowledgeOfEmployee(
         }
     }
 
+    private fun Employee.setSkillKnowledge(skillKnowledge: SkillKnowledge): Employee =
+        copy(skills = skills.filter { it.skill.id != skillKnowledge.skill.id } + skillKnowledge)
+
 }
 
 sealed class SetSkillKnowledgeOfEmployeeResult {

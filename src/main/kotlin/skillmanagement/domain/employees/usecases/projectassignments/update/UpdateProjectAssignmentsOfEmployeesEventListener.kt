@@ -3,9 +3,11 @@ package skillmanagement.domain.employees.usecases.projectassignments.update
 import mu.KotlinLogging.logger
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
+import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.usecases.find.EmployeesWhoWorkedOnProject
 import skillmanagement.domain.employees.usecases.find.FindEmployeeIds
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeById
+import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.model.ProjectUpdatedEvent
 
 @Component
@@ -26,5 +28,13 @@ class UpdateProjectAssignmentsOfEmployeesEventListener(
                 updateEmployeeById(employeeId) { it.updateProjectAssignmentsOfProject(event.project) }
             }
     }
+
+    private fun Employee.updateProjectAssignmentsOfProject(project: Project): Employee =
+        copy(projects = projects.map {
+            when (it.project.id) {
+                project.id -> it.copy(project = project)
+                else -> it
+            }
+        })
 
 }

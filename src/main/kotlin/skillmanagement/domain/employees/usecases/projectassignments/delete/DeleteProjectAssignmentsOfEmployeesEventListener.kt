@@ -3,10 +3,12 @@ package skillmanagement.domain.employees.usecases.projectassignments.delete
 import mu.KotlinLogging.logger
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
+import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.usecases.find.EmployeesWhoWorkedOnProject
 import skillmanagement.domain.employees.usecases.find.FindEmployeeIds
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeById
 import skillmanagement.domain.projects.model.ProjectDeletedEvent
+import java.util.UUID
 
 @Component
 class DeleteProjectAssignmentsOfEmployeesEventListener(
@@ -26,5 +28,8 @@ class DeleteProjectAssignmentsOfEmployeesEventListener(
                 updateEmployeeById(employeeId) { it.removeProjectAssignmentsByProjectId(projectId) }
             }
     }
+
+    private fun Employee.removeProjectAssignmentsByProjectId(projectId: UUID): Employee =
+        copy(projects = projects.filter { it.project.id != projectId })
 
 }

@@ -3,9 +3,11 @@ package skillmanagement.domain.employees.usecases.skillknowledge.update
 import mu.KotlinLogging.logger
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
+import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.usecases.find.EmployeesWithSkill
 import skillmanagement.domain.employees.usecases.find.FindEmployeeIds
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeById
+import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillUpdatedEvent
 
 @Component
@@ -26,5 +28,13 @@ class UpdateSkillKnowledgeOfEmployeesEventListener(
                 updateEmployeeById(employeeId) { it.updateSkillKnowledgeOfSkill(event.skill) }
             }
     }
+
+    private fun Employee.updateSkillKnowledgeOfSkill(skill: Skill): Employee =
+        copy(skills = skills.map {
+            when (it.skill.id) {
+                skill.id -> it.copy(skill = skill)
+                else -> it
+            }
+        })
 
 }

@@ -50,6 +50,9 @@ class CreateProjectAssignmentForEmployee(
         }
     }
 
+    private fun Employee.addProjectAssignment(projectAssignment: ProjectAssignment): Employee =
+        copy(projects = projects + projectAssignment)
+
 }
 
 sealed class AssignProjectToEmployeeResult {
