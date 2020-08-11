@@ -1,28 +1,26 @@
 package skillmanagement.domain.projects.metrics
 
 import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.binder.MeterBinder
 import mu.KotlinLogging.logger
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.scheduling.annotation.Scheduled
 import skillmanagement.common.stereotypes.MetricProvider
 import skillmanagement.common.stereotypes.TechnicalFunction
 import java.util.concurrent.atomic.AtomicLong
-import javax.annotation.PostConstruct
 
 private const val RATE_PROPERTY = "\${metrics.projects.total.update.rate}"
 private const val DELAY_PROPERTY = "\${metrics.projects.total.update.delay}"
 
 @MetricProvider
 class TotalNumberOfProjects(
-    private val getTotalNumberOfProjectsFromDataStore: GetTotalNumberOfProjectsFromDataStore,
-    private val registry: MeterRegistry
-) {
+    private val getTotalNumberOfProjectsFromDataStore: GetTotalNumberOfProjectsFromDataStore
+) : MeterBinder {
 
     private val log = logger {}
     private val totalNumberOfProjects = AtomicLong()
 
-    @PostConstruct
-    fun init() {
+    override fun bindTo(registry: MeterRegistry) {
         registry.gauge("projects.total", totalNumberOfProjects)
     }
 
