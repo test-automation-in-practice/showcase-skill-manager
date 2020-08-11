@@ -21,13 +21,13 @@ class FindEmployeesInDataStore(
         objectMapper.readValue<Employee>(rs.getString("data"))
     }
 
-    operator fun invoke(query: FindEmployeeQuery): List<Employee> {
-        val (queryString, parameters) = when (query) {
-            is NoOpQuery -> allQuery to emptyMap()
-            is EmployeesWithSkill -> allQueryForSkill to mapOf("skillId" to "%${query.skillId}%")
-            is EmployeesWhoWorkedOnProject -> allQueryForProject to mapOf("projectId" to "%${query.projectId}%")
-        }
-        return jdbcTemplate.query(queryString, parameters, rowMapper)
-    }
+    operator fun invoke(): List<Employee> =
+        jdbcTemplate.query(allQuery, rowMapper)
+
+    operator fun invoke(query: EmployeesWithSkill): List<Employee> =
+        jdbcTemplate.query(allQueryForSkill, mapOf("skillId" to "%${query.skillId}%"), rowMapper)
+
+    operator fun invoke(query: EmployeesWhoWorkedOnProject): List<Employee> =
+        jdbcTemplate.query(allQueryForProject, mapOf("projectId" to "%${query.projectId}%"), rowMapper)
 
 }

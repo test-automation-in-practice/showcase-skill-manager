@@ -19,45 +19,30 @@ import skillmanagement.test.TechnologyIntegrationTest
 @AutoConfigureJson
 @TestInstance(PER_CLASS)
 @TechnologyIntegrationTest
-internal class FindSkillsInDataStoreTests(
-    @Autowired val jdbcTemplate: NamedParameterJdbcTemplate,
+internal class FindAllSkillsInDataStoreTests(
+    @Autowired val namedParameterJdbcTemplate: NamedParameterJdbcTemplate,
     @Autowired val objectMapper: ObjectMapper
 ) {
 
-    val insertSkillIntoDataStore = InsertSkillIntoDataStore(jdbcTemplate, objectMapper)
-    val findSkills = FindSkillsInDataStore(jdbcTemplate, objectMapper)
+    val insertSkillIntoDataStore = InsertSkillIntoDataStore(namedParameterJdbcTemplate, objectMapper)
+    val findSkills = FindAllSkillsInDataStore(namedParameterJdbcTemplate.jdbcTemplate, objectMapper)
 
     @Test
     fun `returns empty list if there are no Skills`() {
-        findSkills(NoOpQuery) shouldBe emptyList()
+        findSkills() shouldBe emptyList()
     }
 
     @Test
     fun `returns single entry list if there is only one Skill`() {
         insertSkillIntoDataStore(skill_kotlin)
-        findSkills(NoOpQuery) shouldContainExactly listOf(skill_kotlin)
+        findSkills() shouldContainExactly listOf(skill_kotlin)
     }
 
     @Test
     fun `returns multi entry list if there are multiple Skills`() {
         insertSkillIntoDataStore(skill_kotlin)
         insertSkillIntoDataStore(skill_python)
-        findSkills(NoOpQuery) shouldContainExactly setOf(skill_kotlin, skill_python)
-    }
-
-    @Test
-    fun `returns matching skills for label like query`() {
-        insertSkillIntoDataStore(skill_kotlin)
-        insertSkillIntoDataStore(skill_python)
-        findSkills(SkillsWithLabelLike("otl")) shouldContainExactly setOf(skill_kotlin)
-        findSkills(SkillsWithLabelLike("Kotlin")) shouldContainExactly setOf(skill_kotlin)
-        findSkills(SkillsWithLabelLike("kotlin")) shouldContainExactly setOf(skill_kotlin)
-    }
-
-    @Test
-    fun `returns empty list of empty search terms`() {
-        insertSkillIntoDataStore(skill_kotlin)
-        findSkills(SkillsWithLabelLike("")) shouldBe emptyList()
+        findSkills() shouldContainExactly setOf(skill_kotlin, skill_python)
     }
 
 }

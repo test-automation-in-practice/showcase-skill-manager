@@ -16,13 +16,13 @@ class FindEmployeeIdsInDataStore(
 
     private val rowMapper: RowMapper<UUID> = RowMapper { rs, _ -> UUID.fromString(rs.getString("id")) }
 
-    operator fun invoke(query: FindEmployeeQuery): List<UUID> {
-        val (queryString, parameters) = when (query) {
-            is NoOpQuery -> allQuery to emptyMap()
-            is EmployeesWithSkill -> allQueryForSkill to mapOf("skillId" to "%${query.skillId}%")
-            is EmployeesWhoWorkedOnProject -> allQueryForProject to mapOf("projectId" to "%${query.projectId}%")
-        }
-        return jdbcTemplate.query(queryString, parameters, rowMapper)
-    }
+    operator fun invoke(): List<UUID> =
+        jdbcTemplate.query(allQuery, rowMapper)
+
+    operator fun invoke(query: EmployeesWithSkill): List<UUID> =
+        jdbcTemplate.query(allQueryForSkill, mapOf("skillId" to "%${query.skillId}%"), rowMapper)
+
+    operator fun invoke(query: EmployeesWhoWorkedOnProject): List<UUID> =
+        jdbcTemplate.query(allQueryForProject, mapOf("projectId" to "%${query.projectId}%"), rowMapper)
 
 }

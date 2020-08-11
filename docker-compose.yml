@@ -3,12 +3,27 @@ version: "3.8"
 services:
   postgres:
     image: postgres:9.6
+    container_name: postgres
     ports:
-      - "5432:5432"
+      - 5432:5432
     env_file:
       - postgres.env
-    volumes:
-      - postgres-data:/var/lib/postgresql/data/
 
-volumes:
-  postgres-data:
+  elasticsearch:
+    image: elasticsearch:7.6.2
+    container_name: elasticsearch
+    ports:
+      - 9200:9200
+      - 9300:9300
+    env_file:
+      - elasticsearch.env
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    cap_add:
+      - IPC_LOCK
+

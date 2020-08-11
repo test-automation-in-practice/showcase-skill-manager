@@ -33,6 +33,7 @@ dependencies {
 
     implementation("com.github.java-json-tools:json-patch:1.13")
     implementation("io.github.microutils:kotlin-logging:1.7.9")
+    implementation("org.elasticsearch.client:elasticsearch-rest-high-level-client")
 
     runtimeOnly("org.postgresql:postgresql")
 

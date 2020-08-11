@@ -2,10 +2,8 @@ package skillmanagement.domain.skills.usecases.update
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
-import skillmanagement.common.search.searchTerms
 import skillmanagement.common.stereotypes.TechnicalFunction
 import skillmanagement.domain.skills.model.Skill
-import skillmanagement.domain.skills.model.SkillLabel
 import java.time.Clock
 
 @TechnicalFunction
@@ -17,7 +15,7 @@ class UpdateSkillInDataStore(
 
     private val statement = """
         UPDATE skills
-        SET version = :version, data = :data, keywords = :keywords
+        SET version = :version, data = :data
         WHERE id = :id AND version = :expectedVersion
         """
 
@@ -41,15 +39,11 @@ class UpdateSkillInDataStore(
             "id" to skill.id.toString(),
             "version" to skill.version,
             "data" to objectMapper.writeValueAsString(skill),
-            "keywords" to possibleSearchTerms(skill.label),
             "expectedVersion" to expectedVersion
         )
         if (jdbcTemplate.update(statement, parameters) == 0) throw ConcurrentSkillUpdateException()
         return skill
     }
-
-    private fun possibleSearchTerms(label: SkillLabel): String =
-        searchTerms(label.toString()).joinToString(separator = " ")
 
 }
 

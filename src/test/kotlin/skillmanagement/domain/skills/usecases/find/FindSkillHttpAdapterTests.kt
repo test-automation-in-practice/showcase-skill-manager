@@ -122,7 +122,7 @@ internal class FindSkillHttpAdapterTests(
             .andExpect { status { isOk } }
             .andDocument("with-query")
 
-        val expectedQuery = SkillsWithLabelLike("jav")
+        val expectedQuery = SkillsMatchingQuery("jav")
         verify { findSkills(expectedQuery) }
     }
 

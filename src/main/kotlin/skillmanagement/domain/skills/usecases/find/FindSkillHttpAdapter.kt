@@ -18,7 +18,7 @@ class FindSkillHttpAdapter(
     fun get(@RequestParam query: String?): CollectionModel<SkillResource> {
         val skills = when (query?.trim()) {
             null, "" -> findSkills()
-            else -> findSkills(SkillsWithLabelLike(query))
+            else -> findSkills(SkillsMatchingQuery(query))
         }
         return skills.toResource()
     }

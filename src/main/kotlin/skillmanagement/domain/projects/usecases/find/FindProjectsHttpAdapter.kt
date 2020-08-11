@@ -18,7 +18,7 @@ class FindProjectsHttpAdapter(
     fun get(@RequestParam query: String?): CollectionModel<ProjectResource> {
         val projects = when (query?.trim()) {
             null, "" -> findProjects()
-            else -> findProjects(ProjectsWithLabelLike(query))
+            else -> findProjects(ProjectsMatchingQuery(query))
         }
         return projects.toResource()
     }

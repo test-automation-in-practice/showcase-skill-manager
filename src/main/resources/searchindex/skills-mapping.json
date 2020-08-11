@@ -1,0 +1,10 @@
+{
+  "properties": {
+    "label": {
+      "type": "text"
+    },
+    "tags": {
+      "type": "keyword"
+    }
+  }
+}

@@ -2,10 +2,8 @@ package skillmanagement.domain.projects.usecases.update
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
-import skillmanagement.common.search.searchTerms
 import skillmanagement.common.stereotypes.TechnicalFunction
 import skillmanagement.domain.projects.model.Project
-import skillmanagement.domain.projects.model.ProjectLabel
 import java.time.Clock
 
 @TechnicalFunction
@@ -17,7 +15,7 @@ class UpdateProjectInDataStore(
 
     private val statement = """
         UPDATE projects
-        SET version = :version, data = :data, keywords = :keywords
+        SET version = :version, data = :data
         WHERE id = :id AND version = :expectedVersion
         """
 
@@ -41,15 +39,11 @@ class UpdateProjectInDataStore(
             "id" to project.id.toString(),
             "version" to project.version,
             "data" to objectMapper.writeValueAsString(project),
-            "keywords" to possibleSearchTerms(project.label),
             "expectedVersion" to expectedVersion
         )
         if (jdbcTemplate.update(statement, parameters) == 0) throw ConcurrentProjectUpdateException()
         return project
     }
-
-    private fun possibleSearchTerms(label: ProjectLabel): String =
-        searchTerms(label.toString()).joinToString(separator = " ")
 
 }
 
