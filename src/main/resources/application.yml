@@ -25,3 +25,11 @@ metrics:
       update:
         rate: "PT1M"
         delay: "PT10S"
+
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/database"
+    username: user
+    password: password
+  flyway:
+    locations: "classpath:db/migration/{vendor}"

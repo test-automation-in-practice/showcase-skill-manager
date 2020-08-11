@@ -30,10 +30,11 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.flywaydb:flyway-core")
-    implementation("com.h2database:h2")
 
     implementation("com.github.java-json-tools:json-patch:1.13")
     implementation("io.github.microutils:kotlin-logging:1.7.9")
+
+    runtimeOnly("org.postgresql:postgresql")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
@@ -48,6 +49,7 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers:1.14.2")
     testImplementation("net.jqwik:jqwik:1.2.7")
     testImplementation("com.tngtech.archunit:archunit:0.13.1")
+    testImplementation("com.h2database:h2")
 }
 
 tasks {
