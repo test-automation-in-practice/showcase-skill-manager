@@ -1,6 +1,7 @@
 package skillmanagement.common.search
 
 import org.elasticsearch.action.DocWriteRequest.OpType.INDEX
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
 import org.elasticsearch.action.delete.DeleteRequest
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.search.SearchRequest
@@ -8,6 +9,7 @@ import org.elasticsearch.client.RequestOptions.DEFAULT
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.client.indices.CreateIndexRequest
 import org.elasticsearch.client.indices.GetIndexRequest
+import org.elasticsearch.common.unit.TimeValue.timeValueMinutes
 import org.elasticsearch.common.xcontent.XContentType.JSON
 import org.elasticsearch.index.query.QueryStringQueryBuilder
 import org.elasticsearch.search.builder.SearchSourceBuilder
@@ -62,6 +64,11 @@ abstract class AbstractSearchIndex<T : Any> {
 
     protected abstract fun buildQuery(queryString: String): QueryStringQueryBuilder
 
+    fun reset() {
+        deleteIndex()
+        createIndex()
+    }
+
     private fun indexExists(): Boolean =
         client.indices().exists(GetIndexRequest(indexName), DEFAULT)
 
@@ -69,6 +76,12 @@ abstract class AbstractSearchIndex<T : Any> {
         val request = CreateIndexRequest(indexName)
             .mapping(mappingResource.readAsString(), JSON)
         client.indices().create(request, DEFAULT)
+    }
+
+    private fun deleteIndex() {
+        val request = DeleteIndexRequest(indexName)
+            .timeout(timeValueMinutes(1))
+        client.indices().delete(request, DEFAULT)
     }
 
 }

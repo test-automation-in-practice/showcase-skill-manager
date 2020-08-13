@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.common.stereotypes.HttpAdapter
 import skillmanagement.common.stereotypes.MetricProvider
+import skillmanagement.common.stereotypes.Task
 import skillmanagement.common.stereotypes.TechnicalFunction
 import java.io.File
 import kotlin.reflect.KClass
@@ -28,6 +29,7 @@ class BuildDependencyGraph {
     private val businessFunctions = classes.extract(BusinessFunction::class, ClassType.BusinessFunction)
     private val technicalFunctions = classes.extract(TechnicalFunction::class, ClassType.TechnicalFunction)
     private val metricProviders = classes.extract(MetricProvider::class, ClassType.MetricProvider)
+    private val tasks = classes.extract(Task::class, ClassType.Task)
     private val components = classes.extract(Component::class, ClassType.Component)
         .removeClasseByName("TestDataInserter")
         .removeClasseByName("HttpAdapter")
@@ -113,4 +115,4 @@ abstract class AbstractGraphDataGenerator {
 
 data class ClassWithClassType(val clazz: JavaClass, val type: ClassType)
 data class ClassWithDependencies(val clazz: JavaClass, val dependencies: List<JavaClass>)
-enum class ClassType { HttpAdapter, BusinessFunction, TechnicalFunction, MetricProvider, Component }
+enum class ClassType { HttpAdapter, BusinessFunction, TechnicalFunction, MetricProvider, Task, Component }

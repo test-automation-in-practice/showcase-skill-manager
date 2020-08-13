@@ -19,4 +19,9 @@ class FindAllSkillsInDataStore(
             objectMapper.readValue<Skill>(rs.getString("data"))
         }
 
+    operator fun invoke(callback: (Skill) -> Unit) =
+        jdbcTemplate.query(allSkillsQuery) { rs ->
+            callback(objectMapper.readValue<Skill>(rs.getString("data")))
+        }
+
 }
