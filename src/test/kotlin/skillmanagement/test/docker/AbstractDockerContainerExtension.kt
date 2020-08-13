@@ -1,31 +1,20 @@
-package skillmanagement.test
+package skillmanagement.test.docker
 
 import org.junit.jupiter.api.extension.BeforeAllCallback
-import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace
-import org.junit.jupiter.api.extension.ExtensionContext.Store.CloseableResource
-import org.testcontainers.containers.GenericContainer
-import skillmanagement.test.Container.MongoDb
-import kotlin.annotation.AnnotationTarget.CLASS
+import org.junit.jupiter.api.extension.ParameterContext
+import org.junit.jupiter.api.extension.ParameterResolver
 
-@Retention
-@Target(CLASS)
-@ExtendWith(MongoDbContainerExtension::class)
-annotation class RunWithDockerizedMongoDb
-
-private class MongoDbContainerExtension : AbstractDockerContainerExtension<MongoDb>() {
-    override val port: Int = 27017
-    override val portProperty: String = "MONGODB_PORT"
-    override fun createResource(): MongoDb = MongoDb()
-}
-
-private abstract class AbstractDockerContainerExtension<T : Container> : BeforeAllCallback {
+internal abstract class AbstractDockerContainerExtension<T : Container> : BeforeAllCallback, ParameterResolver {
 
     private val namespace = Namespace.create(javaClass)
 
     protected abstract val port: Int
     protected abstract val portProperty: String
+
+    override fun resolveParameter(parameterContext: ParameterContext, extensionContext: ExtensionContext): Any? =
+        extensionContext.container
 
     override fun beforeAll(context: ExtensionContext) {
         if (context.container == null) {
@@ -44,8 +33,4 @@ private abstract class AbstractDockerContainerExtension<T : Container> : BeforeA
         get() = getStore(namespace).get("container") as T?
         set(value) = getStore(namespace).put("container", value)
 
-}
-
-private sealed class Container(image: String) : GenericContainer<Container>(image), CloseableResource {
-    class MongoDb : Container("mongo:4.2.3")
 }

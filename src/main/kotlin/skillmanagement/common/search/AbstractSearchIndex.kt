@@ -2,6 +2,7 @@ package skillmanagement.common.search
 
 import org.elasticsearch.action.DocWriteRequest.OpType.INDEX
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
+import org.elasticsearch.action.admin.indices.refresh.RefreshRequest
 import org.elasticsearch.action.delete.DeleteRequest
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.search.SearchRequest
@@ -65,8 +66,14 @@ abstract class AbstractSearchIndex<T : Any> {
     protected abstract fun buildQuery(queryString: String): QueryStringQueryBuilder
 
     fun reset() {
-        deleteIndex()
+        if (indexExists()) {
+            deleteIndex()
+        }
         createIndex()
+    }
+
+    fun refresh() {
+        client.indices().refresh(RefreshRequest(indexName), DEFAULT)
     }
 
     private fun indexExists(): Boolean =

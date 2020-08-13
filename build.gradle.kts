@@ -32,7 +32,7 @@ dependencies {
     implementation("org.flywaydb:flyway-core")
 
     implementation("com.github.java-json-tools:json-patch:1.13")
-    implementation("io.github.microutils:kotlin-logging:1.7.9")
+    implementation("io.github.microutils:kotlin-logging:1.8.3")
     implementation("org.elasticsearch.client:elasticsearch-rest-high-level-client")
 
     runtimeOnly("org.postgresql:postgresql")
@@ -46,10 +46,9 @@ dependencies {
 
     testImplementation("io.kotlintest:kotlintest-assertions:3.4.2")
     testImplementation("io.mockk:mockk:1.10.0")
-    testImplementation("com.ninja-squad:springmockk:2.0.1")
-    testImplementation("org.testcontainers:testcontainers:1.14.2")
-    testImplementation("net.jqwik:jqwik:1.2.7")
-    testImplementation("com.tngtech.archunit:archunit:0.13.1")
+    testImplementation("org.testcontainers:testcontainers:1.14.3")
+    testImplementation("net.jqwik:jqwik:1.3.3")
+    testImplementation("com.tngtech.archunit:archunit:0.14.1")
     testImplementation("com.h2database:h2")
 }
 

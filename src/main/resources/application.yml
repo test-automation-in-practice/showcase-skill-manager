@@ -26,10 +26,20 @@ metrics:
         rate: "PT1M"
         delay: "PT10S"
 
-spring:
-  datasource:
-    url: "jdbc:postgresql://localhost:5432/database"
+storage:
+  database:
+    jdbc-url: "jdbc:postgresql://localhost:5432/database"
     username: user
     password: password
+  elasticsearch:
+    schema: http
+    host: localhost
+    port: 9200
+
+spring:
+  datasource:
+    url: ${storage.database.jdbc-url}
+    username: ${storage.database.username}
+    password: ${storage.database.password}
   flyway:
     locations: "classpath:db/migration/{vendor}"
