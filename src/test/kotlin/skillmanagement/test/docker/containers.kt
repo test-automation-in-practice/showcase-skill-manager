@@ -9,6 +9,10 @@ class ElasticsearchContainer : Container("elasticsearch:7.6.2") {
     override fun getMappedPort(): Int = getMappedPort(9200)
 }
 
+class PostgresContainer : Container("postgres:9.6") {
+    override fun getMappedPort(): Int = getMappedPort(5432)
+}
+
 sealed class Container(image: String) : GenericContainer<Container>(image), CloseableResource {
 
     fun addEnvFromFile(resource: Resource) {

@@ -32,11 +32,21 @@ import skillmanagement.domain.projects.model.ProjectResource
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.SkillResource
 import skillmanagement.test.End2EndTest
+import skillmanagement.test.docker.RunWithDockerizedElasticsearch
+import skillmanagement.test.docker.RunWithDockerizedPostgres
 import kotlin.reflect.KClass
 
 @End2EndTest
 @AutoConfigureMockMvc
-@SpringBootTest(webEnvironment = RANDOM_PORT)
+@RunWithDockerizedPostgres
+@RunWithDockerizedElasticsearch
+@SpringBootTest(
+    webEnvironment = RANDOM_PORT,
+    properties = [
+        "storage.database.jdbc-url=jdbc:postgresql://localhost:\${POSTGRES_PORT}/database",
+        "storage.elasticsearch.port=\${ELASTICSEARCH_PORT}"
+    ]
+)
 class AcceptanceTests(
     @Autowired val mockMvc: MockMvc
 ) {
