@@ -4,7 +4,6 @@ import io.kotlintest.shouldBe
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import io.mockk.every
 import io.mockk.mockk
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.UnitTest
@@ -16,9 +15,7 @@ internal class TotalNumberOfSkillsTests {
     val getTotalNumberOfSkillsFromDataStore: GetTotalNumberOfSkillsFromDataStore = mockk()
     val registry = SimpleMeterRegistry()
     val cut = TotalNumberOfSkills(getTotalNumberOfSkillsFromDataStore)
-
-    @BeforeEach
-    fun init() = cut.bindTo(registry)
+        .apply { bindTo(registry) }
 
     @Test
     fun `gauge is instantiated with a value of 0`() {
@@ -45,8 +42,8 @@ internal class TotalNumberOfSkillsTests {
         getCurrentGaugeValue() shouldBe 21
     }
 
-    private fun getCurrentGaugeValue(): Long =
-        registry.find("skills.total").gauge()?.value()?.toLong() ?: error("gauge not found")
+    private fun getCurrentGaugeValue(): Long? =
+        registry.find("skills.total").gauge()?.value()?.toLong()
 
     private fun stubNumberOfSkillsInDataStore(number: Long) {
         every { getTotalNumberOfSkillsFromDataStore() } returns number

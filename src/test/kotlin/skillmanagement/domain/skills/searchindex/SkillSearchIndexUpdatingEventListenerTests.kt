@@ -5,10 +5,11 @@ import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.scheduling.annotation.EnableAsync
-import skillmanagement.common.events.PublishEvent
+import skillmanagement.common.events.Event
 import skillmanagement.domain.skills.model.SkillAddedEvent
 import skillmanagement.domain.skills.model.SkillDeletedEvent
 import skillmanagement.domain.skills.model.SkillUpdatedEvent
@@ -22,7 +23,7 @@ import skillmanagement.test.TechnologyIntegrationTest
 @TechnologyIntegrationTest
 @SpringBootTest(classes = [SkillSearchIndexUpdateEventHandlerTestsConfiguration::class])
 internal class SkillSearchIndexUpdatingEventListenerTests(
-    @Autowired val publishEvent: PublishEvent,
+    @Autowired val eventPublisher: ApplicationEventPublisher,
     @Autowired val skillSearchIndex: SkillSearchIndex
 ) {
 
@@ -44,10 +45,11 @@ internal class SkillSearchIndexUpdatingEventListenerTests(
         verify(timeout = 1_000) { skillSearchIndex.deleteById(skill_python.id) }
     }
 
+    private fun publishEvent(event: Event) = eventPublisher.publishEvent(event)
 }
 
 @EnableAsync
-@Import(SkillSearchIndexUpdatingEventListener::class, PublishEvent::class)
+@Import(SkillSearchIndexUpdatingEventListener::class)
 private class SkillSearchIndexUpdateEventHandlerTestsConfiguration {
 
     @Bean
