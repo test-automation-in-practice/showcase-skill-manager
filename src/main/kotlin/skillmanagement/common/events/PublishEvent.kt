@@ -6,14 +6,16 @@ import skillmanagement.common.stereotypes.TechnicalFunction
 
 @TechnicalFunction
 class PublishEvent(
-    private val applicationEventPublisher: ApplicationEventPublisher
+    private val eventPublisher: ApplicationEventPublisher,
+    private val counter: EventCounter
 ) {
 
     private val log = logger {}
 
     operator fun invoke(event: Event) {
         log.info { "Publishing $event" }
-        applicationEventPublisher.publishEvent(event)
+        counter.increment(event::class)
+        eventPublisher.publishEvent(event)
     }
 
 }

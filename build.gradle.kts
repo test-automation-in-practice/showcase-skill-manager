@@ -43,13 +43,14 @@ dependencies {
     }
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     testImplementation("org.springframework.security:spring-security-test")
+    testImplementation("com.h2database:h2")
 
     testImplementation("io.kotlintest:kotlintest-assertions:3.4.2")
     testImplementation("io.mockk:mockk:1.10.0")
+    testImplementation("info.novatec.testit:testutils-logrecorder-logback:0.3.4")
     testImplementation("org.testcontainers:testcontainers:1.14.3")
     testImplementation("net.jqwik:jqwik:1.3.3")
     testImplementation("com.tngtech.archunit:archunit:0.14.1")
-    testImplementation("com.h2database:h2")
 }
 
 tasks {
