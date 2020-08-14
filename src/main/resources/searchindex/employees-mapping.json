@@ -2,6 +2,24 @@
   "properties": {
     "name": {
       "type": "text"
+    },
+    "firstName": {
+      "type": "text"
+    },
+    "lastName": {
+      "type": "text"
+    },
+    "title": {
+      "type": "text"
+    },
+    "email": {
+      "type": "keyword"
+    },
+    "skills": {
+      "type": "text"
+    },
+    "skills": {
+      "type": "text"
     }
   }
 }
