@@ -1,22 +1,22 @@
 package skillmanagement.domain.employees.usecases.find
 
+import skillmanagement.common.search.Page
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.searchindex.EmployeeSearchIndex
 import java.util.UUID
 
 @BusinessFunction
 class FindEmployeeIds(
-    private val findEmployeeIdsInDataStore: FindEmployeeIdsInDataStore,
     private val searchIndex: EmployeeSearchIndex
 ) {
 
     // TODO: Security + query parameter + pagination
-    operator fun invoke(query: FindEmployeeQuery = NoOpQuery): List<UUID> =
+    operator fun invoke(query: FindEmployeeQuery = AllEmployeesQuery()): Page<UUID> =
         when (query) {
-            is EmployeesWithSkill -> findEmployeeIdsInDataStore(query)
-            is EmployeesWhoWorkedOnProject -> findEmployeeIdsInDataStore(query)
-            is EmployeesMatchingQuery -> searchIndex.query(query.queryString)
-            NoOpQuery -> findEmployeeIdsInDataStore()
+            is EmployeesWithSkill -> searchIndex.query(query)
+            is EmployeesWhoWorkedOnProject -> searchIndex.query(query)
+            is EmployeesMatchingQuery -> searchIndex.query(query)
+            is AllEmployeesQuery -> searchIndex.findAll(query)
         }
 
 }

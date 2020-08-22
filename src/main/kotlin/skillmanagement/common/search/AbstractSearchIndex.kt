@@ -12,9 +12,13 @@ import org.elasticsearch.client.indices.CreateIndexRequest
 import org.elasticsearch.client.indices.GetIndexRequest
 import org.elasticsearch.common.unit.TimeValue.timeValueMinutes
 import org.elasticsearch.common.xcontent.XContentType.JSON
+import org.elasticsearch.index.query.MatchAllQueryBuilder
+import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryStringQueryBuilder
 import org.elasticsearch.search.builder.SearchSourceBuilder
+import org.elasticsearch.search.sort.FieldSortBuilder
 import org.elasticsearch.search.sort.ScoreSortBuilder
+import org.elasticsearch.search.sort.SortBuilder
 import org.elasticsearch.search.sort.SortOrder.DESC
 import org.springframework.core.io.Resource
 import skillmanagement.common.resources.readAsString
@@ -26,6 +30,7 @@ abstract class AbstractSearchIndex<T : Any> {
     protected abstract val client: RestHighLevelClient
 
     protected abstract val indexName: String
+    protected abstract val sortFieldName: String
     protected abstract val mappingResource: Resource
 
     @PostConstruct
@@ -48,19 +53,40 @@ abstract class AbstractSearchIndex<T : Any> {
         client.delete(DeleteRequest(indexName, id.toString()), DEFAULT)
     }
 
-    fun query(queryString: String): List<UUID> {
+    fun query(query: PagedStringQuery): Page<UUID> =
+        queryForIds(
+            query = buildQuery(query.queryString),
+            pageIndex = query.pageIndex.value,
+            pageSize = query.pageSize.value,
+            sort = ScoreSortBuilder().order(DESC)
+        )
+
+    fun findAll(query: PagedFindAllQuery): Page<UUID> =
+        queryForIds(
+            query = MatchAllQueryBuilder(),
+            pageIndex = query.pageIndex.value,
+            pageSize = query.pageSize.value,
+            sort = FieldSortBuilder(sortFieldName)
+        )
+
+    private fun queryForIds(query: QueryBuilder, pageIndex: Int, pageSize: Int, sort: SortBuilder<*>): Page<UUID> {
         val source = SearchSourceBuilder()
             .fetchSource(false)
-            .query(buildQuery(queryString))
-            .from(0)
-            .size(10_000)
-            .sort(ScoreSortBuilder().order(DESC))
+            .query(query)
+            .from(pageIndex * pageSize)
+            .size(pageSize)
+            .sort(sort)
         val request = SearchRequest(indexName)
             .source(source)
 
         val response = client.search(request, DEFAULT)
-        val hits = response.hits.hits
-        return hits.map { UUID.fromString(it.id) }
+        val searchHits = response.hits
+        return Page(
+            content = searchHits.hits.map { UUID.fromString(it.id) },
+            pageIndex = pageIndex,
+            pageSize = pageSize,
+            totalElements = searchHits.totalHits?.value ?: 0
+        )
     }
 
     protected abstract fun buildQuery(queryString: String): QueryStringQueryBuilder

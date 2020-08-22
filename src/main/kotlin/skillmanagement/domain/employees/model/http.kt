@@ -2,10 +2,13 @@ package skillmanagement.domain.employees.model
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL
-import org.springframework.hateoas.CollectionModel
+import org.springframework.hateoas.PagedModel
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.core.Relation
+import org.springframework.hateoas.server.mvc.BasicLinkBuilder
 import org.springframework.hateoas.server.mvc.BasicLinkBuilder.linkToCurrentMapping
+import skillmanagement.common.search.Page
+import skillmanagement.common.search.toMetaData
 import skillmanagement.domain.projects.model.ProjectDescription
 import skillmanagement.domain.projects.model.ProjectLabel
 import skillmanagement.domain.projects.model.linkToProject
@@ -45,12 +48,6 @@ data class ProjectAssignmentResource(
     val endDate: LocalDate?
 ) : RepresentationModel<SkillKnowledgeResource>()
 
-fun Collection<Employee>.toResource(): CollectionModel<EmployeeResource> {
-    val content = map(Employee::toResource)
-    val selfLink = linkToEmployees().withSelfRel()
-    return CollectionModel.of(content, selfLink)
-}
-
 fun Employee.toResource() = EmployeeResource(
     id = id,
     firstName = firstName,
@@ -88,8 +85,31 @@ fun ProjectAssignment.toResource(employeeId: UUID) = ProjectAssignmentResource(
     add(linkToProject(project.id).withRel("project"))
 }
 
-fun linkToEmployees() =
-    linkToCurrentMapping().slash(RESOURCE_BASE)
+fun Page<Employee>.toAllResource(): PagedModel<EmployeeResource> =
+    PagedModel.of(content.map(Employee::toResource), toMetaData())
+        .apply {
+            add(linkToEmployees(pageIndex, pageSize).withSelfRel())
+            if (hasPrevious()) add(linkToEmployees(pageIndex - 1, pageSize).withRel("previousPage"))
+            if (hasNext()) add(linkToEmployees(pageIndex + 1, pageSize).withRel("nextPage"))
+        }
+
+fun linkToEmployees(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
+    val queryPart = "?page=$pageIndex&size=$pageSize"
+    return linkToCurrentMapping().slash(RESOURCE_BASE + queryPart)
+}
+
+fun Page<Employee>.toSearchResource(): PagedModel<EmployeeResource> =
+    PagedModel.of(content.map(Employee::toResource), toMetaData())
+        .apply {
+            add(linkToEmployeesSearch(pageIndex, pageSize).withSelfRel())
+            if (hasPrevious()) add(linkToEmployeesSearch(pageIndex - 1, pageSize).withRel("previousPage"))
+            if (hasNext()) add(linkToEmployeesSearch(pageIndex + 1, pageSize).withRel("nextPage"))
+        }
+
+fun linkToEmployeesSearch(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
+    val queryPart = "/_search?page=$pageIndex&size=$pageSize"
+    return linkToCurrentMapping().slash(RESOURCE_BASE + queryPart)
+}
 
 fun linkToEmployee(id: UUID) =
     linkToCurrentMapping().slash("$RESOURCE_BASE/$id")

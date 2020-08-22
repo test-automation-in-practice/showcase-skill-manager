@@ -20,6 +20,15 @@
     },
     "projects": {
       "type": "text"
+    },
+    "_sort": {
+      "type": "keyword"
+    },
+    "_skillIds": {
+      "type": "keyword"
+    },
+    "_projectIds": {
+      "type": "keyword"
     }
   }
 }

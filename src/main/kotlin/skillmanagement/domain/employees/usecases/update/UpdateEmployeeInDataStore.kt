@@ -15,7 +15,7 @@ class UpdateEmployeeInDataStore(
 
     private val statement = """
         UPDATE employees
-        SET version = :version, data = :data, skill_ids = :skillIds, project_ids = :projectIds
+        SET version = :version, data = :data
         WHERE id = :id AND version = :expectedVersion
         """
 
@@ -39,8 +39,6 @@ class UpdateEmployeeInDataStore(
             "id" to employee.id.toString(),
             "version" to employee.version,
             "data" to objectMapper.writeValueAsString(employee),
-            "skillIds" to employee.skills.joinToString { it.skill.id.toString() },
-            "projectIds" to employee.projects.joinToString { it.project.id.toString() },
             "expectedVersion" to expectedVersion
         )
         if (jdbcTemplate.update(statement, parameters) == 0) throw ConcurrentEmployeeUpdateException()

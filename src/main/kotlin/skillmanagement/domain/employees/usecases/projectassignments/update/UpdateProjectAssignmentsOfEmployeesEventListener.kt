@@ -3,6 +3,7 @@ package skillmanagement.domain.employees.usecases.projectassignments.update
 import mu.KotlinLogging.logger
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
+import skillmanagement.common.search.PageSize
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.usecases.find.EmployeesWhoWorkedOnProject
 import skillmanagement.domain.employees.usecases.find.FindEmployeeIds
@@ -18,11 +19,13 @@ class UpdateProjectAssignmentsOfEmployeesEventListener(
 
     private val log = logger {}
 
+    // TODO: how to update more than one page? (ES eventual consistency)
+
     @EventListener
     fun handle(event: ProjectUpdatedEvent) {
         log.info { "Handling $event" }
         val projectId = event.project.id
-        findEmployeeIds(EmployeesWhoWorkedOnProject(projectId))
+        findEmployeeIds(EmployeesWhoWorkedOnProject(projectId = projectId, pageSize = PageSize.MAX))
             .onEach { log.info { "Updating project assignments for project [$projectId] of employee [${it}]" } }
             .forEach { employeeId ->
                 updateEmployeeById(employeeId) { it.updateProjectAssignmentsOfProject(event.project) }

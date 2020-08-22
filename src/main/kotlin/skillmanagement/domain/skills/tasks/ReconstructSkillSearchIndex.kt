@@ -1,12 +1,16 @@
 package skillmanagement.domain.skills.tasks
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import mu.KotlinLogging.logger
 import org.springframework.boot.actuate.endpoint.annotation.WriteOperation
 import org.springframework.boot.actuate.endpoint.web.annotation.WebEndpoint
+import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Component
 import skillmanagement.common.stereotypes.Task
+import skillmanagement.common.stereotypes.TechnicalFunction
+import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.searchindex.SkillSearchIndex
-import skillmanagement.domain.skills.usecases.find.FindAllSkillsInDataStore
 import kotlin.system.measureTimeMillis
 
 @Component
@@ -57,5 +61,20 @@ class ReconstructSkillSearchIndex(
         log.debug { "All known skills successfully indexed." }
         return indexingDuration
     }
+
+}
+
+@TechnicalFunction
+class FindAllSkillsInDataStore(
+    private val jdbcTemplate: JdbcTemplate,
+    private val objectMapper: ObjectMapper
+) {
+
+    private val allSkillsQuery = "SELECT data FROM skills"
+
+    operator fun invoke(callback: (Skill) -> Unit) =
+        jdbcTemplate.query(allSkillsQuery) { rs ->
+            callback(objectMapper.readValue(rs.getString("data")))
+        }
 
 }

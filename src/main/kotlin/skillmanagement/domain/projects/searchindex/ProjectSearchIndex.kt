@@ -14,12 +14,14 @@ class ProjectSearchIndex(
 ) : AbstractSearchIndex<Project>() {
 
     override val indexName = "projects"
+    override val sortFieldName: String = "_sort"
     override val mappingResource = ClassPathResource("/searchindex/projects-mapping.json")
 
     override fun toSource(instance: Project) =
         mapOf(
             "label" to instance.label.toString(),
-            "description" to instance.description.toString()
+            "description" to instance.description.toString(),
+            "_sort" to instance.label.toString()
         )
 
     override fun id(instance: Project) = instance.id

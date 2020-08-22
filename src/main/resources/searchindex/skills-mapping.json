@@ -5,6 +5,9 @@
     },
     "tags": {
       "type": "keyword"
+    },
+    "_sort": {
+      "type": "keyword"
     }
   }
 }

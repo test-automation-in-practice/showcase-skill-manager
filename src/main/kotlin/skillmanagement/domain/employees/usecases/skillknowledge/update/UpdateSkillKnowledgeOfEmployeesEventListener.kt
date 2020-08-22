@@ -3,6 +3,7 @@ package skillmanagement.domain.employees.usecases.skillknowledge.update
 import mu.KotlinLogging.logger
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
+import skillmanagement.common.search.PageSize
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.usecases.find.EmployeesWithSkill
 import skillmanagement.domain.employees.usecases.find.FindEmployeeIds
@@ -18,11 +19,13 @@ class UpdateSkillKnowledgeOfEmployeesEventListener(
 
     private val log = logger {}
 
+    // TODO: how to update more than one page? (ES eventual consistency)
+
     @EventListener
     fun handle(event: SkillUpdatedEvent) {
         log.info { "Handling $event" }
         val skillId = event.skill.id
-        findEmployeeIds(EmployeesWithSkill(skillId))
+        findEmployeeIds(EmployeesWithSkill(skillId = skillId, pageSize = PageSize.MAX))
             .onEach { log.info { "Updating knowledge of skill [$skillId] of employee [${it}]" } }
             .forEach { employeeId ->
                 updateEmployeeById(employeeId) { it.updateSkillKnowledgeOfSkill(event.skill) }

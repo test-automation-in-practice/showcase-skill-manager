@@ -1,9 +1,12 @@
 package skillmanagement.domain.skills.model
 
-import org.springframework.hateoas.CollectionModel
+import org.springframework.hateoas.PagedModel
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.core.Relation
+import org.springframework.hateoas.server.mvc.BasicLinkBuilder
 import org.springframework.hateoas.server.mvc.BasicLinkBuilder.linkToCurrentMapping
+import skillmanagement.common.search.Page
+import skillmanagement.common.search.toMetaData
 import java.util.SortedSet
 import java.util.UUID
 
@@ -16,12 +19,6 @@ data class SkillResource(
     val tags: SortedSet<Tag>
 ) : RepresentationModel<SkillResource>()
 
-fun Collection<Skill>.toResource(): CollectionModel<SkillResource> {
-    val content = map(Skill::toResource)
-    val selfLink = linkToSkills().withSelfRel()
-    return CollectionModel.of(content, selfLink)
-}
-
 fun Skill.toResource() = SkillResource(
     id = id,
     label = label,
@@ -31,8 +28,31 @@ fun Skill.toResource() = SkillResource(
     add(linkToSkill(id).withRel("delete"))
 }
 
-fun linkToSkills() =
-    linkToCurrentMapping().slash(RESOURCE_BASE)
+fun Page<Skill>.toAllResource(): PagedModel<SkillResource> =
+    PagedModel.of(content.map(Skill::toResource), toMetaData())
+        .apply {
+            add(linkToSkills(pageIndex, pageSize).withSelfRel())
+            if (hasPrevious()) add(linkToSkills(pageIndex - 1, pageSize).withRel("previousPage"))
+            if (hasNext()) add(linkToSkills(pageIndex + 1, pageSize).withRel("nextPage"))
+        }
+
+fun linkToSkills(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
+    val queryPart = "?page=$pageIndex&size=$pageSize"
+    return linkToCurrentMapping().slash(RESOURCE_BASE + queryPart)
+}
+
+fun Page<Skill>.toSearchResource(): PagedModel<SkillResource> =
+    PagedModel.of(content.map(Skill::toResource), toMetaData())
+        .apply {
+            add(linkToSkillsSearch(pageIndex, pageSize).withSelfRel())
+            if (hasPrevious()) add(linkToSkillsSearch(pageIndex - 1, pageSize).withRel("previousPage"))
+            if (hasNext()) add(linkToSkillsSearch(pageIndex + 1, pageSize).withRel("nextPage"))
+        }
+
+fun linkToSkillsSearch(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
+    val queryPart = "/_search?page=$pageIndex&size=$pageSize"
+    return linkToCurrentMapping().slash(RESOURCE_BASE + queryPart)
+}
 
 fun linkToSkill(id: UUID) =
     linkToCurrentMapping().slash("$RESOURCE_BASE/$id")

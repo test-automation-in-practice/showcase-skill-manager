@@ -14,6 +14,7 @@ class EmployeeSearchIndex(
 ) : AbstractSearchIndex<Employee>() {
 
     override val indexName = "employees"
+    override val sortFieldName: String = "_sort"
     override val mappingResource = ClassPathResource("/searchindex/employees-mapping.json")
 
     override fun toSource(instance: Employee) =
@@ -25,7 +26,10 @@ class EmployeeSearchIndex(
                 "title" to title.toString(),
                 "email" to email.toString(),
                 "skills" to skills.map { it.skill.label.toString() },
-                "projects" to projects.map { it.project.label.toString() }
+                "projects" to projects.map { it.project.label.toString() },
+                "_sort" to "$lastName, $firstName",
+                "_skillIds" to skills.map { it.skill.id.toString() },
+                "_projectIds" to projects.map { it.project.id.toString() }
             )
         }
 

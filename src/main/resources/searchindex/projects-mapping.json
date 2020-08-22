@@ -5,6 +5,9 @@
     },
     "description": {
       "type": "text"
+    },
+    "_sort": {
+      "type": "keyword"
     }
   }
 }
