@@ -16,36 +16,35 @@ import skillmanagement.test.UnitTest
 @ResetMocksAfterEachTest
 internal class PublishEventTests {
 
-    val eventPublisher: ApplicationEventPublisher = mockk(relaxed = true)
-    val counter: EventCounter = mockk(relaxed = true)
-    val publishEvent = PublishEvent(eventPublisher, counter)
-
-    val event = mockk<Event>()
+    private val eventPublisher: ApplicationEventPublisher = mockk(relaxed = true)
+    private val counter: EventCounter = mockk(relaxed = true)
+    private val publishEvent = PublishEvent(eventPublisher, counter)
 
     @Test
     fun `events are published as application events`() {
-        publishEvent(event)
-        verify { eventPublisher.publishEvent(event) }
+        publishEvent(TestEventOne)
+        verify { eventPublisher.publishEvent(TestEventOne) }
     }
 
     @Test
     @RecordLoggers(PublishEvent::class)
-    fun `events publishing is logged`(log: LogRecord) {
-        publishEvent(event)
-        assertThat(log.messages).containsExactly("Publishing $event")
+    fun `published events are logged`(log: LogRecord) {
+        listOf(TestEventOne, TestEventTwo).forEach { publishEvent(it) }
+        assertThat(log.messages)
+            .containsExactly("Publishing $TestEventOne", "Publishing $TestEventTwo")
     }
 
     @Test
     fun `counter is incremented whenever an event is published`() {
-        publishEvent(event)
-        verify { counter.increment(event::class) }
+        publishEvent(TestEventOne)
+        verify { counter.increment(TestEventOne::class) }
     }
 
     @Test
     fun `counter is incremented even if publishing fails`() {
-        every { eventPublisher.publishEvent(event) } throws RuntimeException()
-        assertThrows<RuntimeException> { publishEvent(event) }
-        verify { counter.increment(event::class) }
+        every { eventPublisher.publishEvent(TestEventTwo) } throws RuntimeException()
+        assertThrows<RuntimeException> { publishEvent(TestEventTwo) }
+        verify { counter.increment(TestEventTwo::class) }
     }
 
 }

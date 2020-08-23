@@ -15,7 +15,7 @@ class EmployeeSearchIndex(
 
     override val indexName = "employees"
     override val sortFieldName: String = "_sort"
-    override val mappingResource = ClassPathResource("/searchindex/employees-mapping.json")
+    override val mappingResource = ClassPathResource("/indices/employees-mapping.json")
 
     override fun toSource(instance: Employee) =
         with(instance) {

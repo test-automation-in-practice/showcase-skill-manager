@@ -6,31 +6,36 @@ import io.kotlintest.shouldBe
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import org.junit.jupiter.api.Test
 import skillmanagement.test.UnitTest
+import kotlin.reflect.KClass
 
 @UnitTest
 internal class EventCounterTests {
 
-    val registry = SimpleMeterRegistry()
-    val eventCounter = EventCounter(registry)
+    private val registry = SimpleMeterRegistry()
+    private val eventCounter = EventCounter(registry)
 
     @Test
-    fun `without any events there are no counters`() {
-        findWithName().counters() should beEmpty()
+    fun `without any events there is no counter`() {
+        getCountersWitMetricName() should beEmpty()
     }
 
     @Test
     fun `with events they are counted by their type`() {
-        count(EventTypeOne, EventTypeTwo, EventTypeOne)
+        count(TestEventOne, TestEventTwo, TestEventOne)
 
-        counterValue("EventTypeOne") shouldBe 2
-        counterValue("EventTypeTwo") shouldBe 1
+        counterValueOf(TestEventOne::class) shouldBe 2
+        counterValueOf(TestEventTwo::class) shouldBe 1
     }
 
-    private fun count(vararg events: Event) = events.forEach { eventCounter.increment(it::class) }
-    private fun counterValue(type: String) = counter(type)?.count()?.toInt()
-    private fun counter(type: String) = findWithName().tag("type", type).counter()
-    private fun findWithName() = registry.find("events.published.total")
+    private fun count(vararg events: TestEvent) =
+        events.forEach { eventCounter.increment(it::class) }
 
-    private object EventTypeOne : Event
-    private object EventTypeTwo : Event
+    private fun counterValueOf(type: KClass<out TestEvent>) =
+        registry.find(eventCounter.name)
+            .tag("type", type.simpleName!!)
+            .counter()?.count()?.toInt()
+
+    private fun getCountersWitMetricName() =
+        registry.find(eventCounter.name).counters()
+
 }

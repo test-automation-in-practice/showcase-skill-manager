@@ -16,7 +16,7 @@ class SkillSearchIndex(
 
     override val indexName = "skills"
     override val sortFieldName: String = "_sort"
-    override val mappingResource = ClassPathResource("/searchindex/skills-mapping.json")
+    override val mappingResource = ClassPathResource("/indices/skills-mapping.json")
 
     override fun toSource(instance: Skill) =
         mapOf(
