@@ -1,14 +1,14 @@
 package skillmanagement.domain.skills.model
 
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonValue
-import skillmanagement.common.validation.Validation.Companion.validate
-import skillmanagement.common.validation.hasMaxLengthOf
-import skillmanagement.common.validation.isNotBlank
+import skillmanagement.common.model.Label
+import skillmanagement.common.model.StringType
+import skillmanagement.common.validation.hasMaxLength
 import skillmanagement.common.validation.matchesPattern
 import java.time.Instant
 import java.util.SortedSet
 import java.util.UUID
+
+// TODO: add description property
 
 data class Skill(
     val id: UUID,
@@ -18,34 +18,9 @@ data class Skill(
     val lastUpdate: Instant
 )
 
-data class SkillLabel @JsonCreator constructor(
-    @JsonValue private val value: String
-) {
-
-    init {
-        validate(value, "Skill Label") {
-            isNotBlank()
-            hasMaxLengthOf(75)
-        }
-    }
-
-    override fun toString() = value
-}
+class SkillLabel(value: String) : Label(value, maxLength = 100)
 
 private val TAG_PATTERN = Regex("""[a-z]+([-_][a-z]+)*""")
 
-data class Tag @JsonCreator constructor(
-    @JsonValue private val value: String
-) : Comparable<Tag> {
-
-    init {
-        validate(value, "Tag") {
-            matchesPattern(TAG_PATTERN)
-            hasMaxLengthOf(50)
-        }
-    }
-
-    override fun compareTo(other: Tag): Int = value.compareTo(other.value)
-    override fun toString() = value
-
-}
+class Tag(value: String) :
+    StringType(value, { hasMaxLength(50); matchesPattern(TAG_PATTERN) })

@@ -1,10 +1,9 @@
 package skillmanagement.domain.employees.model
 
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonValue
-import skillmanagement.common.validation.Validation.Companion.validate
-import skillmanagement.common.validation.isGreaterThanOrEqualTo
-import skillmanagement.common.validation.isLessThanOrEqualTo
+import skillmanagement.common.model.IntType
+import skillmanagement.common.model.Name
+import skillmanagement.common.model.StringType
+import skillmanagement.common.model.Text
 import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.skills.model.Skill
 import java.time.Instant
@@ -36,35 +35,11 @@ data class Employee(
     val lastUpdate: Instant
 )
 
-data class FirstName @JsonCreator constructor(
-    @JsonValue private val value: String
-) {
-    override fun toString() = value
-}
-
-data class LastName @JsonCreator constructor(
-    @JsonValue private val value: String
-) {
-    override fun toString() = value
-}
-
-data class Title @JsonCreator constructor(
-    @JsonValue private val value: String
-) {
-    override fun toString() = value
-}
-
-data class EmailAddress @JsonCreator constructor(
-    @JsonValue private val value: String
-) {
-    override fun toString() = value
-}
-
-data class TelephoneNumber @JsonCreator constructor(
-    @JsonValue private val value: String
-) {
-    override fun toString() = value
-}
+class FirstName(value: String) : Name(value)
+class LastName(value: String) : Name(value)
+class Title(value: String) : StringType(value)
+class EmailAddress(value: String) : StringType(value)
+class TelephoneNumber(value: String) : StringType(value)
 
 // TODO:
 //  - Kategorie / Gruppe in der der Employee den Skill sieht
@@ -75,21 +50,7 @@ data class SkillKnowledge(
     val secret: Boolean
 )
 
-data class SkillLevel @JsonCreator constructor(
-    @JsonValue private val value: Int
-) {
-
-    init {
-        validate(value, "Skill Level") {
-            isGreaterThanOrEqualTo(1)
-            isLessThanOrEqualTo(10)
-        }
-    }
-
-    fun toInt() = value
-    override fun toString() = value.toString()
-
-}
+class SkillLevel(value: Int) : IntType(value, min = 1, max = 10)
 
 // TODO:
 //  - Qualifikationen / Eingesetzte Skills
@@ -102,8 +63,4 @@ data class ProjectAssignment(
     val endDate: LocalDate?
 )
 
-data class ProjectContribution @JsonCreator constructor(
-    @JsonValue private val value: String
-) {
-    override fun toString() = value
-}
+class ProjectContribution(value: String) : Text(value)

@@ -1,7 +1,7 @@
 package skillmanagement.domain.projects.model
 
-import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonValue
+import skillmanagement.common.model.Label
+import skillmanagement.common.model.Text
 import java.time.Instant
 import java.util.UUID
 
@@ -13,14 +13,5 @@ data class Project(
     val lastUpdate: Instant
 )
 
-data class ProjectDescription @JsonCreator constructor(
-    @JsonValue private val value: String
-) {
-    override fun toString() = value
-}
-
-data class ProjectLabel @JsonCreator constructor(
-    @JsonValue private val value: String
-) {
-    override fun toString() = value
-}
+class ProjectLabel(value: String) : Label(value)
+class ProjectDescription(value: String) : Text(value)

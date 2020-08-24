@@ -1,15 +1,15 @@
-package skillmanagement.test.contracts
+package skillmanagement.test.contracts.string
 
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 
-interface IsNotBlankStringTypeContract : StringTypeContract {
+interface IsNotBlankContract : StringTypeContract {
 
     @Test
     fun `instances with non-blank values can be initialized`() {
-        createInstance(validExampleValues.first())
+        createInstance(validExamples.first())
     }
 
     @TestFactory
