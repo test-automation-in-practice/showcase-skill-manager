@@ -129,7 +129,7 @@ internal class AddSkillHttpAdapterTests(
                           "error": "Bad Request",
                           "message": "Request body validation failed!",
                           "details": [
-                            "'Skill Label' [] - must not be blank!"
+                            "'SkillLabel' [] - must not be blank!"
                           ]
                         }
                         """
