@@ -117,4 +117,6 @@ abstract class AbstractSearchIndex<T : Any> {
         client.indices().delete(request, DEFAULT)
     }
 
+    override fun toString() = "SearchIndex(indexName='$indexName')"
+
 }
