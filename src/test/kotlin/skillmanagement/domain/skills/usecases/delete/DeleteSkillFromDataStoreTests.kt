@@ -11,7 +11,7 @@ import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.usecases.add.InsertSkillIntoDataStore
-import skillmanagement.domain.skills.usecases.get.GetSkillFromDataStore
+import skillmanagement.domain.skills.usecases.get.GetSkillsFromDataStore
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.uuid
 
@@ -24,7 +24,7 @@ internal class DeleteSkillFromDataStoreTests(
     @Autowired val objectMapper: ObjectMapper
 ) {
 
-    val getSkill = GetSkillFromDataStore(jdbcTemplate, objectMapper)
+    val getSkill = GetSkillsFromDataStore(jdbcTemplate, objectMapper)
     val insertSkillIntoDataStore = InsertSkillIntoDataStore(jdbcTemplate, objectMapper)
 
     val deleteSkillFromDataStore = DeleteSkillFromDataStore(jdbcTemplate)

@@ -9,22 +9,22 @@ import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_python
 import skillmanagement.domain.skills.searchindex.SkillSearchIndex
-import skillmanagement.domain.skills.usecases.get.GetSkillFromDataStore
+import skillmanagement.domain.skills.usecases.get.GetSkillsFromDataStore
 import skillmanagement.test.UnitTest
 
 @UnitTest
 internal class FindSkillsTests {
 
-    val getSkillFromDataStore: GetSkillFromDataStore = mockk()
+    val getSkillsFromDataStore: GetSkillsFromDataStore = mockk()
     val searchIndex: SkillSearchIndex = mockk()
-    val findSkills = FindSkills(getSkillFromDataStore, searchIndex)
+    val findSkills = FindSkills(getSkillsFromDataStore, searchIndex)
 
     @Test
     fun `AllSkillsQuery just returns all skills from database`() {
         val query = AllSkillsQuery()
         val ids = listOf(skill_kotlin.id, skill_python.id)
         every { searchIndex.findAll(query) } returns pageOf(ids)
-        every { getSkillFromDataStore(ids) } returns skillMap(skill_python, skill_kotlin)
+        every { getSkillsFromDataStore(ids) } returns skillMap(skill_python, skill_kotlin)
 
         findSkills(query) shouldBe pageOf(listOf(skill_kotlin, skill_python))
     }
@@ -34,7 +34,7 @@ internal class FindSkillsTests {
         val query = SkillsMatchingQuery(queryString = "kotlin")
         val ids = listOf(skill_kotlin.id)
         every { searchIndex.query(query) } returns pageOf(ids)
-        every { getSkillFromDataStore(ids) } returns skillMap(skill_kotlin)
+        every { getSkillsFromDataStore(ids) } returns skillMap(skill_kotlin)
 
         findSkills(query) shouldBe pageOf(listOf(skill_kotlin))
     }

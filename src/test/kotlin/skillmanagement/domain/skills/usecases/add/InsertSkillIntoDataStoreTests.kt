@@ -13,7 +13,7 @@ import org.springframework.dao.DuplicateKeyException
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import skillmanagement.domain.skills.model.skill_java
 import skillmanagement.domain.skills.model.skill_kotlin
-import skillmanagement.domain.skills.usecases.get.GetSkillFromDataStore
+import skillmanagement.domain.skills.usecases.get.GetSkillsFromDataStore
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.uuid
 
@@ -26,7 +26,7 @@ internal class InsertSkillIntoDataStoreTests(
     @Autowired val objectMapper: ObjectMapper
 ) {
 
-    val getSkill = GetSkillFromDataStore(jdbcTemplate, objectMapper)
+    val getSkill = GetSkillsFromDataStore(jdbcTemplate, objectMapper)
     val insertSkillIntoDataStore = InsertSkillIntoDataStore(jdbcTemplate, objectMapper)
 
     @Test

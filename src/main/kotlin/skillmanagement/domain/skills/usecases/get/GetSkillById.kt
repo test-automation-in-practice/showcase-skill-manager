@@ -6,11 +6,11 @@ import java.util.UUID
 
 @BusinessFunction
 class GetSkillById(
-    private val getSkillFromDataStore: GetSkillFromDataStore
+    private val getSkillsFromDataStore: GetSkillsFromDataStore
 ) {
 
     operator fun invoke(id: UUID): Skill? {
-        return getSkillFromDataStore(id)
+        return getSkillsFromDataStore(id)
     }
 
 }

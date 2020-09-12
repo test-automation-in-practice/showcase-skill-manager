@@ -13,6 +13,7 @@ import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_python
 import skillmanagement.domain.skills.usecases.add.InsertSkillIntoDataStore
+import skillmanagement.domain.skills.usecases.get.GetSkillsFromDataStore
 import skillmanagement.test.TechnologyIntegrationTest
 
 @JdbcTest
@@ -25,7 +26,7 @@ internal class FindAllSkillsInDataStoreTests(
 ) {
 
     val insertSkillIntoDataStore = InsertSkillIntoDataStore(namedParameterJdbcTemplate, objectMapper)
-    val findSkills = FindAllSkillsInDataStore(namedParameterJdbcTemplate.jdbcTemplate, objectMapper)
+    val getSkillsFromDataStore = GetSkillsFromDataStore(namedParameterJdbcTemplate, objectMapper)
 
     @Test
     fun `returns empty list if there are no Skills`() {
@@ -47,7 +48,7 @@ internal class FindAllSkillsInDataStoreTests(
 
     fun findSkills(): Set<Skill> {
         val foundSkills = mutableSetOf<Skill>()
-        findSkills { foundSkills.add(it) }
+        getSkillsFromDataStore { foundSkills.add(it) }
         return foundSkills
     }
 
