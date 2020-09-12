@@ -4,11 +4,11 @@ import skillmanagement.common.search.Page
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.searchindex.EmployeeSearchIndex
-import skillmanagement.domain.employees.usecases.get.GetEmployeeFromDataStore
+import skillmanagement.domain.employees.usecases.get.GetEmployeesFromDataStore
 
 @BusinessFunction
 class FindEmployees(
-    private val getEmployeeFromDataStore: GetEmployeeFromDataStore,
+    private val getEmployeeFromDataStore: GetEmployeesFromDataStore,
     private val searchIndex: EmployeeSearchIndex
 ) {
 

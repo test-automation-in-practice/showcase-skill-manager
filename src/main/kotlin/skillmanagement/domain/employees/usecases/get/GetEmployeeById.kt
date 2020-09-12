@@ -6,7 +6,7 @@ import java.util.UUID
 
 @BusinessFunction
 class GetEmployeeById(
-    private val getEmployeeFromDataStore: GetEmployeeFromDataStore
+    private val getEmployeeFromDataStore: GetEmployeesFromDataStore
 ) {
 
     // TODO: which kinds of users should be able to access this information? The employee + their managers?

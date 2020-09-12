@@ -8,11 +8,11 @@ import skillmanagement.common.search.PagedStringQuery
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.searchindex.ProjectSearchIndex
-import skillmanagement.domain.projects.usecases.get.GetProjectFromDataStore
+import skillmanagement.domain.projects.usecases.get.GetProjectsFromDataStore
 
 @BusinessFunction
 class FindProjects(
-    private val getProjectFromDataStore: GetProjectFromDataStore,
+    private val getProjectsFromDataStore: GetProjectsFromDataStore,
     private val searchIndex: ProjectSearchIndex
 ) {
 
@@ -22,7 +22,7 @@ class FindProjects(
             is ProjectsMatchingQuery -> searchIndex.query(query)
             is AllProjectsQuery -> searchIndex.findAll(query)
         }
-        val projectsMap = getProjectFromDataStore(page.content)
+        val projectsMap = getProjectsFromDataStore(page.content)
         val projects = page.content.mapNotNull { projectsMap[it] }
         return page.withOtherContent(projects)
     }

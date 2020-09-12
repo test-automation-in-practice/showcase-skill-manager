@@ -14,7 +14,7 @@ import skillmanagement.domain.skills.model.skill_java
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_python
 import skillmanagement.domain.skills.usecases.add.InsertSkillIntoDataStore
-import skillmanagement.domain.skills.usecases.get.GetSkillFromDataStore
+import skillmanagement.domain.skills.usecases.get.GetSkillsFromDataStore
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.fixedClock
 
@@ -29,7 +29,7 @@ internal class UpdateSkillInDataStoreTests(
 
     val clock = fixedClock("2020-07-16T12:34:56.789Z")
 
-    val getSkill = GetSkillFromDataStore(jdbcTemplate, objectMapper)
+    val getSkill = GetSkillsFromDataStore(jdbcTemplate, objectMapper)
     val insertSkillIntoDataStore = InsertSkillIntoDataStore(jdbcTemplate, objectMapper)
     val updateSkillInDataStore = UpdateSkillInDataStore(jdbcTemplate, objectMapper, clock)
 

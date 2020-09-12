@@ -8,11 +8,11 @@ import skillmanagement.common.search.PagedStringQuery
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.searchindex.SkillSearchIndex
-import skillmanagement.domain.skills.usecases.get.GetSkillFromDataStore
+import skillmanagement.domain.skills.usecases.get.GetSkillsFromDataStore
 
 @BusinessFunction
 class FindSkills(
-    private val getSkillFromDataStore: GetSkillFromDataStore,
+    private val getSkillsFromDataStore: GetSkillsFromDataStore,
     private val searchIndex: SkillSearchIndex
 ) {
 
@@ -22,7 +22,7 @@ class FindSkills(
             is SkillsMatchingQuery -> searchIndex.query(query)
             is AllSkillsQuery -> searchIndex.findAll(query)
         }
-        val skillsMap = getSkillFromDataStore(page.content)
+        val skillsMap = getSkillsFromDataStore(page.content)
         val skills = page.content.mapNotNull { skillsMap[it] }
         return page.withOtherContent(skills)
     }

@@ -6,11 +6,11 @@ import java.util.UUID
 
 @BusinessFunction
 class GetProjectById(
-    private val getProjectFromDataStore: GetProjectFromDataStore
+    private val getProjectsFromDataStore: GetProjectsFromDataStore
 ) {
 
     operator fun invoke(id: UUID): Project? {
-        return getProjectFromDataStore(id)
+        return getProjectsFromDataStore(id)
     }
 
 }
