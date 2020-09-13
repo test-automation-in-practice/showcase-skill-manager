@@ -2,13 +2,13 @@ package skillmanagement.domain.employees.searchindex
 
 import org.springframework.context.event.EventListener
 import org.springframework.scheduling.annotation.Async
-import org.springframework.stereotype.Component
+import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.employees.model.EmployeeAddedEvent
 import skillmanagement.domain.employees.model.EmployeeDeletedEvent
 import skillmanagement.domain.employees.model.EmployeeUpdatedEvent
 
-@Component
-class EmployeeSearchIndexUpdatingEventListener(
+@EventHandler
+class EmployeeSearchIndexUpdatingEventHandler(
     private val searchIndex: EmployeeSearchIndex
 ) {
 
