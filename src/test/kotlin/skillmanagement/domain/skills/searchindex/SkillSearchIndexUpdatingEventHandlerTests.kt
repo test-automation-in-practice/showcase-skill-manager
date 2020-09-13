@@ -22,7 +22,7 @@ import skillmanagement.test.TechnologyIntegrationTest
 @ResetMocksAfterEachTest
 @TechnologyIntegrationTest
 @SpringBootTest(classes = [SkillSearchIndexUpdateEventHandlerTestsConfiguration::class])
-internal class SkillSearchIndexUpdatingEventListenerTests(
+internal class SkillSearchIndexUpdatingEventHandlerTests(
     @Autowired val eventPublisher: ApplicationEventPublisher,
     @Autowired val skillSearchIndex: SkillSearchIndex
 ) {
@@ -49,7 +49,7 @@ internal class SkillSearchIndexUpdatingEventListenerTests(
 }
 
 @EnableAsync
-@Import(SkillSearchIndexUpdatingEventListener::class)
+@Import(SkillSearchIndexUpdatingEventHandler::class)
 private class SkillSearchIndexUpdateEventHandlerTestsConfiguration {
 
     @Bean

@@ -10,10 +10,12 @@ import com.tngtech.archunit.core.importer.ImportOptions
 import org.junit.jupiter.api.Test
 import org.springframework.stereotype.Component
 import skillmanagement.common.stereotypes.BusinessFunction
+import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.common.stereotypes.HttpAdapter
-import skillmanagement.common.stereotypes.MetricProvider
+import skillmanagement.common.stereotypes.LastingMetric
 import skillmanagement.common.stereotypes.Task
 import skillmanagement.common.stereotypes.TechnicalFunction
+import skillmanagement.common.stereotypes.TransientMetric
 import java.io.File
 import kotlin.reflect.KClass
 
@@ -25,23 +27,32 @@ class BuildDependencyGraph {
         .with(DoNotIncludeTests())
     private val classes = ClassFileImporter(options).importPackages("skillmanagement")
 
-    private val httpAdapters = classes.extract(HttpAdapter::class, ClassType.HttpAdapter)
     private val businessFunctions = classes.extract(BusinessFunction::class, ClassType.BusinessFunction)
-    private val technicalFunctions = classes.extract(TechnicalFunction::class, ClassType.TechnicalFunction)
-    private val metricProviders = classes.extract(MetricProvider::class, ClassType.MetricProvider)
+    private val eventHandlers = classes.extract(EventHandler::class, ClassType.EventHandler)
+    private val httpAdapters = classes.extract(HttpAdapter::class, ClassType.HttpAdapter)
+    private val lastingMetrics = classes.extract(LastingMetric::class, ClassType.LastingMetric)
     private val tasks = classes.extract(Task::class, ClassType.Task)
+    private val technicalFunctions = classes.extract(TechnicalFunction::class, ClassType.TechnicalFunction)
+    private val transientMetrics = classes.extract(TransientMetric::class, ClassType.TransientMetric)
     private val components = classes.extract(Component::class, ClassType.Component)
         .removeClasseByName("TestDataInserter")
-        .removeClasseByName("HttpAdapter")
         .removeClasseByName("BusinessFunction")
+        .removeClasseByName("EventHandler")
+        .removeClasseByName("HttpAdapter")
+        .removeClasseByName("LastingMetric")
+        .removeClasseByName("Task")
         .removeClasseByName("TechnicalFunction")
-        .removeClasseByName("MetricProvider")
-    private val allClassesWithTypes = httpAdapters
-        .plus(businessFunctions)
-        .plus(technicalFunctions)
-        .plus(metricProviders)
-        .plus(components)
-        .sortedBy { it.clazz.name }
+        .removeClasseByName("TransientMetric")
+    private val allClassesWithTypes = listOf(
+        businessFunctions,
+        eventHandlers,
+        httpAdapters,
+        lastingMetrics,
+        tasks,
+        technicalFunctions,
+        transientMetrics,
+        components
+    ).flatten().sortedBy { it.clazz.name }
 
     @Test
     fun `generate Neo4J graph data`() {
@@ -115,4 +126,13 @@ abstract class AbstractGraphDataGenerator {
 
 data class ClassWithClassType(val clazz: JavaClass, val type: ClassType)
 data class ClassWithDependencies(val clazz: JavaClass, val dependencies: List<JavaClass>)
-enum class ClassType { HttpAdapter, BusinessFunction, TechnicalFunction, MetricProvider, Task, Component }
+enum class ClassType {
+    BusinessFunction,
+    EventHandler,
+    HttpAdapter,
+    LastingMetric,
+    Task,
+    TechnicalFunction,
+    TransientMetric,
+    Component
+}

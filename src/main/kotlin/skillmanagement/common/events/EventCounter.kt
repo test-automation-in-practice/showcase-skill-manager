@@ -2,16 +2,18 @@ package skillmanagement.common.events
 
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.Tag
-import skillmanagement.common.stereotypes.Metric
+import skillmanagement.common.stereotypes.TransientMetric
 import kotlin.reflect.KClass
 
 /**
- * This [Metric] keeps track of all published events by counting them.
+ * This [TransientMetric] keeps track of all published events by counting them.
  *
  * It is published under the name `events.published.total` and has one dimension
  * (_tag_) `type` which reflects the type (_class_) of event that was published.
+ *
+ * It is not backed by data storage
  */
-@Metric
+@TransientMetric
 class EventCounter(
     private val registry: MeterRegistry
 ) {

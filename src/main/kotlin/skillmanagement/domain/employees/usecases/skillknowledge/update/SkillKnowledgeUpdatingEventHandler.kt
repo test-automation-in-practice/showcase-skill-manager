@@ -2,8 +2,8 @@ package skillmanagement.domain.employees.usecases.skillknowledge.update
 
 import mu.KotlinLogging.logger
 import org.springframework.context.event.EventListener
-import org.springframework.stereotype.Component
 import skillmanagement.common.search.PageSize
+import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.usecases.find.EmployeesWithSkill
 import skillmanagement.domain.employees.usecases.find.FindEmployeeIds
@@ -11,8 +11,8 @@ import skillmanagement.domain.employees.usecases.update.UpdateEmployeeById
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillUpdatedEvent
 
-@Component
-class UpdateSkillKnowledgeOfEmployeesEventListener(
+@EventHandler
+class SkillKnowledgeUpdatingEventHandler(
     private val findEmployeeIds: FindEmployeeIds,
     private val updateEmployeeById: UpdateEmployeeById
 ) {
