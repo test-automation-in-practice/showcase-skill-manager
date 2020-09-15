@@ -3,22 +3,18 @@ package skillmanagement.domain.skills.model
 import org.junit.jupiter.api.Nested
 import skillmanagement.test.AbstractJsonSerializationTests
 import skillmanagement.test.TechnologyIntegrationTest
-import skillmanagement.test.uuid
 
 internal class SkillResourceTests {
 
     @Nested
     @TechnologyIntegrationTest
     inner class JsonSerializationTests : AbstractJsonSerializationTests<SkillResource>() {
-        val instance = SkillResource(
-            id = uuid("77e3a78e-c0e3-4272-83f1-a3f4e07326a1"),
-            label = SkillLabel("Kotlin"),
-            tags = sortedSetOf(Tag("language"), Tag("cool"))
-        )
+        val instance = skill_resource_kotlin
         val json = """
             {
-              "id": "77e3a78e-c0e3-4272-83f1-a3f4e07326a1",
+              "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
               "label": "Kotlin",
+              "description": "The coolest programming language.",
               "tags": [
                 "cool",
                 "language"

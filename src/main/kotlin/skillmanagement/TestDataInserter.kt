@@ -17,6 +17,7 @@ import skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnow
 import skillmanagement.domain.projects.model.ProjectDescription
 import skillmanagement.domain.projects.model.ProjectLabel
 import skillmanagement.domain.projects.usecases.add.AddProject
+import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.Tag
 import skillmanagement.domain.skills.usecases.add.AddSkill
@@ -35,9 +36,15 @@ class TestDataInserter(
 ) : ApplicationRunner {
 
     override fun run(args: ApplicationArguments?) {
-        val kotlin = addSkill(SkillLabel("Kotlin"), sortedSetOf(Tag("language"), Tag("cool")))
-        val starlink = addProject(ProjectLabel("Starlink"), ProjectDescription("Lorem ipsum .."))
-
+        val kotlin = addSkill(
+            label = SkillLabel("Kotlin"),
+            description = SkillDescription("Lorem Ipsum .."),
+            tags = sortedSetOf(Tag("language"), Tag("cool"))
+        )
+        val starlink = addProject(
+            label = ProjectLabel("Starlink"),
+            description = ProjectDescription("Lorem ipsum ..")
+        )
         val maxMustermann = addEmployee(
             firstName = FirstName("Max"),
             lastName = LastName("Mustermann"),

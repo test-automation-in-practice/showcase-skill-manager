@@ -48,7 +48,7 @@ internal class UpdateSkillByIdHttpAdapterTests(
         mockMvc
             .put("/api/skills/${skill.id}") {
                 contentType = APPLICATION_JSON
-                content = """{ "label": "Kotlin (Language)", "tags": ["language"] }"""
+                content = """{ "label": "Kotlin (Language)", "description": "description", "tags": ["language"] }"""
             }
             .andExpect {
                 status { isOk }
@@ -59,6 +59,7 @@ internal class UpdateSkillByIdHttpAdapterTests(
                         {
                           "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
                           "label": "Kotlin (Language)",
+                          "description": "description",
                           "tags": ["language"],
                           "_links": {
                             "self": {
@@ -110,6 +111,11 @@ internal class UpdateSkillByIdHttpAdapterTests(
                         "value": "Kotlin (Language)"
                       },
                       {
+                        "op": "replace",
+                        "path": "/description",
+                        "value": "description"
+                      },
+                      {
                         "op": "remove",
                         "path": "/tags/0"
                       },
@@ -130,6 +136,7 @@ internal class UpdateSkillByIdHttpAdapterTests(
                         {
                           "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
                           "label": "Kotlin (Language)",
+                          "description": "description",
                           "tags": ["current", "language"],
                           "_links": {
                             "self": {

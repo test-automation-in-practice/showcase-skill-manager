@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Import
 import org.springframework.retry.annotation.EnableRetry
 import skillmanagement.common.events.PublishEvent
 import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.SkillUpdatedEvent
 import skillmanagement.domain.skills.model.Tag
@@ -37,6 +38,7 @@ internal class UpdateSkillByIdTests {
         id = id,
         version = 2,
         label = SkillLabel("Old Label"),
+        description = SkillDescription("Old Description"),
         tags = sortedSetOf(Tag("old")),
         lastUpdate = instant("2020-07-16T12:34:56.789Z")
     )
@@ -54,7 +56,11 @@ internal class UpdateSkillByIdTests {
         @Test
         fun `updating an existing skill stores it in the data store and publishes an event`() {
             val change: (Skill) -> (Skill) = {
-                it.copy(label = SkillLabel("New Label"), tags = sortedSetOf(Tag("new")))
+                it.copy(
+                    label = SkillLabel("New Label"),
+                    description = SkillDescription("New Description"),
+                    tags = sortedSetOf(Tag("new"))
+                )
             }
 
             val expectedChangedSkill = change(skill)

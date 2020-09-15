@@ -14,6 +14,7 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
+import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.Tag
 import skillmanagement.domain.skills.model.skill_kotlin
@@ -37,12 +38,18 @@ internal class AddSkillHttpAdapterTests(
 
     @Test
     fun `well formed request leads to correct response`() {
-        every { addSkill(any(), any()) } returns skill_kotlin
+        every { addSkill(any(), any(), any()) } returns skill_kotlin
 
         mockMvc
             .post("/api/skills") {
                 contentType = APPLICATION_JSON
-                content = """{ "label": "Kotlin", "tags": ["language", "cool"] }"""
+                content = """
+                    { 
+                      "label": "Kotlin",
+                      "description": "The coolest programming language.",
+                      "tags": ["language", "cool"]
+                    }
+                    """
             }
             .andExpect {
                 status { isCreated }
@@ -53,6 +60,7 @@ internal class AddSkillHttpAdapterTests(
                         {
                           "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
                           "label": "Kotlin",
+                          "description": "The coolest programming language.",
                           "tags": ["cool", "language"],
                           "_links": {
                             "self": {
@@ -69,12 +77,18 @@ internal class AddSkillHttpAdapterTests(
             }
             .andDocument("created")
 
-        verify { addSkill(SkillLabel("Kotlin"), sortedSetOf(Tag("language"), Tag("cool"))) }
+        verify {
+            addSkill(
+                label = SkillLabel("Kotlin"),
+                description = SkillDescription("The coolest programming language."),
+                tags = sortedSetOf(Tag("language"), Tag("cool"))
+            )
+        }
     }
 
     @Test
     fun `tags are optional`() {
-        every { addSkill(any(), any()) } returns skill_python
+        every { addSkill(any(), any(), any()) } returns skill_python
 
         mockMvc
             .post("/api/skills") {
@@ -106,7 +120,7 @@ internal class AddSkillHttpAdapterTests(
             }
             .andDocument("created")
 
-        verify { addSkill(SkillLabel("Python"), emptySortedSet()) }
+        verify { addSkill(SkillLabel("Python"), null, emptySortedSet()) }
     }
 
     @Test

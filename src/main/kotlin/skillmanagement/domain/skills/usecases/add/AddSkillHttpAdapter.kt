@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import skillmanagement.common.stereotypes.HttpAdapter
+import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.SkillResource
 import skillmanagement.domain.skills.model.Tag
@@ -25,12 +26,13 @@ class AddSkillHttpAdapter(
     @PostMapping
     @ResponseStatus(CREATED)
     fun post(@RequestBody request: Request): SkillResource {
-        val skill = addSkill(request.label, request.tags)
+        val skill = addSkill(request.label, request.description, request.tags)
         return skill.toResource()
     }
 
     data class Request(
         val label: SkillLabel,
+        val description: SkillDescription? = null,
         val tags: SortedSet<Tag> = emptySortedSet()
     )
 

@@ -104,6 +104,7 @@ internal class FindAllSkillsHttpAdapterTests(
                               {
                                 "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
                                 "label": "Kotlin",
+                                "description": "The coolest programming language.",
                                 "tags": [
                                   "cool",
                                   "language"
@@ -159,6 +160,7 @@ internal class FindAllSkillsHttpAdapterTests(
                               {
                                 "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
                                 "label": "Kotlin",
+                                "description": "The coolest programming language.",
                                 "tags": [
                                   "cool",
                                   "language"
