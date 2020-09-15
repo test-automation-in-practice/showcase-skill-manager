@@ -9,6 +9,7 @@ import org.springframework.util.IdGenerator
 import skillmanagement.common.events.PublishEvent
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillAddedEvent
+import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.Tag
 import skillmanagement.test.UnitTest
@@ -31,21 +32,31 @@ internal class AddSkillTests {
 
     @Test
     fun `correct Skill instances are constructed and stored`() {
-        val actualSkill1 = addSkill(SkillLabel("Skill #1"), emptySortedSet())
+        val actualSkill1 = addSkill(
+            label = SkillLabel("Skill #1"),
+            description = null,
+            tags = emptySortedSet()
+        )
         val expectedSkill1 = Skill(
             id = uuid(ids[0]),
             version = 1,
             label = SkillLabel("Skill #1"),
+            description = null,
             tags = emptySortedSet(),
             lastUpdate = Instant.parse("2020-07-14T12:34:56.789Z")
         )
         actualSkill1 shouldBe expectedSkill1
 
-        val actualSkill2 = addSkill(SkillLabel("Skill #2"), sortedSetOf(Tag("foo-bar")))
+        val actualSkill2 = addSkill(
+            label = SkillLabel("Skill #2"),
+            description = SkillDescription("description"),
+            tags = sortedSetOf(Tag("foo-bar"))
+        )
         val expectedSkill2 = Skill(
             id = uuid(ids[1]),
             version = 1,
             label = SkillLabel("Skill #2"),
+            description = SkillDescription("description"),
             tags = sortedSetOf(Tag("foo-bar")),
             lastUpdate = Instant.parse("2020-07-14T13:34:56.789Z")
         )

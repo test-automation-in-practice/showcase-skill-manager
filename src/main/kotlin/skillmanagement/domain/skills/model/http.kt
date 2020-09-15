@@ -1,5 +1,7 @@
 package skillmanagement.domain.skills.model
 
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL
 import org.springframework.hateoas.PagedModel
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.core.Relation
@@ -12,16 +14,19 @@ import java.util.UUID
 
 private const val RESOURCE_BASE = "api/skills"
 
+@JsonInclude(NON_NULL)
 @Relation(itemRelation = "skill", collectionRelation = "skills")
 data class SkillResource(
     val id: UUID,
     val label: SkillLabel,
+    val description: SkillDescription?,
     val tags: SortedSet<Tag>
 ) : RepresentationModel<SkillResource>()
 
 fun Skill.toResource() = SkillResource(
     id = id,
     label = label,
+    description = description,
     tags = tags
 ).apply {
     add(linkToSkill(id).withSelfRel())
