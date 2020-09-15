@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.http.patch.ApplyPatch
 import skillmanagement.common.stereotypes.HttpAdapter
-import skillmanagement.domain.projects.model.Project
-import skillmanagement.domain.projects.model.ProjectDescription
-import skillmanagement.domain.projects.model.ProjectLabel
+import skillmanagement.domain.projects.model.ProjectChangeData
 import skillmanagement.domain.projects.model.ProjectResource
+import skillmanagement.domain.projects.model.merge
+import skillmanagement.domain.projects.model.toChangeData
 import skillmanagement.domain.projects.model.toResource
 import skillmanagement.domain.projects.usecases.update.UpdateProjectByIdResult.ProjectNotFound
 import skillmanagement.domain.projects.usecases.update.UpdateProjectByIdResult.SuccessfullyUpdated
@@ -30,7 +30,7 @@ class UpdateProjectByIdHttpAdapter(
     @PutMapping
     fun put(
         @PathVariable projectId: UUID,
-        @RequestBody request: ChangeData
+        @RequestBody request: ProjectChangeData
     ): ResponseEntity<ProjectResource> {
         val result = updateProjectById(projectId) {
             it.merge(request)
@@ -54,16 +54,5 @@ class UpdateProjectByIdHttpAdapter(
             is SuccessfullyUpdated -> ok(result.project.toResource())
         }
     }
-
-    data class ChangeData(
-        val label: ProjectLabel,
-        val description: ProjectDescription
-    )
-
-    private fun Project.toChangeData(): ChangeData =
-        ChangeData(label = label, description = description)
-
-    private fun Project.merge(changes: ChangeData): Project =
-        copy(label = changes.label, description = changes.description)
 
 }

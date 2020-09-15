@@ -11,14 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.http.patch.ApplyPatch
 import skillmanagement.common.stereotypes.HttpAdapter
-import skillmanagement.domain.skills.model.Skill
-import skillmanagement.domain.skills.model.SkillLabel
+import skillmanagement.domain.skills.model.SkillChangeData
 import skillmanagement.domain.skills.model.SkillResource
-import skillmanagement.domain.skills.model.Tag
+import skillmanagement.domain.skills.model.merge
+import skillmanagement.domain.skills.model.toChangeData
 import skillmanagement.domain.skills.model.toResource
 import skillmanagement.domain.skills.usecases.update.UpdateSkillByIdResult.SkillNotFound
 import skillmanagement.domain.skills.usecases.update.UpdateSkillByIdResult.SuccessfullyUpdated
-import java.util.SortedSet
 import java.util.UUID
 
 @HttpAdapter
@@ -31,7 +30,7 @@ class UpdateSkillByIdHttpAdapter(
     @PutMapping
     fun put(
         @PathVariable skillId: UUID,
-        @RequestBody request: ChangeData
+        @RequestBody request: SkillChangeData
     ): ResponseEntity<SkillResource> {
         val result = updateSkillById(skillId) {
             it.merge(request)
@@ -55,13 +54,5 @@ class UpdateSkillByIdHttpAdapter(
             is SuccessfullyUpdated -> ok(result.skill.toResource())
         }
     }
-
-    data class ChangeData(
-        val label: SkillLabel,
-        val tags: SortedSet<Tag>
-    )
-
-    private fun Skill.toChangeData(): ChangeData = ChangeData(label = label, tags = tags)
-    private fun Skill.merge(changes: ChangeData): Skill = copy(label = changes.label, tags = changes.tags)
 
 }

@@ -11,13 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.http.patch.ApplyPatch
 import skillmanagement.common.stereotypes.HttpAdapter
-import skillmanagement.domain.employees.model.EmailAddress
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeChangeData
 import skillmanagement.domain.employees.model.EmployeeResource
-import skillmanagement.domain.employees.model.FirstName
-import skillmanagement.domain.employees.model.LastName
-import skillmanagement.domain.employees.model.TelephoneNumber
-import skillmanagement.domain.employees.model.Title
+import skillmanagement.domain.employees.model.merge
+import skillmanagement.domain.employees.model.toChangeData
 import skillmanagement.domain.employees.model.toResource
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotChanged
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotFound
@@ -34,7 +31,7 @@ class UpdateEmployeeByIdHttpAdapter(
     @PutMapping
     fun put(
         @PathVariable employeeId: UUID,
-        @RequestBody request: ChangeData
+        @RequestBody request: EmployeeChangeData
     ): ResponseEntity<EmployeeResource> {
         val result = updateEmployeeById(employeeId) {
             it.merge(request)
@@ -60,31 +57,5 @@ class UpdateEmployeeByIdHttpAdapter(
             is SuccessfullyUpdatedEmployee -> ok(result.employee.toResource())
         }
     }
-
-    data class ChangeData(
-        val firstName: FirstName,
-        val lastName: LastName,
-        val title: Title,
-        val email: EmailAddress,
-        val telephone: TelephoneNumber
-    )
-
-    private fun Employee.toChangeData(): ChangeData =
-        ChangeData(
-            firstName = firstName,
-            lastName = lastName,
-            title = title,
-            email = email,
-            telephone = telephone
-        )
-
-    private fun Employee.merge(changes: ChangeData): Employee =
-        copy(
-            firstName = changes.firstName,
-            lastName = changes.lastName,
-            title = changes.title,
-            email = changes.email,
-            telephone = changes.telephone
-        )
 
 }
