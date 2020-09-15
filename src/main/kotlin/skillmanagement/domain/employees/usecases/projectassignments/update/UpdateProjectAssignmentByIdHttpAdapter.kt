@@ -13,13 +13,14 @@ import skillmanagement.common.http.patch.ApplyPatch
 import skillmanagement.common.stereotypes.HttpAdapter
 import skillmanagement.domain.employees.model.EmployeeResource
 import skillmanagement.domain.employees.model.ProjectAssignment
-import skillmanagement.domain.employees.model.ProjectContribution
+import skillmanagement.domain.employees.model.ProjectAssignmentChangeData
+import skillmanagement.domain.employees.model.merge
+import skillmanagement.domain.employees.model.toChangeData
 import skillmanagement.domain.employees.model.toResource
 import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentResult.EmployeeNotFound
 import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentResult.ProjectAssignmentNotChanged
 import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentResult.ProjectAssignmentNotFound
 import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentResult.SuccessfullyUpdatedProjectAssignment
-import java.time.LocalDate
 import java.util.UUID
 
 @HttpAdapter
@@ -33,7 +34,7 @@ class UpdateProjectAssignmentByIdHttpAdapter(
     fun put(
         @PathVariable employeeId: UUID,
         @PathVariable assignmentId: UUID,
-        @RequestBody request: ChangeData
+        @RequestBody request: ProjectAssignmentChangeData
     ): ResponseEntity<EmployeeResource> =
         handleUpdate(employeeId, assignmentId) { it.merge(request) }
 
@@ -55,17 +56,5 @@ class UpdateProjectAssignmentByIdHttpAdapter(
             is ProjectAssignmentNotChanged -> ok(result.employee.toResource())
             is SuccessfullyUpdatedProjectAssignment -> ok(result.employee.toResource())
         }
-
-    data class ChangeData(
-        val contribution: ProjectContribution,
-        val startDate: LocalDate,
-        val endDate: LocalDate?
-    )
-
-    private fun ProjectAssignment.toChangeData(): ChangeData =
-        ChangeData(contribution = contribution, startDate = startDate, endDate = endDate)
-
-    private fun ProjectAssignment.merge(changes: ChangeData): ProjectAssignment =
-        copy(contribution = changes.contribution, startDate = changes.startDate, endDate = changes.endDate)
 
 }

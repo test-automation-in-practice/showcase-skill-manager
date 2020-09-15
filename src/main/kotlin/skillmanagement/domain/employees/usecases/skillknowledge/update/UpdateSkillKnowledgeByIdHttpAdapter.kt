@@ -13,7 +13,9 @@ import skillmanagement.common.http.patch.ApplyPatch
 import skillmanagement.common.stereotypes.HttpAdapter
 import skillmanagement.domain.employees.model.EmployeeResource
 import skillmanagement.domain.employees.model.SkillKnowledge
-import skillmanagement.domain.employees.model.SkillLevel
+import skillmanagement.domain.employees.model.SkillKnowledgeChangeData
+import skillmanagement.domain.employees.model.merge
+import skillmanagement.domain.employees.model.toChangeData
 import skillmanagement.domain.employees.model.toResource
 import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSkillKnowledgeResult.EmployeeNotFound
 import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSkillKnowledgeResult.SkillKnowledgeNotChanged
@@ -32,7 +34,7 @@ class UpdateSkillKnowledgeByIdHttpAdapter(
     fun put(
         @PathVariable employeeId: UUID,
         @PathVariable skillId: UUID,
-        @RequestBody request: ChangeData
+        @RequestBody request: SkillKnowledgeChangeData
     ): ResponseEntity<EmployeeResource> =
         handleUpdate(employeeId, skillId) { it.merge(request) }
 
@@ -54,16 +56,5 @@ class UpdateSkillKnowledgeByIdHttpAdapter(
             is SkillKnowledgeNotChanged -> ok(result.employee.toResource())
             is SuccessfullyUpdatedSkillKnowledge -> ok(result.employee.toResource())
         }
-
-    data class ChangeData(
-        val level: SkillLevel,
-        val secret: Boolean
-    )
-
-    private fun SkillKnowledge.toChangeData(): ChangeData =
-        ChangeData(level = level, secret = secret)
-
-    private fun SkillKnowledge.merge(changes: ChangeData): SkillKnowledge =
-        copy(level = changes.level, secret = changes.secret)
 
 }
