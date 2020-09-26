@@ -145,6 +145,1191 @@
 					],
 					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
+				},
+				{
+					"name": "CRUD",
+					"item": [
+						{
+							"name": "Create",
+							"item": [
+								{
+									"name": "Create Employee",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "fbe09e26-5056-49c8-90c5-f0553feef3eb",
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"firstName\": \"John\",\n\t\"lastName\": \"Smith\",\n\t\"title\": \"Consultant\",\n\t\"email\": \"john.smith@example.com\",\n\t\"telephone\": \"+49 555 123456\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base-url}}/api/employees",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"employees"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "6d9a1e24-1679-4ff6-9c5d-ff81784038b4",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "4b6a968c-f80b-4493-9705-c95ba67439c9",
+										"type": "text/javascript",
+										"exec": [
+											"pm.globals.set(\"employee.last-created.id\", pm.response.json().id);",
+											""
+										]
+									}
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Read",
+							"item": [
+								{
+									"name": "Get Employee by ID",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "41375a56-177c-46d9-bd58-237fa4ed79de",
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base-url}}/api/employees/3903cd2c-87aa-411e-969e-44bebda774e1",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"employees",
+												"3903cd2c-87aa-411e-969e-44bebda774e1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Employee by ID (last created)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "c3a5307b-0a45-4ce8-8a5d-1201fea818cc",
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base-url}}/api/employees/{{employee.last-created.id}}",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"employees",
+												"{{employee.last-created.id}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get All Employees (paged)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "e2eda70d-ef5a-4dab-91c6-475e05aa2437",
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base-url}}/api/employees?page=0&size=50",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"employees"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "0"
+												},
+												{
+													"key": "size",
+													"value": "50"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Update",
+							"item": [
+								{
+									"name": "Update Employee by ID",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"firstName\": \"John\",\n\t\"lastName\": \"Smith\",\n\t\"title\": \"Consultant\",\n\t\"email\": \"john.smith@example.com\",\n\t\"telephone\": \"+49 555 123456\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base-url}}/api/employees/3903cd2c-87aa-411e-969e-44bebda774e1",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"employees",
+												"3903cd2c-87aa-411e-969e-44bebda774e1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Employee by ID (last created)",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"firstName\": \"John\",\n\t\"lastName\": \"Smith\",\n\t\"title\": \"Consultant\",\n\t\"email\": \"john.smith@example.com\",\n\t\"telephone\": \"+49 555 123456\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base-url}}/api/employees/{{employee.last-created.id}}",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"employees",
+												"{{employee.last-created.id}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Employee by ID",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json-patch+json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "[\n    {\n        \"op\": \"replace\",\n        \"path\": \"/firstName\",\n        \"value\": \"Jon\"\n    },\n    {\n        \"op\": \"replace\",\n        \"path\": \"/title\",\n        \"value\": \"Senior Consultant\"\n    }\n]",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base-url}}/api/employees/3903cd2c-87aa-411e-969e-44bebda774e1",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"employees",
+												"3903cd2c-87aa-411e-969e-44bebda774e1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Employee by ID (last created)",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json-patch+json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "[\n    {\n        \"op\": \"replace\",\n        \"path\": \"/firstName\",\n        \"value\": \"Jon\"\n    },\n    {\n        \"op\": \"replace\",\n        \"path\": \"/title\",\n        \"value\": \"Senior Consultant\"\n    }\n]",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base-url}}/api/employees/{{employee.last-created.id}}",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"employees",
+												"{{employee.last-created.id}}"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Delete",
+							"item": [
+								{
+									"name": "Delete Employee by ID",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{base-url}}/api/employees/3903cd2c-87aa-411e-969e-44bebda774e1",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"employees",
+												"3903cd2c-87aa-411e-969e-44bebda774e1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Employee by ID (last created)",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{base-url}}/api/employees/{{employee.last-created.id}}",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"employees",
+												"{{employee.last-created.id}}"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Skill Knowledge",
+							"item": [
+								{
+									"name": "Set",
+									"item": [
+										{
+											"name": "Set Skill Knowledge",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "42d837b9-a844-4363-a54f-65403da38cf0",
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n\t\"skillId\": \"a302e142-daef-486e-82ef-a4e451948594\",\n\t\"level\": 6,\n\t\"secret\": false\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base-url}}/api/employees/865dbc2f-f89f-423a-90c2-1bc866ff107b/skills",
+													"host": [
+														"{{base-url}}"
+													],
+													"path": [
+														"api",
+														"employees",
+														"865dbc2f-f89f-423a-90c2-1bc866ff107b",
+														"skills"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Set Skill Knowledge (last created)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "6b30c8b8-c450-40c6-af68-24bc9d9e7a1d",
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n\t\"skillId\": \"{{skill.last-created.id}}\",\n\t\"level\": 6,\n\t\"secret\": false\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base-url}}/api/employees/{{employee.last-created.id}}/skills",
+													"host": [
+														"{{base-url}}"
+													],
+													"path": [
+														"api",
+														"employees",
+														"{{employee.last-created.id}}",
+														"skills"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"protocolProfileBehavior": {},
+									"_postman_isSubFolder": true
+								},
+								{
+									"name": "Update",
+									"item": [
+										{
+											"name": "Update Skill Knowledge",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "2a4efb94-1f78-46c2-81c2-e860f314efba",
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n\t\"level\": 9,\n\t\"secret\": false\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base-url}}/api/employees/865dbc2f-f89f-423a-90c2-1bc866ff107b/skills/ee1c2d6d-9a70-4235-9725-2332624854aa",
+													"host": [
+														"{{base-url}}"
+													],
+													"path": [
+														"api",
+														"employees",
+														"865dbc2f-f89f-423a-90c2-1bc866ff107b",
+														"skills",
+														"ee1c2d6d-9a70-4235-9725-2332624854aa"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Update Skill Knowledge (last created)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "64d3765a-7655-441d-a2d2-8941fbf51a65",
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n\t\"level\": 9,\n\t\"secret\": false\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base-url}}/api/employees/{{employee.last-created.id}}/skills/{{skill.last-created.id}}",
+													"host": [
+														"{{base-url}}"
+													],
+													"path": [
+														"api",
+														"employees",
+														"{{employee.last-created.id}}",
+														"skills",
+														"{{skill.last-created.id}}"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Update Skill Knowledge",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "05b4118b-f806-4a38-b10e-05f862768ade",
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json-patch+json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "[\n\t{\n    \"op\": \"replace\",\n    \"path\": \"/level\",\n    \"value\": 8\n  },\n\t{\n    \"op\": \"replace\",\n    \"path\": \"/secret\",\n    \"value\": false\n  }\n]",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base-url}}/api/employees/865dbc2f-f89f-423a-90c2-1bc866ff107b/skills/ee1c2d6d-9a70-4235-9725-2332624854aa",
+													"host": [
+														"{{base-url}}"
+													],
+													"path": [
+														"api",
+														"employees",
+														"865dbc2f-f89f-423a-90c2-1bc866ff107b",
+														"skills",
+														"ee1c2d6d-9a70-4235-9725-2332624854aa"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Update Skill Knowledge (last created)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "becf24f3-31c6-46f9-b1f2-6a4a7bbf7ecc",
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json-patch+json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "[\n\t{\n    \"op\": \"replace\",\n    \"path\": \"/level\",\n    \"value\": 8\n  },\n\t{\n    \"op\": \"replace\",\n    \"path\": \"/secret\",\n    \"value\": false\n  }\n]",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base-url}}/api/employees/{{employee.last-created.id}}/skills/{{skill.last-created.id}}",
+													"host": [
+														"{{base-url}}"
+													],
+													"path": [
+														"api",
+														"employees",
+														"{{employee.last-created.id}}",
+														"skills",
+														"{{skill.last-created.id}}"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"protocolProfileBehavior": {},
+									"_postman_isSubFolder": true
+								},
+								{
+									"name": "Delete",
+									"item": [
+										{
+											"name": "Delete Skill Knowledge",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "99ab8070-a8c6-42e0-b27e-17f691f6c002",
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{base-url}}/api/employees/865dbc2f-f89f-423a-90c2-1bc866ff107b/skills/ee1c2d6d-9a70-4235-9725-2332624854aa",
+													"host": [
+														"{{base-url}}"
+													],
+													"path": [
+														"api",
+														"employees",
+														"865dbc2f-f89f-423a-90c2-1bc866ff107b",
+														"skills",
+														"ee1c2d6d-9a70-4235-9725-2332624854aa"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Delete Skill Knowledge (last created)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "513e92cb-3b45-48a5-a19a-1d9cfc5a7a2d",
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{base-url}}/api/employees/{{employee.last-created.id}}/skills/{{skill.last-created.id}}",
+													"host": [
+														"{{base-url}}"
+													],
+													"path": [
+														"api",
+														"employees",
+														"{{employee.last-created.id}}",
+														"skills",
+														"{{skill.last-created.id}}"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"protocolProfileBehavior": {},
+									"_postman_isSubFolder": true
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "067b2390-e3bb-4bf9-a56e-a2deb479ae63",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "fee63da6-5395-48d0-920c-9f586cfc6a9a",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "Project Assignments",
+							"item": [
+								{
+									"name": "Create",
+									"item": [
+										{
+											"name": "Create Project Assignment",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "4cc709c6-4dbe-4a42-a7b6-19dbb50f9ddb",
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n\t\"projectId\": \"f7fd47e7-58a3-42c3-ac29-7254d64bfa75\",\n\t\"contribution\": \"Professional Software Engineering\",\n\t\"startDate\": \"2016-06-01\",\n\t\"endDate\": \"2016-06-15\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base-url}}/api/employees/06601abe-74b6-40f2-abea-8a273fde5eb2/projects",
+													"host": [
+														"{{base-url}}"
+													],
+													"path": [
+														"api",
+														"employees",
+														"06601abe-74b6-40f2-abea-8a273fde5eb2",
+														"projects"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Create Project Assignment (last created)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "aceac421-0e01-4b6d-94b2-192622f18b32",
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n\t\"projectId\": \"{{project.last-created.id}}\",\n\t\"contribution\": \"Professional Software Engineering\",\n\t\"startDate\": \"2016-06-01\",\n\t\"endDate\": \"2016-06-15\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base-url}}/api/employees/{{employee.last-created.id}}/projects",
+													"host": [
+														"{{base-url}}"
+													],
+													"path": [
+														"api",
+														"employees",
+														"{{employee.last-created.id}}",
+														"projects"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "1e63aae6-9441-4e23-85dd-4e6527c4aa09",
+												"type": "text/javascript",
+												"exec": [
+													""
+												]
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "1295d7be-de80-4219-a333-781325f27245",
+												"type": "text/javascript",
+												"exec": [
+													"pm.globals.set(\"project-assignment.last-created.id\", pm.response.json().id);",
+													""
+												]
+											}
+										}
+									],
+									"protocolProfileBehavior": {},
+									"_postman_isSubFolder": true
+								},
+								{
+									"name": "Update",
+									"item": [
+										{
+											"name": "Update Project Assignment",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "2063114d-733d-48a4-bb76-38019190d707",
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"contribution\": \"eu fugiat nulla pariatur. Excepteur sint occaeca\",\n  \"startDate\": \"2020-01-16\",\n  \"endDate\": \"2020-07-04\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base-url}}/api/employees/c4402e1d-a422-415d-849e-4e470117fc2b/projects/9080b724-064b-499b-ae82-245496276262",
+													"host": [
+														"{{base-url}}"
+													],
+													"path": [
+														"api",
+														"employees",
+														"c4402e1d-a422-415d-849e-4e470117fc2b",
+														"projects",
+														"9080b724-064b-499b-ae82-245496276262"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Update Project Assignment (last created)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "4a735e48-f550-4525-bc40-4f5504e5aa67",
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"contribution\": \"eu fugiat nulla pariatur. Excepteur sint occaeca\",\n  \"startDate\": \"2020-01-16\",\n  \"endDate\": \"2020-07-04\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base-url}}/api/employees/{{employee.last-created.id}}/projects/{{project-assignment.last-created.id}}",
+													"host": [
+														"{{base-url}}"
+													],
+													"path": [
+														"api",
+														"employees",
+														"{{employee.last-created.id}}",
+														"projects",
+														"{{project-assignment.last-created.id}}"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Update Project Assignment",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "ca680ab3-09ec-420d-97b9-3676c8d92b66",
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json-patch+json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "[\n\t{\n    \"op\": \"replace\",\n    \"path\": \"/startDate\",\n    \"value\": \"2020-01-01\"\n  },\n\t{\n    \"op\": \"remove\",\n    \"path\": \"/endDate\"\n  },\n\t{\n\t\t\"op\": \"copy\",\n    \"from\":\"/startDate\",\n    \"path\":\"/endDate\"\n\t}\n]",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base-url}}/api/employees/c4402e1d-a422-415d-849e-4e470117fc2b/projects/9080b724-064b-499b-ae82-245496276262",
+													"host": [
+														"{{base-url}}"
+													],
+													"path": [
+														"api",
+														"employees",
+														"c4402e1d-a422-415d-849e-4e470117fc2b",
+														"projects",
+														"9080b724-064b-499b-ae82-245496276262"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Update Project Assignment Copy",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "000a3a82-a2c1-4689-9927-c5419b92ffba",
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "PATCH",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json-patch+json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "[\n\t{\n    \"op\": \"replace\",\n    \"path\": \"/startDate\",\n    \"value\": \"2020-01-01\"\n  },\n\t{\n    \"op\": \"remove\",\n    \"path\": \"/endDate\"\n  },\n\t{\n\t\t\"op\": \"copy\",\n    \"from\":\"/startDate\",\n    \"path\":\"/endDate\"\n\t}\n]",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base-url}}/api/employees/{{employee.last-created.id}}/projects/{{project-assignment.last-created.id}}",
+													"host": [
+														"{{base-url}}"
+													],
+													"path": [
+														"api",
+														"employees",
+														"{{employee.last-created.id}}",
+														"projects",
+														"{{project-assignment.last-created.id}}"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"protocolProfileBehavior": {},
+									"_postman_isSubFolder": true
+								},
+								{
+									"name": "Delete",
+									"item": [
+										{
+											"name": "Delete Project Assignment",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "ea15eee4-1104-47f8-8055-192b42e066c9",
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{base-url}}/api/employees/95bf0e21-b8e0-41ae-b8f2-529c0278eaf6/projects/63a138ee-1161-4f43-a3d8-aa05d8d82fc2",
+													"host": [
+														"{{base-url}}"
+													],
+													"path": [
+														"api",
+														"employees",
+														"95bf0e21-b8e0-41ae-b8f2-529c0278eaf6",
+														"projects",
+														"63a138ee-1161-4f43-a3d8-aa05d8d82fc2"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Delete Project Assignment Copy",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "8ed19952-cc56-4fb6-b0ef-888aabc0de67",
+														"exec": [
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{base-url}}/api/employees/{{employee.last-created.id}}/projects/{{project-assignment.last-created.id}}",
+													"host": [
+														"{{base-url}}"
+													],
+													"path": [
+														"api",
+														"employees",
+														"{{employee.last-created.id}}",
+														"projects",
+														"{{project-assignment.last-created.id}}"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"protocolProfileBehavior": {},
+									"_postman_isSubFolder": true
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Search",
+					"item": [
+						{
+							"name": "Find Employees matching Query (paged)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "34a19243-ff28-47e7-abde-288464c7640b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"query\": \"*\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base-url}}/api/employees/_search?page=0&size=10",
+									"host": [
+										"{{base-url}}"
+									],
+									"path": [
+										"api",
+										"employees",
+										"_search"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "0"
+										},
+										{
+											"key": "size",
+											"value": "10"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -409,120 +1594,106 @@
 							"name": "Read",
 							"item": [
 								{
-									"name": "single",
-									"item": [
+									"name": "Get Skill by ID",
+									"event": [
 										{
-											"name": "Get Skill by ID",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "ecf15768-f57b-4957-a16e-01bf1d2ef04c",
-														"exec": [
-															""
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"method": "GET",
-												"header": [],
-												"url": {
-													"raw": "{{base-url}}/api/skills/3903cd2c-87aa-411e-969e-44bebda774e1",
-													"host": [
-														"{{base-url}}"
-													],
-													"path": [
-														"api",
-														"skills",
-														"3903cd2c-87aa-411e-969e-44bebda774e1"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Get Skill by ID (last created)",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "d55d79ac-b0be-4127-af16-0dab6419134f",
-														"exec": [
-															""
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"method": "GET",
-												"header": [],
-												"url": {
-													"raw": "{{base-url}}/api/skills/{{skill.last-created.id}}",
-													"host": [
-														"{{base-url}}"
-													],
-													"path": [
-														"api",
-														"skills",
-														"{{skill.last-created.id}}"
-													]
-												}
-											},
-											"response": []
+											"listen": "test",
+											"script": {
+												"id": "ecf15768-f57b-4957-a16e-01bf1d2ef04c",
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
 										}
 									],
-									"protocolProfileBehavior": {},
-									"_postman_isSubFolder": true
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base-url}}/api/skills/3903cd2c-87aa-411e-969e-44bebda774e1",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"skills",
+												"3903cd2c-87aa-411e-969e-44bebda774e1"
+											]
+										}
+									},
+									"response": []
 								},
 								{
-									"name": "all",
-									"item": [
+									"name": "Get Skill by ID (last created)",
+									"event": [
 										{
-											"name": "Get All Skills (paged)",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "82c5ad86-ae8a-4fd5-b6df-a3e9e577c4ba",
-														"exec": [
-															""
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"method": "GET",
-												"header": [],
-												"url": {
-													"raw": "{{base-url}}/api/skills?page=0&size=50",
-													"host": [
-														"{{base-url}}"
-													],
-													"path": [
-														"api",
-														"skills"
-													],
-													"query": [
-														{
-															"key": "page",
-															"value": "0"
-														},
-														{
-															"key": "size",
-															"value": "50"
-														}
-													]
-												}
-											},
-											"response": []
+											"listen": "test",
+											"script": {
+												"id": "d55d79ac-b0be-4127-af16-0dab6419134f",
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
 										}
 									],
-									"protocolProfileBehavior": {},
-									"_postman_isSubFolder": true
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base-url}}/api/skills/{{skill.last-created.id}}",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"skills",
+												"{{skill.last-created.id}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get All Skills (paged)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "82c5ad86-ae8a-4fd5-b6df-a3e9e577c4ba",
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base-url}}/api/skills?page=0&size=50",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"skills"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "0"
+												},
+												{
+													"key": "size",
+													"value": "50"
+												}
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
@@ -532,152 +1703,138 @@
 							"name": "Update",
 							"item": [
 								{
-									"name": "complete data",
-									"item": [
-										{
-											"name": "Update Skill by ID",
-											"request": {
-												"method": "PUT",
-												"header": [],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n\t\"label\": \"Kotlin (Updated)\",\n    \"description\": \"Stille the best programming language!\",\n\t\"tags\": [\"language\", \"cool\", \"changed\"]\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{base-url}}/api/skills/3903cd2c-87aa-411e-969e-44bebda774e1",
-													"host": [
-														"{{base-url}}"
-													],
-													"path": [
-														"api",
-														"skills",
-														"3903cd2c-87aa-411e-969e-44bebda774e1"
-													]
+									"name": "Update Skill by ID",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"label\": \"Kotlin (Updated)\",\n    \"description\": \"Stille the best programming language!\",\n\t\"tags\": [\"language\", \"cool\", \"changed\"]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
 												}
-											},
-											"response": []
+											}
 										},
-										{
-											"name": "Update Skill by ID (last created)",
-											"request": {
-												"method": "PUT",
-												"header": [],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n\t\"label\": \"Kotlin (Updated)\",\n    \"description\": \"Stille the best programming language!\",\n\t\"tags\": [\"language\", \"cool\", \"changed\"]\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{base-url}}/api/skills/{{skill.last-created.id}}",
-													"host": [
-														"{{base-url}}"
-													],
-													"path": [
-														"api",
-														"skills",
-														"{{skill.last-created.id}}"
-													]
-												}
-											},
-											"response": []
+										"url": {
+											"raw": "{{base-url}}/api/skills/3903cd2c-87aa-411e-969e-44bebda774e1",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"skills",
+												"3903cd2c-87aa-411e-969e-44bebda774e1"
+											]
 										}
-									],
-									"protocolProfileBehavior": {},
-									"_postman_isSubFolder": true
+									},
+									"response": []
 								},
 								{
-									"name": "single properties",
-									"item": [
-										{
-											"name": "Update Skill by ID",
-											"protocolProfileBehavior": {
-												"disabledSystemHeaders": {
-													"content-type": true
+									"name": "Update Skill by ID (last created)",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"label\": \"Kotlin (Updated)\",\n    \"description\": \"Stille the best programming language!\",\n\t\"tags\": [\"language\", \"cool\", \"changed\"]\n}",
+											"options": {
+												"raw": {
+													"language": "json"
 												}
-											},
-											"request": {
-												"method": "PATCH",
-												"header": [
-													{
-														"key": "Content-Type",
-														"type": "text",
-														"value": "application/json-patch+json"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "[\n    {\n        \"op\": \"replace\",\n        \"path\": \"/label\",\n        \"value\": \"Kotlin (Updated)\"\n    },\n    {\n        \"op\": \"replace\",\n        \"path\": \"/description\",\n        \"value\": \"Stille the best programming language!\"\n    },\n    {\n        \"op\": \"add\",\n        \"path\": \"/tags/-\",\n        \"value\": \"changed\"\n    }\n]",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{base-url}}/api/skills/3903cd2c-87aa-411e-969e-44bebda774e1",
-													"host": [
-														"{{base-url}}"
-													],
-													"path": [
-														"api",
-														"skills",
-														"3903cd2c-87aa-411e-969e-44bebda774e1"
-													]
-												}
-											},
-											"response": []
+											}
 										},
-										{
-											"name": "Update Skill by ID (last created)",
-											"protocolProfileBehavior": {
-												"disabledSystemHeaders": {
-													"content-type": true
-												}
-											},
-											"request": {
-												"method": "PATCH",
-												"header": [
-													{
-														"key": "Content-Type",
-														"type": "text",
-														"value": "application/json-patch+json"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "[\n    {\n        \"op\": \"replace\",\n        \"path\": \"/label\",\n        \"value\": \"Kotlin (Updated)\"\n    },\n    {\n        \"op\": \"replace\",\n        \"path\": \"/description\",\n        \"value\": \"Stille the best programming language!\"\n    },\n    {\n        \"op\": \"add\",\n        \"path\": \"/tags/-\",\n        \"value\": \"changed\"\n    }\n]",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{base-url}}/api/skills/{{skill.last-created.id}}",
-													"host": [
-														"{{base-url}}"
-													],
-													"path": [
-														"api",
-														"skills",
-														"{{skill.last-created.id}}"
-													]
-												}
-											},
-											"response": []
+										"url": {
+											"raw": "{{base-url}}/api/skills/{{skill.last-created.id}}",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"skills",
+												"{{skill.last-created.id}}"
+											]
 										}
-									],
-									"protocolProfileBehavior": {},
-									"_postman_isSubFolder": true
+									},
+									"response": []
+								},
+								{
+									"name": "Update Skill by ID",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json-patch+json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "[\n    {\n        \"op\": \"replace\",\n        \"path\": \"/label\",\n        \"value\": \"Kotlin (Updated)\"\n    },\n    {\n        \"op\": \"replace\",\n        \"path\": \"/description\",\n        \"value\": \"Stille the best programming language!\"\n    },\n    {\n        \"op\": \"add\",\n        \"path\": \"/tags/-\",\n        \"value\": \"changed\"\n    }\n]",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base-url}}/api/skills/3903cd2c-87aa-411e-969e-44bebda774e1",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"skills",
+												"3903cd2c-87aa-411e-969e-44bebda774e1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Skill by ID (last created)",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json-patch+json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "[\n    {\n        \"op\": \"replace\",\n        \"path\": \"/label\",\n        \"value\": \"Kotlin (Updated)\"\n    },\n    {\n        \"op\": \"replace\",\n        \"path\": \"/description\",\n        \"value\": \"Stille the best programming language!\"\n    },\n    {\n        \"op\": \"add\",\n        \"path\": \"/tags/-\",\n        \"value\": \"changed\"\n    }\n]",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base-url}}/api/skills/{{skill.last-created.id}}",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"skills",
+												"{{skill.last-created.id}}"
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
@@ -896,120 +2053,106 @@
 							"name": "Read",
 							"item": [
 								{
-									"name": "single",
-									"item": [
+									"name": "Get Project by ID",
+									"event": [
 										{
-											"name": "Get Project by ID",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "5aeee95f-6dbf-4089-965d-3bd19362eca0",
-														"exec": [
-															""
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"method": "GET",
-												"header": [],
-												"url": {
-													"raw": "{{base-url}}/api/projects/3903cd2c-87aa-411e-969e-44bebda774e1",
-													"host": [
-														"{{base-url}}"
-													],
-													"path": [
-														"api",
-														"projects",
-														"3903cd2c-87aa-411e-969e-44bebda774e1"
-													]
-												}
-											},
-											"response": []
-										},
-										{
-											"name": "Get Project by ID (last created)",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "e8616478-7a03-4f18-9497-142af5a4e1e0",
-														"exec": [
-															""
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"method": "GET",
-												"header": [],
-												"url": {
-													"raw": "{{base-url}}/api/projects/{{project.last-created.id}}",
-													"host": [
-														"{{base-url}}"
-													],
-													"path": [
-														"api",
-														"projects",
-														"{{project.last-created.id}}"
-													]
-												}
-											},
-											"response": []
+											"listen": "test",
+											"script": {
+												"id": "5aeee95f-6dbf-4089-965d-3bd19362eca0",
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
 										}
 									],
-									"protocolProfileBehavior": {},
-									"_postman_isSubFolder": true
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base-url}}/api/projects/3903cd2c-87aa-411e-969e-44bebda774e1",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"projects",
+												"3903cd2c-87aa-411e-969e-44bebda774e1"
+											]
+										}
+									},
+									"response": []
 								},
 								{
-									"name": "all",
-									"item": [
+									"name": "Get Project by ID (last created)",
+									"event": [
 										{
-											"name": "Get All Projects (paged)",
-											"event": [
-												{
-													"listen": "test",
-													"script": {
-														"id": "d33ee413-f733-44da-9216-bc77064f49a7",
-														"exec": [
-															""
-														],
-														"type": "text/javascript"
-													}
-												}
-											],
-											"request": {
-												"method": "GET",
-												"header": [],
-												"url": {
-													"raw": "{{base-url}}/api/projects?page=0&size=50",
-													"host": [
-														"{{base-url}}"
-													],
-													"path": [
-														"api",
-														"projects"
-													],
-													"query": [
-														{
-															"key": "page",
-															"value": "0"
-														},
-														{
-															"key": "size",
-															"value": "50"
-														}
-													]
-												}
-											},
-											"response": []
+											"listen": "test",
+											"script": {
+												"id": "e8616478-7a03-4f18-9497-142af5a4e1e0",
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
 										}
 									],
-									"protocolProfileBehavior": {},
-									"_postman_isSubFolder": true
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base-url}}/api/projects/{{project.last-created.id}}",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"projects",
+												"{{project.last-created.id}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get All Projects (paged)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "d33ee413-f733-44da-9216-bc77064f49a7",
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base-url}}/api/projects?page=0&size=50",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"projects"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "0"
+												},
+												{
+													"key": "size",
+													"value": "50"
+												}
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
@@ -1019,152 +2162,138 @@
 							"name": "Update",
 							"item": [
 								{
-									"name": "complete data",
-									"item": [
-										{
-											"name": "Update Project by ID",
-											"request": {
-												"method": "PUT",
-												"header": [],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n\t\"label\": \"Project Lombock\",\n\t\"description\": \"Lorem Ipsum ...\"\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{base-url}}/api/projects/3903cd2c-87aa-411e-969e-44bebda774e1",
-													"host": [
-														"{{base-url}}"
-													],
-													"path": [
-														"api",
-														"projects",
-														"3903cd2c-87aa-411e-969e-44bebda774e1"
-													]
+									"name": "Update Project by ID",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"label\": \"Project Lombock\",\n\t\"description\": \"Lorem Ipsum ...\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
 												}
-											},
-											"response": []
+											}
 										},
-										{
-											"name": "Update Project by ID (last created)",
-											"request": {
-												"method": "PUT",
-												"header": [],
-												"body": {
-													"mode": "raw",
-													"raw": "{\n\t\"label\": \"Project Lombock\",\n\t\"description\": \"Lorem Ipsum ...\"\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{base-url}}/api/projects/{{project.last-created.id}}",
-													"host": [
-														"{{base-url}}"
-													],
-													"path": [
-														"api",
-														"projects",
-														"{{project.last-created.id}}"
-													]
-												}
-											},
-											"response": []
+										"url": {
+											"raw": "{{base-url}}/api/projects/3903cd2c-87aa-411e-969e-44bebda774e1",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"projects",
+												"3903cd2c-87aa-411e-969e-44bebda774e1"
+											]
 										}
-									],
-									"protocolProfileBehavior": {},
-									"_postman_isSubFolder": true
+									},
+									"response": []
 								},
 								{
-									"name": "single properties",
-									"item": [
-										{
-											"name": "Update Project by ID",
-											"protocolProfileBehavior": {
-												"disabledSystemHeaders": {
-													"content-type": true
+									"name": "Update Project by ID (last created)",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n\t\"label\": \"Project Lombock\",\n\t\"description\": \"Lorem Ipsum ...\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
 												}
-											},
-											"request": {
-												"method": "PATCH",
-												"header": [
-													{
-														"key": "Content-Type",
-														"type": "text",
-														"value": "application/json-patch+json"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "[\n    {\n        \"op\": \"replace\",\n        \"path\": \"/label\",\n        \"value\": \"Project Lombock (Updated)\"\n    },\n    {\n        \"op\": \"replace\",\n        \"path\": \"/description\",\n        \"value\": \"Stille Lorem Ipsum ..\"\n    }\n]",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{base-url}}/api/projects/3903cd2c-87aa-411e-969e-44bebda774e1",
-													"host": [
-														"{{base-url}}"
-													],
-													"path": [
-														"api",
-														"projects",
-														"3903cd2c-87aa-411e-969e-44bebda774e1"
-													]
-												}
-											},
-											"response": []
+											}
 										},
-										{
-											"name": "Update Project by ID (last created)",
-											"protocolProfileBehavior": {
-												"disabledSystemHeaders": {
-													"content-type": true
-												}
-											},
-											"request": {
-												"method": "PATCH",
-												"header": [
-													{
-														"key": "Content-Type",
-														"type": "text",
-														"value": "application/json-patch+json"
-													}
-												],
-												"body": {
-													"mode": "raw",
-													"raw": "[\n    {\n        \"op\": \"replace\",\n        \"path\": \"/label\",\n        \"value\": \"Project Lombock (Updated)\"\n    },\n    {\n        \"op\": \"replace\",\n        \"path\": \"/description\",\n        \"value\": \"Stille Lorem Ipsum ..\"\n    }\n]",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{base-url}}/api/projects/{{project.last-created.id}}",
-													"host": [
-														"{{base-url}}"
-													],
-													"path": [
-														"api",
-														"projects",
-														"{{project.last-created.id}}"
-													]
-												}
-											},
-											"response": []
+										"url": {
+											"raw": "{{base-url}}/api/projects/{{project.last-created.id}}",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"projects",
+												"{{project.last-created.id}}"
+											]
 										}
-									],
-									"protocolProfileBehavior": {},
-									"_postman_isSubFolder": true
+									},
+									"response": []
+								},
+								{
+									"name": "Update Project by ID",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json-patch+json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "[\n    {\n        \"op\": \"replace\",\n        \"path\": \"/label\",\n        \"value\": \"Project Lombock (Updated)\"\n    },\n    {\n        \"op\": \"replace\",\n        \"path\": \"/description\",\n        \"value\": \"Stille Lorem Ipsum ..\"\n    }\n]",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base-url}}/api/projects/3903cd2c-87aa-411e-969e-44bebda774e1",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"projects",
+												"3903cd2c-87aa-411e-969e-44bebda774e1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Project by ID (last created)",
+									"protocolProfileBehavior": {
+										"disabledSystemHeaders": {
+											"content-type": true
+										}
+									},
+									"request": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/json-patch+json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "[\n    {\n        \"op\": \"replace\",\n        \"path\": \"/label\",\n        \"value\": \"Project Lombock (Updated)\"\n    },\n    {\n        \"op\": \"replace\",\n        \"path\": \"/description\",\n        \"value\": \"Stille Lorem Ipsum ..\"\n    }\n]",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base-url}}/api/projects/{{project.last-created.id}}",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"projects",
+												"{{project.last-created.id}}"
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
