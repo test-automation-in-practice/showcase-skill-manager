@@ -11,7 +11,7 @@ class FindEmployeeIds(
 ) {
 
     // TODO: Security + query parameter + pagination
-    operator fun invoke(query: FindEmployeeQuery = AllEmployeesQuery()): Page<UUID> =
+    operator fun invoke(query: FindEmployeeQuery): Page<UUID> =
         when (query) {
             is EmployeesWithSkill -> searchIndex.query(query)
             is EmployeesWhoWorkedOnProject -> searchIndex.query(query)

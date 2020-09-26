@@ -40,7 +40,7 @@ class GetSkillsFromDataStore(
 
 }
 
-private class SkillRowMapper(private val objectMapper: ObjectMapper) : RowMapper<Skill?> {
+internal class SkillRowMapper(private val objectMapper: ObjectMapper) : RowMapper<Skill?> {
 
     private val log = logger {}
 

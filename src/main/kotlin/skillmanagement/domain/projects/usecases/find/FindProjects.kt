@@ -17,7 +17,7 @@ class FindProjects(
 ) {
 
     // TODO: Security + query parameter + pagination
-    operator fun invoke(query: FindProjectsQuery = AllProjectsQuery()): Page<Project> {
+    operator fun invoke(query: FindProjectsQuery): Page<Project> {
         val page = when (query) {
             is ProjectsMatchingQuery -> searchIndex.query(query)
             is AllProjectsQuery -> searchIndex.findAll(query)

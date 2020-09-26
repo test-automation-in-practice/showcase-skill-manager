@@ -13,7 +13,7 @@ class FindEmployees(
 ) {
 
     // TODO: Security + query parameter + pagination
-    operator fun invoke(query: FindEmployeeQuery = AllEmployeesQuery()): Page<Employee> {
+    operator fun invoke(query: FindEmployeeQuery): Page<Employee> {
         val page = when (query) {
             is EmployeesWithSkill -> searchIndex.query(query)
             is EmployeesWhoWorkedOnProject -> searchIndex.query(query)

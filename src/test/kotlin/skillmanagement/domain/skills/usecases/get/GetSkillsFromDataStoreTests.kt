@@ -6,6 +6,7 @@ import io.mockk.called
 import io.mockk.confirmVerified
 import io.mockk.mockk
 import io.mockk.verify
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -15,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import org.testit.testutils.logrecorder.api.LogRecord
+import org.testit.testutils.logrecorder.junit5.RecordLoggers
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_python
@@ -114,6 +117,33 @@ internal class GetSkillsFromDataStoreTests(
         }
 
         private fun execute() = getSkillsFromDataStore(callback)
+
+    }
+
+    @Nested
+    inner class Deserialization {
+
+        val skill = skill_kotlin
+        val skillId = skill.id
+
+        @Test
+        @RecordLoggers(SkillRowMapper::class)
+        fun `deserialization errors are logged but don't throw an exception`(log: LogRecord) {
+            insert(skill)
+
+            assertThat(getSkillsFromDataStore(skillId)).isNotNull()
+            corruptData(skillId)
+            assertThat(getSkillsFromDataStore(skillId)).isNull()
+
+            val messages = log.messages
+            assertThat(messages).hasSize(2)
+            assertThat(messages[0]).startsWith("Could not read data of skill [$skillId]: Instantiation of")
+            assertThat(messages[1]).startsWith("Corrupted data: {}")
+        }
+
+        private fun corruptData(skillId: UUID) {
+            jdbcTemplate.update("UPDATE skills SET data = '{}' WHERE id = :id", mapOf("id" to "$skillId"))
+        }
 
     }
 

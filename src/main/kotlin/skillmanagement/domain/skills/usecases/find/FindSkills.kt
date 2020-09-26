@@ -17,7 +17,7 @@ class FindSkills(
 ) {
 
     // TODO: Security + query parameter + pagination
-    operator fun invoke(query: FindSkillsQuery = AllSkillsQuery()): Page<Skill> {
+    operator fun invoke(query: FindSkillsQuery): Page<Skill> {
         val page = when (query) {
             is SkillsMatchingQuery -> searchIndex.query(query)
             is AllSkillsQuery -> searchIndex.findAll(query)
