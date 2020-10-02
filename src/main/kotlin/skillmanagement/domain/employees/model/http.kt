@@ -32,7 +32,7 @@ data class EmployeeResource(
     val telephone: TelephoneNumber,
 
     val description: EmployeeDescription?,
-    val academicDegree: AcademicDegree?,
+    val academicDegrees: List<AcademicDegree>,
     val certifications: List<Certification>,
     val publications: List<Publication>,
     val languages: List<LanguageProficiency>,
@@ -66,7 +66,7 @@ fun Employee.toResource() = EmployeeResource(
     email = email,
     telephone = telephone,
     description = description,
-    academicDegree = academicDegree,
+    academicDegrees = academicDegrees,
     certifications = certifications,
     publications = publications,
     languages = languages,

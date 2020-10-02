@@ -22,7 +22,7 @@ data class Employee(
     val telephone: TelephoneNumber,
 
     val description: EmployeeDescription? = null,
-    val academicDegree: AcademicDegree? = null,
+    val academicDegrees: List<AcademicDegree> = emptyList(),
     val certifications: List<Certification> = emptyList(),
     val publications: List<Publication> = emptyList(),
     val languages: List<LanguageProficiency> = emptyList(),
@@ -53,10 +53,12 @@ class LanguageQualifier(value: String) : StringType(value)
 
 data class AcademicDegree(
     val subject: AcademicSubject,
+    val title: AcademicTitle,
     val institution: AcademicInstitution
 )
 
 class AcademicSubject(value: String) : StringType(value)
+class AcademicTitle(value: String) : StringType(value)
 class AcademicInstitution(value: String) : StringType(value)
 
 data class Job(
