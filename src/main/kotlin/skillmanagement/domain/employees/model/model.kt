@@ -8,41 +8,64 @@ import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.skills.model.Skill
 import java.time.Instant
 import java.time.LocalDate
+import java.time.YearMonth
 import java.util.UUID
-
-// TODO:
-//  - Zertifizierungen
-//  - Publikationen
-//  - "Beratungsschwerpunkt und Schlüsselqualifikationen"
-//  - Beruflicher Werdegang
-//     - von bis
-//     - bis ist optional
-//     - Firma + Titel
-//  - Ausbildung
-//     - Abschluss
-//     - Sprachkennisse
 
 data class Employee(
     val id: UUID,
     val version: Int,
+
     val firstName: FirstName,
     val lastName: LastName,
-    val title: Title,
+    val description: EmployeeDescription? = null,
+    val title: JobTitle,
     val email: EmailAddress,
     val telephone: TelephoneNumber,
-    val skills: List<SkillKnowledge>,
-    val projects: List<ProjectAssignment>,
+
+    val skills: List<SkillKnowledge> = emptyList(),
+    val projects: List<ProjectAssignment> = emptyList(),
+    val certifications: List<Certification> = emptyList(),
+    val publications: List<Publication> = emptyList(),
+    val academicDegree: AcademicDegree? = null,
+    val languages: List<LanguageProficiency> = emptyList(),
+    val jobHistory: List<Job> = emptyList(),
+
     val lastUpdate: Instant
 )
 
 class FirstName(value: String) : Name(value)
 class LastName(value: String) : Name(value)
-class Title(value: String) : StringType(value)
+class EmployeeDescription(value: String) : Text(value)
+class JobTitle(value: String) : StringType(value)
 class EmailAddress(value: String) : StringType(value)
 class TelephoneNumber(value: String) : StringType(value)
+class Certification(value: String) : StringType(value)
+class Publication(value: String) : StringType(value)
 
-// TODO:
-//  - Kategorie / Gruppe in der der Employee den Skill sieht
+data class LanguageProficiency(
+    val language: Language,
+    val qualifier: LanguageQualifier
+)
+
+class Language(value: String) : StringType(value)
+class LanguageQualifier(value: String) : StringType(value)
+
+data class AcademicDegree(
+    val subject: AcademicSubject,
+    val institution: AcademicInstitution
+)
+
+class AcademicSubject(value: String) : StringType(value)
+class AcademicInstitution(value: String) : StringType(value)
+
+data class Job(
+    val employer: Employer,
+    val title: JobTitle,
+    val start: YearMonth,
+    val end: YearMonth? = null
+)
+
+class Employer(value: String) : StringType(value)
 
 data class SkillKnowledge(
     val skill: Skill,
@@ -51,9 +74,6 @@ data class SkillKnowledge(
 )
 
 class SkillLevel(value: Int) : IntType(value, min = 1, max = 10)
-
-// TODO:
-//  - Qualifikationen / Eingesetzte Skills
 
 data class ProjectAssignment(
     val id: UUID,

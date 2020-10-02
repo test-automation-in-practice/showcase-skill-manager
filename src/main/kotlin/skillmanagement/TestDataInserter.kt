@@ -10,7 +10,7 @@ import skillmanagement.domain.employees.model.LastName
 import skillmanagement.domain.employees.model.ProjectContribution
 import skillmanagement.domain.employees.model.SkillLevel
 import skillmanagement.domain.employees.model.TelephoneNumber
-import skillmanagement.domain.employees.model.Title
+import skillmanagement.domain.employees.model.JobTitle
 import skillmanagement.domain.employees.usecases.add.AddEmployee
 import skillmanagement.domain.employees.usecases.projectassignments.create.CreateProjectAssignmentForEmployee
 import skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnowledgeOfEmployee
@@ -48,7 +48,7 @@ class TestDataInserter(
         val maxMustermann = addEmployee(
             firstName = FirstName("Max"),
             lastName = LastName("Mustermann"),
-            title = Title("Managing Consultant"),
+            title = JobTitle("Managing Consultant"),
             email = EmailAddress("max.mustermann@example-gmbh.de"),
             telephone = TelephoneNumber("+49 555 123456")
         )

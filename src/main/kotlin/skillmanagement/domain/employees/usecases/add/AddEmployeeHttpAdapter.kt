@@ -11,7 +11,7 @@ import skillmanagement.domain.employees.model.EmployeeResource
 import skillmanagement.domain.employees.model.FirstName
 import skillmanagement.domain.employees.model.LastName
 import skillmanagement.domain.employees.model.TelephoneNumber
-import skillmanagement.domain.employees.model.Title
+import skillmanagement.domain.employees.model.JobTitle
 import skillmanagement.domain.employees.model.toResource
 
 @HttpAdapter
@@ -36,7 +36,7 @@ class AddEmployeeHttpAdapter(
     data class Request(
         val firstName: FirstName,
         val lastName: LastName,
-        val title: Title,
+        val title: JobTitle,
         val email: EmailAddress,
         val telephone: TelephoneNumber
     )

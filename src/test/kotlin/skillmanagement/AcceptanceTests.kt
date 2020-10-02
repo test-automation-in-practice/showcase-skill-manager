@@ -25,7 +25,7 @@ import skillmanagement.domain.employees.model.EmployeeResource
 import skillmanagement.domain.employees.model.FirstName
 import skillmanagement.domain.employees.model.LastName
 import skillmanagement.domain.employees.model.TelephoneNumber
-import skillmanagement.domain.employees.model.Title
+import skillmanagement.domain.employees.model.JobTitle
 import skillmanagement.domain.projects.model.ProjectDescription
 import skillmanagement.domain.projects.model.ProjectLabel
 import skillmanagement.domain.projects.model.ProjectResource
@@ -188,7 +188,7 @@ class AcceptanceTests(
                     assertThat(it.id).isNotNull()
                     assertThat(it.firstName).isEqualTo(FirstName("Max"))
                     assertThat(it.lastName).isEqualTo(LastName("Mustermann"))
-                    assertThat(it.title).isEqualTo(Title("Managing Consultant"))
+                    assertThat(it.title).isEqualTo(JobTitle("Managing Consultant"))
                     assertThat(it.email).isEqualTo(EmailAddress("max.musterman@beispiel-gmbh.de"))
                     assertThat(it.telephone).isEqualTo(TelephoneNumber("+49 (555) 123456"))
                     assertThat(it.lastUpdate).isNotNull()
