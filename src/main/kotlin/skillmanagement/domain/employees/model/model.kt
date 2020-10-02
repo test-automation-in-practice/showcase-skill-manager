@@ -17,18 +17,19 @@ data class Employee(
 
     val firstName: FirstName,
     val lastName: LastName,
-    val description: EmployeeDescription? = null,
     val title: JobTitle,
     val email: EmailAddress,
     val telephone: TelephoneNumber,
 
-    val skills: List<SkillKnowledge> = emptyList(),
-    val projects: List<ProjectAssignment> = emptyList(),
+    val description: EmployeeDescription? = null,
+    val academicDegree: AcademicDegree? = null,
     val certifications: List<Certification> = emptyList(),
     val publications: List<Publication> = emptyList(),
-    val academicDegree: AcademicDegree? = null,
     val languages: List<LanguageProficiency> = emptyList(),
     val jobHistory: List<Job> = emptyList(),
+
+    val skills: List<SkillKnowledge> = emptyList(),
+    val projects: List<ProjectAssignment> = emptyList(),
 
     val lastUpdate: Instant
 )

@@ -24,18 +24,23 @@ private const val RESOURCE_BASE = "api/employees"
 @Relation(itemRelation = "employee", collectionRelation = "employees")
 data class EmployeeResource(
     val id: UUID,
+
     val firstName: FirstName,
     val lastName: LastName,
     val title: JobTitle,
     val email: EmailAddress,
     val telephone: TelephoneNumber,
-    val skills: List<SkillKnowledgeResource>?,
-    val projects: List<ProjectAssignmentResource>?,
+
+    val description: EmployeeDescription?,
+    val academicDegree: AcademicDegree?,
     val certifications: List<Certification>,
     val publications: List<Publication>,
-    val academicDegree: AcademicDegree?,
     val languages: List<LanguageProficiency>,
     val jobHistory: List<Job>,
+
+    val skills: List<SkillKnowledgeResource>,
+    val projects: List<ProjectAssignmentResource>,
+
     val lastUpdate: Instant
 ) : RepresentationModel<EmployeeResource>()
 
@@ -60,13 +65,14 @@ fun Employee.toResource() = EmployeeResource(
     title = title,
     email = email,
     telephone = telephone,
-    skills = skills.map { it.toResource(id) },
-    projects = projects.map { it.toResource(id) },
+    description = description,
+    academicDegree = academicDegree,
     certifications = certifications,
     publications = publications,
-    academicDegree = academicDegree,
     languages = languages,
     jobHistory = jobHistory,
+    skills = skills.map { it.toResource(id) },
+    projects = projects.map { it.toResource(id) },
     lastUpdate = lastUpdate
 ).apply {
     add(linkToEmployee(id).withSelfRel())

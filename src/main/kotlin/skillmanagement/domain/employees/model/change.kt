@@ -8,9 +8,11 @@ data class EmployeeChangeData(
     val title: JobTitle,
     val email: EmailAddress,
     val telephone: TelephoneNumber,
+
+    val description: EmployeeDescription?,
+    val academicDegree: AcademicDegree?,
     val certifications: List<Certification>,
     val publications: List<Publication>,
-    val academicDegree: AcademicDegree?,
     val languages: List<LanguageProficiency>,
     val jobHistory: List<Job>
 )
@@ -33,9 +35,10 @@ fun Employee.toChangeData(): EmployeeChangeData =
         title = title,
         email = email,
         telephone = telephone,
+        description = description,
+        academicDegree = academicDegree,
         certifications = certifications,
         publications = publications,
-        academicDegree = academicDegree,
         languages = languages,
         jobHistory = jobHistory
     )
@@ -47,9 +50,10 @@ fun Employee.merge(changes: EmployeeChangeData): Employee =
         title = changes.title,
         email = changes.email,
         telephone = changes.telephone,
+        description = changes.description,
+        academicDegree = changes.academicDegree,
         certifications = changes.certifications,
         publications = changes.publications,
-        academicDegree = changes.academicDegree,
         languages = changes.languages,
         jobHistory = changes.jobHistory
     )
