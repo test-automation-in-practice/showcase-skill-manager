@@ -7,9 +7,9 @@ import skillmanagement.domain.employees.model.EmailAddress
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.EmployeeAddedEvent
 import skillmanagement.domain.employees.model.FirstName
+import skillmanagement.domain.employees.model.JobTitle
 import skillmanagement.domain.employees.model.LastName
 import skillmanagement.domain.employees.model.TelephoneNumber
-import skillmanagement.domain.employees.model.Title
 import java.time.Clock
 
 @BusinessFunction
@@ -24,7 +24,7 @@ class AddEmployee(
     operator fun invoke(
         firstName: FirstName,
         lastName: LastName,
-        title: Title,
+        title: JobTitle,
         email: EmailAddress,
         telephone: TelephoneNumber
     ): Employee {
@@ -36,8 +36,6 @@ class AddEmployee(
             title = title,
             email = email,
             telephone = telephone,
-            skills = emptyList(),
-            projects = emptyList(),
             lastUpdate = clock.instant()
         )
         insertEmployeeIntoDataStore(employee)

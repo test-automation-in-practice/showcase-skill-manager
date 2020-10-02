@@ -82,8 +82,8 @@ object Neo4JGraphDataGenerator : AbstractGraphDataGenerator() {
         classesWithDependencies: List<ClassWithDependencies>
     ): String {
         val builder = StringBuilder()
-        classesWithType.toCreateNodeStatements().forEach { builder.appendln(it) }
-        classesWithDependencies.toCreateRelationshipsStatements().forEach { builder.appendln(it) }
+        classesWithType.toCreateNodeStatements().forEach { builder.appendLine(it) }
+        classesWithDependencies.toCreateRelationshipsStatements().forEach { builder.appendLine(it) }
         return builder.toString()
     }
 

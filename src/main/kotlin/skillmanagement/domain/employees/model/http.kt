@@ -26,11 +26,16 @@ data class EmployeeResource(
     val id: UUID,
     val firstName: FirstName,
     val lastName: LastName,
-    val title: Title,
+    val title: JobTitle,
     val email: EmailAddress,
     val telephone: TelephoneNumber,
     val skills: List<SkillKnowledgeResource>?,
     val projects: List<ProjectAssignmentResource>?,
+    val certifications: List<Certification>,
+    val publications: List<Publication>,
+    val academicDegree: AcademicDegree?,
+    val languages: List<LanguageProficiency>,
+    val jobHistory: List<Job>,
     val lastUpdate: Instant
 ) : RepresentationModel<EmployeeResource>()
 
@@ -57,6 +62,11 @@ fun Employee.toResource() = EmployeeResource(
     telephone = telephone,
     skills = skills.map { it.toResource(id) },
     projects = projects.map { it.toResource(id) },
+    certifications = certifications,
+    publications = publications,
+    academicDegree = academicDegree,
+    languages = languages,
+    jobHistory = jobHistory,
     lastUpdate = lastUpdate
 ).apply {
     add(linkToEmployee(id).withSelfRel())

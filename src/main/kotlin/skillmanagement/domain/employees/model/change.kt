@@ -5,9 +5,14 @@ import java.time.LocalDate
 data class EmployeeChangeData(
     val firstName: FirstName,
     val lastName: LastName,
-    val title: Title,
+    val title: JobTitle,
     val email: EmailAddress,
-    val telephone: TelephoneNumber
+    val telephone: TelephoneNumber,
+    val certifications: List<Certification>,
+    val publications: List<Publication>,
+    val academicDegree: AcademicDegree?,
+    val languages: List<LanguageProficiency>,
+    val jobHistory: List<Job>
 )
 
 data class ProjectAssignmentChangeData(
@@ -27,7 +32,12 @@ fun Employee.toChangeData(): EmployeeChangeData =
         lastName = lastName,
         title = title,
         email = email,
-        telephone = telephone
+        telephone = telephone,
+        certifications = certifications,
+        publications = publications,
+        academicDegree = academicDegree,
+        languages = languages,
+        jobHistory = jobHistory
     )
 
 fun Employee.merge(changes: EmployeeChangeData): Employee =
@@ -36,7 +46,12 @@ fun Employee.merge(changes: EmployeeChangeData): Employee =
         lastName = changes.lastName,
         title = changes.title,
         email = changes.email,
-        telephone = changes.telephone
+        telephone = changes.telephone,
+        certifications = changes.certifications,
+        publications = changes.publications,
+        academicDegree = changes.academicDegree,
+        languages = changes.languages,
+        jobHistory = changes.jobHistory
     )
 
 fun ProjectAssignment.toChangeData(): ProjectAssignmentChangeData =
