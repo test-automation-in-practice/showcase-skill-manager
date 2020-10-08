@@ -21,13 +21,13 @@ class SearchForSkillsHttpAdapter(
     fun post(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "100") size: Int,
-        @RequestBody request: SearchRequest
+        @RequestBody request: Request
     ): PagedModel<SkillResource> {
         val skills = findSkills(SkillsMatchingQuery(PageIndex(page), PageSize(size), request.query))
         return skills.toSearchResource()
     }
 
-    data class SearchRequest(
+    data class Request(
         val query: String
     )
 

@@ -21,13 +21,13 @@ class SearchForProjectsHttpAdapter(
     fun post(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "100") size: Int,
-        @RequestBody request: SearchRequest
+        @RequestBody request: Request
     ): PagedModel<ProjectResource> {
         val projects = findProjects(ProjectsMatchingQuery(PageIndex(page), PageSize(size), request.query))
         return projects.toSearchResource()
     }
 
-    data class SearchRequest(
+    data class Request(
         val query: String
     )
 
