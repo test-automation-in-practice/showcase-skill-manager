@@ -46,6 +46,8 @@ dependencies {
     testImplementation("com.h2database:h2")
 
     testImplementation("io.kotlintest:kotlintest-assertions:3.4.2")
+    testImplementation("io.rest-assured:rest-assured:4.3.1")
+    testImplementation("com.squareup.okhttp3:okhttp:4.9.0")
     testImplementation("io.mockk:mockk:1.10.0")
     testImplementation("info.novatec.testit:testutils-logrecorder-logback:0.3.4")
     testImplementation("org.testcontainers:testcontainers:1.14.3")
