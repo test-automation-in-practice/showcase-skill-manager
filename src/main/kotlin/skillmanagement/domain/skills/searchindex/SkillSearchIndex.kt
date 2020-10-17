@@ -15,6 +15,7 @@ class SkillSearchIndex(
 ) : AbstractSearchIndex<Skill>() {
 
     override val indexName = "skills"
+    override val labelFieldName: String = "label"
     override val sortFieldName: String = "_sort"
     override val mappingResource = ClassPathResource("/indices/skills-mapping.json")
 
@@ -22,7 +23,8 @@ class SkillSearchIndex(
         mapOf(
             "label" to instance.label.toString(),
             "tags" to instance.tags.map(Tag::toString),
-            "_sort" to instance.label.toString()
+            "_sort" to instance.label.toString(),
+            "label_suggest" to instance.label.toString()
         )
 
     override fun id(instance: Skill) = instance.id
