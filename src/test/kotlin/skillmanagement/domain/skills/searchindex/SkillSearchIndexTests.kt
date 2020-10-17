@@ -3,6 +3,7 @@ package skillmanagement.domain.skills.searchindex
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import skillmanagement.common.model.Suggestion
 import skillmanagement.common.search.PageIndex
 import skillmanagement.common.search.PageSize
 import skillmanagement.common.search.PagedFindAllQuery
@@ -70,6 +71,22 @@ internal class SkillSearchIndexTests(
         assertThat(query("kotlin")).containsOnly(kotlin2.id)
     }
 
+    @Test
+    fun `existing skills can be suggested`() {
+        val skill1 = skill(label = "The Kotlin")
+        val skill2 = skill(label = "Kotlin #1")
+        val skill3 = skill(label = "Kotlin #2")
+        val skill4 = skill(label = "Python")
+        index(skill1, skill2, skill3, skill4)
+
+        assertThat(cut.suggestExisting("ko", 3))
+            .containsOnly(
+                suggestion(skill1),
+                suggestion(skill2),
+                suggestion(skill3)
+            )
+    }
+
     private fun index(vararg skills: Skill) {
         skills.forEach(cut::index)
         cut.refresh()
@@ -82,6 +99,9 @@ internal class SkillSearchIndexTests(
 
     private fun query(query: String, pageIndex: PageIndex = PageIndex.DEFAULT, pageSize: PageSize = PageSize.DEFAULT) =
         cut.query(SimplePagedStringQuery(query, pageIndex, pageSize))
+
+    private fun suggestion(skill2: Skill) =
+        Suggestion(skill2.id, skill2.label.toString())
 
     private data class SimplePagedStringQuery(
         override val queryString: String,

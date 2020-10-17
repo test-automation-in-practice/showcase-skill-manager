@@ -15,12 +15,14 @@ import org.elasticsearch.common.xcontent.XContentType.JSON
 import org.elasticsearch.index.query.MatchAllQueryBuilder
 import org.elasticsearch.index.query.QueryBuilder
 import org.elasticsearch.index.query.QueryStringQueryBuilder
+import org.elasticsearch.search.SearchHit
 import org.elasticsearch.search.builder.SearchSourceBuilder
 import org.elasticsearch.search.sort.FieldSortBuilder
 import org.elasticsearch.search.sort.ScoreSortBuilder
 import org.elasticsearch.search.sort.SortBuilder
 import org.elasticsearch.search.sort.SortOrder.DESC
 import org.springframework.core.io.Resource
+import skillmanagement.common.model.Suggestion
 import skillmanagement.common.resources.readAsString
 import java.util.UUID
 import javax.annotation.PostConstruct
@@ -30,6 +32,7 @@ abstract class AbstractSearchIndex<T : Any> {
     protected abstract val client: RestHighLevelClient
 
     protected abstract val indexName: String
+    protected abstract val labelFieldName: String
     protected abstract val sortFieldName: String
     protected abstract val mappingResource: Resource
 
@@ -80,14 +83,38 @@ abstract class AbstractSearchIndex<T : Any> {
             .source(source)
 
         val response = client.search(request, DEFAULT)
+
         val searchHits = response.hits
         return Page(
-            content = searchHits.hits.map { UUID.fromString(it.id) },
+            content = searchHits.hits.map { id(it) },
             pageIndex = pageIndex,
             pageSize = pageSize,
             totalElements = searchHits.totalHits?.value ?: 0
         )
     }
+
+    fun suggestExisting(input: String, size: Int): List<Suggestion> {
+        val source = SearchSourceBuilder()
+            .fetchSource(labelFieldName, null)
+            .query(buildQuery("*$input*"))
+            .from(0 * size)
+            .size(size)
+            .sort(ScoreSortBuilder().order(DESC))
+        val request = SearchRequest(indexName)
+            .source(source)
+
+        val response = client.search(request, DEFAULT)
+
+        return response.hits.map(::suggestion)
+    }
+
+    private fun suggestion(hit: SearchHit): Suggestion =
+        Suggestion(
+            id = id(hit),
+            label = (hit.sourceAsMap[labelFieldName] as? String) ?: ""
+        )
+
+    private fun id(it: SearchHit) = UUID.fromString(it.id)
 
     protected abstract fun buildQuery(queryString: String): QueryStringQueryBuilder
 

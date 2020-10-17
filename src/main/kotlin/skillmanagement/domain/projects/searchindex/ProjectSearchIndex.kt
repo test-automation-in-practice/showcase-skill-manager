@@ -14,6 +14,7 @@ class ProjectSearchIndex(
 ) : AbstractSearchIndex<Project>() {
 
     override val indexName = "projects"
+    override val labelFieldName: String = "label"
     override val sortFieldName: String = "_sort"
     override val mappingResource = ClassPathResource("/indices/projects-mapping.json")
 

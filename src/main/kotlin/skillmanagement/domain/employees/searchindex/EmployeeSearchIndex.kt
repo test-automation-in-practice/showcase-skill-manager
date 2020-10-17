@@ -14,6 +14,7 @@ class EmployeeSearchIndex(
 ) : AbstractSearchIndex<Employee>() {
 
     override val indexName = "employees"
+    override val labelFieldName: String = "name"
     override val sortFieldName: String = "_sort"
     override val mappingResource = ClassPathResource("/indices/employees-mapping.json")
 
