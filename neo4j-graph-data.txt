@@ -72,6 +72,7 @@ CREATE (DeleteSkillFromDataStore:TechnicalFunction {name:'DeleteSkillFromDataSto
 CREATE (FindAllSkillsHttpAdapter:HttpAdapter {name:'FindAllSkillsHttpAdapter', fullName:'skillmanagement.domain.skills.usecases.find.FindAllSkillsHttpAdapter'})
 CREATE (FindSkills:BusinessFunction {name:'FindSkills', fullName:'skillmanagement.domain.skills.usecases.find.FindSkills'})
 CREATE (SearchForSkillsHttpAdapter:HttpAdapter {name:'SearchForSkillsHttpAdapter', fullName:'skillmanagement.domain.skills.usecases.find.SearchForSkillsHttpAdapter'})
+CREATE (SuggestSkillsHttpAdapter:HttpAdapter {name:'SuggestSkillsHttpAdapter', fullName:'skillmanagement.domain.skills.usecases.find.SuggestSkillsHttpAdapter'})
 CREATE (GetSkillById:BusinessFunction {name:'GetSkillById', fullName:'skillmanagement.domain.skills.usecases.get.GetSkillById'})
 CREATE (GetSkillByIdHttpAdapter:HttpAdapter {name:'GetSkillByIdHttpAdapter', fullName:'skillmanagement.domain.skills.usecases.get.GetSkillByIdHttpAdapter'})
 CREATE (GetSkillsFromDataStore:TechnicalFunction {name:'GetSkillsFromDataStore', fullName:'skillmanagement.domain.skills.usecases.get.GetSkillsFromDataStore'})
@@ -218,6 +219,8 @@ CREATE (FindSkills)-[:USES]->(GetSkillsFromDataStore),
        (FindSkills)-[:USES]->(SkillSearchIndex)
 
 CREATE (SearchForSkillsHttpAdapter)-[:USES]->(FindSkills)
+
+CREATE (SuggestSkillsHttpAdapter)-[:USES]->(SkillSearchIndex)
 
 CREATE (GetSkillById)-[:USES]->(GetSkillsFromDataStore)
 

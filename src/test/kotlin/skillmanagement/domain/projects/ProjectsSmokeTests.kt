@@ -90,7 +90,7 @@ class ProjectsSmokeTests(
                 description = "Lorem Ipsum #2"
             )
 
-            waitUntilRefreshed()
+            waitUntilSearchIndexIsRefreshed()
 
             assertThat(getAll()).containsExactly(project1, project2)
         }
@@ -103,7 +103,7 @@ class ProjectsSmokeTests(
             val project4 = projects.add(label = "Project #4")
             val project5 = projects.add(label = "Project #5")
 
-            waitUntilRefreshed()
+            waitUntilSearchIndexIsRefreshed()
 
             assertThat(getAll(page = 0, size = 3))
                 .containsExactly(project1, project2, project3)
@@ -126,7 +126,7 @@ class ProjectsSmokeTests(
             val consulting1 = projects.add(label = "Consulting Project #1")
             val consulting2 = projects.add(label = "Consulting Project #2")
 
-            waitUntilRefreshed()
+            waitUntilSearchIndexIsRefreshed()
 
             assertThat(search("engineering")).containsOnly(swe1, swe2)
             assertThat(search("#1")).containsOnly(consulting1, swe1)
@@ -141,12 +141,15 @@ class ProjectsSmokeTests(
             val project4 = projects.add(label = "Project #4")
             val project5 = projects.add(label = "Project #5")
 
-            waitUntilRefreshed()
+            waitUntilSearchIndexIsRefreshed()
 
-            assertThat(search(query = "project", page = 0, size = 3))
-                .containsExactly(project1, project2, project3)
-            assertThat(search(query = "project", page = 1, size = 3))
-                .containsExactly(project4, project5)
+            val resultsFromPage1 = search(query = "project", page = 0, size = 3)
+            val resultsFromPage2 = search(query = "project", page = 1, size = 3)
+
+            assertThat(resultsFromPage1).hasSize(3)
+            assertThat(resultsFromPage2).hasSize(2)
+            assertThat(resultsFromPage1 + resultsFromPage2)
+                .containsOnly(project1, project2, project3, project4, project5)
         }
 
         private fun search(query: String, page: Int = 0, size: Int = 100) =
@@ -154,9 +157,9 @@ class ProjectsSmokeTests(
 
     }
 
-    private fun waitUntilRefreshed() {
+    private fun waitUntilSearchIndexIsRefreshed() {
         searchIndex.refresh()
-        sleep(500)
+        sleep(1_500)
     }
 
     fun linkNames(model: RepresentationModel<*>?) =
