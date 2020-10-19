@@ -92,7 +92,7 @@ class SkillsSmokeTests(
                 tags = setOf("language", "cool")
             )
 
-            waitUntilRefreshed()
+            waitUntilSearchIndexIsRefreshed()
 
             assertThat(getAll()).containsExactly(kotlin, python)
         }
@@ -105,7 +105,7 @@ class SkillsSmokeTests(
             val skill4 = skills.add(label = "Skill #4")
             val skill5 = skills.add(label = "Skill #5")
 
-            waitUntilRefreshed()
+            waitUntilSearchIndexIsRefreshed()
 
             assertThat(getAll(page = 0, size = 3))
                 .containsExactly(skill1, skill2, skill3)
@@ -132,7 +132,7 @@ class SkillsSmokeTests(
                 tags = setOf("language", "cool")
             )
 
-            waitUntilRefreshed()
+            waitUntilSearchIndexIsRefreshed()
 
             assertThat(search("python")).containsOnly(python1, python2)
             assertThat(search("#1")).containsOnly(kotlin1, python1)
@@ -147,12 +147,15 @@ class SkillsSmokeTests(
             val skill4 = skills.add(label = "Skill #4")
             val skill5 = skills.add(label = "Skill #5")
 
-            waitUntilRefreshed()
+            waitUntilSearchIndexIsRefreshed()
 
-            assertThat(search(query = "skill", page = 0, size = 3))
-                .containsExactly(skill1, skill2, skill3)
-            assertThat(search(query = "skill", page = 1, size = 3))
-                .containsExactly(skill4, skill5)
+            val resultsFromPage1 = search(query = "skill", page = 0, size = 3)
+            val resultsFromPage2 = search(query = "skill", page = 1, size = 3)
+
+            assertThat(resultsFromPage1).hasSize(3)
+            assertThat(resultsFromPage2).hasSize(2)
+            assertThat(resultsFromPage1 + resultsFromPage2)
+                .containsOnly(skill1, skill2, skill3, skill4, skill5)
         }
 
         private fun search(query: String, page: Int = 0, size: Int = 100) =
@@ -160,9 +163,9 @@ class SkillsSmokeTests(
 
     }
 
-    private fun waitUntilRefreshed() {
+    private fun waitUntilSearchIndexIsRefreshed() {
         searchIndex.refresh()
-        sleep(500)
+        sleep(1_500)
     }
 
     fun linkNames(model: RepresentationModel<*>?) =
