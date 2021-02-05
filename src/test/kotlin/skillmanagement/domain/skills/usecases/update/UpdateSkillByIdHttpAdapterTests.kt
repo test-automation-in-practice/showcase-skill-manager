@@ -51,7 +51,7 @@ internal class UpdateSkillByIdHttpAdapterTests(
                 content = """{ "label": "Kotlin (Language)", "description": "description", "tags": ["language"] }"""
             }
             .andExpect {
-                status { isOk }
+                status { isOk() }
                 content {
                     contentType(HAL_JSON)
                     strictJson {
@@ -87,7 +87,7 @@ internal class UpdateSkillByIdHttpAdapterTests(
                 content = """{ "label": "Kotlin (Language)", "tags": [] }"""
             }
             .andExpect {
-                status { isNotFound }
+                status { isNotFound() }
                 content { string("") }
             }
             .andDocument("put/not-found")
@@ -128,7 +128,7 @@ internal class UpdateSkillByIdHttpAdapterTests(
                     """
             }
             .andExpect {
-                status { isOk }
+                status { isOk() }
                 content {
                     contentType(HAL_JSON)
                     strictJson {
@@ -172,7 +172,7 @@ internal class UpdateSkillByIdHttpAdapterTests(
                     """
             }
             .andExpect {
-                status { isNotFound }
+                status { isNotFound() }
                 content { string("") }
             }
             .andDocument("patch/not-found")

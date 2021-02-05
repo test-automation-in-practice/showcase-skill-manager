@@ -52,7 +52,7 @@ internal class AddSkillHttpAdapterTests(
                     """
             }
             .andExpect {
-                status { isCreated }
+                status { isCreated() }
                 content {
                     contentType(HAL_JSON)
                     strictJson {
@@ -96,7 +96,7 @@ internal class AddSkillHttpAdapterTests(
                 content = """{ "label": "Python" }"""
             }
             .andExpect {
-                status { isCreated }
+                status { isCreated() }
                 content {
                     contentType(HAL_JSON)
                     strictJson {
@@ -131,7 +131,7 @@ internal class AddSkillHttpAdapterTests(
                 content = """{ "label": "" }"""
             }
             .andExpect {
-                status { isBadRequest }
+                status { isBadRequest() }
                 content {
                     contentType(APPLICATION_JSON)
                     strictJson {

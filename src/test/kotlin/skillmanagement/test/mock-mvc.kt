@@ -7,10 +7,11 @@ import org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPri
 import org.springframework.restdocs.snippet.Snippet
 import org.springframework.test.web.servlet.ResultActionsDsl
 import org.springframework.test.web.servlet.result.ContentResultMatchers
+import org.springframework.test.web.servlet.result.ContentResultMatchersDsl
 
-fun ContentResultMatchers.relaxedJson(jsonSupplier: () -> String) = json(jsonSupplier(), false)
+fun ContentResultMatchersDsl.relaxedJson(jsonSupplier: () -> String) = json(jsonSupplier(), false)
 
-fun ContentResultMatchers.strictJson(jsonSupplier: () -> String) = json(jsonSupplier(), true)
+fun ContentResultMatchersDsl.strictJson(jsonSupplier: () -> String) = json(jsonSupplier(), true)
 
 fun ResultActionsDsl.andDocument(identifier: String, vararg snippets: Snippet) = andDo {
     handle(document(identifier, preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()), *snippets))

@@ -37,7 +37,7 @@ internal class DeleteSkillByIdHttpAdapterTests(
         mockMvc
             .delete("/api/skills/$skillId")
             .andExpect {
-                status { isNoContent }
+                status { isNoContent() }
                 content { string("") }
             }
             .andDocument("deleted")

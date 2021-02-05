@@ -48,7 +48,7 @@ internal class SearchForSkillsHttpAdapterTests(
                 content = """{"query": "kotlin"}"""
             }
             .andExpect {
-                status { isOk }
+                status { isOk() }
                 content {
                     contentType(HAL_JSON)
                     strictJson {
@@ -85,7 +85,7 @@ internal class SearchForSkillsHttpAdapterTests(
                 content = """{"query": "tags:language"}"""
             }
             .andExpect {
-                status { isOk }
+                status { isOk() }
                 content {
                     contentType(HAL_JSON)
                     strictJson {
@@ -158,7 +158,7 @@ internal class SearchForSkillsHttpAdapterTests(
                 content = """{"query": "k*"}"""
             }
             .andExpect {
-                status { isOk }
+                status { isOk() }
                 content {
                     contentType(HAL_JSON)
                     strictJson {
@@ -221,7 +221,7 @@ internal class SearchForSkillsHttpAdapterTests(
                 contentType = APPLICATION_JSON
                 content = """{"query": "java"}"""
             }
-            .andExpect { status { isOk } }
+            .andExpect { status { isOk() } }
 
         verify { findSkills(SkillsMatchingQuery(PageIndex(2), PageSize(42), "java")) }
     }

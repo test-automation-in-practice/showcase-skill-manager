@@ -58,7 +58,7 @@ class ApplicationSmokeTests(
                         """
                 }
                 .andExpect {
-                    status { isCreated }
+                    status { isCreated() }
                     content { contentType(HAL_JSON) }
                 }
                 .extract(EmployeeResource::class)
@@ -77,7 +77,7 @@ class ApplicationSmokeTests(
             mockMvc
                 .get(employeePath)
                 .andExpect {
-                    status { isOk }
+                    status { isOk() }
                     content { contentType(HAL_JSON) }
                 }
                 .extract(EmployeeResource::class)
@@ -86,14 +86,14 @@ class ApplicationSmokeTests(
             mockMvc
                 .delete(employeePath)
                 .andExpect {
-                    status { isNoContent }
+                    status { isNoContent() }
                     content { string("") }
                 }
 
             mockMvc
                 .get(employeePath)
                 .andExpect {
-                    status { isNoContent }
+                    status { isNoContent() }
                     content { string("") }
                 }
         }

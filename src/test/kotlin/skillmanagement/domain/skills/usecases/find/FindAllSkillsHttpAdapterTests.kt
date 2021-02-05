@@ -44,7 +44,7 @@ internal class FindAllSkillsHttpAdapterTests(
         mockMvc
             .get("/api/skills")
             .andExpect {
-                status { isOk }
+                status { isOk() }
                 content {
                     contentType(HAL_JSON)
                     strictJson {
@@ -78,7 +78,7 @@ internal class FindAllSkillsHttpAdapterTests(
         mockMvc
             .get("/api/skills")
             .andExpect {
-                status { isOk }
+                status { isOk() }
                 content {
                     contentType(HAL_JSON)
                     strictJson {
@@ -149,7 +149,7 @@ internal class FindAllSkillsHttpAdapterTests(
         mockMvc
             .get("/api/skills?page=1&size=1")
             .andExpect {
-                status { isOk }
+                status { isOk() }
                 content {
                     contentType(HAL_JSON)
                     strictJson {
@@ -209,7 +209,7 @@ internal class FindAllSkillsHttpAdapterTests(
 
         mockMvc
             .get("/api/skills?page=2&size=42")
-            .andExpect { status { isOk } }
+            .andExpect { status { isOk() } }
 
         verify { findSkills(AllSkillsQuery(pageIndex = PageIndex(2), pageSize = PageSize(42))) }
     }

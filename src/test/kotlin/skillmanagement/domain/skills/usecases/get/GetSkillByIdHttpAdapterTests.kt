@@ -38,7 +38,7 @@ internal class GetSkillByIdHttpAdapterTests(
         mockMvc
             .get("/api/skills/$id")
             .andExpect {
-                status { isNoContent }
+                status { isNoContent() }
                 content { string("") }
             }
             .andDocument("not-found")
@@ -52,7 +52,7 @@ internal class GetSkillByIdHttpAdapterTests(
         mockMvc
             .get("/api/skills/$id")
             .andExpect {
-                status { isOk }
+                status { isOk() }
                 content {
                     contentType(HAL_JSON)
                     strictJson {
