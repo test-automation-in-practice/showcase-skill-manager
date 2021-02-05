@@ -90,10 +90,31 @@ tasks {
             jvmTarget = "11"
         }
     }
-    test {
+
+    withType<Test> {
+        group = "verification"
         useJUnitPlatform()
         testLogging {
             events(PASSED, FAILED, SKIPPED)
         }
+    }
+
+    register<Test>("unit-tests") {
+        useJUnitPlatform { includeTags("unit-test") }
+    }
+
+    register<Test>("integration-tests") {
+        dependsOn("unit-tests")
+        useJUnitPlatform { includeTags("integration-test") }
+    }
+
+    register<Test>("end2end-tests") {
+        dependsOn("integration-tests")
+        useJUnitPlatform { includeTags("end2end-test") }
+    }
+
+    test {
+        dependsOn("end2end-tests")
+        useJUnitPlatform { excludeTags("unit-test", "integration-test", "end2end-test") }
     }
 }
