@@ -6,9 +6,10 @@ import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.springframework.context.ApplicationEventPublisher
+import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.testit.testutils.logrecorder.api.LogRecord
 import org.testit.testutils.logrecorder.junit5.RecordLoggers
+import skillmanagement.common.messaging.EVENT_EXCHANGE
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.UnitTest
 
@@ -16,14 +17,14 @@ import skillmanagement.test.UnitTest
 @ResetMocksAfterEachTest
 internal class PublishEventTests {
 
-    private val eventPublisher: ApplicationEventPublisher = mockk(relaxed = true)
+    private val rabbitTemplate: RabbitTemplate = mockk(relaxed = true)
     private val counter: EventCounter = mockk(relaxed = true)
-    private val publishEvent = PublishEvent(eventPublisher, counter)
+    private val publishEvent = PublishEvent(rabbitTemplate, counter)
 
     @Test
-    fun `events are published as application events`() {
+    fun `events are published to the exchange`() {
         publishEvent(TestEventOne)
-        verify { eventPublisher.publishEvent(TestEventOne) }
+        verify { rabbitTemplate.convertAndSend(EVENT_EXCHANGE, "TestEventOne", TestEventOne) }
     }
 
     @Test
@@ -42,7 +43,8 @@ internal class PublishEventTests {
 
     @Test
     fun `counter is incremented even if publishing fails`() {
-        every { eventPublisher.publishEvent(TestEventTwo) } throws RuntimeException()
+        every { rabbitTemplate.convertAndSend(EVENT_EXCHANGE, "TestEventTwo", TestEventTwo) }
+            .throws(RuntimeException())
         assertThrows<RuntimeException> { publishEvent(TestEventTwo) }
         verify { counter.increment(TestEventTwo::class) }
     }

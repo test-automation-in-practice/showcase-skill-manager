@@ -1,7 +1,12 @@
 package skillmanagement.domain.employees.usecases.projectassignments.update
 
 import mu.KotlinLogging.logger
-import org.springframework.context.event.EventListener
+import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import skillmanagement.common.messaging.QUEUE_PREFIX
+import skillmanagement.common.messaging.durableQueue
+import skillmanagement.common.messaging.eventBinding
 import skillmanagement.common.search.PageSize
 import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.employees.model.Employee
@@ -10,6 +15,9 @@ import skillmanagement.domain.employees.usecases.find.FindEmployeeIds
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeById
 import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.model.ProjectUpdatedEvent
+
+private const val CONTEXT = "ProjectAssignmentUpdatingEventHandler"
+private const val PROJECT_UPDATED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.ProjectUpdatedEvent"
 
 @EventHandler
 class ProjectAssignmentUpdatingEventHandler(
@@ -21,7 +29,7 @@ class ProjectAssignmentUpdatingEventHandler(
 
     // TODO: how to update more than one page? (ES eventual consistency)
 
-    @EventListener
+    @RabbitListener(queues = [PROJECT_UPDATED_QUEUE])
     fun handle(event: ProjectUpdatedEvent) {
         log.info { "Handling $event" }
         val projectId = event.project.id
@@ -39,5 +47,16 @@ class ProjectAssignmentUpdatingEventHandler(
                 else -> it
             }
         })
+
+}
+
+@Configuration
+class ProjectAssignmentUpdatingEventHandlerConfiguration {
+
+    @Bean("${CONTEXT}.ProjectUpdatedEvent.Queue")
+    fun projectUpdatedEventQueue() = durableQueue(PROJECT_UPDATED_QUEUE)
+
+    @Bean("${CONTEXT}.ProjectUpdatedEvent.Binding")
+    fun projectUpdatedEventBinding() = eventBinding<ProjectUpdatedEvent>(PROJECT_UPDATED_QUEUE)
 
 }
