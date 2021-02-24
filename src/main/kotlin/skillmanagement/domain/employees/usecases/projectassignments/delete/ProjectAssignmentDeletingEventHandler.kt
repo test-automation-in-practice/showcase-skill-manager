@@ -1,7 +1,12 @@
 package skillmanagement.domain.employees.usecases.projectassignments.delete
 
 import mu.KotlinLogging.logger
-import org.springframework.context.event.EventListener
+import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import skillmanagement.common.messaging.QUEUE_PREFIX
+import skillmanagement.common.messaging.durableQueue
+import skillmanagement.common.messaging.eventBinding
 import skillmanagement.common.search.PageSize
 import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.employees.model.Employee
@@ -9,7 +14,10 @@ import skillmanagement.domain.employees.usecases.find.EmployeesWhoWorkedOnProjec
 import skillmanagement.domain.employees.usecases.find.FindEmployeeIds
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeById
 import skillmanagement.domain.projects.model.ProjectDeletedEvent
-import java.util.UUID
+import java.util.*
+
+private const val CONTEXT = "ProjectAssignmentDeletingEventHandler"
+private const val PROJECT_DELETED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.ProjectDeletedEvent"
 
 @EventHandler
 class ProjectAssignmentDeletingEventHandler(
@@ -21,7 +29,7 @@ class ProjectAssignmentDeletingEventHandler(
 
     // TODO: how to update more than one page? (ES eventual consistency)
 
-    @EventListener
+    @RabbitListener(queues = [PROJECT_DELETED_QUEUE])
     fun handle(event: ProjectDeletedEvent) {
         log.info { "Handling $event" }
         val projectId = event.project.id
@@ -34,5 +42,16 @@ class ProjectAssignmentDeletingEventHandler(
 
     private fun Employee.removeProjectAssignmentsByProjectId(projectId: UUID): Employee =
         copy(projects = projects.filter { it.project.id != projectId })
+
+}
+
+@Configuration
+class ProjectAssignmentDeletingEventHandlerConfiguration {
+
+    @Bean("$CONTEXT.ProjectDeletedEvent.Queue")
+    fun projectDeletedEventQueue() = durableQueue(PROJECT_DELETED_QUEUE)
+
+    @Bean("$CONTEXT.ProjectDeletedEvent.Binding")
+    fun projectDeletedEventBinding() = eventBinding<ProjectDeletedEvent>(PROJECT_DELETED_QUEUE)
 
 }

@@ -1,7 +1,12 @@
 package skillmanagement.domain.employees.usecases.skillknowledge.update
 
 import mu.KotlinLogging.logger
-import org.springframework.context.event.EventListener
+import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import skillmanagement.common.messaging.QUEUE_PREFIX
+import skillmanagement.common.messaging.durableQueue
+import skillmanagement.common.messaging.eventBinding
 import skillmanagement.common.search.PageSize
 import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.employees.model.Employee
@@ -10,6 +15,9 @@ import skillmanagement.domain.employees.usecases.find.FindEmployeeIds
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeById
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillUpdatedEvent
+
+private const val CONTEXT = "SkillKnowledgeUpdatingEventHandler"
+private const val SKILL_UPDATED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.SkillUpdatedEvent"
 
 @EventHandler
 class SkillKnowledgeUpdatingEventHandler(
@@ -21,7 +29,7 @@ class SkillKnowledgeUpdatingEventHandler(
 
     // TODO: how to update more than one page? (ES eventual consistency)
 
-    @EventListener
+    @RabbitListener(queues = [SKILL_UPDATED_QUEUE])
     fun handle(event: SkillUpdatedEvent) {
         log.info { "Handling $event" }
         val skillId = event.skill.id
@@ -39,5 +47,16 @@ class SkillKnowledgeUpdatingEventHandler(
                 else -> it
             }
         })
+
+}
+
+@Configuration
+class SkillKnowledgeUpdatingEventHandlerConfiguration {
+
+    @Bean("$CONTEXT.SkillUpdatedEvent.Queue")
+    fun skillUpdatedEventQueue() = durableQueue(SKILL_UPDATED_QUEUE)
+
+    @Bean("$CONTEXT.SkillUpdatedEvent.Binding")
+    fun skillUpdatedEventBinding() = eventBinding<SkillUpdatedEvent>(SKILL_UPDATED_QUEUE)
 
 }
