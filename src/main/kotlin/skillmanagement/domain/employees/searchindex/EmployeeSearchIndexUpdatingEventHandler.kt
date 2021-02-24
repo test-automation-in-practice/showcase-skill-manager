@@ -27,19 +27,19 @@ class EmployeeSearchIndexUpdatingEventHandler(
 
     @RabbitListener(queues = [EMPLOYEE_ADDED_QUEUE])
     fun handle(event: EmployeeAddedEvent) {
-        log.debug { "Received $event" }
+        log.debug { "Handling $event" }
         searchIndex.index(event.employee)
     }
 
     @RabbitListener(queues = [EMPLOYEE_UPDATED_QUEUE])
     fun handle(event: EmployeeUpdatedEvent) {
-        log.debug { "Received $event" }
+        log.debug { "Handling $event" }
         searchIndex.index(event.employee)
     }
 
     @RabbitListener(queues = [EMPLOYEE_DELETED_QUEUE])
     fun handle(event: EmployeeDeletedEvent) {
-        log.debug { "Received $event" }
+        log.debug { "Handling $event" }
         searchIndex.deleteById(event.employee.id)
     }
 

@@ -35,6 +35,9 @@ storage:
     schema: http
     host: localhost
     port: 9200
+  broker:
+    host: localhost
+    port: 5672
 
 spring:
   datasource:
@@ -45,3 +48,6 @@ spring:
     locations: "classpath:db/migration/{vendor}"
   main:
     allow-bean-definition-overriding: false
+  rabbitmq:
+    host: ${storage.broker.host}
+    port: ${storage.broker.port}

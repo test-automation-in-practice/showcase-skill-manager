@@ -27,19 +27,19 @@ class ProjectSearchIndexUpdatingEventHandler(
 
     @RabbitListener(queues = [PROJECT_ADDED_QUEUE])
     fun handle(event: ProjectAddedEvent) {
-        log.debug { "Received $event" }
+        log.debug { "Handling $event" }
         searchIndex.index(event.project)
     }
 
     @RabbitListener(queues = [PROJECT_UPDATED_QUEUE])
     fun handle(event: ProjectUpdatedEvent) {
-        log.debug { "Received $event" }
+        log.debug { "Handling $event" }
         searchIndex.index(event.project)
     }
 
     @RabbitListener(queues = [PROJECT_DELETED_QUEUE])
     fun handle(event: ProjectDeletedEvent) {
-        log.debug { "Received $event" }
+        log.debug { "Handling $event" }
         searchIndex.deleteById(event.project.id)
     }
 

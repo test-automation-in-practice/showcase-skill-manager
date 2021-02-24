@@ -13,6 +13,10 @@ class PostgresContainer : Container("postgres:9.6") {
     override fun getMappedPort(): Int = getMappedPort(5432)
 }
 
+class RabbitMqContainer : Container("rabbitmq:3.8") {
+    override fun getMappedPort(): Int = getMappedPort(5672)
+}
+
 sealed class Container(image: String) : GenericContainer<Container>(image), CloseableResource {
 
     fun addEnvFromFile(resource: Resource) {

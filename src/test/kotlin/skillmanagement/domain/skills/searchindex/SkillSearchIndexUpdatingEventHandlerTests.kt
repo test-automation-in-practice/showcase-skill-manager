@@ -3,56 +3,33 @@ package skillmanagement.domain.skills.searchindex
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.ApplicationEventPublisher
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Import
-import org.springframework.scheduling.annotation.EnableAsync
-import skillmanagement.common.events.Event
-import skillmanagement.domain.skills.model.SkillAddedEvent
-import skillmanagement.domain.skills.model.SkillDeletedEvent
-import skillmanagement.domain.skills.model.SkillUpdatedEvent
-import skillmanagement.domain.skills.model.skill_java
-import skillmanagement.domain.skills.model.skill_kotlin
-import skillmanagement.domain.skills.model.skill_python
+import skillmanagement.domain.skills.model.*
 import skillmanagement.test.ResetMocksAfterEachTest
-import skillmanagement.test.TechnologyIntegrationTest
+import skillmanagement.test.UnitTest
 
+@UnitTest
 @ResetMocksAfterEachTest
-@TechnologyIntegrationTest
-@SpringBootTest(classes = [SkillSearchIndexUpdateEventHandlerTestsConfiguration::class])
-internal class SkillSearchIndexUpdatingEventHandlerTests(
-    @Autowired val eventPublisher: ApplicationEventPublisher,
-    @Autowired val skillSearchIndex: SkillSearchIndex
-) {
+internal class SkillSearchIndexUpdatingEventHandlerTests {
+
+    private val searchIndex: SkillSearchIndex = mockk(relaxed = true)
+    private val cut = SkillSearchIndexUpdatingEventHandler(searchIndex)
 
     @Test
     fun `SkillAddedEvent will add a new index entry`() {
-        publishEvent(SkillAddedEvent(skill_kotlin))
-        verify(timeout = 1_000) { skillSearchIndex.index(skill_kotlin) }
+        cut.handle(SkillAddedEvent(skill_kotlin))
+        verify { searchIndex.index(skill_kotlin) }
     }
 
     @Test
     fun `SkillUpdatedEvent will update an existing index entry`() {
-        publishEvent(SkillUpdatedEvent(skill_java))
-        verify(timeout = 1_000) { skillSearchIndex.index(skill_java) }
+        cut.handle(SkillUpdatedEvent(skill_java))
+        verify { searchIndex.index(skill_java) }
     }
 
     @Test
     fun `SkillDeletedEvent will delete an existing index entry`() {
-        publishEvent(SkillDeletedEvent(skill_python))
-        verify(timeout = 1_000) { skillSearchIndex.deleteById(skill_python.id) }
+        cut.handle(SkillDeletedEvent(skill_python))
+        verify { searchIndex.deleteById(skill_python.id) }
     }
-
-    private fun publishEvent(event: Event) = eventPublisher.publishEvent(event)
-}
-
-@EnableAsync
-@Import(SkillSearchIndexUpdatingEventHandler::class)
-private class SkillSearchIndexUpdateEventHandlerTestsConfiguration {
-
-    @Bean
-    fun skillSearchIndex(): SkillSearchIndex = mockk(relaxUnitFun = true)
 
 }

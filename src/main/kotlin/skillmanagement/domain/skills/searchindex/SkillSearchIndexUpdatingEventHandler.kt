@@ -27,19 +27,19 @@ class SkillSearchIndexUpdatingEventHandler(
 
     @RabbitListener(queues = [SKILL_ADDED_QUEUE])
     fun handle(event: SkillAddedEvent) {
-        log.debug { "Received $event" }
+        log.debug { "Handling $event" }
         searchIndex.index(event.skill)
     }
 
     @RabbitListener(queues = [SKILL_UPDATED_QUEUE])
     fun handle(event: SkillUpdatedEvent) {
-        log.debug { "Received $event" }
+        log.debug { "Handling $event" }
         searchIndex.index(event.skill)
     }
 
     @RabbitListener(queues = [SKILL_DELETED_QUEUE])
     fun handle(event: SkillDeletedEvent) {
-        log.debug { "Received $event" }
+        log.debug { "Handling $event" }
         searchIndex.deleteById(event.skill.id)
     }
 

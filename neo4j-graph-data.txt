@@ -1,4 +1,5 @@
 CREATE (EventCounter:TransientMetric {name:'EventCounter', fullName:'skillmanagement.common.events.EventCounter'})
+CREATE (EventExchange:Component {name:'EventExchange', fullName:'skillmanagement.common.events.EventExchange'})
 CREATE (PublishEvent:TechnicalFunction {name:'PublishEvent', fullName:'skillmanagement.common.events.PublishEvent'})
 CREATE (ApplyPatch:TechnicalFunction {name:'ApplyPatch', fullName:'skillmanagement.common.http.patch.ApplyPatch'})
 CREATE (GetTotalNumberOfEmployeesFromDataStore:TechnicalFunction {name:'GetTotalNumberOfEmployeesFromDataStore', fullName:'skillmanagement.domain.employees.metrics.GetTotalNumberOfEmployeesFromDataStore'})
