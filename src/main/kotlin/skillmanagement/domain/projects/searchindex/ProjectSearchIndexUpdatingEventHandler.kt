@@ -1,87 +1,69 @@
 package skillmanagement.domain.projects.searchindex
 
-import org.springframework.amqp.core.Binding
-import org.springframework.amqp.core.BindingBuilder
-import org.springframework.amqp.core.Queue
+import mu.KotlinLogging.logger
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.scheduling.annotation.Async
-import skillmanagement.common.events.Event
-import skillmanagement.common.events.EventsTopicExchange
+import skillmanagement.common.messaging.QUEUE_PREFIX
 import skillmanagement.common.messaging.durableQueue
+import skillmanagement.common.messaging.eventBinding
 import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.projects.model.ProjectAddedEvent
 import skillmanagement.domain.projects.model.ProjectDeletedEvent
-import skillmanagement.domain.projects.model.ProjectEvent
 import skillmanagement.domain.projects.model.ProjectUpdatedEvent
 
-private const val PREFIX = "ProjectSearchIndexUpdatingEventHandler-"
+private const val CONTEXT = "ProjectSearchIndexUpdatingEventHandler"
 
-private const val QUEUE_BEAN_SUFFIX = "-Queue"
-private const val BINDING_BEAN_SUFFIX = "-Binding"
-
-private const val PROJECT_ADDED_QUEUE_NAME = PREFIX + "ProjectAddedEvent"
-private const val PROJECT_UPDATED_QUEUE_NAME = PREFIX + "ProjectUpdatedEvent"
-private const val PROJECT_DELETED_QUEUE_NAME = PREFIX + "ProjectDeletedEvent"
+private const val PROJECT_ADDED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.ProjectAddedEvent"
+private const val PROJECT_UPDATED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.ProjectUpdatedEvent"
+private const val PROJECT_DELETED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.ProjectDeletedEvent"
 
 @EventHandler
 class ProjectSearchIndexUpdatingEventHandler(
     private val searchIndex: ProjectSearchIndex
 ) {
 
-    @Async
-    @RabbitListener(queues = [PROJECT_ADDED_QUEUE_NAME])
+    private val log = logger {}
+
+    @RabbitListener(queues = [PROJECT_ADDED_QUEUE])
     fun handle(event: ProjectAddedEvent) {
+        log.debug { "Received $event" }
         searchIndex.index(event.project)
     }
 
-    @Async
-    @RabbitListener(queues = [PROJECT_UPDATED_QUEUE_NAME])
+    @RabbitListener(queues = [PROJECT_UPDATED_QUEUE])
     fun handle(event: ProjectUpdatedEvent) {
+        log.debug { "Received $event" }
         searchIndex.index(event.project)
     }
 
-    @Async
-    @RabbitListener(queues = [PROJECT_DELETED_QUEUE_NAME])
+    @RabbitListener(queues = [PROJECT_DELETED_QUEUE])
     fun handle(event: ProjectDeletedEvent) {
+        log.debug { "Received $event" }
         searchIndex.deleteById(event.project.id)
     }
 
 }
 
 @Configuration
-class ProjectSearchIndexUpdatingEventHandlerConfiguration(
-    private val exchange: EventsTopicExchange
-) {
+class ProjectSearchIndexUpdatingEventHandlerConfiguration {
 
-    // project added
+    @Bean("$CONTEXT.ProjectAddedEvent.Queue")
+    fun projectAddedEventQueue() = durableQueue(PROJECT_ADDED_QUEUE)
 
-    @Bean(PROJECT_ADDED_QUEUE_NAME + QUEUE_BEAN_SUFFIX)
-    fun projectAddedEventQueue() = durableQueue(PROJECT_ADDED_QUEUE_NAME)
+    @Bean("$CONTEXT.ProjectAddedEvent.Binding")
+    fun projectAddedEventBinding() = eventBinding<ProjectAddedEvent>(PROJECT_ADDED_QUEUE)
 
-    @Bean(PROJECT_ADDED_QUEUE_NAME + BINDING_BEAN_SUFFIX)
-    fun projectAddedEventBinding(): Binding = binding<ProjectAddedEvent>(projectAddedEventQueue())
+    @Bean("$CONTEXT.ProjectUpdatedEvent.Queue")
+    fun projectUpdatedEventQueue() = durableQueue(PROJECT_UPDATED_QUEUE)
 
-    // project updated
+    @Bean("$CONTEXT.ProjectUpdatedEvent.Binding")
+    fun projectUpdatedEventBinding() = eventBinding<ProjectUpdatedEvent>(PROJECT_UPDATED_QUEUE)
 
-    @Bean(PROJECT_UPDATED_QUEUE_NAME + QUEUE_BEAN_SUFFIX)
-    fun projectUpdatedEventQueue() = durableQueue(PROJECT_UPDATED_QUEUE_NAME)
+    @Bean("$CONTEXT.ProjectDeletedEvent.Queue")
+    fun projectDeletedEventQueue() = durableQueue(PROJECT_DELETED_QUEUE)
 
-    @Bean(PROJECT_UPDATED_QUEUE_NAME + BINDING_BEAN_SUFFIX)
-    fun projectUpdatedEventBinding(): Binding = binding<ProjectUpdatedEvent>(projectUpdatedEventQueue())
-
-    // project deleted
-
-    @Bean(PROJECT_DELETED_QUEUE_NAME + QUEUE_BEAN_SUFFIX)
-    fun projectDeletedEventQueue() = durableQueue(PROJECT_DELETED_QUEUE_NAME)
-
-    @Bean(PROJECT_DELETED_QUEUE_NAME + BINDING_BEAN_SUFFIX)
-    fun projectDeletedEventBinding(): Binding = binding<ProjectDeletedEvent>(projectDeletedEventQueue())
-
-    // common
-
-    private inline infix fun <reified T : ProjectEvent> binding(queue: Queue): Binding =
-        BindingBuilder.bind(queue).to(exchange).with(T::class.simpleName!!)
+    @Bean("$CONTEXT.ProjectDeletedEvent.Binding")
+    fun projectDeletedEventBinding() = eventBinding<ProjectDeletedEvent>(PROJECT_DELETED_QUEUE)
 
 }

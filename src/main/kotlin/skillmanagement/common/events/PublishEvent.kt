@@ -2,6 +2,8 @@ package skillmanagement.common.events
 
 import mu.KotlinLogging.logger
 import org.springframework.amqp.rabbit.core.RabbitTemplate
+import skillmanagement.common.messaging.EVENT_EXCHANGE
+import skillmanagement.common.messaging.routingKey
 import skillmanagement.common.stereotypes.TechnicalFunction
 
 /**
@@ -14,7 +16,6 @@ import skillmanagement.common.stereotypes.TechnicalFunction
 @TechnicalFunction
 class PublishEvent(
     private val rabbitTemplate: RabbitTemplate,
-    private val exchange: EventsTopicExchange,
     private val counter: EventCounter
 ) {
 
@@ -23,7 +24,7 @@ class PublishEvent(
     operator fun invoke(event: Event) {
         log.debug { "Publishing $event" }
         counter.increment(event::class)
-        rabbitTemplate.convertAndSend(exchange.name, event::class.simpleName!!, event)
+        rabbitTemplate.convertAndSend(EVENT_EXCHANGE, routingKey(event::class), event)
     }
 
 }

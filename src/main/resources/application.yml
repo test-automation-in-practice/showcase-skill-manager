@@ -43,3 +43,5 @@ spring:
     password: ${storage.database.password}
   flyway:
     locations: "classpath:db/migration/{vendor}"
+  main:
+    allow-bean-definition-overriding: false

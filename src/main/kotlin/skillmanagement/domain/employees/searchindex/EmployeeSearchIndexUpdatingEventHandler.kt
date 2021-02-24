@@ -1,86 +1,69 @@
 package skillmanagement.domain.employees.searchindex
 
-import org.springframework.amqp.core.Binding
-import org.springframework.amqp.core.BindingBuilder
-import org.springframework.amqp.core.Queue
+import mu.KotlinLogging.logger
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.scheduling.annotation.Async
-import skillmanagement.common.events.EventsTopicExchange
+import skillmanagement.common.messaging.QUEUE_PREFIX
 import skillmanagement.common.messaging.durableQueue
+import skillmanagement.common.messaging.eventBinding
 import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.employees.model.EmployeeAddedEvent
 import skillmanagement.domain.employees.model.EmployeeDeletedEvent
-import skillmanagement.domain.employees.model.EmployeeEvent
 import skillmanagement.domain.employees.model.EmployeeUpdatedEvent
 
-private const val PREFIX = "EmployeeSearchIndexUpdatingEventHandler-"
+private const val CONTEXT = "EmployeeSearchIndexUpdatingEventHandler"
 
-private const val QUEUE_BEAN_SUFFIX = "-Queue"
-private const val BINDING_BEAN_SUFFIX = "-Binding"
-
-private const val EMPLOYEE_ADDED_QUEUE_NAME = PREFIX + "EmployeeAddedEvent"
-private const val EMPLOYEE_UPDATED_QUEUE_NAME = PREFIX + "EmployeeUpdatedEvent"
-private const val EMPLOYEE_DELETED_QUEUE_NAME = PREFIX + "EmployeeDeletedEvent"
+private const val EMPLOYEE_ADDED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.EmployeeAddedEvent"
+private const val EMPLOYEE_UPDATED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.EmployeeUpdatedEvent"
+private const val EMPLOYEE_DELETED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.EmployeeDeletedEvent"
 
 @EventHandler
 class EmployeeSearchIndexUpdatingEventHandler(
     private val searchIndex: EmployeeSearchIndex
 ) {
 
-    @Async
-    @RabbitListener(queues = [EMPLOYEE_ADDED_QUEUE_NAME])
+    private val log = logger {}
+
+    @RabbitListener(queues = [EMPLOYEE_ADDED_QUEUE])
     fun handle(event: EmployeeAddedEvent) {
+        log.debug { "Received $event" }
         searchIndex.index(event.employee)
     }
 
-    @Async
-    @RabbitListener(queues = [EMPLOYEE_UPDATED_QUEUE_NAME])
+    @RabbitListener(queues = [EMPLOYEE_UPDATED_QUEUE])
     fun handle(event: EmployeeUpdatedEvent) {
+        log.debug { "Received $event" }
         searchIndex.index(event.employee)
     }
 
-    @Async
-    @RabbitListener(queues = [EMPLOYEE_DELETED_QUEUE_NAME])
+    @RabbitListener(queues = [EMPLOYEE_DELETED_QUEUE])
     fun handle(event: EmployeeDeletedEvent) {
+        log.debug { "Received $event" }
         searchIndex.deleteById(event.employee.id)
     }
 
 }
 
 @Configuration
-class EmployeeSearchIndexUpdatingEventHandlerConfiguration(
-    private val exchange: EventsTopicExchange
-) {
+class EmployeeSearchIndexUpdatingEventHandlerConfiguration {
 
-    // employee added
+    @Bean("$CONTEXT.EmployeeAddedEvent.Queue")
+    fun employeeAddedEventQueue() = durableQueue(EMPLOYEE_ADDED_QUEUE)
 
-    @Bean(EMPLOYEE_ADDED_QUEUE_NAME + QUEUE_BEAN_SUFFIX)
-    fun employeeAddedEventQueue() = durableQueue(EMPLOYEE_ADDED_QUEUE_NAME)
+    @Bean("$CONTEXT.EmployeeAddedEvent.Binding")
+    fun employeeAddedEventBinding() = eventBinding<EmployeeAddedEvent>(EMPLOYEE_ADDED_QUEUE)
 
-    @Bean(EMPLOYEE_ADDED_QUEUE_NAME + BINDING_BEAN_SUFFIX)
-    fun employeeAddedEventBinding() = binding<EmployeeAddedEvent>(employeeAddedEventQueue())
+    @Bean("$CONTEXT.EmployeeUpdatedEvent.Queue")
+    fun employeeUpdatedEventQueue() = durableQueue(EMPLOYEE_UPDATED_QUEUE)
 
-    // employee updated
+    @Bean("$CONTEXT.EmployeeUpdatedEvent.Binding")
+    fun employeeUpdatedEventBinding() = eventBinding<EmployeeUpdatedEvent>(EMPLOYEE_UPDATED_QUEUE)
 
-    @Bean(EMPLOYEE_UPDATED_QUEUE_NAME + QUEUE_BEAN_SUFFIX)
-    fun employeeUpdatedEventQueue() = durableQueue(EMPLOYEE_UPDATED_QUEUE_NAME)
+    @Bean("$CONTEXT.EmployeeDeletedEvent.Queue")
+    fun employeeDeletedEventQueue() = durableQueue(EMPLOYEE_DELETED_QUEUE)
 
-    @Bean(EMPLOYEE_UPDATED_QUEUE_NAME + BINDING_BEAN_SUFFIX)
-    fun employeeUpdatedEventBinding() = binding<EmployeeUpdatedEvent>(employeeUpdatedEventQueue())
-
-    // employee deleted
-
-    @Bean(EMPLOYEE_DELETED_QUEUE_NAME + QUEUE_BEAN_SUFFIX)
-    fun employeeDeletedEventQueue() = durableQueue(EMPLOYEE_DELETED_QUEUE_NAME)
-
-    @Bean(EMPLOYEE_DELETED_QUEUE_NAME + BINDING_BEAN_SUFFIX)
-    fun employeeDeletedEventBinding() = binding<EmployeeDeletedEvent>(employeeDeletedEventQueue())
-
-    // common
-
-    private inline infix fun <reified T : EmployeeEvent> binding(queue: Queue): Binding =
-        BindingBuilder.bind(queue).to(exchange).with(T::class.simpleName!!)
+    @Bean("$CONTEXT.EmployeeDeletedEvent.Binding")
+    fun employeeDeletedEventBinding() = eventBinding<EmployeeDeletedEvent>(EMPLOYEE_DELETED_QUEUE)
 
 }

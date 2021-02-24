@@ -1,29 +1,22 @@
 package skillmanagement.domain.skills.searchindex
 
 import mu.KotlinLogging.logger
-import org.springframework.amqp.core.Binding
-import org.springframework.amqp.core.BindingBuilder
-import org.springframework.amqp.core.Queue
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.scheduling.annotation.Async
-import skillmanagement.common.events.EventsTopicExchange
+import skillmanagement.common.messaging.QUEUE_PREFIX
 import skillmanagement.common.messaging.durableQueue
+import skillmanagement.common.messaging.eventBinding
 import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.skills.model.SkillAddedEvent
 import skillmanagement.domain.skills.model.SkillDeletedEvent
-import skillmanagement.domain.skills.model.SkillEvent
 import skillmanagement.domain.skills.model.SkillUpdatedEvent
 
-private const val PREFIX = "SkillSearchIndexUpdatingEventHandler-"
+private const val CONTEXT = "SkillSearchIndexUpdatingEventHandler"
 
-private const val QUEUE_BEAN_SUFFIX = "-Queue"
-private const val BINDING_BEAN_SUFFIX = "-Binding"
-
-private const val SKILL_ADDED_QUEUE_NAME = PREFIX + "SkillAddedEvent"
-private const val SKILL_UPDATED_QUEUE_NAME = PREFIX + "SkillUpdatedEvent"
-private const val SKILL_DELETED_QUEUE_NAME = PREFIX + "SkillDeletedEvent"
+private const val SKILL_ADDED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.SkillAddedEvent"
+private const val SKILL_UPDATED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.SkillUpdatedEvent"
+private const val SKILL_DELETED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.SkillDeletedEvent"
 
 @EventHandler
 class SkillSearchIndexUpdatingEventHandler(
@@ -32,61 +25,45 @@ class SkillSearchIndexUpdatingEventHandler(
 
     private val log = logger {}
 
-    @Async
-    @RabbitListener(queues = [SKILL_ADDED_QUEUE_NAME])
+    @RabbitListener(queues = [SKILL_ADDED_QUEUE])
     fun handle(event: SkillAddedEvent) {
-        log.debug { "received [$event]" }
+        log.debug { "Received $event" }
         searchIndex.index(event.skill)
     }
 
-    @Async
-    @RabbitListener(queues = [SKILL_UPDATED_QUEUE_NAME])
+    @RabbitListener(queues = [SKILL_UPDATED_QUEUE])
     fun handle(event: SkillUpdatedEvent) {
-        log.debug { "received [$event]" }
+        log.debug { "Received $event" }
         searchIndex.index(event.skill)
     }
 
-    @Async
-    @RabbitListener(queues = [SKILL_DELETED_QUEUE_NAME])
+    @RabbitListener(queues = [SKILL_DELETED_QUEUE])
     fun handle(event: SkillDeletedEvent) {
-        log.debug { "received [$event]" }
+        log.debug { "Received $event" }
         searchIndex.deleteById(event.skill.id)
     }
 
 }
 
 @Configuration
-class SkillSearchIndexUpdatingEventHandlerConfiguration(
-    private val exchange: EventsTopicExchange
-) {
+class SkillSearchIndexUpdatingEventHandlerConfiguration {
 
-    // skill added
+    @Bean("$CONTEXT.SkillAddedEvent.Queue")
+    fun skillAddedEventQueue() = durableQueue(SKILL_ADDED_QUEUE)
 
-    @Bean(SKILL_ADDED_QUEUE_NAME + QUEUE_BEAN_SUFFIX)
-    fun skillAddedEventQueue() = durableQueue(SKILL_ADDED_QUEUE_NAME)
+    @Bean("$CONTEXT.SkillAddedEvent.Binding")
+    fun skillAddedEventBinding() = eventBinding<SkillAddedEvent>(SKILL_ADDED_QUEUE)
 
-    @Bean(SKILL_ADDED_QUEUE_NAME + BINDING_BEAN_SUFFIX)
-    fun skillAddedEventBinding() = binding<SkillAddedEvent>(skillAddedEventQueue())
+    @Bean("$CONTEXT.SkillUpdatedEvent.Queue")
+    fun skillUpdatedEventQueue() = durableQueue(SKILL_UPDATED_QUEUE)
 
-    // skill updated
+    @Bean("$CONTEXT.SkillUpdatedEvent.Binding")
+    fun skillUpdatedEventBinding() = eventBinding<SkillUpdatedEvent>(SKILL_UPDATED_QUEUE)
 
-    @Bean(SKILL_UPDATED_QUEUE_NAME + QUEUE_BEAN_SUFFIX)
-    fun skillUpdatedEventQueue() = durableQueue(SKILL_UPDATED_QUEUE_NAME)
+    @Bean("$CONTEXT.SkillDeletedEvent.Queue")
+    fun skillDeletedEventQueue() = durableQueue(SKILL_DELETED_QUEUE)
 
-    @Bean(SKILL_UPDATED_QUEUE_NAME + BINDING_BEAN_SUFFIX)
-    fun skillUpdatedEventBinding() = binding<SkillUpdatedEvent>(skillUpdatedEventQueue())
-
-    // skill deleted
-
-    @Bean(SKILL_DELETED_QUEUE_NAME + QUEUE_BEAN_SUFFIX)
-    fun skillDeletedEventQueue() = durableQueue(SKILL_DELETED_QUEUE_NAME)
-
-    @Bean(SKILL_DELETED_QUEUE_NAME + BINDING_BEAN_SUFFIX)
-    fun skillDeletedEventBinding() = binding<SkillDeletedEvent>(skillDeletedEventQueue())
-
-    // common
-
-    private inline infix fun <reified T : SkillEvent> binding(queue: Queue): Binding =
-        BindingBuilder.bind(queue).to(exchange).with(T::class.simpleName!!)
+    @Bean("$CONTEXT.SkillDeletedEvent.Binding")
+    fun skillDeletedEventBinding() = eventBinding<SkillDeletedEvent>(SKILL_DELETED_QUEUE)
 
 }
