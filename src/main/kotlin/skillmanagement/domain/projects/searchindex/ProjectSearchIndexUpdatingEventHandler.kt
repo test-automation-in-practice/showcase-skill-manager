@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.Async
 import skillmanagement.common.events.Event
 import skillmanagement.common.events.EventsTopicExchange
+import skillmanagement.common.messaging.durableQueue
 import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.projects.model.ProjectAddedEvent
 import skillmanagement.domain.projects.model.ProjectDeletedEvent
@@ -79,8 +80,6 @@ class ProjectSearchIndexUpdatingEventHandlerConfiguration(
     fun projectDeletedEventBinding(): Binding = binding<ProjectDeletedEvent>(projectDeletedEventQueue())
 
     // common
-
-    private fun durableQueue(name: String): Queue = Queue(name, true)
 
     private inline infix fun <reified T : ProjectEvent> binding(queue: Queue): Binding =
         BindingBuilder.bind(queue).to(exchange).with(T::class.simpleName!!)

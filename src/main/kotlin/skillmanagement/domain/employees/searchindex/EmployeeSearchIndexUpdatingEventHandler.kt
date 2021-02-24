@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.Async
 import skillmanagement.common.events.EventsTopicExchange
+import skillmanagement.common.messaging.durableQueue
 import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.employees.model.EmployeeAddedEvent
 import skillmanagement.domain.employees.model.EmployeeDeletedEvent
@@ -78,8 +79,6 @@ class EmployeeSearchIndexUpdatingEventHandlerConfiguration(
     fun employeeDeletedEventBinding() = binding<EmployeeDeletedEvent>(employeeDeletedEventQueue())
 
     // common
-
-    private fun durableQueue(name: String): Queue = Queue(name, true)
 
     private inline infix fun <reified T : EmployeeEvent> binding(queue: Queue): Binding =
         BindingBuilder.bind(queue).to(exchange).with(T::class.simpleName!!)

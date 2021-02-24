@@ -1,5 +1,6 @@
 package skillmanagement.domain.skills.searchindex
 
+import mu.KotlinLogging.logger
 import org.springframework.amqp.core.Binding
 import org.springframework.amqp.core.BindingBuilder
 import org.springframework.amqp.core.Queue
@@ -7,8 +8,8 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.scheduling.annotation.Async
-import skillmanagement.common.events.Event
 import skillmanagement.common.events.EventsTopicExchange
+import skillmanagement.common.messaging.durableQueue
 import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.skills.model.SkillAddedEvent
 import skillmanagement.domain.skills.model.SkillDeletedEvent
@@ -29,21 +30,26 @@ class SkillSearchIndexUpdatingEventHandler(
     private val searchIndex: SkillSearchIndex
 ) {
 
+    private val log = logger {}
+
     @Async
     @RabbitListener(queues = [SKILL_ADDED_QUEUE_NAME])
     fun handle(event: SkillAddedEvent) {
+        log.debug { "received [$event]" }
         searchIndex.index(event.skill)
     }
 
     @Async
     @RabbitListener(queues = [SKILL_UPDATED_QUEUE_NAME])
     fun handle(event: SkillUpdatedEvent) {
+        log.debug { "received [$event]" }
         searchIndex.index(event.skill)
     }
 
     @Async
     @RabbitListener(queues = [SKILL_DELETED_QUEUE_NAME])
     fun handle(event: SkillDeletedEvent) {
+        log.debug { "received [$event]" }
         searchIndex.deleteById(event.skill.id)
     }
 
@@ -79,8 +85,6 @@ class SkillSearchIndexUpdatingEventHandlerConfiguration(
     fun skillDeletedEventBinding() = binding<SkillDeletedEvent>(skillDeletedEventQueue())
 
     // common
-
-    private fun durableQueue(name: String): Queue = Queue(name, true)
 
     private inline infix fun <reified T : SkillEvent> binding(queue: Queue): Binding =
         BindingBuilder.bind(queue).to(exchange).with(T::class.simpleName!!)
