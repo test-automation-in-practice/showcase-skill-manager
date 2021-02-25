@@ -6,9 +6,7 @@ plugins {
 }
 
 dependencies {
-    api(project(":modules:common"))
+//    api(project(":modules:common"))
 
     api("org.springframework.boot:spring-boot-starter")
-
-    testImplementation(project(":modules:testing"))
 }

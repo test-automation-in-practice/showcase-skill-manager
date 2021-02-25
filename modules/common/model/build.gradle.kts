@@ -9,7 +9,7 @@ dependencies {
     api(kotlin("reflect"))
     api(kotlin("stdlib-jdk8"))
 
-    api("org.springframework.boot:spring-boot-starter")
+    api("com.fasterxml.jackson.module:jackson-module-kotlin")
 
-    testImplementation(project(":modules:testing"))
+    testImplementation(project(":modules:testing:common"))
 }

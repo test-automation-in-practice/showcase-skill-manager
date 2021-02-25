@@ -1,7 +1,7 @@
 package skillmanagement.test.contracts.string
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import io.kotlintest.shouldBe
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.TestFactory
 
@@ -15,7 +15,7 @@ interface IsJsonSerializableContract : StringTypeContract {
             dynamicTest(example) {
                 val instance = createInstance(example)
                 val expectedJsonValue = defaultObjectMapper.writeValueAsString(example)
-                defaultObjectMapper.writeValueAsString(instance) shouldBe expectedJsonValue
+                assertThat(defaultObjectMapper.writeValueAsString(instance)).isEqualTo(expectedJsonValue)
             }
         }
 
@@ -25,7 +25,8 @@ interface IsJsonSerializableContract : StringTypeContract {
             dynamicTest(example) {
                 val jsonValue = defaultObjectMapper.writeValueAsString(example)
                 val expectedInstance = createInstance(example)
-                defaultObjectMapper.readValue(jsonValue, expectedInstance::class.java) shouldBe expectedInstance
+                assertThat(defaultObjectMapper.readValue(jsonValue, expectedInstance::class.java))
+                    .isEqualTo(expectedInstance)
             }
         }
 
