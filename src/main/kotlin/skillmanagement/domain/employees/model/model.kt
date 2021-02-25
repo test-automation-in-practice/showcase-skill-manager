@@ -1,11 +1,10 @@
 package skillmanagement.domain.employees.model
 
 import skillmanagement.common.model.IntType
+import skillmanagement.common.model.Label
 import skillmanagement.common.model.Name
 import skillmanagement.common.model.StringType
 import skillmanagement.common.model.Text
-import skillmanagement.domain.projects.model.Project
-import skillmanagement.domain.skills.model.Skill
 import java.time.Instant
 import java.time.LocalDate
 import java.time.YearMonth
@@ -71,19 +70,30 @@ data class Job(
 class Employer(value: String) : StringType(value)
 
 data class SkillKnowledge(
-    val skill: Skill,
+    val skill: SkillData,
     val level: SkillLevel,
     val secret: Boolean
+)
+
+data class SkillData(
+    val id: UUID,
+    val label: Label
 )
 
 class SkillLevel(value: Int) : IntType(value, min = 1, max = 10)
 
 data class ProjectAssignment(
     val id: UUID,
-    val project: Project,
+    val project: ProjectData,
     val contribution: ProjectContribution,
     val startDate: LocalDate,
     val endDate: LocalDate?
+)
+
+data class ProjectData(
+    val id: UUID,
+    val label: Label,
+    val description: Text
 )
 
 class ProjectContribution(value: String) : Text(value)

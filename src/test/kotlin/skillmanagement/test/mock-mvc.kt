@@ -6,7 +6,6 @@ import org.springframework.restdocs.operation.preprocess.Preprocessors.preproces
 import org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint
 import org.springframework.restdocs.snippet.Snippet
 import org.springframework.test.web.servlet.ResultActionsDsl
-import org.springframework.test.web.servlet.result.ContentResultMatchers
 import org.springframework.test.web.servlet.result.ContentResultMatchersDsl
 
 fun ContentResultMatchersDsl.relaxedJson(jsonSupplier: () -> String) = json(jsonSupplier(), false)

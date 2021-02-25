@@ -10,11 +10,11 @@ import skillmanagement.common.messaging.eventBinding
 import skillmanagement.common.search.PageSize
 import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.SkillData
+import skillmanagement.domain.employees.model.SkillUpdatedEvent
 import skillmanagement.domain.employees.usecases.find.EmployeesWithSkill
 import skillmanagement.domain.employees.usecases.find.FindEmployeeIds
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeById
-import skillmanagement.domain.skills.model.Skill
-import skillmanagement.domain.skills.model.SkillUpdatedEvent
 
 private const val CONTEXT = "SkillKnowledgeUpdatingEventHandler"
 private const val SKILL_UPDATED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.SkillUpdatedEvent"
@@ -40,7 +40,7 @@ class SkillKnowledgeUpdatingEventHandler(
             }
     }
 
-    private fun Employee.updateSkillKnowledgeOfSkill(skill: Skill): Employee =
+    private fun Employee.updateSkillKnowledgeOfSkill(skill: SkillData): Employee =
         copy(skills = skills.map {
             when (it.skill.id) {
                 skill.id -> it.copy(skill = skill)

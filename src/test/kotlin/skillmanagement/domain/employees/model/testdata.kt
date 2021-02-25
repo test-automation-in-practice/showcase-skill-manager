@@ -1,25 +1,36 @@
 package skillmanagement.domain.employees.model
 
-import skillmanagement.domain.projects.model.project_demo_2
-import skillmanagement.domain.projects.model.project_starlink
-import skillmanagement.domain.skills.model.skill_kotlin
-import skillmanagement.domain.skills.model.skill_python
+import skillmanagement.common.model.Label
+import skillmanagement.common.model.Text
 import skillmanagement.test.uuid
 import java.time.Instant
 import java.time.LocalDate
 
+val skill_kotlin = SkillData(
+    id = uuid("3f7985b9-f5f0-4662-bda9-1dcde01f5f3b"),
+    label = Label("Kotlin")
+)
 val skill_kotlin_knowledge = SkillKnowledge(
     skill = skill_kotlin,
     level = SkillLevel(7),
     secret = false
 )
 
+val skill_python = SkillData(
+    id = uuid("6935e550-d041-418a-9070-e37431069232"),
+    label = Label("Python")
+)
 val skill_python_knowledge = SkillKnowledge(
     skill = skill_python,
     level = SkillLevel(5),
     secret = true
 )
 
+val project_starlink = ProjectData(
+    id = uuid("15c1c1d8-3445-4d95-a945-605aaf087078"),
+    label = Label("Starlink satellite"),
+    description = Text("Lorem ipsum dolor sit amet ..")
+)
 val project_starlink_assignment = ProjectAssignment(
     id = uuid("420d3277-a4a9-4a35-9d57-d150b26edc91"),
     project = project_starlink,
@@ -28,6 +39,11 @@ val project_starlink_assignment = ProjectAssignment(
     endDate = LocalDate.parse("2020-01-31")
 )
 
+val project_demo_2 = ProjectData(
+    id = uuid("d61c7840-7be3-4668-ae48-6c0b396268b5"),
+    label = Label("Demo-2"),
+    description = Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed ..")
+)
 val project_demo_2_assignment = ProjectAssignment(
     id = uuid("aebf0a2a-4309-4610-829d-13ce0b036496"),
     project = project_demo_2,

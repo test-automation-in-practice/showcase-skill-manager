@@ -10,11 +10,11 @@ import skillmanagement.common.messaging.eventBinding
 import skillmanagement.common.search.PageSize
 import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.ProjectDeletedEvent
 import skillmanagement.domain.employees.usecases.find.EmployeesWhoWorkedOnProject
 import skillmanagement.domain.employees.usecases.find.FindEmployeeIds
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeById
-import skillmanagement.domain.projects.model.ProjectDeletedEvent
-import java.util.*
+import java.util.UUID
 
 private const val CONTEXT = "ProjectAssignmentDeletingEventHandler"
 private const val PROJECT_DELETED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.ProjectDeletedEvent"

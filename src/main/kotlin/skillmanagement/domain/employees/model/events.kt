@@ -10,3 +10,9 @@ interface EmployeeEvent : Event
 data class EmployeeAddedEvent(val employee: Employee) : EmployeeEvent
 data class EmployeeUpdatedEvent(val employee: Employee) : EmployeeEvent
 data class EmployeeDeletedEvent(val employee: Employee) : EmployeeEvent
+
+data class SkillUpdatedEvent(val skill: SkillData) : EmployeeEvent
+data class SkillDeletedEvent(val skill: SkillData) : EmployeeEvent
+
+data class ProjectUpdatedEvent(val project: ProjectData) : EmployeeEvent
+data class ProjectDeletedEvent(val project: ProjectData) : EmployeeEvent

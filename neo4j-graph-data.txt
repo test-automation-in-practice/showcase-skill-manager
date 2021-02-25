@@ -22,6 +22,7 @@ CREATE (GetEmployeeByIdHttpAdapter:HttpAdapter {name:'GetEmployeeByIdHttpAdapter
 CREATE (GetEmployeesFromDataStore:TechnicalFunction {name:'GetEmployeesFromDataStore', fullName:'skillmanagement.domain.employees.usecases.get.GetEmployeesFromDataStore'})
 CREATE (CreateProjectAssignmentForEmployee:BusinessFunction {name:'CreateProjectAssignmentForEmployee', fullName:'skillmanagement.domain.employees.usecases.projectassignments.create.CreateProjectAssignmentForEmployee'})
 CREATE (CreateProjectAssignmentForEmployeeHttpAdapter:HttpAdapter {name:'CreateProjectAssignmentForEmployeeHttpAdapter', fullName:'skillmanagement.domain.employees.usecases.projectassignments.create.CreateProjectAssignmentForEmployeeHttpAdapter'})
+CREATE (GetProjectByIdAdapter:TechnicalFunction {name:'GetProjectByIdAdapter', fullName:'skillmanagement.domain.employees.usecases.projectassignments.create.GetProjectByIdAdapter'})
 CREATE (DeleteProjectAssignmentOfEmployee:BusinessFunction {name:'DeleteProjectAssignmentOfEmployee', fullName:'skillmanagement.domain.employees.usecases.projectassignments.delete.DeleteProjectAssignmentOfEmployee'})
 CREATE (DeleteProjectAssignmentOfEmployeeHttpAdapter:HttpAdapter {name:'DeleteProjectAssignmentOfEmployeeHttpAdapter', fullName:'skillmanagement.domain.employees.usecases.projectassignments.delete.DeleteProjectAssignmentOfEmployeeHttpAdapter'})
 CREATE (ProjectAssignmentDeletingEventHandler:EventHandler {name:'ProjectAssignmentDeletingEventHandler', fullName:'skillmanagement.domain.employees.usecases.projectassignments.delete.ProjectAssignmentDeletingEventHandler'})
@@ -31,6 +32,7 @@ CREATE (UpdateProjectAssignmentByIdHttpAdapter:HttpAdapter {name:'UpdateProjectA
 CREATE (DeleteSkillKnowledgeOfEmployee:BusinessFunction {name:'DeleteSkillKnowledgeOfEmployee', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.delete.DeleteSkillKnowledgeOfEmployee'})
 CREATE (DeleteSkillKnowledgeOfEmployeeHttpAdapter:HttpAdapter {name:'DeleteSkillKnowledgeOfEmployeeHttpAdapter', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.delete.DeleteSkillKnowledgeOfEmployeeHttpAdapter'})
 CREATE (SkillKnowledgeDeletingEventHandler:EventHandler {name:'SkillKnowledgeDeletingEventHandler', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.delete.SkillKnowledgeDeletingEventHandler'})
+CREATE (GetSkillByIdAdapter:TechnicalFunction {name:'GetSkillByIdAdapter', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.set.GetSkillByIdAdapter'})
 CREATE (SetSkillKnowledgeOfEmployee:BusinessFunction {name:'SetSkillKnowledgeOfEmployee', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnowledgeOfEmployee'})
 CREATE (SetSkillKnowledgeOfEmployeeHttpAdapter:HttpAdapter {name:'SetSkillKnowledgeOfEmployeeHttpAdapter', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnowledgeOfEmployeeHttpAdapter'})
 CREATE (SkillKnowledgeUpdatingEventHandler:EventHandler {name:'SkillKnowledgeUpdatingEventHandler', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.update.SkillKnowledgeUpdatingEventHandler'})
@@ -113,10 +115,12 @@ CREATE (GetEmployeeById)-[:USES]->(GetEmployeesFromDataStore)
 
 CREATE (GetEmployeeByIdHttpAdapter)-[:USES]->(GetEmployeeById)
 
-CREATE (CreateProjectAssignmentForEmployee)-[:USES]->(GetProjectById),
+CREATE (CreateProjectAssignmentForEmployee)-[:USES]->(GetProjectByIdAdapter),
        (CreateProjectAssignmentForEmployee)-[:USES]->(UpdateEmployeeById)
 
 CREATE (CreateProjectAssignmentForEmployeeHttpAdapter)-[:USES]->(CreateProjectAssignmentForEmployee)
+
+CREATE (GetProjectByIdAdapter)-[:USES]->(GetProjectById)
 
 CREATE (DeleteProjectAssignmentOfEmployee)-[:USES]->(UpdateEmployeeById)
 
@@ -140,7 +144,9 @@ CREATE (DeleteSkillKnowledgeOfEmployeeHttpAdapter)-[:USES]->(DeleteSkillKnowledg
 CREATE (SkillKnowledgeDeletingEventHandler)-[:USES]->(FindEmployeeIds),
        (SkillKnowledgeDeletingEventHandler)-[:USES]->(UpdateEmployeeById)
 
-CREATE (SetSkillKnowledgeOfEmployee)-[:USES]->(GetSkillById),
+CREATE (GetSkillByIdAdapter)-[:USES]->(GetSkillById)
+
+CREATE (SetSkillKnowledgeOfEmployee)-[:USES]->(GetSkillByIdAdapter),
        (SetSkillKnowledgeOfEmployee)-[:USES]->(UpdateEmployeeById)
 
 CREATE (SetSkillKnowledgeOfEmployeeHttpAdapter)-[:USES]->(SetSkillKnowledgeOfEmployee)
