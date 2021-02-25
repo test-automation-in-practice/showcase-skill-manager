@@ -1,0 +1,54 @@
+@startuml
+
+actor "User" as user
+participant "Projects Module" as module
+database "Database" as db
+queue "Message Broker" as broker
+database "Search Index" as si
+
+== Creation ==
+
+user -> module: add new project
+activate module
+module -> db: insert
+module -> broker: publish event
+activate broker
+user <- module
+deactivate module
+module <- broker: notify listener
+deactivate broker
+activate module
+module -> si: insert
+deactivate module
+
+== Update ==
+
+user -> module: update existing project
+activate module
+module -> db: update
+module -> broker: publish event
+activate broker
+user <- module
+deactivate module
+module <- broker: notify listener
+deactivate broker
+activate module
+module -> si: update
+deactivate module
+
+== Deletion ==
+
+user -> module: delete existing project
+activate module
+module -> db: delete
+module -> broker: publish event
+activate broker
+user <- module
+deactivate module
+module <- broker: notify listener
+deactivate broker
+activate module
+module -> si: delete
+deactivate module
+
+@enduml
