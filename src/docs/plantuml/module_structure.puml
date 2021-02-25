@@ -1,0 +1,65 @@
+@startuml
+
+package "SkillManager Runtime" {
+
+    node "Skills Module" as module_skills {
+        interface "API" as api_skills
+        component "Domain Functions" as df_skills
+        component "Domain Model" as dm_skills
+        queue "Events" as events_skills
+        database "Search Index" as si_skills
+        database "Persistence" as db_skills
+    }
+
+    node "Projects Module" as module_projects {
+        interface "API" as api_projects
+        component "Domain Functions" as df_projects
+        component "Domain Model" as dm_projects
+        queue "Events" as events_projects
+        database "Search Index" as si_projects
+        database "Persistence" as db_projects
+    }
+
+    node "Employees Module" as module_employees {
+        interface "API" as api_employees
+        component "Domain Functions" as df_employees
+        component "Domain Model" as dm_employees
+        queue "Events" as events_employees
+        database "Search Index" as si_employees
+        database "Persistence" as db_employees
+    }
+
+}
+
+database "PostgreSQL" as postgresql
+database "Elasticsearch" as elasticsearch
+database "RabbitMQ" as broker
+
+[api_skills] -> [df_skills]
+[df_skills] -> [dm_skills]
+[df_skills] --> [db_skills]
+[df_skills] <--> [events_skills]
+[df_skills] --> [si_skills]
+[events_skills] <---> [broker]
+[db_skills] ---> [postgresql]
+[si_skills] ---> [elasticsearch]
+
+[api_projects] -> [df_projects]
+[df_projects] -> [dm_projects]
+[df_projects] --> [db_projects]
+[df_projects] <--> [events_projects]
+[df_projects] --> [si_projects]
+[events_projects] <---> [broker]
+[db_projects] ---> [postgresql]
+[si_projects] ---> [elasticsearch]
+
+[api_employees] -> [df_employees]
+[df_employees] -> [dm_employees]
+[df_employees] --> [db_employees]
+[df_employees] <--> [events_employees]
+[df_employees] --> [si_employees]
+[events_employees] <---> [broker]
+[db_employees] ---> [postgresql]
+[si_employees] ---> [elasticsearch]
+
+@enduml
