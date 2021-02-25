@@ -1,5 +1,8 @@
 package skillmanagement
 
+import com.tngtech.archunit.base.DescribedPredicate.alwaysTrue
+import com.tngtech.archunit.core.domain.JavaClass.Predicates.type
+import com.tngtech.archunit.core.domain.JavaClasses
 import com.tngtech.archunit.core.importer.ClassFileImporter
 import com.tngtech.archunit.core.importer.ImportOption.DoNotIncludeArchives
 import com.tngtech.archunit.core.importer.ImportOption.DoNotIncludeJars
@@ -10,6 +13,8 @@ import com.tngtech.archunit.library.dependencies.SlicesRuleDefinition
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
+import skillmanagement.domain.employees.usecases.projectassignments.create.GetProjectByIdAdapter
+import skillmanagement.domain.employees.usecases.skillknowledge.set.GetSkillByIdAdapter
 import skillmanagement.test.UnitTest
 
 @UnitTest
@@ -36,11 +41,13 @@ internal class ArchitectureTests {
     @Test
     fun `sub domains boundaries are respected`() {
         Architectures.layeredArchitecture()
+            .ignoreDependency(type(GetSkillByIdAdapter::class.java), alwaysTrue())
+            .ignoreDependency(type(GetProjectByIdAdapter::class.java), alwaysTrue())
             .layer("employees").definedBy("$domainPackage.employees..")
             .layer("projects").definedBy("$domainPackage.projects..")
             .layer("skills").definedBy("$domainPackage.skills..")
-            .whereLayer("projects").mayOnlyBeAccessedByLayers("employees")
-            .whereLayer("skills").mayOnlyBeAccessedByLayers("employees")
+            .whereLayer("projects").mayNotBeAccessedByAnyLayer()
+            .whereLayer("skills").mayNotBeAccessedByAnyLayer()
             .whereLayer("employees").mayNotBeAccessedByAnyLayer()
             .check(classesOf(domainPackage))
     }
@@ -55,6 +62,6 @@ internal class ArchitectureTests {
             .check(classesOf(commonPackage, domainPackage))
     }
 
-    private fun classesOf(vararg packages: String) =
+    private fun classesOf(vararg packages: String): JavaClasses =
         ClassFileImporter(options).importPackages(*packages)
 }

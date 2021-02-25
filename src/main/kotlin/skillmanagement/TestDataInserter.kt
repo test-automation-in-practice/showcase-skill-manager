@@ -6,11 +6,11 @@ import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
 import skillmanagement.domain.employees.model.EmailAddress
 import skillmanagement.domain.employees.model.FirstName
+import skillmanagement.domain.employees.model.JobTitle
 import skillmanagement.domain.employees.model.LastName
 import skillmanagement.domain.employees.model.ProjectContribution
 import skillmanagement.domain.employees.model.SkillLevel
 import skillmanagement.domain.employees.model.TelephoneNumber
-import skillmanagement.domain.employees.model.JobTitle
 import skillmanagement.domain.employees.usecases.add.AddEmployee
 import skillmanagement.domain.employees.usecases.projectassignments.create.CreateProjectAssignmentForEmployee
 import skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnowledgeOfEmployee

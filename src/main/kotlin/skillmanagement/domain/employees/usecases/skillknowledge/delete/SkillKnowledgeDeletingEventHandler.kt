@@ -9,10 +9,10 @@ import skillmanagement.common.messaging.durableQueue
 import skillmanagement.common.messaging.eventBinding
 import skillmanagement.common.search.PageSize
 import skillmanagement.common.stereotypes.EventHandler
+import skillmanagement.domain.employees.model.SkillDeletedEvent
 import skillmanagement.domain.employees.usecases.find.EmployeesWithSkill
 import skillmanagement.domain.employees.usecases.find.FindEmployeeIds
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeById
-import skillmanagement.domain.skills.model.SkillDeletedEvent
 
 private const val CONTEXT = "SkillKnowledgeDeletingEventHandler"
 private const val SKILL_DELETED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.SkillDeletedEvent"

@@ -11,12 +11,11 @@ import skillmanagement.domain.employees.usecases.update.UpdateEmployeeById
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotChanged
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotFound
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdatedEmployee
-import skillmanagement.domain.skills.usecases.get.GetSkillById
 import java.util.UUID
 
 @BusinessFunction
 class SetSkillKnowledgeOfEmployee(
-    private val getSkillById: GetSkillById,
+    private val getSkillById: GetSkillByIdAdapter,
     private val updateEmployeeById: UpdateEmployeeById
 ) {
 

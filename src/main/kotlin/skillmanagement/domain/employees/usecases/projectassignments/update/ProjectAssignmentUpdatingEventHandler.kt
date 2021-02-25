@@ -10,11 +10,11 @@ import skillmanagement.common.messaging.eventBinding
 import skillmanagement.common.search.PageSize
 import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.ProjectData
+import skillmanagement.domain.employees.model.ProjectUpdatedEvent
 import skillmanagement.domain.employees.usecases.find.EmployeesWhoWorkedOnProject
 import skillmanagement.domain.employees.usecases.find.FindEmployeeIds
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeById
-import skillmanagement.domain.projects.model.Project
-import skillmanagement.domain.projects.model.ProjectUpdatedEvent
 
 private const val CONTEXT = "ProjectAssignmentUpdatingEventHandler"
 private const val PROJECT_UPDATED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.ProjectUpdatedEvent"
@@ -40,7 +40,7 @@ class ProjectAssignmentUpdatingEventHandler(
             }
     }
 
-    private fun Employee.updateProjectAssignmentsOfProject(project: Project): Employee =
+    private fun Employee.updateProjectAssignmentsOfProject(project: ProjectData): Employee =
         copy(projects = projects.map {
             when (it.project.id) {
                 project.id -> it.copy(project = project)

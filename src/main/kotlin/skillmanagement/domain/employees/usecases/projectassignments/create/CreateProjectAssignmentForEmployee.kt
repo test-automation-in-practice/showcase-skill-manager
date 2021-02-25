@@ -12,14 +12,13 @@ import skillmanagement.domain.employees.usecases.update.UpdateEmployeeById
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotChanged
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotFound
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdatedEmployee
-import skillmanagement.domain.projects.usecases.get.GetProjectById
 import java.time.LocalDate
 import java.util.UUID
 
 @BusinessFunction
 class CreateProjectAssignmentForEmployee(
     private val idGenerator: IdGenerator,
-    private val getProjectById: GetProjectById,
+    private val getProjectById: GetProjectByIdAdapter,
     private val updateEmployeeById: UpdateEmployeeById
 ) {
 

@@ -7,16 +7,13 @@ import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.core.Relation
 import org.springframework.hateoas.server.mvc.BasicLinkBuilder
 import org.springframework.hateoas.server.mvc.BasicLinkBuilder.linkToCurrentMapping
+import skillmanagement.common.model.Label
+import skillmanagement.common.model.Text
 import skillmanagement.common.search.Page
 import skillmanagement.common.search.toMetaData
-import skillmanagement.domain.projects.model.ProjectDescription
-import skillmanagement.domain.projects.model.ProjectLabel
-import skillmanagement.domain.projects.model.linkToProject
-import skillmanagement.domain.skills.model.SkillLabel
-import skillmanagement.domain.skills.model.linkToSkill
 import java.time.Instant
 import java.time.LocalDate
-import java.util.UUID
+import java.util.*
 
 private const val RESOURCE_BASE = "api/employees"
 
@@ -45,14 +42,14 @@ data class EmployeeResource(
 ) : RepresentationModel<EmployeeResource>()
 
 data class SkillKnowledgeResource(
-    val label: SkillLabel,
+    val label: Label,
     val level: SkillLevel,
     val secret: Boolean
 ) : RepresentationModel<SkillKnowledgeResource>()
 
 data class ProjectAssignmentResource(
-    val label: ProjectLabel,
-    val description: ProjectDescription,
+    val label: Label,
+    val description: Text,
     val contribution: ProjectContribution,
     val startDate: LocalDate,
     val endDate: LocalDate?
@@ -133,6 +130,11 @@ fun linkToEmployee(id: UUID) =
 fun linkToSkillKnowledge(employeeId: UUID, skillId: UUID) =
     linkToCurrentMapping().slash("$RESOURCE_BASE/$employeeId/skills/$skillId")
 
+fun linkToSkill(id: UUID) =
+    linkToCurrentMapping().slash("api/employees/$id")
+
 fun linkToProjectAssignment(employeeId: UUID, assignmentId: UUID) =
     linkToCurrentMapping().slash("$RESOURCE_BASE/$employeeId/projects/$assignmentId")
 
+fun linkToProject(id: UUID) =
+    linkToCurrentMapping().slash("api/projects/$id")

@@ -9,9 +9,9 @@ import skillmanagement.common.stereotypes.HttpAdapter
 import skillmanagement.domain.employees.model.EmailAddress
 import skillmanagement.domain.employees.model.EmployeeResource
 import skillmanagement.domain.employees.model.FirstName
+import skillmanagement.domain.employees.model.JobTitle
 import skillmanagement.domain.employees.model.LastName
 import skillmanagement.domain.employees.model.TelephoneNumber
-import skillmanagement.domain.employees.model.JobTitle
 import skillmanagement.domain.employees.model.toResource
 
 @HttpAdapter

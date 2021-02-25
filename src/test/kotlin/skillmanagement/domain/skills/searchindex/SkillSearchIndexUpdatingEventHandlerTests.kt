@@ -3,7 +3,12 @@ package skillmanagement.domain.skills.searchindex
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
-import skillmanagement.domain.skills.model.*
+import skillmanagement.domain.skills.model.SkillAddedEvent
+import skillmanagement.domain.skills.model.SkillDeletedEvent
+import skillmanagement.domain.skills.model.SkillUpdatedEvent
+import skillmanagement.domain.skills.model.skill_java
+import skillmanagement.domain.skills.model.skill_kotlin
+import skillmanagement.domain.skills.model.skill_python
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.UnitTest
 
