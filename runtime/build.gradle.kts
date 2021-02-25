@@ -19,6 +19,10 @@ dependencies {
 //
 //    testImplementation(project(":modules:testing"))
 
+    implementation(project(":modules:common:model"))
+    testImplementation(project(":modules:testing:common"))
+    testImplementation(project(":modules:testing:model"))
+
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("org.springframework.boot:spring-boot-starter-amqp")

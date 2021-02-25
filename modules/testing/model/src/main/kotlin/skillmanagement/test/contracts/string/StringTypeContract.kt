@@ -1,6 +1,6 @@
 package skillmanagement.test.contracts.string
 
-import io.kotlintest.shouldBe
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.Test
@@ -20,7 +20,7 @@ interface StringTypeContract : ValueTypeContract<String> {
         val value = validExamples.first()
         val instance = createInstance(value)
 
-        instance.toString() shouldBe value
+        assertThat(instance.toString()).isEqualTo(value)
     }
 
 }

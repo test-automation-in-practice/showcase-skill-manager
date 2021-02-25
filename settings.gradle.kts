@@ -1,6 +1,10 @@
 include("runtime")
-include("modules:common")
+
+include("modules:common:model")
+
+include("modules:testing:common")
+include("modules:testing:model")
+
 include("modules:employees")
 include("modules:projects")
 include("modules:skills")
-include("modules:testing")

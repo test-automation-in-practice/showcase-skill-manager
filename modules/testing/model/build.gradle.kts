@@ -6,6 +6,6 @@ plugins {
 }
 
 dependencies {
-    api(kotlin("reflect"))
-    api(kotlin("stdlib-jdk8"))
+    api(project(":modules:common:model"))
+    api(project(":modules:testing:common"))
 }
