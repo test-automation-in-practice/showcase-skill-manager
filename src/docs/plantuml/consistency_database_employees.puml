@@ -1,0 +1,44 @@
+@startuml
+
+actor "User" as user
+participant "Skills Module" as skills
+participant "Projects Module" as projects
+participant "Employees Module" as employees
+database "Database" as db
+queue "Message Broker" as broker
+
+== Skill Change (Update / Delete) ==
+
+user -> skills: change skill
+activate skills
+skills -> db: change
+skills -> broker: publish event
+activate broker
+user <- skills
+deactivate skills
+employees <- broker: notify listener
+deactivate broker
+activate employees
+employees -> employees: update data of employees with that skill
+activate employees
+deactivate employees
+deactivate employees
+
+== Project Change (Update / Delete) ==
+
+user -> projects: change project
+activate projects
+projects -> db: change
+projects -> broker: publish event
+activate broker
+user <- projects
+deactivate projects
+employees <- broker: notify listener
+deactivate broker
+activate employees
+employees -> employees: update data of employees with that project
+activate employees
+deactivate employees
+deactivate employees
+
+@enduml
