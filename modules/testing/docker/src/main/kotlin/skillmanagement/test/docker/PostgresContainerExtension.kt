@@ -4,7 +4,6 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.extension.ParameterContext
 import org.springframework.core.io.ClassPathResource
-import org.springframework.core.io.PathResource
 import kotlin.annotation.AnnotationTarget.CLASS
 
 @Retention
