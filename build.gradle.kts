@@ -12,6 +12,8 @@ plugins {
 }
 
 allprojects {
+    extra["okhttp3.version"] = "4.9.1"
+
     tasks.withType<JavaCompile> {
         sourceCompatibility = "11"
         targetCompatibility = "11"

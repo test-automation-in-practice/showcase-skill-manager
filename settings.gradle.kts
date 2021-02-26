@@ -1,14 +1,10 @@
 include("runtime")
 
-include("modules:common:model")
-include("modules:common:event-publishing")
-include("modules:common:search-index")
-include("modules:common:web")
+include("modules:common:core")
+include("modules:common:domain-base")
 
-include("modules:testing:common")
-include("modules:testing:docker")
-include("modules:testing:model")
-include("modules:testing:web")
+include("modules:testing:core")
+include("modules:testing:domain-base")
 
 include("modules:domains:employees")
 include("modules:domains:projects")
