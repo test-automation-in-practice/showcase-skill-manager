@@ -12,14 +12,11 @@ repositories {
 }
 
 dependencies {
-//    implementation(project(":modules:commons"))
-//    implementation(project(":modules:employees"))
-//    implementation(project(":modules:projects"))
-//    implementation(project(":modules:skills"))
-//
-//    testImplementation(project(":modules:testing"))
 
     implementation(project(":modules:common:model"))
+    implementation(project(":modules:common:event-publishing"))
+    implementation(project(":modules:common:search-index"))
+    implementation(project(":modules:common:web"))
     testImplementation(project(":modules:testing:common"))
     testImplementation(project(":modules:testing:model"))
 

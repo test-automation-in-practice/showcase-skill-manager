@@ -23,7 +23,7 @@ import org.elasticsearch.search.sort.SortBuilder
 import org.elasticsearch.search.sort.SortOrder.DESC
 import org.springframework.core.io.Resource
 import skillmanagement.common.model.Suggestion
-import skillmanagement.common.resources.readAsString
+import java.io.BufferedReader
 import java.util.UUID
 import javax.annotation.PostConstruct
 
@@ -145,5 +145,8 @@ abstract class AbstractSearchIndex<T : Any> {
     }
 
     override fun toString() = "SearchIndex(indexName='$indexName')"
+
+    private fun Resource.readAsString(): String =
+        inputStream.bufferedReader().use(BufferedReader::readText)
 
 }

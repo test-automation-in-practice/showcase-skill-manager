@@ -6,10 +6,10 @@ import org.springframework.amqp.core.Queue
 import org.springframework.amqp.core.QueueBuilder
 import kotlin.reflect.KClass
 
-internal const val EXCHANGE_PREFIX = "skillmanager.exchanges"
-internal const val QUEUE_PREFIX = "skillmanager.queues"
+const val EXCHANGE_PREFIX = "skillmanager.exchanges"
+const val QUEUE_PREFIX = "skillmanager.queues"
 
-internal const val EVENT_EXCHANGE = "$EXCHANGE_PREFIX.events"
+const val EVENT_EXCHANGE = "$EXCHANGE_PREFIX.events"
 
 fun durableQueue(name: String): Queue = QueueBuilder.durable(name)
     .withArgument(DEAD_LETTER_EXCHANGE_HEADER, DEAD_LETTER_EXCHANGE)

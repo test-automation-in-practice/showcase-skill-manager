@@ -11,5 +11,7 @@ dependencies {
     api("io.mockk:mockk:1.10.5")
     api("org.assertj:assertj-core")
 
+    api("info.novatec.testit:testutils-logrecorder-logback:0.3.4")
+
     implementation("org.springframework.boot:spring-boot-starter-test") // TODO: just annotations?
 }

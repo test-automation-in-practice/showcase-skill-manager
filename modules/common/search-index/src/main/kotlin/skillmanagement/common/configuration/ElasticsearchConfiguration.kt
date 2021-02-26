@@ -34,5 +34,5 @@ data class ElasticsearchProperties(
     fun toHttpHost() = HttpHost(host, port, schema)
 }
 
-internal fun createElasticsearchClient(properties: ElasticsearchProperties): RestHighLevelClient =
+fun createElasticsearchClient(properties: ElasticsearchProperties): RestHighLevelClient =
     RestHighLevelClient(RestClient.builder(properties.toHttpHost()))
