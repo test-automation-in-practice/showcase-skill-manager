@@ -11,5 +11,5 @@ class GetSkillByIdAdapter(
     private val getSkillById: GetSkillById
 ) {
     operator fun invoke(id: UUID): SkillData? = getSkillById(id)?.toData()
-    private fun Skill.toData() = SkillData(id = id, label = label)
+    private fun Skill.toData() = SkillData(id = id, label = label.toString())
 }

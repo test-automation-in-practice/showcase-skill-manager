@@ -31,7 +31,7 @@ class ProjectAssignmentUpdatingEventHandler(
 
     @RabbitListener(queues = [PROJECT_UPDATED_QUEUE])
     fun handle(event: ProjectUpdatedEvent) {
-        log.info { "Handling $event" }
+        log.debug { "Handling $event" }
         val projectId = event.project.id
         findEmployeeIds(EmployeesWhoWorkedOnProject(projectId = projectId, pageSize = PageSize.MAX))
             .onEach { log.info { "Updating project assignments for project [$projectId] of employee [${it}]" } }

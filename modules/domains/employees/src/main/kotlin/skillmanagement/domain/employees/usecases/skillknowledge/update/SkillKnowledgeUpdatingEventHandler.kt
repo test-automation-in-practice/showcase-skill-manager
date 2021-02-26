@@ -31,7 +31,7 @@ class SkillKnowledgeUpdatingEventHandler(
 
     @RabbitListener(queues = [SKILL_UPDATED_QUEUE])
     fun handle(event: SkillUpdatedEvent) {
-        log.info { "Handling $event" }
+        log.debug { "Handling $event" }
         val skillId = event.skill.id
         findEmployeeIds(EmployeesWithSkill(skillId = skillId, pageSize = PageSize.MAX))
             .onEach { log.info { "Updating knowledge of skill [$skillId] of employee [${it}]" } }

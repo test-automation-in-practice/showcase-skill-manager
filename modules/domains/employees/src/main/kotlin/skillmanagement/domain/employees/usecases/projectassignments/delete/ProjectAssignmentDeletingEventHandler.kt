@@ -31,7 +31,7 @@ class ProjectAssignmentDeletingEventHandler(
 
     @RabbitListener(queues = [PROJECT_DELETED_QUEUE])
     fun handle(event: ProjectDeletedEvent) {
-        log.info { "Handling $event" }
+        log.debug { "Handling $event" }
         val projectId = event.project.id
         findEmployeeIds(EmployeesWhoWorkedOnProject(projectId = projectId, pageSize = PageSize.MAX))
             .onEach { log.info { "Removing projects assignments of project [$projectId] from employee [${it}]" } }

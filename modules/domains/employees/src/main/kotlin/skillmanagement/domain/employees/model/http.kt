@@ -42,14 +42,14 @@ data class EmployeeResource(
 ) : RepresentationModel<EmployeeResource>()
 
 data class SkillKnowledgeResource(
-    val label: Label,
+    val label: String,
     val level: SkillLevel,
     val secret: Boolean
 ) : RepresentationModel<SkillKnowledgeResource>()
 
 data class ProjectAssignmentResource(
-    val label: Label,
-    val description: Text,
+    val label: String,
+    val description: String,
     val contribution: ProjectContribution,
     val startDate: LocalDate,
     val endDate: LocalDate?

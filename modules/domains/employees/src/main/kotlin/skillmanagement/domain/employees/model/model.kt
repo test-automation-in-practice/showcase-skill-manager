@@ -77,7 +77,7 @@ data class SkillKnowledge(
 
 data class SkillData(
     val id: UUID,
-    val label: Label
+    val label: String
 )
 
 class SkillLevel(value: Int) : IntType(value, min = 1, max = 10)
@@ -92,8 +92,8 @@ data class ProjectAssignment(
 
 data class ProjectData(
     val id: UUID,
-    val label: Label,
-    val description: Text
+    val label: String,
+    val description: String
 )
 
 class ProjectContribution(value: String) : Text(value)
