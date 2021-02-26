@@ -18,7 +18,9 @@ dependencies {
     implementation(project(":modules:common:search-index"))
     implementation(project(":modules:common:web"))
     testImplementation(project(":modules:testing:common"))
+    testImplementation(project(":modules:testing:docker"))
     testImplementation(project(":modules:testing:model"))
+    testImplementation(project(":modules:testing:web"))
 
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-aop")
