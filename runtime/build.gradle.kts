@@ -13,14 +13,9 @@ repositories {
 
 dependencies {
 
-    implementation(project(":modules:common:model"))
-    implementation(project(":modules:common:event-publishing"))
-    implementation(project(":modules:common:search-index"))
-    implementation(project(":modules:common:web"))
-    testImplementation(project(":modules:testing:common"))
-    testImplementation(project(":modules:testing:docker"))
-    testImplementation(project(":modules:testing:model"))
-    testImplementation(project(":modules:testing:web"))
+    implementation(project(":modules:domains:employees"))
+    implementation(project(":modules:domains:projects"))
+    implementation(project(":modules:domains:skills"))
 
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-aop")
@@ -42,6 +37,11 @@ dependencies {
     implementation("org.elasticsearch.client:elasticsearch-rest-high-level-client")
 
     runtimeOnly("org.postgresql:postgresql")
+
+    testImplementation(project(":modules:testing:common"))
+    testImplementation(project(":modules:testing:docker"))
+    testImplementation(project(":modules:testing:model"))
+    testImplementation(project(":modules:testing:web"))
 
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")

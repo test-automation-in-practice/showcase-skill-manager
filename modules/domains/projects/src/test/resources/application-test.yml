@@ -3,33 +3,17 @@ logging:
     root: INFO
     skillmanagement: DEBUG
 
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-
 metrics:
-  employees:
-    total:
-      update:
-        rate: "PT1M"
-        delay: "PT10S"
   projects:
     total:
       update:
         rate: "PT1M"
-        delay: "PT10S"
-  skills:
-    total:
-      update:
-        rate: "PT1M"
-        delay: "PT10S"
+        delay: "PT1M"
 
 storage:
   database:
-    jdbc-url: "jdbc:postgresql://localhost:5432/database"
-    username: user
+    jdbc-url: "jdbc:h2:mem:${random.uuid}"
+    username: sa
     password: password
   elasticsearch:
     schema: http
@@ -46,6 +30,3 @@ spring:
     password: ${storage.database.password}
   main:
     allow-bean-definition-overriding: false
-  rabbitmq:
-    host: ${storage.broker.host}
-    port: ${storage.broker.port}
