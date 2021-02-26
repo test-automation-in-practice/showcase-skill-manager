@@ -14,19 +14,19 @@ plugins {
 allprojects {
     extra["okhttp3.version"] = "4.9.1"
 
-    tasks.withType<JavaCompile> {
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
-    }
-
-    tasks.withType<KotlinCompile> {
-        kotlinOptions {
-            freeCompilerArgs = listOf("-Xjsr305=strict")
-            jvmTarget = "11"
+    tasks {
+        withType<JavaCompile> {
+            sourceCompatibility = "11"
+            targetCompatibility = "11"
         }
-    }
-
-    tasks.withType<Test> {
-        useJUnitPlatform()
+        withType<KotlinCompile> {
+            kotlinOptions {
+                freeCompilerArgs = listOf("-Xjsr305=strict")
+                jvmTarget = "11"
+            }
+        }
+        withType<Test> {
+            useJUnitPlatform()
+        }
     }
 }
