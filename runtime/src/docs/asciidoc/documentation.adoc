@@ -1,7 +1,40 @@
-= Resources
+= SkillManager Runtime Documentation
 
-include::_skills.adoc[]
+:data-uri:
 
-include::_projects.adoc[]
+== Module Structure
 
-include::_employees.adoc[]
+[plantuml, module_structure, svg]
+....
+include::../plantuml/module_structure.puml[]
+....
+
+== Eventual Consistency
+
+=== Skill & Project Data of Employees
+
+[plantuml, consistency_database_employees, svg]
+....
+include::../plantuml/consistency_database_employees.puml[]
+....
+
+=== Employee Search Index
+
+[plantuml, consistency_search-index_employees, svg]
+....
+include::../plantuml/consistency_search-index_employees.puml[]
+....
+
+=== Project Search Index
+
+[plantuml, consistency_search-index_projects, svg]
+....
+include::../plantuml/consistency_search-index_projects.puml[]
+....
+
+=== Skill Search Index
+
+[plantuml, consistency_search-index_skills, svg]
+....
+include::../plantuml/consistency_search-index_skills.puml[]
+....
