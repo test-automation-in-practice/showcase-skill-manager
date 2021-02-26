@@ -12,52 +12,13 @@ repositories {
 }
 
 dependencies {
-
     implementation(project(":modules:domains:employees"))
     implementation(project(":modules:domains:projects"))
     implementation(project(":modules:domains:skills"))
 
-    implementation("org.springframework.boot:spring-boot-starter-actuator")
-    implementation("org.springframework.boot:spring-boot-starter-aop")
-    implementation("org.springframework.boot:spring-boot-starter-amqp")
-    implementation("org.springframework.boot:spring-boot-starter-jdbc")
-    implementation("org.springframework.boot:spring-boot-starter-hateoas")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-
-    implementation("org.springframework.retry:spring-retry")
-
-    implementation("io.micrometer:micrometer-registry-prometheus")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.flywaydb:flyway-core")
-
-    implementation("com.github.java-json-tools:json-patch:1.13")
-    implementation("io.github.microutils:kotlin-logging:2.0.4")
-    implementation("org.elasticsearch.client:elasticsearch-rest-high-level-client")
-
     runtimeOnly("org.postgresql:postgresql")
 
-    testImplementation(project(":modules:testing:common"))
-    testImplementation(project(":modules:testing:docker"))
-    testImplementation(project(":modules:testing:model"))
-    testImplementation(project(":modules:testing:web"))
-
-    testImplementation("org.springframework.boot:spring-boot-starter-test") {
-        exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
-        exclude(module = "mockito-core")
-    }
-    testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
-    testImplementation("com.h2database:h2")
-
-    testImplementation("io.kotlintest:kotlintest-assertions:3.4.2")
-    testImplementation("io.rest-assured:rest-assured:4.3.3")
-    testImplementation("com.squareup.okhttp3:okhttp:4.9.1")
-    testImplementation("io.mockk:mockk:1.10.5")
-    testImplementation("info.novatec.testit:testutils-logrecorder-logback:0.3.4")
-    testImplementation("org.testcontainers:testcontainers:1.15.1")
-    testImplementation("net.jqwik:jqwik:1.3.10")
-    testImplementation("com.tngtech.archunit:archunit:0.16.0")
+    testImplementation(project(":modules:testing:domain-base"))
 }
 
 tasks {
