@@ -43,6 +43,7 @@ tasks {
     }
     asciidoctorj {
         fatalWarnings("include file not found")
+        modules { diagram.use() }
     }
 
 //    withType<Test> {

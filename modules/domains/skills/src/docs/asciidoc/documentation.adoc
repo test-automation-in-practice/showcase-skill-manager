@@ -1,4 +1,4 @@
-== Skills
+= SkillManager - Skills API Documentation
 
 **Resource:** `/api/skills`
 
