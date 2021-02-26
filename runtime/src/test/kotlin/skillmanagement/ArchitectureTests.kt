@@ -22,8 +22,6 @@ import skillmanagement.test.UnitTest
 internal class ArchitectureTests {
 
     private val options = ImportOptions()
-        .with(DoNotIncludeJars())
-        .with(DoNotIncludeArchives())
         .with(DoNotIncludeTests())
 
     private val basePackage = this::class.java.packageName

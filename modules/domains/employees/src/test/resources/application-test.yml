@@ -30,3 +30,6 @@ spring:
     password: ${storage.database.password}
   main:
     allow-bean-definition-overriding: false
+  rabbitmq:
+    host: ${storage.broker.host}
+    port: ${storage.broker.port}

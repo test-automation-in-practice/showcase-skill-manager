@@ -29,7 +29,7 @@ class SkillKnowledgeDeletingEventHandler(
 
     @RabbitListener(queues = [SKILL_DELETED_QUEUE])
     fun handle(event: SkillDeletedEvent) {
-        log.info { "Handling $event" }
+        log.debug { "Handling $event" }
         val skillId = event.skill.id
         findEmployeeIds(EmployeesWithSkill(skillId = skillId, pageSize = PageSize.MAX))
             .onEach { log.info { "Removing knowledge of skill [$skillId] from employee [${it}]" } }

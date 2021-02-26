@@ -6,7 +6,7 @@ import skillmanagement.common.validation.matchesPattern
 
 private val namePattern = Regex("""(?U)[\w][\w -]*""") // unicode word characters
 
-open class Name(value: String) :
+abstract class Name(value: String) :
     StringType(value, { isNotBlank(); hasMaxLength(); matchesPattern(namePattern) })
 
 /**
@@ -18,8 +18,8 @@ open class Name(value: String) :
 const val DEFAULT_MAX_TEXT_LENGTH = 10_000
 const val DEFAULT_MAX_LABEL_LENGTH = 255
 
-open class Text(value: String, maxLength: Int = DEFAULT_MAX_TEXT_LENGTH) :
+abstract class Text(value: String, maxLength: Int = DEFAULT_MAX_TEXT_LENGTH) :
     StringType(value, { isNotBlank(); hasMaxLength(maxLength) })
 
-open class Label(value: String, maxLength: Int = DEFAULT_MAX_LABEL_LENGTH) :
+abstract class Label(value: String, maxLength: Int = DEFAULT_MAX_LABEL_LENGTH) :
     StringType(value, { isNotBlank(); hasMaxLength(maxLength) })

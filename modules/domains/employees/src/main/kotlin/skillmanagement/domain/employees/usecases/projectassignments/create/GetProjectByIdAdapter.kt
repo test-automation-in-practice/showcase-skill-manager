@@ -11,5 +11,5 @@ class GetProjectByIdAdapter(
     private val getProjectById: GetProjectById
 ) {
     operator fun invoke(id: UUID): ProjectData? = getProjectById(id)?.toData()
-    private fun Project.toData() = ProjectData(id = id, label = label, description = description)
+    private fun Project.toData() = ProjectData(id = id, label = label.toString(), description = description.toString())
 }
