@@ -3,7 +3,7 @@ package skillmanagement.test.docker
 import org.junit.jupiter.api.extension.ExtensionContext.Store.CloseableResource
 import org.springframework.core.io.Resource
 import org.testcontainers.containers.GenericContainer
-import skillmanagement.common.resources.readAsString
+import java.io.BufferedReader
 
 class ElasticsearchContainer : Container("elasticsearch:7.6.2") {
     override fun getMappedPort(): Int = getMappedPort(9200)
@@ -28,5 +28,8 @@ sealed class Container(image: String) : GenericContainer<Container>(image), Clos
     }
 
     abstract fun getMappedPort(): Int
+
+    private fun Resource.readAsString(): String =
+        inputStream.bufferedReader().use(BufferedReader::readText)
 
 }

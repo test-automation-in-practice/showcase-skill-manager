@@ -1,9 +1,7 @@
 package skillmanagement.common.events
 
-import io.kotlintest.matchers.beEmpty
-import io.kotlintest.should
-import io.kotlintest.shouldBe
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import skillmanagement.test.UnitTest
 import kotlin.reflect.KClass
@@ -16,15 +14,14 @@ internal class EventCounterTests {
 
     @Test
     fun `without any events there is no counter`() {
-        getCountersWitMetricName() should beEmpty()
+        assertThat(getCountersWitMetricName()).isEmpty()
     }
 
     @Test
     fun `with events they are counted by their type`() {
         count(TestEventOne, TestEventTwo, TestEventOne)
-
-        counterValueOf(TestEventOne::class) shouldBe 2
-        counterValueOf(TestEventTwo::class) shouldBe 1
+        assertThat(counterValueOf(TestEventOne::class)).isEqualTo(2)
+        assertThat(counterValueOf(TestEventTwo::class)).isEqualTo(1)
     }
 
     private fun count(vararg events: TestEvent) =
