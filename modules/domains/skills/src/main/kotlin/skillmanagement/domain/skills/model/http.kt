@@ -1,7 +1,5 @@
 package skillmanagement.domain.skills.model
 
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL
 import org.springframework.hateoas.PagedModel
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.core.Relation
@@ -12,9 +10,6 @@ import skillmanagement.common.search.toMetaData
 import java.util.SortedSet
 import java.util.UUID
 
-private const val RESOURCE_BASE = "api/skills"
-
-@JsonInclude(NON_NULL)
 @Relation(itemRelation = "skill", collectionRelation = "skills")
 data class SkillResource(
     val id: UUID,
@@ -43,7 +38,7 @@ fun Page<Skill>.toAllResource(): PagedModel<SkillResource> =
 
 fun linkToSkills(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
     val queryPart = "?page=$pageIndex&size=$pageSize"
-    return linkToCurrentMapping().slash(RESOURCE_BASE + queryPart)
+    return linkToCurrentMapping().slash("api/skills$queryPart")
 }
 
 fun Page<Skill>.toSearchResource(): PagedModel<SkillResource> =
@@ -56,8 +51,8 @@ fun Page<Skill>.toSearchResource(): PagedModel<SkillResource> =
 
 fun linkToSkillsSearch(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
     val queryPart = "/_search?page=$pageIndex&size=$pageSize"
-    return linkToCurrentMapping().slash(RESOURCE_BASE + queryPart)
+    return linkToCurrentMapping().slash("api/skills$queryPart")
 }
 
 fun linkToSkill(id: UUID) =
-    linkToCurrentMapping().slash("$RESOURCE_BASE/$id")
+    linkToCurrentMapping().slash("api/skills/$id")

@@ -1,9 +1,13 @@
 package skillmanagement.domain.skills.model
 
+import skillmanagement.common.model.Suggestion
 import skillmanagement.test.instant
 import skillmanagement.test.uuid
 import java.util.Collections.emptySortedSet
 
+// Example #1
+
+/** All possible properties are set (max example). */
 val skill_kotlin = Skill(
     id = uuid("3f7985b9-f5f0-4662-bda9-1dcde01f5f3b"),
     version = 1,
@@ -12,7 +16,42 @@ val skill_kotlin = Skill(
     tags = sortedSetOf(Tag("language"), Tag("cool")),
     lastUpdate = instant("2020-07-14T12:34:56.789Z")
 )
+val skill_kotlin_json = """
+    {
+      "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
+      "version": 1,
+      "label": "Kotlin",
+      "description": "The coolest programming language.",
+      "tags": [ "cool", "language" ],
+      "lastUpdate": "2020-07-14T12:34:56.789Z"
+    }
+    """.trimIndent()
+
 val skill_resource_kotlin = skill_kotlin.toResourceWithoutLinks()
+val skill_resource_kotlin_json = """
+    {
+      "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
+      "label": "Kotlin",
+      "description": "The coolest programming language.",
+      "tags": [ "cool", "language" ],
+      "links": []
+    }
+    """.trimIndent()
+
+val skill_change_data_kotlin = skill_kotlin.toChangeData()
+val skill_change_data_kotlin_json = """
+    {
+      "label": "Kotlin",
+      "description": "The coolest programming language.",
+      "tags": [ "cool", "language" ]
+    }
+    """.trimIndent()
+
+val skill_kotlin_suggestion = skill_kotlin.toSuggestion()
+
+// Example #2
+
+/** Only required and some optional properties are set (medium example). */
 val skill_java = Skill(
     id = uuid("f8948935-dab6-4c33-80d0-9f66ae546a7c"),
     version = 1,
@@ -21,7 +60,39 @@ val skill_java = Skill(
     tags = sortedSetOf(Tag("language")),
     lastUpdate = instant("2020-07-14T12:34:56.789Z")
 )
+val skill_java_json = """
+    {
+      "id": "f8948935-dab6-4c33-80d0-9f66ae546a7c",
+      "version": 1,
+      "label": "Java",
+      "tags": [ "language" ],
+      "lastUpdate": "2020-07-14T12:34:56.789Z"
+    }
+    """.trimIndent()
+
 val skill_resource_java = skill_java.toResourceWithoutLinks()
+val skill_resource_java_json = """
+    {
+      "id": "f8948935-dab6-4c33-80d0-9f66ae546a7c",
+      "label": "Java",
+      "tags": [ "language" ],
+      "links": []
+    }
+    """.trimIndent()
+
+val skill_change_data_java = skill_java.toChangeData()
+val skill_change_data_java_json = """
+    {
+      "label": "Java",
+      "tags": [ "language" ]
+    }
+    """.trimIndent()
+
+val skill_java_suggestion = skill_java.toSuggestion()
+
+// Example #3
+
+/** Only required properties are set (min example). */
 val skill_python = Skill(
     id = uuid("6935e550-d041-418a-9070-e37431069232"),
     version = 1,
@@ -30,10 +101,43 @@ val skill_python = Skill(
     tags = emptySortedSet(),
     lastUpdate = instant("2020-07-14T12:34:56.789Z")
 )
+val skill_python_json = """
+    {
+      "id": "6935e550-d041-418a-9070-e37431069232",
+      "version": 1,
+      "label": "Python",
+      "tags": [],
+      "lastUpdate": "2020-07-14T12:34:56.789Z"
+    }
+    """.trimIndent()
+
 val skill_resource_python = skill_python.toResourceWithoutLinks()
+val skill_resource_python_json = """
+    {
+      "id": "6935e550-d041-418a-9070-e37431069232",
+      "label": "Python",
+      "tags": [],
+      "links": []
+    }
+    """.trimIndent()
+
+val skill_change_data_python = skill_python.toChangeData()
+val skill_change_data_python_json = """
+    {
+      "label": "Python",
+      "tags": []
+    }
+    """.trimIndent()
+
+val skill_python_suggestion = skill_python.toSuggestion()
+
+// Functions
 
 private fun Skill.toResourceWithoutLinks() =
     SkillResource(id = id, label = label, description = description, tags = tags)
+
+private fun Skill.toSuggestion() =
+    Suggestion(id = id, label = label.toString())
 
 fun skill(
     id: String = uuid().toString(),

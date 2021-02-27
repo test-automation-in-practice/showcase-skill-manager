@@ -9,22 +9,11 @@ internal class SkillResourceTests {
     @Nested
     @TechnologyIntegrationTest
     inner class JsonSerializationTests : AbstractJsonSerializationTests<SkillResource>() {
-        val instance = skill_resource_kotlin
-        val json = """
-            {
-              "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
-              "label": "Kotlin",
-              "description": "The coolest programming language.",
-              "tags": [
-                "cool",
-                "language"
-              ],
-              "links": []
-            }
-            """
-
-        override val serializationExamples = listOf(instance to json)
-
+        override val serializationExamples = listOf(
+            skill_resource_kotlin to skill_resource_kotlin_json,
+            skill_resource_java to skill_resource_java_json,
+            skill_resource_python to skill_resource_python_json,
+        )
     }
 
 }

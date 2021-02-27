@@ -5,7 +5,7 @@ import skillmanagement.test.contracts.string.LabelTypeContract
 import skillmanagement.test.stringOfLength
 
 @UnitTest
-internal class SkillLabelTests : LabelTypeContract {
+internal class SkillLabelTests : LabelTypeContract() {
 
     override val maxLength: Int = 100
     override val validExamples = listOf("Kotlin", "Java", "Moderation", "Presentation", "Jenkins")

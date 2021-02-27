@@ -12,8 +12,15 @@ import java.util.concurrent.atomic.AtomicLong
 private const val RATE_PROPERTY = "\${metrics.skills.total.update.rate}"
 private const val DELAY_PROPERTY = "\${metrics.skills.total.update.delay}"
 
+/**
+ * This [LastingMetric] represents the total number of _skills_ currently
+ * managed by the application.
+ *
+ * Its update rate can be configured with the `metrics.skills.total.update.rate`
+ * and `metrics.skills.total.update.delay` properties.
+ */
 @LastingMetric
-class TotalNumberOfSkills(
+class TotalNumberOfSkillsMeterBinder(
     private val getTotalNumberOfSkillsFromDataStore: GetTotalNumberOfSkillsFromDataStoreFunction
 ) : MeterBinder {
 

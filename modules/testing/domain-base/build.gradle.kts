@@ -7,6 +7,7 @@ plugins {
 
 dependencies {
     api(project(":modules:common:core"))
+    api(project(":modules:common:domain-base"))
     api(project(":modules:testing:core"))
 
     api("com.h2database:h2")

@@ -10,11 +10,11 @@ import skillmanagement.test.UnitTest
 
 @UnitTest
 @ResetMocksAfterEachTest
-internal class TotalNumberOfSkillsTests {
+internal class TotalNumberOfSkillsMeterBinderTests {
 
-    val getTotalNumberOfSkillsFromDataStore: GetTotalNumberOfSkillsFromDataStoreFunction = mockk()
-    val registry = SimpleMeterRegistry()
-    val cut = TotalNumberOfSkills(getTotalNumberOfSkillsFromDataStore)
+    private val getTotalNumberOfSkillsFromDataStore: GetTotalNumberOfSkillsFromDataStoreFunction = mockk()
+    private val registry = SimpleMeterRegistry()
+    private val cut = TotalNumberOfSkillsMeterBinder(getTotalNumberOfSkillsFromDataStore)
         .apply { bindTo(registry) }
 
     @Test

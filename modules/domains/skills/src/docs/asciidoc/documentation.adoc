@@ -2,7 +2,9 @@
 
 **Resource:** `/api/skills`
 
-=== Creating a new Skill
+== CRUD
+
+=== Create
 
 A new skill can be created by sending a request like this:
 
@@ -14,23 +16,7 @@ In case the request contains invalid data, the response will look something like
 include::{snippets}/skills/add/bad-request/http-request.adoc[]
 include::{snippets}/skills/add/bad-request/http-response.adoc[]
 
-=== Finding Skills
-
-Existing skills can be found by sending a request like this:
-
-include::{snippets}/skills/find-all/multiple/http-request.adoc[]
-include::{snippets}/skills/find-all/multiple/http-response.adoc[]
-
-In case there are no skills to be found, the response will look like this:
-
-include::{snippets}/skills/find-all/empty/http-response.adoc[]
-
-Existing skills can also be searched using a _query_ request:
-
-include::{snippets}/skills/search/multiple/http-request.adoc[]
-include::{snippets}/skills/search/multiple/http-response.adoc[]
-
-=== Getting Skills by ID
+=== Get
 
 An existing skill be got by sending a request like this:
 
@@ -41,7 +27,18 @@ In case the specified skill does not exist, the response will look like this:
 
 include::{snippets}/skills/get-by-id/not-found/http-response.adoc[]
 
-=== Updating Skills by ID
+=== Get All
+
+All existing skills can be got by sending a request like this:
+
+include::{snippets}/skills/find-all/multiple/http-request.adoc[]
+include::{snippets}/skills/find-all/multiple/http-response.adoc[]
+
+In case there are no skills to be found, the response will look like this:
+
+include::{snippets}/skills/find-all/empty/http-response.adoc[]
+
+=== Update
 
 An existing skill can be completely updated by sending a request like this:
 
@@ -57,7 +54,7 @@ For partial updates JSON Patch is also supported:
 include::{snippets}/skills/update/patch/updated/http-request.adoc[]
 include::{snippets}/skills/update/patch/updated/http-response.adoc[]
 
-=== Deleting Skills by ID
+=== Delete
 
 An existing skill can be deleted by sending a request like this:
 
@@ -65,3 +62,27 @@ include::{snippets}/skills/delete-by-id/deleted/http-request.adoc[]
 include::{snippets}/skills/delete-by-id/deleted/http-response.adoc[]
 
 In case the specified skill does not exist, the response will be the same.
+
+== Querying
+
+=== Search
+
+Skills can also be searched using a _search_ request:
+
+include::{snippets}/skills/search/multiple/http-request.adoc[]
+include::{snippets}/skills/search/multiple/http-response.adoc[]
+
+In case the request does not result in any skills, the response will look like this:
+
+include::{snippets}/skills/search/empty/http-response.adoc[]
+
+=== Suggest
+
+Skills can also be searched using a _suggestion_ request:
+
+include::{snippets}/skills/suggest/multiple/http-request.adoc[]
+include::{snippets}/skills/suggest/multiple/http-response.adoc[]
+
+In case the request does not result in any skills, the response will look like this:
+
+include::{snippets}/skills/suggest/empty/http-response.adoc[]
