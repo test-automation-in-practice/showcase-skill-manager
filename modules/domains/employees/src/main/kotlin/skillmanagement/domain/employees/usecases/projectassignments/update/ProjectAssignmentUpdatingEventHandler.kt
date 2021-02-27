@@ -12,8 +12,8 @@ import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.ProjectData
 import skillmanagement.domain.employees.model.ProjectUpdatedEvent
-import skillmanagement.domain.employees.usecases.find.EmployeesWhoWorkedOnProject
-import skillmanagement.domain.employees.usecases.find.FindEmployeeIdsFunction
+import skillmanagement.domain.employees.usecases.read.EmployeesWhoWorkedOnProject
+import skillmanagement.domain.employees.usecases.read.GetEmployeeIdsFunction
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
 
 private const val CONTEXT = "ProjectAssignmentUpdatingEventHandler"
@@ -21,7 +21,7 @@ private const val PROJECT_UPDATED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.ProjectUpdated
 
 @EventHandler
 class ProjectAssignmentUpdatingEventHandler(
-    private val findEmployeeIds: FindEmployeeIdsFunction,
+    private val getEmployeeIds: GetEmployeeIdsFunction,
     private val updateEmployeeById: UpdateEmployeeByIdFunction
 ) {
 
@@ -33,7 +33,7 @@ class ProjectAssignmentUpdatingEventHandler(
     fun handle(event: ProjectUpdatedEvent) {
         log.debug { "Handling $event" }
         val projectId = event.project.id
-        findEmployeeIds(EmployeesWhoWorkedOnProject(projectId = projectId, pageSize = PageSize.MAX))
+        getEmployeeIds(EmployeesWhoWorkedOnProject(projectId = projectId, pageSize = PageSize.MAX))
             .onEach { log.info { "Updating project assignments for project [$projectId] of employee [${it}]" } }
             .forEach { employeeId ->
                 updateEmployeeById(employeeId) { it.updateProjectAssignmentsOfProject(event.project) }

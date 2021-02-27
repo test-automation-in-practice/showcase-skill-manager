@@ -5,7 +5,7 @@ import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.projects.model.ProjectDeletedEvent
 import skillmanagement.domain.projects.usecases.delete.DeleteProjectByIdResult.ProjectNotFound
 import skillmanagement.domain.projects.usecases.delete.DeleteProjectByIdResult.SuccessfullyDeleted
-import skillmanagement.domain.projects.usecases.get.GetProjectByIdFunction
+import skillmanagement.domain.projects.usecases.read.GetProjectByIdFunction
 import java.util.UUID
 
 @BusinessFunction

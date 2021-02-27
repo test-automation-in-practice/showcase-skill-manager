@@ -10,8 +10,8 @@ import skillmanagement.common.messaging.eventBinding
 import skillmanagement.common.search.PageSize
 import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.employees.model.SkillDeletedEvent
-import skillmanagement.domain.employees.usecases.find.EmployeesWithSkill
-import skillmanagement.domain.employees.usecases.find.FindEmployeeIdsFunction
+import skillmanagement.domain.employees.usecases.read.EmployeesWithSkill
+import skillmanagement.domain.employees.usecases.read.GetEmployeeIdsFunction
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
 
 private const val CONTEXT = "SkillKnowledgeDeletingEventHandler"
@@ -19,7 +19,7 @@ private const val SKILL_DELETED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.SkillDeletedEven
 
 @EventHandler
 class SkillKnowledgeDeletingEventHandler(
-    private val findEmployeeIds: FindEmployeeIdsFunction,
+    private val getEmployeeIds: GetEmployeeIdsFunction,
     private val updateEmployeeById: UpdateEmployeeByIdFunction
 ) {
 
@@ -31,7 +31,7 @@ class SkillKnowledgeDeletingEventHandler(
     fun handle(event: SkillDeletedEvent) {
         log.debug { "Handling $event" }
         val skillId = event.skill.id
-        findEmployeeIds(EmployeesWithSkill(skillId = skillId, pageSize = PageSize.MAX))
+        getEmployeeIds(EmployeesWithSkill(skillId = skillId, pageSize = PageSize.MAX))
             .onEach { log.info { "Removing knowledge of skill [$skillId] from employee [${it}]" } }
             .forEach { employeeId ->
                 updateEmployeeById(employeeId) { it.removeSkillKnowledgeBySkillId(skillId) }

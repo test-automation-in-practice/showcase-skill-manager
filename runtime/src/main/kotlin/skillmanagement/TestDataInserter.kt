@@ -11,16 +11,16 @@ import skillmanagement.domain.employees.model.LastName
 import skillmanagement.domain.employees.model.ProjectContribution
 import skillmanagement.domain.employees.model.SkillLevel
 import skillmanagement.domain.employees.model.TelephoneNumber
-import skillmanagement.domain.employees.usecases.add.AddEmployeeFunction
+import skillmanagement.domain.employees.usecases.create.CreatEmployeeFunction
 import skillmanagement.domain.employees.usecases.projectassignments.create.CreateProjectAssignmentForEmployeeFunction
 import skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnowledgeOfEmployeeFunction
 import skillmanagement.domain.projects.model.ProjectDescription
 import skillmanagement.domain.projects.model.ProjectLabel
-import skillmanagement.domain.projects.usecases.add.AddProjectFunction
+import skillmanagement.domain.projects.usecases.create.CreateProjectFunction
 import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.Tag
-import skillmanagement.domain.skills.usecases.add.AddSkillFunction
+import skillmanagement.domain.skills.usecases.create.CreateSkillFunction
 import java.time.Clock
 import java.time.LocalDate
 
@@ -28,24 +28,24 @@ import java.time.LocalDate
 @Profile("with-test-data")
 class TestDataInserter(
     private val clock: Clock,
-    private val addSkill: AddSkillFunction,
-    private val addProject: AddProjectFunction,
-    private val addEmployee: AddEmployeeFunction,
+    private val createSkill: CreateSkillFunction,
+    private val createProject: CreateProjectFunction,
+    private val creatEmployee: CreatEmployeeFunction,
     private val setSkillKnowledgeOfEmployee: SetSkillKnowledgeOfEmployeeFunction,
     private val createProjectAssignmentForEmployee: CreateProjectAssignmentForEmployeeFunction
 ) : ApplicationRunner {
 
     override fun run(args: ApplicationArguments?) {
-        val kotlin = addSkill(
+        val kotlin = createSkill(
             label = SkillLabel("Kotlin"),
             description = SkillDescription("Lorem Ipsum .."),
             tags = sortedSetOf(Tag("language"), Tag("cool"))
         )
-        val starlink = addProject(
+        val starlink = createProject(
             label = ProjectLabel("Starlink"),
             description = ProjectDescription("Lorem ipsum ..")
         )
-        val maxMustermann = addEmployee(
+        val maxMustermann = creatEmployee(
             firstName = FirstName("Max"),
             lastName = LastName("Mustermann"),
             title = JobTitle("Managing Consultant"),

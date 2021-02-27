@@ -3,7 +3,7 @@ package skillmanagement.domain.employees.usecases.skillknowledge.set
 import skillmanagement.common.stereotypes.TechnicalFunction
 import skillmanagement.domain.employees.model.SkillData
 import skillmanagement.domain.skills.model.Skill
-import skillmanagement.domain.skills.usecases.get.GetSkillByIdFunction
+import skillmanagement.domain.skills.usecases.read.GetSkillByIdFunction
 import java.util.UUID
 
 @TechnicalFunction

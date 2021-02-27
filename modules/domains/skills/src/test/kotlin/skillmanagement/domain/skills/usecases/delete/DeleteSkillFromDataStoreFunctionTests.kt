@@ -10,8 +10,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import skillmanagement.domain.skills.model.skill_kotlin
-import skillmanagement.domain.skills.usecases.add.InsertSkillIntoDataStoreFunction
-import skillmanagement.domain.skills.usecases.get.GetSkillsFromDataStoreFunction
+import skillmanagement.domain.skills.usecases.create.InsertSkillIntoDataStoreFunction
+import skillmanagement.domain.skills.usecases.read.GetSkillsFromDataStoreFunction
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.uuid
 

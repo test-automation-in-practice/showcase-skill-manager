@@ -4,7 +4,7 @@ import skillmanagement.common.events.PublishEvent
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.model.ProjectUpdatedEvent
-import skillmanagement.domain.projects.usecases.get.GetProjectByIdFunction
+import skillmanagement.domain.projects.usecases.read.GetProjectByIdFunction
 import skillmanagement.domain.projects.usecases.update.UpdateProjectByIdResult.ProjectNotFound
 import skillmanagement.domain.projects.usecases.update.UpdateProjectByIdResult.SuccessfullyUpdated
 import java.util.UUID

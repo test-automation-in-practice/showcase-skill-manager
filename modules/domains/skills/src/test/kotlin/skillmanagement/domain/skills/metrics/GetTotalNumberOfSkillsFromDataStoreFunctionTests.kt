@@ -11,7 +11,7 @@ import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import skillmanagement.domain.skills.model.skill_java
 import skillmanagement.domain.skills.model.skill_kotlin
-import skillmanagement.domain.skills.usecases.add.InsertSkillIntoDataStoreFunction
+import skillmanagement.domain.skills.usecases.create.InsertSkillIntoDataStoreFunction
 import skillmanagement.domain.skills.usecases.delete.DeleteSkillFromDataStoreFunction
 import skillmanagement.test.TechnologyIntegrationTest
 

@@ -12,8 +12,8 @@ import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.SkillData
 import skillmanagement.domain.employees.model.SkillUpdatedEvent
-import skillmanagement.domain.employees.usecases.find.EmployeesWithSkill
-import skillmanagement.domain.employees.usecases.find.FindEmployeeIdsFunction
+import skillmanagement.domain.employees.usecases.read.EmployeesWithSkill
+import skillmanagement.domain.employees.usecases.read.GetEmployeeIdsFunction
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
 
 private const val CONTEXT = "SkillKnowledgeUpdatingEventHandler"
@@ -21,7 +21,7 @@ private const val SKILL_UPDATED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.SkillUpdatedEven
 
 @EventHandler
 class SkillKnowledgeUpdatingEventHandler(
-    private val findEmployeeIds: FindEmployeeIdsFunction,
+    private val getEmployeeIds: GetEmployeeIdsFunction,
     private val updateEmployeeById: UpdateEmployeeByIdFunction
 ) {
 
@@ -33,7 +33,7 @@ class SkillKnowledgeUpdatingEventHandler(
     fun handle(event: SkillUpdatedEvent) {
         log.debug { "Handling $event" }
         val skillId = event.skill.id
-        findEmployeeIds(EmployeesWithSkill(skillId = skillId, pageSize = PageSize.MAX))
+        getEmployeeIds(EmployeesWithSkill(skillId = skillId, pageSize = PageSize.MAX))
             .onEach { log.info { "Updating knowledge of skill [$skillId] of employee [${it}]" } }
             .forEach { employeeId ->
                 updateEmployeeById(employeeId) { it.updateSkillKnowledgeOfSkill(event.skill) }

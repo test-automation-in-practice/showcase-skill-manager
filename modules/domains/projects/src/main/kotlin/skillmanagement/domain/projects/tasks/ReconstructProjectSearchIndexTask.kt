@@ -6,7 +6,7 @@ import skillmanagement.common.search.AbstractReconstructSearchIndexTask
 import skillmanagement.common.stereotypes.Task
 import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.searchindex.ProjectSearchIndex
-import skillmanagement.domain.projects.usecases.get.GetProjectsFromDataStoreFunction
+import skillmanagement.domain.projects.usecases.read.GetProjectsFromDataStoreFunction
 
 @Task
 @WebEndpoint(id = "reconstructProjectSearchIndex")
