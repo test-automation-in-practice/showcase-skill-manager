@@ -13,7 +13,7 @@ private const val RATE_PROPERTY = "\${metrics.projects.total.update.rate}"
 private const val DELAY_PROPERTY = "\${metrics.projects.total.update.delay}"
 
 @LastingMetric
-class TotalNumberOfProjects(
+class TotalNumberOfProjectsMeterBinder(
     private val getTotalNumberOfProjectsFromDataStore: GetTotalNumberOfProjectsFromDataStoreFunction
 ) : MeterBinder {
 

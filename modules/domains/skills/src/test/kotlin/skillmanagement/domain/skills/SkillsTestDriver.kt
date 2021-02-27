@@ -1,12 +1,14 @@
 package skillmanagement.domain.skills
 
 import org.springframework.hateoas.PagedModel
+import skillmanagement.common.model.Suggestion
 import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.SkillResource
 import skillmanagement.domain.skills.model.Tag
 import skillmanagement.domain.skills.usecases.create.CreateSkillHttpAdapter
 import skillmanagement.domain.skills.usecases.read.SearchSkillsHttpAdapter
+import skillmanagement.domain.skills.usecases.read.SuggestSkillsHttpAdapter
 import skillmanagement.test.AbstractHttpTestDriver
 import java.util.Collections.emptySortedSet
 import java.util.UUID
@@ -61,6 +63,16 @@ class SkillsTestDriver(
         }
     }
 
+    fun suggest(input: String, size: Int = 100): List<Suggestion> {
+        val response = post("/api/skills/_suggest?size=$size") {
+            SuggestSkillsHttpAdapter.Request(input)
+        }
+        return when (response.code) {
+            200 -> response.readBodyAs(SkillSuggestions::class)
+            else -> error(unmappedCase(response))
+        }
+    }
+
     fun delete(id: UUID) {
         val response = delete("/api/skills/$id")
         if (response.code != 204) {
@@ -69,5 +81,6 @@ class SkillsTestDriver(
     }
 
     private class SkillsPageModel : PagedModel<SkillResource>()
+    private class SkillSuggestions : ArrayList<Suggestion>()
 
 }

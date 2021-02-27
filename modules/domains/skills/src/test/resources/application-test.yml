@@ -28,6 +28,8 @@ spring:
     url: ${storage.database.jdbc-url}
     username: ${storage.database.username}
     password: ${storage.database.password}
+  jackson:
+    default-property-inclusion: non_null
   main:
     allow-bean-definition-overriding: false
   rabbitmq:

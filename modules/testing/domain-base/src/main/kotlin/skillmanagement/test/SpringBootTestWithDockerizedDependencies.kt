@@ -9,6 +9,11 @@ import skillmanagement.test.docker.RunWithDockerizedPostgres
 import skillmanagement.test.docker.RunWithDockerizedRabbitMq
 import kotlin.annotation.AnnotationTarget.CLASS
 
+const val PROPERTY_DOCKERIZED_DATABASE_URL =
+    "storage.database.jdbc-url=jdbc:postgresql://localhost:\${POSTGRES_PORT}/database"
+const val PROPERTY_DOCKERIZED_ELASTICSEARCH_PORT = "storage.elasticsearch.port=\${ELASTICSEARCH_PORT}"
+const val PROPERTY_DOCKERIZED_BROKER_PORT = "storage.broker.port=\${RABBITMQ_PORT}"
+
 @Retention
 @Target(CLASS)
 @RunWithDockerizedRabbitMq
@@ -16,11 +21,7 @@ import kotlin.annotation.AnnotationTarget.CLASS
 @RunWithDockerizedPostgres
 @SpringBootTest(
     webEnvironment = RANDOM_PORT,
-    properties = [
-        "storage.database.jdbc-url=jdbc:postgresql://localhost:\${POSTGRES_PORT}/database",
-        "storage.elasticsearch.port=\${ELASTICSEARCH_PORT}",
-        "storage.broker.port=\${RABBITMQ_PORT}"
-    ]
+    properties = [PROPERTY_DOCKERIZED_DATABASE_URL, PROPERTY_DOCKERIZED_ELASTICSEARCH_PORT, PROPERTY_DOCKERIZED_BROKER_PORT]
 )
 @DirtiesContext
 @AutoConfigureMockMvc

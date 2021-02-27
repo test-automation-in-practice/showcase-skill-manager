@@ -1,11 +1,11 @@
-package skillmanagement.domain.projects.model
+package skillmanagement.domain.skills.model
 
 import skillmanagement.test.UnitTest
 import skillmanagement.test.contracts.string.TextTypeContract
 import skillmanagement.test.stringOfLength
 
 @UnitTest
-internal class ProjectDescriptionTests : TextTypeContract() {
+internal class SkillDescriptionTests : TextTypeContract() {
 
     override val validExamples = listOf(
         "tbd",
@@ -18,8 +18,7 @@ internal class ProjectDescriptionTests : TextTypeContract() {
         """.trimIndent()
     )
 
-    override fun createInstance(value: String) = ProjectDescription(value)
+    override fun createInstance(value: String) = SkillDescription(value)
     override fun createInstanceOfLength(length: Int) = createInstance(stringOfLength(length))
 
 }
-

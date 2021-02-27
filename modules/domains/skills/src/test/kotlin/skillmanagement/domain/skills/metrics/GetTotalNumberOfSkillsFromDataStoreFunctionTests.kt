@@ -20,23 +20,26 @@ import skillmanagement.test.TechnologyIntegrationTest
 @TestInstance(PER_CLASS)
 @TechnologyIntegrationTest
 internal class GetTotalNumberOfSkillsFromDataStoreFunctionTests(
-    @Autowired val jdbcTemplate: NamedParameterJdbcTemplate,
-    @Autowired val objectMapper: ObjectMapper
+    @Autowired jdbcTemplate: NamedParameterJdbcTemplate,
+    @Autowired objectMapper: ObjectMapper
 ) {
 
-    val insertSkillIntoDataStore = InsertSkillIntoDataStoreFunction(jdbcTemplate, objectMapper)
-    val deleteSkillFromDataStore = DeleteSkillFromDataStoreFunction(jdbcTemplate)
-    val getTotalNumberOfSkillsFromDataStore = GetTotalNumberOfSkillsFromDataStoreFunction(jdbcTemplate.jdbcTemplate)
+    private val delete = DeleteSkillFromDataStoreFunction(jdbcTemplate)
+    private val insert = InsertSkillIntoDataStoreFunction(jdbcTemplate, objectMapper)
+    private val getTotalNumberOfSkills = GetTotalNumberOfSkillsFromDataStoreFunction(jdbcTemplate.jdbcTemplate)
 
     @Test
     fun `returns the total number of skill in the data store`() {
-        getTotalNumberOfSkillsFromDataStore() shouldBe 0
-        insertSkillIntoDataStore(skill_kotlin)
-        getTotalNumberOfSkillsFromDataStore() shouldBe 1
-        insertSkillIntoDataStore(skill_java)
-        getTotalNumberOfSkillsFromDataStore() shouldBe 2
-        deleteSkillFromDataStore(skill_java.id)
-        getTotalNumberOfSkillsFromDataStore() shouldBe 1
+        getTotalNumberOfSkills() shouldBe 0
+
+        insert(skill_kotlin)
+        getTotalNumberOfSkills() shouldBe 1
+
+        insert(skill_java)
+        getTotalNumberOfSkills() shouldBe 2
+
+        delete(skill_java.id)
+        getTotalNumberOfSkills() shouldBe 1
     }
 
 }

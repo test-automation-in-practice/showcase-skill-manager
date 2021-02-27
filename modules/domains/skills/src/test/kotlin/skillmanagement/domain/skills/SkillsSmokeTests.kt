@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.hateoas.RepresentationModel
+import skillmanagement.common.model.Suggestion
 import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.SkillResource
@@ -26,7 +27,7 @@ class SkillsSmokeTests(
     @LocalServerPort val port: Int
 ) {
 
-    val skills = SkillsTestDriver(port = port)
+    private val skills = SkillsTestDriver(port = port)
 
     @AfterEach
     fun cleanUp() {
@@ -163,12 +164,50 @@ class SkillsSmokeTests(
 
     }
 
+    @Nested
+    inner class SuggestingForSkills {
+
+        @Test
+        fun `getting suggestions for skills returns limited list`() {
+            val python1 = skills.add(label = "Python #1")
+            val python2 = skills.add(label = "Python #2")
+            val kotlin1 = skills.add(label = "Kotlin #1")
+
+            waitUntilSearchIndexIsRefreshed()
+
+            assertThat(suggest("py")).containsOnly(python1.toSuggestion(), python2.toSuggestion())
+            assertThat(suggest("1")).containsOnly(kotlin1.toSuggestion(), python1.toSuggestion())
+        }
+
+        @Test
+        fun `sizing works properly`() {
+            skills.add(label = "Skill #1")
+            skills.add(label = "Skill #2")
+            skills.add(label = "Skill #3")
+            skills.add(label = "Skill #4")
+            skills.add(label = "Skill #5")
+
+            waitUntilSearchIndexIsRefreshed()
+
+            val results1 = suggest(input = "skill", size = 3)
+            val results2 = suggest(input = "skill")
+
+            assertThat(results1).hasSize(3)
+            assertThat(results2).hasSize(5)
+        }
+
+        private fun suggest(input: String, size: Int = 100) =
+            skills.suggest(input = input, size = size).toSet()
+
+    }
+
     private fun waitUntilSearchIndexIsRefreshed() {
         searchIndex.refresh()
         sleep(1_500)
     }
 
-    fun linkNames(model: RepresentationModel<*>?) =
-        model?.getLinks()?.map { it.rel.toStr() }?.toSet()
+    private fun linkNames(model: RepresentationModel<*>?) =
+        model?.links?.map { it.rel.toStr() }?.toSet()
 
+    private fun SkillResource.toSuggestion() = Suggestion(id = id, label = label.toString())
 }

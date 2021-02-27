@@ -123,8 +123,8 @@ internal class GetSkillsFromDataStoreFunctionTests(
     @Nested
     inner class Deserialization {
 
-        val skill = skill_kotlin
-        val skillId = skill.id
+        private val skill = skill_kotlin
+        private val skillId = skill.id
 
         @Test
         @RecordLoggers(SkillRowMapper::class)
