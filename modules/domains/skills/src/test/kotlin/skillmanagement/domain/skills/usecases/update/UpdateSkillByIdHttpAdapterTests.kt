@@ -31,7 +31,7 @@ import java.time.Clock
 @AutoConfigureRestDocs("build/generated-snippets/skills/update", uriPort = 80)
 internal class UpdateSkillByIdHttpAdapterTests(
     @Autowired val mockMvc: MockMvc,
-    @Autowired val updateSkillById: UpdateSkillById
+    @Autowired val updateSkillById: UpdateSkillByIdFunction
 ) {
 
     val skill = skill_kotlin
@@ -181,7 +181,7 @@ internal class UpdateSkillByIdHttpAdapterTests(
 @Import(ApplyPatch::class)
 private class TestConfiguration {
     @Bean
-    fun updateSkillById(): UpdateSkillById = mockk()
+    fun updateSkillById(): UpdateSkillByIdFunction = mockk()
 
     @Bean
     fun clock(): Clock = fixedClock("2020-05-08T12:34:56.789Z")

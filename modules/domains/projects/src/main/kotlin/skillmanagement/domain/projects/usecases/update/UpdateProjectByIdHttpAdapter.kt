@@ -23,7 +23,7 @@ import java.util.UUID
 @HttpAdapter
 @RequestMapping("/api/projects/{projectId}")
 class UpdateProjectByIdHttpAdapter(
-    private val updateProjectById: UpdateProjectById,
+    private val updateProjectById: UpdateProjectByIdFunction,
     private val applyPatch: ApplyPatch
 ) {
 

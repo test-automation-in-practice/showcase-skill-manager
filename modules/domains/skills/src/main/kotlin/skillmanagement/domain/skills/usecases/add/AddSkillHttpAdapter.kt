@@ -15,18 +15,22 @@ import java.util.Collections.emptySortedSet
 import java.util.SortedSet
 
 /**
- * Exposes [AddSkill] over HTTP.
+ * Exposes [AddSkillFunction] over HTTP.
  */
 @HttpAdapter
 @RequestMapping("/api/skills")
 class AddSkillHttpAdapter(
-    private val addSkill: AddSkill
+    private val addSkill: AddSkillFunction
 ) {
 
     @PostMapping
     @ResponseStatus(CREATED)
     fun post(@RequestBody request: Request): SkillResource {
-        val skill = addSkill(request.label, request.description, request.tags)
+        val skill = addSkill(
+            label = request.label,
+            description = request.description,
+            tags = request.tags
+        )
         return skill.toResource()
     }
 

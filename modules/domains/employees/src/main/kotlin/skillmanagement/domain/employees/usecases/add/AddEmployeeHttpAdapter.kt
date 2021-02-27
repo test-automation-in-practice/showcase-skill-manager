@@ -17,7 +17,7 @@ import skillmanagement.domain.employees.model.toResource
 @HttpAdapter
 @RequestMapping("/api/employees")
 class AddEmployeeHttpAdapter(
-    private val addEmployee: AddEmployee
+    private val addEmployee: AddEmployeeFunction
 ) {
 
     @PostMapping

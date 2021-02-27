@@ -13,7 +13,7 @@ import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.SkillResource
 import skillmanagement.domain.skills.model.Tag
 import skillmanagement.domain.skills.searchindex.SkillSearchIndex
-import skillmanagement.domain.skills.usecases.delete.DeleteSkillFromDataStore
+import skillmanagement.domain.skills.usecases.delete.DeleteSkillFromDataStoreFunction
 import skillmanagement.test.SmokeTest
 import skillmanagement.test.SpringBootTestWithDockerizedDependencies
 import java.lang.Thread.sleep
@@ -21,7 +21,7 @@ import java.lang.Thread.sleep
 @SmokeTest
 @SpringBootTestWithDockerizedDependencies
 class SkillsSmokeTests(
-    @Autowired val deleteSkillsFromDataStore: DeleteSkillFromDataStore,
+    @Autowired val deleteSkillsFromDataStore: DeleteSkillFromDataStoreFunction,
     @Autowired val searchIndex: SkillSearchIndex,
     @LocalServerPort val port: Int
 ) {

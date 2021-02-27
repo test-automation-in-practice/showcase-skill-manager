@@ -13,16 +13,16 @@ import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.ProjectData
 import skillmanagement.domain.employees.model.ProjectUpdatedEvent
 import skillmanagement.domain.employees.usecases.find.EmployeesWhoWorkedOnProject
-import skillmanagement.domain.employees.usecases.find.FindEmployeeIds
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeById
+import skillmanagement.domain.employees.usecases.find.FindEmployeeIdsFunction
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
 
 private const val CONTEXT = "ProjectAssignmentUpdatingEventHandler"
 private const val PROJECT_UPDATED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.ProjectUpdatedEvent"
 
 @EventHandler
 class ProjectAssignmentUpdatingEventHandler(
-    private val findEmployeeIds: FindEmployeeIds,
-    private val updateEmployeeById: UpdateEmployeeById
+    private val findEmployeeIds: FindEmployeeIdsFunction,
+    private val updateEmployeeById: UpdateEmployeeByIdFunction
 ) {
 
     private val log = logger {}

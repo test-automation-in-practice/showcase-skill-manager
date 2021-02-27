@@ -11,7 +11,7 @@ import java.util.UUID
 @HttpAdapter
 @RequestMapping("/api/skills/{id}")
 class DeleteSkillByIdHttpAdapter(
-    private val deleteSkillById: DeleteSkillById
+    private val deleteSkillById: DeleteSkillByIdFunction
 ) {
 
     @DeleteMapping

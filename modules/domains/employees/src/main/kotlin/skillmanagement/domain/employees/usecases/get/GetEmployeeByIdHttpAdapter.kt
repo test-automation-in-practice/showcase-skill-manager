@@ -14,7 +14,7 @@ import java.util.UUID
 @HttpAdapter
 @RequestMapping("/api/employees/{id}")
 class GetEmployeeByIdHttpAdapter(
-    private val getEmployeeById: GetEmployeeById
+    private val getEmployeeById: GetEmployeeByIdFunction
 ) {
 
     @GetMapping

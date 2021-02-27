@@ -14,7 +14,7 @@ import skillmanagement.domain.projects.model.toSearchResource
 @HttpAdapter
 @RequestMapping("/api/projects/_search")
 class SearchForProjectsHttpAdapter(
-    private val findProjects: FindProjects
+    private val findProjects: FindProjectsFunction
 ) {
 
     @PostMapping

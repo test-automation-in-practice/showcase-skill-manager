@@ -24,7 +24,7 @@ import java.util.UUID
 @HttpAdapter
 @RequestMapping("/api/employees/{employeeId}")
 class UpdateEmployeeByIdHttpAdapter(
-    private val updateEmployeeById: UpdateEmployeeById,
+    private val updateEmployeeById: UpdateEmployeeByIdFunction,
     private val applyPatch: ApplyPatch
 ) {
 

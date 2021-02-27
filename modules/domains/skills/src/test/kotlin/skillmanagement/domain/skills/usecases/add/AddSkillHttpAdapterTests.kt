@@ -32,7 +32,7 @@ import java.util.Collections.emptySortedSet
 @AutoConfigureRestDocs("build/generated-snippets/skills/add", uriPort = 80)
 internal class AddSkillHttpAdapterTests(
     @Autowired val mockMvc: MockMvc,
-    @Autowired val addSkill: AddSkill
+    @Autowired val addSkill: AddSkillFunction
 ) {
 
     @Test
@@ -157,7 +157,7 @@ internal class AddSkillHttpAdapterTests(
 @Import(GlobalRestControllerAdvice::class)
 private class TestConfiguration {
     @Bean
-    fun addSkill(): AddSkill = mockk()
+    fun addSkill(): AddSkillFunction = mockk()
 
     @Bean
     fun clock(): Clock = fixedClock("2020-05-08T12:34:56.789Z")

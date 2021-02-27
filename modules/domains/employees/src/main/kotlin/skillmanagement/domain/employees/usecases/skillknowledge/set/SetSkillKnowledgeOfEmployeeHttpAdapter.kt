@@ -20,7 +20,7 @@ import java.util.UUID
 @HttpAdapter
 @RequestMapping("/api/employees/{employeeId}/skills")
 class SetSkillKnowledgeOfEmployeeHttpAdapter(
-    private val setSkillKnowledgeOfEmployee: SetSkillKnowledgeOfEmployee
+    private val setSkillKnowledgeOfEmployee: SetSkillKnowledgeOfEmployeeFunction
 ) {
 
     private val log = logger {}

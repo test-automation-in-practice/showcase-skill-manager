@@ -24,7 +24,7 @@ import java.time.Clock
 @AutoConfigureRestDocs("build/generated-snippets/skills/delete-by-id", uriPort = 80)
 internal class DeleteSkillByIdHttpAdapterTests(
     @Autowired val mockMvc: MockMvc,
-    @Autowired val deleteSkillById: DeleteSkillById
+    @Autowired val deleteSkillById: DeleteSkillByIdFunction
 ) {
 
     val skillId = uuid("14ae4e75-5cf6-4b30-9fc2-7037bd428584")
@@ -47,7 +47,7 @@ internal class DeleteSkillByIdHttpAdapterTests(
 
 private class TestConfiguration {
     @Bean
-    fun deleteSkillById(): DeleteSkillById = mockk()
+    fun deleteSkillById(): DeleteSkillByIdFunction = mockk()
 
     @Bean
     fun clock(): Clock = fixedClock("2020-05-21T12:34:56.789Z")

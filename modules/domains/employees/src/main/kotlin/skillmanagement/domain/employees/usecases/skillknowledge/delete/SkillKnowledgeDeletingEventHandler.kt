@@ -11,16 +11,16 @@ import skillmanagement.common.search.PageSize
 import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.employees.model.SkillDeletedEvent
 import skillmanagement.domain.employees.usecases.find.EmployeesWithSkill
-import skillmanagement.domain.employees.usecases.find.FindEmployeeIds
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeById
+import skillmanagement.domain.employees.usecases.find.FindEmployeeIdsFunction
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
 
 private const val CONTEXT = "SkillKnowledgeDeletingEventHandler"
 private const val SKILL_DELETED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.SkillDeletedEvent"
 
 @EventHandler
 class SkillKnowledgeDeletingEventHandler(
-    private val findEmployeeIds: FindEmployeeIds,
-    private val updateEmployeeById: UpdateEmployeeById
+    private val findEmployeeIds: FindEmployeeIdsFunction,
+    private val updateEmployeeById: UpdateEmployeeByIdFunction
 ) {
 
     private val log = logger {}
