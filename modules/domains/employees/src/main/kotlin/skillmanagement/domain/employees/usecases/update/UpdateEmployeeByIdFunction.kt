@@ -4,7 +4,7 @@ import skillmanagement.common.events.PublishEvent
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.EmployeeUpdatedEvent
-import skillmanagement.domain.employees.usecases.get.GetEmployeeByIdFunction
+import skillmanagement.domain.employees.usecases.read.GetEmployeeByIdFunction
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotChanged
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotFound
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdatedEmployee

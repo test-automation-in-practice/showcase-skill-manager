@@ -22,7 +22,7 @@ import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.SkillUpdatedEvent
 import skillmanagement.domain.skills.model.Tag
-import skillmanagement.domain.skills.usecases.get.GetSkillByIdFunction
+import skillmanagement.domain.skills.usecases.read.GetSkillByIdFunction
 import skillmanagement.domain.skills.usecases.update.UpdateSkillByIdResult.SkillNotFound
 import skillmanagement.domain.skills.usecases.update.UpdateSkillByIdResult.SuccessfullyUpdated
 import skillmanagement.test.ResetMocksAfterEachTest

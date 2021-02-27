@@ -3,7 +3,7 @@ package skillmanagement.domain.employees.usecases.projectassignments.create
 import skillmanagement.common.stereotypes.TechnicalFunction
 import skillmanagement.domain.employees.model.ProjectData
 import skillmanagement.domain.projects.model.Project
-import skillmanagement.domain.projects.usecases.get.GetProjectByIdFunction
+import skillmanagement.domain.projects.usecases.read.GetProjectByIdFunction
 import java.util.UUID
 
 @TechnicalFunction

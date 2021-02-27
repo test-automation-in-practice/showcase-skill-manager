@@ -4,8 +4,8 @@ import org.springframework.hateoas.PagedModel
 import skillmanagement.domain.projects.model.ProjectDescription
 import skillmanagement.domain.projects.model.ProjectLabel
 import skillmanagement.domain.projects.model.ProjectResource
-import skillmanagement.domain.projects.usecases.add.AddProjectHttpAdapter
-import skillmanagement.domain.projects.usecases.find.SearchForProjectsHttpAdapter
+import skillmanagement.domain.projects.usecases.create.CreateProjectHttpAdapter
+import skillmanagement.domain.projects.usecases.read.SearchProjectsHttpAdapter
 import skillmanagement.test.AbstractHttpTestDriver
 import java.util.UUID
 
@@ -19,7 +19,7 @@ class ProjectsTestDriver(
         description: String = "Lorem Ipsum ..."
     ): ProjectResource {
         val response = post("/api/projects") {
-            AddProjectHttpAdapter.Request(
+            CreateProjectHttpAdapter.Request(
                 label = ProjectLabel(label),
                 description = description.let(::ProjectDescription)
             )
@@ -49,7 +49,7 @@ class ProjectsTestDriver(
 
     fun search(query: String, page: Int = 0, size: Int = 100): PagedModel<ProjectResource> {
         val response = post("/api/projects/_search?page=$page&size=$size") {
-            SearchForProjectsHttpAdapter.Request(query)
+            SearchProjectsHttpAdapter.Request(query)
         }
         return when (response.code) {
             200 -> response.readBodyAs(ProjectsPageModel::class)

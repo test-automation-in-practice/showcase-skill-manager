@@ -5,8 +5,8 @@ import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.SkillResource
 import skillmanagement.domain.skills.model.Tag
-import skillmanagement.domain.skills.usecases.add.AddSkillHttpAdapter
-import skillmanagement.domain.skills.usecases.find.SearchForSkillsHttpAdapter
+import skillmanagement.domain.skills.usecases.create.CreateSkillHttpAdapter
+import skillmanagement.domain.skills.usecases.read.SearchSkillsHttpAdapter
 import skillmanagement.test.AbstractHttpTestDriver
 import java.util.Collections.emptySortedSet
 import java.util.UUID
@@ -22,7 +22,7 @@ class SkillsTestDriver(
         tags: Set<String> = emptySortedSet()
     ): SkillResource {
         val response = post("/api/skills") {
-            AddSkillHttpAdapter.Request(
+            CreateSkillHttpAdapter.Request(
                 label = SkillLabel(label),
                 description = description?.let(::SkillDescription),
                 tags = tags.map(::Tag).toSortedSet()
@@ -53,7 +53,7 @@ class SkillsTestDriver(
 
     fun search(query: String, page: Int = 0, size: Int = 100): PagedModel<SkillResource> {
         val response = post("/api/skills/_search?page=$page&size=$size") {
-            SearchForSkillsHttpAdapter.Request(query)
+            SearchSkillsHttpAdapter.Request(query)
         }
         return when (response.code) {
             200 -> response.readBodyAs(SkillsPageModel::class)

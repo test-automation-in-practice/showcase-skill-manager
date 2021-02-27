@@ -5,7 +5,7 @@ import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.EmployeeDeletedEvent
 import skillmanagement.domain.employees.usecases.delete.DeleteEmployeeByIdResult.EmployeeNotFound
 import skillmanagement.domain.employees.usecases.delete.DeleteEmployeeByIdResult.SuccessfullyDeleted
-import skillmanagement.domain.employees.usecases.get.GetEmployeeByIdFunction
+import skillmanagement.domain.employees.usecases.read.GetEmployeeByIdFunction
 import java.util.UUID
 
 @BusinessFunction
