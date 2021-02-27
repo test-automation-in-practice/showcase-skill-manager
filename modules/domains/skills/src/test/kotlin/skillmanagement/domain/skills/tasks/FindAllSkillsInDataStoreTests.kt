@@ -12,8 +12,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_python
-import skillmanagement.domain.skills.usecases.add.InsertSkillIntoDataStore
-import skillmanagement.domain.skills.usecases.get.GetSkillsFromDataStore
+import skillmanagement.domain.skills.usecases.add.InsertSkillIntoDataStoreFunction
+import skillmanagement.domain.skills.usecases.get.GetSkillsFromDataStoreFunction
 import skillmanagement.test.TechnologyIntegrationTest
 
 @JdbcTest
@@ -25,8 +25,8 @@ internal class FindAllSkillsInDataStoreTests(
     @Autowired val objectMapper: ObjectMapper
 ) {
 
-    val insertSkillIntoDataStore = InsertSkillIntoDataStore(namedParameterJdbcTemplate, objectMapper)
-    val getSkillsFromDataStore = GetSkillsFromDataStore(namedParameterJdbcTemplate, objectMapper)
+    val insertSkillIntoDataStore = InsertSkillIntoDataStoreFunction(namedParameterJdbcTemplate, objectMapper)
+    val getSkillsFromDataStore = GetSkillsFromDataStoreFunction(namedParameterJdbcTemplate, objectMapper)
 
     @Test
     fun `returns empty list if there are no Skills`() {

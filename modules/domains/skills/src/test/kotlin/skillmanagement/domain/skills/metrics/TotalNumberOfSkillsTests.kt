@@ -12,7 +12,7 @@ import skillmanagement.test.UnitTest
 @ResetMocksAfterEachTest
 internal class TotalNumberOfSkillsTests {
 
-    val getTotalNumberOfSkillsFromDataStore: GetTotalNumberOfSkillsFromDataStore = mockk()
+    val getTotalNumberOfSkillsFromDataStore: GetTotalNumberOfSkillsFromDataStoreFunction = mockk()
     val registry = SimpleMeterRegistry()
     val cut = TotalNumberOfSkills(getTotalNumberOfSkillsFromDataStore)
         .apply { bindTo(registry) }

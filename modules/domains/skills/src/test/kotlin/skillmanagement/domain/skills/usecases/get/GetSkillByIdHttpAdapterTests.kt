@@ -25,7 +25,7 @@ import java.time.Clock
 @AutoConfigureRestDocs("build/generated-snippets/skills/get-by-id", uriPort = 80)
 internal class GetSkillByIdHttpAdapterTests(
     @Autowired val mockMvc: MockMvc,
-    @Autowired val getSkillById: GetSkillById
+    @Autowired val getSkillById: GetSkillByIdFunction
 ) {
 
     @Test
@@ -80,7 +80,7 @@ internal class GetSkillByIdHttpAdapterTests(
 
 private class TestConfiguration {
     @Bean
-    fun getSkillById(): GetSkillById = mockk()
+    fun getSkillById(): GetSkillByIdFunction = mockk()
 
     @Bean
     fun clock(): Clock = fixedClock("2020-05-08T12:34:56.789Z")

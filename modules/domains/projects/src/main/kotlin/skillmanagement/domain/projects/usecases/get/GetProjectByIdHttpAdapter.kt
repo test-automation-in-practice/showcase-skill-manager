@@ -14,7 +14,7 @@ import java.util.UUID
 @HttpAdapter
 @RequestMapping("/api/projects/{id}")
 class GetProjectByIdHttpAdapter(
-    private val getProjectById: GetProjectById
+    private val getProjectById: GetProjectByIdFunction
 ) {
 
     @GetMapping

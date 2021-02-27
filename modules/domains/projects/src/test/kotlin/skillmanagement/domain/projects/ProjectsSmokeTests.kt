@@ -12,7 +12,7 @@ import skillmanagement.domain.projects.model.ProjectDescription
 import skillmanagement.domain.projects.model.ProjectLabel
 import skillmanagement.domain.projects.model.ProjectResource
 import skillmanagement.domain.projects.searchindex.ProjectSearchIndex
-import skillmanagement.domain.projects.usecases.delete.DeleteProjectFromDataStore
+import skillmanagement.domain.projects.usecases.delete.DeleteProjectFromDataStoreFunction
 import skillmanagement.test.SmokeTest
 import skillmanagement.test.SpringBootTestWithDockerizedDependencies
 import java.lang.Thread.sleep
@@ -20,7 +20,7 @@ import java.lang.Thread.sleep
 @SmokeTest
 @SpringBootTestWithDockerizedDependencies
 class ProjectsSmokeTests(
-    @Autowired val deleteProjectsFromDataStore: DeleteProjectFromDataStore,
+    @Autowired val deleteProjectsFromDataStore: DeleteProjectFromDataStoreFunction,
     @Autowired val searchIndex: ProjectSearchIndex,
     @LocalServerPort val port: Int
 ) {

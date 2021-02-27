@@ -33,7 +33,7 @@ import java.time.Clock
 @AutoConfigureRestDocs("build/generated-snippets/skills/search", uriPort = 80)
 internal class SearchForSkillsHttpAdapterTests(
     @Autowired val mockMvc: MockMvc,
-    @Autowired val findSkills: FindSkills
+    @Autowired val findSkills: FindSkillsFunction
 ) {
 
     @Test
@@ -228,7 +228,7 @@ internal class SearchForSkillsHttpAdapterTests(
 
 private class SearchForSkillsHttpAdapterTestsConfiguration {
     @Bean
-    fun findSkills(): FindSkills = mockk()
+    fun findSkills(): FindSkillsFunction = mockk()
 
     @Bean
     fun clock(): Clock = fixedClock("2020-05-28T12:34:56.789Z")

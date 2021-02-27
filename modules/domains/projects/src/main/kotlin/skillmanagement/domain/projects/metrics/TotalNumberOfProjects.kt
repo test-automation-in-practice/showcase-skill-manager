@@ -14,7 +14,7 @@ private const val DELAY_PROPERTY = "\${metrics.projects.total.update.delay}"
 
 @LastingMetric
 class TotalNumberOfProjects(
-    private val getTotalNumberOfProjectsFromDataStore: GetTotalNumberOfProjectsFromDataStore
+    private val getTotalNumberOfProjectsFromDataStore: GetTotalNumberOfProjectsFromDataStoreFunction
 ) : MeterBinder {
 
     private val log = logger {}
@@ -35,7 +35,7 @@ class TotalNumberOfProjects(
 }
 
 @TechnicalFunction
-class GetTotalNumberOfProjectsFromDataStore(
+class GetTotalNumberOfProjectsFromDataStoreFunction(
     private val jdbcTemplate: JdbcTemplate
 ) {
 

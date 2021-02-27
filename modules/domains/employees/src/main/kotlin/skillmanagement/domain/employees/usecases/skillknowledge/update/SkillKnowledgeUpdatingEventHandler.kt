@@ -13,16 +13,16 @@ import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.SkillData
 import skillmanagement.domain.employees.model.SkillUpdatedEvent
 import skillmanagement.domain.employees.usecases.find.EmployeesWithSkill
-import skillmanagement.domain.employees.usecases.find.FindEmployeeIds
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeById
+import skillmanagement.domain.employees.usecases.find.FindEmployeeIdsFunction
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
 
 private const val CONTEXT = "SkillKnowledgeUpdatingEventHandler"
 private const val SKILL_UPDATED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.SkillUpdatedEvent"
 
 @EventHandler
 class SkillKnowledgeUpdatingEventHandler(
-    private val findEmployeeIds: FindEmployeeIds,
-    private val updateEmployeeById: UpdateEmployeeById
+    private val findEmployeeIds: FindEmployeeIdsFunction,
+    private val updateEmployeeById: UpdateEmployeeByIdFunction
 ) {
 
     private val log = logger {}

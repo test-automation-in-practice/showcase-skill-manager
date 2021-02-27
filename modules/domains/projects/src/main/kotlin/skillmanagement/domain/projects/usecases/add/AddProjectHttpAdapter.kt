@@ -14,7 +14,7 @@ import skillmanagement.domain.projects.model.toResource
 @HttpAdapter
 @RequestMapping("/api/projects")
 class AddProjectHttpAdapter(
-    private val addProject: AddProject
+    private val addProject: AddProjectFunction
 ) {
 
     @PostMapping

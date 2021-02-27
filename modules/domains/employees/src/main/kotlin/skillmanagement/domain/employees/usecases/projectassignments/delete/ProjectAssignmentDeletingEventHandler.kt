@@ -12,8 +12,8 @@ import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.ProjectDeletedEvent
 import skillmanagement.domain.employees.usecases.find.EmployeesWhoWorkedOnProject
-import skillmanagement.domain.employees.usecases.find.FindEmployeeIds
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeById
+import skillmanagement.domain.employees.usecases.find.FindEmployeeIdsFunction
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
 import java.util.UUID
 
 private const val CONTEXT = "ProjectAssignmentDeletingEventHandler"
@@ -21,8 +21,8 @@ private const val PROJECT_DELETED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.ProjectDeleted
 
 @EventHandler
 class ProjectAssignmentDeletingEventHandler(
-    private val findEmployeeIds: FindEmployeeIds,
-    private val updateEmployeeById: UpdateEmployeeById
+    private val findEmployeeIds: FindEmployeeIdsFunction,
+    private val updateEmployeeById: UpdateEmployeeByIdFunction
 ) {
 
     private val log = logger {}

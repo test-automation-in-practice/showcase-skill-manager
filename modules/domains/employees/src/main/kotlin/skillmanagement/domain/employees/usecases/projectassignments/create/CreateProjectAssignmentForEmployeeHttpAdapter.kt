@@ -21,7 +21,7 @@ import java.util.UUID
 @HttpAdapter
 @RequestMapping("/api/employees/{employeeId}/projects")
 class CreateProjectAssignmentForEmployeeHttpAdapter(
-    private val createProjectAssignmentForEmployee: CreateProjectAssignmentForEmployee
+    private val createProjectAssignmentForEmployee: CreateProjectAssignmentForEmployeeFunction
 ) {
 
     private val log = logger {}

@@ -11,7 +11,7 @@ import java.util.UUID
 @HttpAdapter
 @RequestMapping("/api/projects/{id}")
 class DeleteProjectByIdHttpAdapter(
-    private val deleteProjectById: DeleteProjectById
+    private val deleteProjectById: DeleteProjectByIdFunction
 ) {
 
     @DeleteMapping
