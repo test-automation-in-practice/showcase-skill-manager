@@ -10,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.hateoas.MediaTypes.HAL_JSON
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpHeaders.LOCATION
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
@@ -52,6 +54,7 @@ internal class CreateSkillHttpAdapterTests(
             }
             .andExpect {
                 status { isCreated() }
+                header { string(LOCATION, "http://localhost/api/skills/3f7985b9-f5f0-4662-bda9-1dcde01f5f3b") }
                 content {
                     contentType(HAL_JSON)
                     strictJson {
@@ -117,7 +120,6 @@ internal class CreateSkillHttpAdapterTests(
                     }
                 }
             }
-            .andDocument("created")
 
         verify { createSkill(SkillLabel("Python"), null, emptySortedSet()) }
     }
