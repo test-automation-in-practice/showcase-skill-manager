@@ -4,8 +4,6 @@ import com.tngtech.archunit.base.DescribedPredicate.alwaysTrue
 import com.tngtech.archunit.core.domain.JavaClass.Predicates.type
 import com.tngtech.archunit.core.domain.JavaClasses
 import com.tngtech.archunit.core.importer.ClassFileImporter
-import com.tngtech.archunit.core.importer.ImportOption.DoNotIncludeArchives
-import com.tngtech.archunit.core.importer.ImportOption.DoNotIncludeJars
 import com.tngtech.archunit.core.importer.ImportOption.DoNotIncludeTests
 import com.tngtech.archunit.core.importer.ImportOptions
 import com.tngtech.archunit.library.Architectures
@@ -22,8 +20,6 @@ import skillmanagement.test.UnitTest
 internal class DomainArchitectureTests {
 
     private val options = ImportOptions()
-        .with(DoNotIncludeJars())
-        .with(DoNotIncludeArchives())
         .with(DoNotIncludeTests())
 
     private val basePackage = this::class.java.packageName
