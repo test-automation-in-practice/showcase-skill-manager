@@ -1,6 +1,7 @@
 package skillmanagement.domain.employees.usecases.skillknowledge.set
 
 import skillmanagement.common.stereotypes.BusinessFunction
+import skillmanagement.domain.employees.gateways.GetSkillByIdAdapterFunction
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.SkillKnowledge
 import skillmanagement.domain.employees.model.SkillLevel

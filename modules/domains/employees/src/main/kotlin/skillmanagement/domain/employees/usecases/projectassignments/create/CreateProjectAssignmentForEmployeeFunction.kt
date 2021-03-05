@@ -2,6 +2,7 @@ package skillmanagement.domain.employees.usecases.projectassignments.create
 
 import org.springframework.util.IdGenerator
 import skillmanagement.common.stereotypes.BusinessFunction
+import skillmanagement.domain.employees.gateways.GetProjectByIdAdapterFunction
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.ProjectAssignment
 import skillmanagement.domain.employees.model.ProjectContribution
