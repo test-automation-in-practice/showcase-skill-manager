@@ -1,10 +1,6 @@
 package skillmanagement.domain.skills.usecases.read
 
-import skillmanagement.common.search.Page
-import skillmanagement.common.search.PageIndex
-import skillmanagement.common.search.PageSize
-import skillmanagement.common.search.PagedFindAllQuery
-import skillmanagement.common.search.PagedStringQuery
+import skillmanagement.common.searchindices.Page
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.searchindex.SkillSearchIndex

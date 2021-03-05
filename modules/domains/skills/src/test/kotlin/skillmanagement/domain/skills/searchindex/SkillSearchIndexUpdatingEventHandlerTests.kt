@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
-import skillmanagement.common.events.PublishEvent
+import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.domain.skills.model.SkillAddedEvent
 import skillmanagement.domain.skills.model.SkillDeletedEvent
 import skillmanagement.domain.skills.model.SkillUpdatedEvent
@@ -29,7 +29,7 @@ import skillmanagement.test.docker.RunWithDockerizedRabbitMq
 @ResetMocksAfterEachTest
 internal class SkillSearchIndexUpdatingEventHandlerTests(
     @Autowired private val searchIndex: SkillSearchIndex,
-    @Autowired private val publishEvent: PublishEvent
+    @Autowired private val publishEvent: PublishEventFunction
 ) {
 
     @Test

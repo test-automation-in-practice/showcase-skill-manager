@@ -6,7 +6,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
-import skillmanagement.common.events.PublishEvent
+import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.domain.skills.model.SkillDeletedEvent
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.usecases.delete.DeleteSkillByIdResult.SkillNotFound
@@ -21,7 +21,7 @@ internal class DeleteSkillByIdFunctionTests {
 
     val getSkillById: GetSkillByIdFunction = mockk()
     val deleteSkillFromDataStore: DeleteSkillFromDataStoreFunction = mockk(relaxUnitFun = true)
-    val publishEvent: PublishEvent = mockk(relaxUnitFun = true)
+    val publishEvent: PublishEventFunction = mockk(relaxUnitFun = true)
     val deleteSkillById = DeleteSkillByIdFunction(getSkillById, deleteSkillFromDataStore, publishEvent)
 
     val skill = skill_kotlin

@@ -1,6 +1,6 @@
 package skillmanagement.domain.projects.usecases.delete
 
-import skillmanagement.common.events.PublishEvent
+import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.projects.model.ProjectDeletedEvent
 import skillmanagement.domain.projects.usecases.delete.DeleteProjectByIdResult.ProjectNotFound
@@ -12,7 +12,7 @@ import java.util.UUID
 class DeleteProjectByIdFunction internal constructor(
     private val getProjectById: GetProjectByIdFunction,
     private val deleteProjectFromDataStore: DeleteProjectFromDataStoreFunction,
-    private val publishEvent: PublishEvent
+    private val publishEvent: PublishEventFunction
 ) {
 
     operator fun invoke(id: UUID): DeleteProjectByIdResult {

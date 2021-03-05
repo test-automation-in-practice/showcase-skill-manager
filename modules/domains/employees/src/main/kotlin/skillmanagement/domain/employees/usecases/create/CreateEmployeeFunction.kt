@@ -1,7 +1,7 @@
 package skillmanagement.domain.employees.usecases.create
 
 import org.springframework.util.IdGenerator
-import skillmanagement.common.events.PublishEvent
+import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.EmailAddress
 import skillmanagement.domain.employees.model.Employee
@@ -16,7 +16,7 @@ import java.time.Clock
 class CreateEmployeeFunction internal constructor(
     private val idGenerator: IdGenerator,
     private val insertEmployeeIntoDataStore: InsertEmployeeIntoDataStoreFunction,
-    private val publishEvent: PublishEvent,
+    private val publishEvent: PublishEventFunction,
     private val clock: Clock
 ) {
 

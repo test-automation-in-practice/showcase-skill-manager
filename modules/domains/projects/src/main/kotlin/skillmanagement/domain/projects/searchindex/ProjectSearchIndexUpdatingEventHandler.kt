@@ -4,9 +4,9 @@ import mu.KotlinLogging.logger
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import skillmanagement.common.messaging.QUEUE_PREFIX
-import skillmanagement.common.messaging.durableQueue
-import skillmanagement.common.messaging.eventBinding
+import skillmanagement.common.events.QUEUE_PREFIX
+import skillmanagement.common.events.durableQueue
+import skillmanagement.common.events.eventBinding
 import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.projects.model.ProjectAddedEvent
 import skillmanagement.domain.projects.model.ProjectDeletedEvent

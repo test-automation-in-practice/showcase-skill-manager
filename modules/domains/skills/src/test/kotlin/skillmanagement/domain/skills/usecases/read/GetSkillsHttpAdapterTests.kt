@@ -12,10 +12,10 @@ import org.springframework.context.annotation.Import
 import org.springframework.hateoas.MediaTypes.HAL_JSON
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
-import skillmanagement.common.search.PageIndex
-import skillmanagement.common.search.PageSize
-import skillmanagement.common.search.emptyPage
-import skillmanagement.common.search.pageOf
+import skillmanagement.common.searchindices.PageIndex
+import skillmanagement.common.searchindices.PageSize
+import skillmanagement.common.searchindices.emptyPage
+import skillmanagement.common.searchindices.pageOf
 import skillmanagement.domain.skills.model.skill_java
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.test.ResetMocksAfterEachTest

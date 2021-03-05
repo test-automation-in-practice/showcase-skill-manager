@@ -9,25 +9,16 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
-import org.springframework.hateoas.MediaTypes.HAL_JSON
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
-import skillmanagement.common.search.PageIndex
-import skillmanagement.common.search.PageSize
-import skillmanagement.common.search.emptyPage
-import skillmanagement.common.search.pageOf
-import skillmanagement.domain.skills.model.skill_java
-import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_kotlin_suggestion
 import skillmanagement.domain.skills.model.skill_python_suggestion
 import skillmanagement.domain.skills.searchindex.SkillSearchIndex
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.andDocument
-import skillmanagement.test.fixedClock
 import skillmanagement.test.strictJson
-import java.time.Clock
 
 @ResetMocksAfterEachTest
 @TechnologyIntegrationTest

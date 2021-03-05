@@ -1,7 +1,7 @@
 package skillmanagement.domain.projects.usecases.create
 
 import org.springframework.util.IdGenerator
-import skillmanagement.common.events.PublishEvent
+import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.model.ProjectAddedEvent
@@ -13,7 +13,7 @@ import java.time.Clock
 class CreateProjectFunction internal constructor(
     private val idGenerator: IdGenerator,
     private val insertProjectIntoDataStore: InsertProjectIntoDataStoreFunction,
-    private val publishEvent: PublishEvent,
+    private val publishEvent: PublishEventFunction,
     private val clock: Clock
 ) {
 

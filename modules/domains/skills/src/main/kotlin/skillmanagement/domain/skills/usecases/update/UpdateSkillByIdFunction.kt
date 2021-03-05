@@ -1,6 +1,6 @@
 package skillmanagement.domain.skills.usecases.update
 
-import skillmanagement.common.events.PublishEvent
+import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillUpdatedEvent
@@ -13,7 +13,7 @@ import java.util.UUID
 class UpdateSkillByIdFunction internal constructor(
     private val getSkillById: GetSkillByIdFunction,
     private val updateSkillInDataStore: UpdateSkillInDataStoreFunction,
-    private val publishEvent: PublishEvent
+    private val publishEvent: PublishEventFunction
 ) {
 
     @RetryOnConcurrentSkillUpdate

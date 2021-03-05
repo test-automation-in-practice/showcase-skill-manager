@@ -4,7 +4,7 @@ import io.kotlintest.shouldBe
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
-import skillmanagement.common.search.pageOf
+import skillmanagement.common.searchindices.pageOf
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_python

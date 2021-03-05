@@ -1,7 +1,7 @@
 package skillmanagement.domain.skills.usecases.create
 
 import org.springframework.util.IdGenerator
-import skillmanagement.common.events.PublishEvent
+import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillAddedEvent
@@ -15,7 +15,7 @@ import java.util.SortedSet
 class CreateSkillFunction internal constructor(
     private val idGenerator: IdGenerator,
     private val insertSkillIntoDataStore: InsertSkillIntoDataStoreFunction,
-    private val publishEvent: PublishEvent,
+    private val publishEvent: PublishEventFunction,
     private val clock: Clock
 ) {
 

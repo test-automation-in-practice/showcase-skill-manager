@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.retry.annotation.EnableRetry
-import skillmanagement.common.events.PublishEvent
+import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillLabel
@@ -49,7 +49,7 @@ internal class UpdateSkillByIdFunctionTests {
 
         val getSkillById: GetSkillByIdFunction = mockk()
         val updateSkillInDataStore: UpdateSkillInDataStoreFunction = mockk()
-        val publishEvent: PublishEvent = mockk(relaxUnitFun = true)
+        val publishEvent: PublishEventFunction = mockk(relaxUnitFun = true)
 
         val updateSkillById = UpdateSkillByIdFunction(getSkillById, updateSkillInDataStore, publishEvent)
 
@@ -161,7 +161,7 @@ internal class UpdateSkillByIdFunctionTests {
         fun updateSkillInDataStore(): UpdateSkillInDataStoreFunction = mockk(relaxed = true)
 
         @Bean
-        fun publishEvent(): PublishEvent = mockk(relaxed = true)
+        fun publishEvent(): PublishEventFunction = mockk(relaxed = true)
 
     }
 
