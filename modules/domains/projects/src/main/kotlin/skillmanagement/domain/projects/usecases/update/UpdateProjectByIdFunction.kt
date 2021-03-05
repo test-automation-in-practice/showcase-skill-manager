@@ -16,7 +16,6 @@ class UpdateProjectByIdFunction(
     private val publishEvent: PublishEvent
 ) {
 
-    // TODO: Security - Who can change Projects?
     @RetryOnConcurrentProjectUpdate
     operator fun invoke(projectId: UUID, block: (Project) -> Project): UpdateProjectByIdResult {
         val currentProject = getProjectById(projectId) ?: return ProjectNotFound

@@ -20,7 +20,6 @@ class CreateEmployeeFunction(
     private val clock: Clock
 ) {
 
-    // TODO: Security - Only invokable by Employee-Admins
     operator fun invoke(
         firstName: FirstName,
         lastName: LastName,

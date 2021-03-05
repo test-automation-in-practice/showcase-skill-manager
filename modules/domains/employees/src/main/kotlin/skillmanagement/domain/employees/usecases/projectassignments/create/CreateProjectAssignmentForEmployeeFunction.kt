@@ -22,7 +22,6 @@ class CreateProjectAssignmentForEmployeeFunction(
     private val updateEmployeeById: UpdateEmployeeByIdFunction
 ) {
 
-    // TODO: Security - Only invokable by Employee themselves or Employee-Admins
     operator fun invoke(
         employeeId: UUID,
         projectId: UUID,

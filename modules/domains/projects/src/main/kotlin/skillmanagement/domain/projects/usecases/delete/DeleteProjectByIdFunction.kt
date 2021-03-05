@@ -15,7 +15,6 @@ class DeleteProjectByIdFunction(
     private val publishEvent: PublishEvent
 ) {
 
-    // TODO: Security - Only invokable by Project-Admins
     operator fun invoke(id: UUID): DeleteProjectByIdResult {
         val project = getProjectById(id) ?: return ProjectNotFound
         deleteProjectFromDataStore(id)

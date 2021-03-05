@@ -15,7 +15,6 @@ class DeleteEmployeeByIdFunction(
     private val publishEvent: PublishEvent
 ) {
 
-    // TODO: Security - Only invokable by Employee-Admins
     operator fun invoke(id: UUID): DeleteEmployeeByIdResult {
         val employee = getEmployeeById(id) ?: return EmployeeNotFound
         deleteEmployeeFromDataStore(id)

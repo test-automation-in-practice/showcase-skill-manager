@@ -15,7 +15,6 @@ class DeleteSkillByIdFunction(
     private val publishEvent: PublishEvent
 ) {
 
-    // TODO: Security - Only invokable by Skill-Admins
     operator fun invoke(id: UUID): DeleteSkillByIdResult {
         val skill = getSkillById(id) ?: return SkillNotFound
         deleteSkillFromDataStore(id)

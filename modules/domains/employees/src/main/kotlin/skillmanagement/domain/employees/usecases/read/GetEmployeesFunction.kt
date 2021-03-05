@@ -11,7 +11,6 @@ class GetEmployeesFunction(
     private val searchIndex: EmployeeSearchIndex
 ) {
 
-    // TODO: Security + query parameter + pagination
     operator fun invoke(query: EmployeesQuery): Page<Employee> {
         val page = when (query) {
             is EmployeesWithSkill -> searchIndex.query(query)

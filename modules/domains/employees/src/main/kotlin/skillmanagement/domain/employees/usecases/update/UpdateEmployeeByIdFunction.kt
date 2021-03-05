@@ -17,7 +17,6 @@ class UpdateEmployeeByIdFunction(
     private val publishEvent: PublishEvent
 ) {
 
-    // TODO: Security - Who can change Employees?
     @RetryOnConcurrentEmployeeUpdate
     operator fun invoke(employeeId: UUID, block: (Employee) -> Employee): UpdateEmployeeByIdResult {
         val currentEmployee = getEmployeeById(employeeId) ?: return NotUpdatedBecauseEmployeeNotFound

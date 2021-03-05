@@ -10,7 +10,6 @@ class GetEmployeeIdsFunction(
     private val searchIndex: EmployeeSearchIndex
 ) {
 
-    // TODO: Security + query parameter + pagination
     operator fun invoke(query: EmployeesQuery): Page<UUID> =
         when (query) {
             is EmployeesWithSkill -> searchIndex.query(query)
