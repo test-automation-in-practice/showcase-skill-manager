@@ -9,7 +9,6 @@ class GetEmployeeByIdFunction(
     private val getEmployeeFromDataStore: GetEmployeesFromDataStoreFunction
 ) {
 
-    // TODO: which kinds of users should be able to access this information? The employee + their managers?
     operator fun invoke(id: UUID): Employee? {
         return getEmployeeFromDataStore(id)
     }

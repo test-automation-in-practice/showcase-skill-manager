@@ -19,7 +19,6 @@ class CreateSkillFunction(
     private val clock: Clock
 ) {
 
-    // TODO: Security - Only invokable by Skill-Admins
     operator fun invoke(label: SkillLabel, description: SkillDescription?, tags: SortedSet<Tag>): Skill {
         val skill = Skill(
             id = idGenerator.generateId(),

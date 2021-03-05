@@ -15,7 +15,6 @@ class GetProjectsFunction(
     private val searchIndex: ProjectSearchIndex
 ) {
 
-    // TODO: Security + query parameter + pagination
     operator fun invoke(query: ProjectsQuery): Page<Project> {
         val page = when (query) {
             is ProjectsMatchingQuery -> searchIndex.query(query)

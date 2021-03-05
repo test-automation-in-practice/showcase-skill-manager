@@ -15,7 +15,6 @@ class GetSkillsFunction(
     private val searchIndex: SkillSearchIndex
 ) {
 
-    // TODO: Security + query parameter + pagination
     operator fun invoke(query: SkillsQuery): Page<Skill> {
         val page = when (query) {
             is SkillsMatchingQuery -> searchIndex.query(query)

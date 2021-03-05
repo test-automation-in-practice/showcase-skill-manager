@@ -17,7 +17,6 @@ class CreateProjectFunction(
     private val clock: Clock
 ) {
 
-    // TODO: Security - Only invokable by Project-Admins
     operator fun invoke(label: ProjectLabel, description: ProjectDescription): Project {
         val project = Project(
             id = idGenerator.generateId(),

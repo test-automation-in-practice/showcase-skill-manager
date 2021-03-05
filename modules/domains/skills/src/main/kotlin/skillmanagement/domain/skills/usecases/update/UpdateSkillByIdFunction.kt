@@ -16,7 +16,6 @@ class UpdateSkillByIdFunction(
     private val publishEvent: PublishEvent
 ) {
 
-    // TODO: Security - Who can change Skills?
     @RetryOnConcurrentSkillUpdate
     operator fun invoke(skillId: UUID, block: (Skill) -> Skill): UpdateSkillByIdResult {
         val currentSkill = getSkillById(skillId) ?: return SkillNotFound
