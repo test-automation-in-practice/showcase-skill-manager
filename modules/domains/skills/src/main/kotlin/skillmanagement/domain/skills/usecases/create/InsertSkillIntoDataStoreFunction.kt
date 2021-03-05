@@ -7,7 +7,7 @@ import skillmanagement.domain.skills.model.Skill
 
 
 @TechnicalFunction
-class InsertSkillIntoDataStoreFunction(
+internal class InsertSkillIntoDataStoreFunction(
     private val jdbcTemplate: NamedParameterJdbcTemplate,
     private val objectMapper: ObjectMapper
 ) {

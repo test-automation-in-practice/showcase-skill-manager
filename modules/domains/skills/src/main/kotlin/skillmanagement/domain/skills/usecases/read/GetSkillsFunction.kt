@@ -10,7 +10,7 @@ import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.searchindex.SkillSearchIndex
 
 @BusinessFunction
-class GetSkillsFunction(
+class GetSkillsFunction internal constructor(
     private val getSkillsFromDataStore: GetSkillsFromDataStoreFunction,
     private val searchIndex: SkillSearchIndex
 ) {

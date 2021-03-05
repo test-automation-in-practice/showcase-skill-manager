@@ -10,7 +10,7 @@ import skillmanagement.domain.projects.usecases.read.GetProjectsFromDataStoreFun
 
 @Task
 @WebEndpoint(id = "reconstructProjectSearchIndex")
-class ReconstructProjectSearchIndexTask(
+internal class ReconstructProjectSearchIndexTask(
     override val searchIndex: ProjectSearchIndex,
     private val getProjectsFromDataStore: GetProjectsFromDataStoreFunction
 ) : AbstractReconstructSearchIndexTask<Project>() {

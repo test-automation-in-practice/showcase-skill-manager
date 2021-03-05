@@ -5,8 +5,8 @@ import skillmanagement.common.events.Event
 /**
  * Tagging interface for _all_ [Project] related event types.
  */
-interface ProjectEvent : Event
+internal interface ProjectEvent : Event
 
-data class ProjectAddedEvent(val project: Project) : ProjectEvent
-data class ProjectUpdatedEvent(val project: Project) : ProjectEvent
-data class ProjectDeletedEvent(val project: Project) : ProjectEvent
+internal data class ProjectAddedEvent(val project: Project) : ProjectEvent
+internal data class ProjectUpdatedEvent(val project: Project) : ProjectEvent
+internal data class ProjectDeletedEvent(val project: Project) : ProjectEvent

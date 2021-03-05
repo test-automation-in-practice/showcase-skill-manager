@@ -6,7 +6,7 @@ import skillmanagement.common.stereotypes.TechnicalFunction
 import skillmanagement.domain.projects.model.Project
 
 @TechnicalFunction
-class InsertProjectIntoDataStoreFunction(
+internal class InsertProjectIntoDataStoreFunction(
     private val jdbcTemplate: NamedParameterJdbcTemplate,
     private val objectMapper: ObjectMapper
 ) {

@@ -12,7 +12,7 @@ import java.time.Clock
 import java.util.SortedSet
 
 @BusinessFunction
-class CreateSkillFunction(
+class CreateSkillFunction internal constructor(
     private val idGenerator: IdGenerator,
     private val insertSkillIntoDataStore: InsertSkillIntoDataStoreFunction,
     private val publishEvent: PublishEvent,

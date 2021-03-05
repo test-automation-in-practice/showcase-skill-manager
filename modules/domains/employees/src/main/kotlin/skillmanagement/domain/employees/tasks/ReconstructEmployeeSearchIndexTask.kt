@@ -10,7 +10,7 @@ import skillmanagement.domain.employees.usecases.read.GetEmployeesFromDataStoreF
 
 @Task
 @WebEndpoint(id = "reconstructEmployeeSearchIndex")
-class ReconstructEmployeeSearchIndexTask(
+internal class ReconstructEmployeeSearchIndexTask(
     override val searchIndex: EmployeeSearchIndex,
     private val getEmployeeFromDataStore: GetEmployeesFromDataStoreFunction
 ) : AbstractReconstructSearchIndexTask<Employee>() {

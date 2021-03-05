@@ -10,7 +10,7 @@ import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.searchindex.ProjectSearchIndex
 
 @BusinessFunction
-class GetProjectsFunction(
+class GetProjectsFunction internal constructor(
     private val getProjectsFromDataStore: GetProjectsFromDataStoreFunction,
     private val searchIndex: ProjectSearchIndex
 ) {

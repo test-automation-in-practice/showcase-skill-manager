@@ -13,7 +13,7 @@ import java.util.UUID
 
 @HttpAdapter
 @RequestMapping("/api/employees/{id}")
-class GetEmployeeByIdHttpAdapter(
+internal class GetEmployeeByIdHttpAdapter(
     private val getEmployeeById: GetEmployeeByIdFunction
 ) {
 

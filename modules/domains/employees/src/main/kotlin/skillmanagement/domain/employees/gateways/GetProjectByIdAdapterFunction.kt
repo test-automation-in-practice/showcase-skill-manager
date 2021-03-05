@@ -18,7 +18,7 @@ import java.util.UUID
  * (e.g. HTTP or RSocket etc.).
  */
 @BusinessFunction
-class GetProjectByIdAdapterFunction(
+internal class GetProjectByIdAdapterFunction(
     private val getProjectById: GetProjectByIdFunction
 ) {
     operator fun invoke(id: UUID): ProjectData? = getProjectById(id)?.toData()

@@ -12,7 +12,7 @@ import skillmanagement.domain.skills.model.toAllResource
 
 @HttpAdapter
 @RequestMapping("/api/skills")
-class GetSkillsHttpAdapter(
+internal class GetSkillsHttpAdapter(
     private val getSkills: GetSkillsFunction
 ) {
 

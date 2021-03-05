@@ -12,7 +12,7 @@ import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult
 import java.util.UUID
 
 @BusinessFunction
-class DeleteProjectAssignmentOfEmployeeFunction(
+class DeleteProjectAssignmentOfEmployeeFunction internal constructor(
     private val updateEmployeeById: UpdateEmployeeByIdFunction
 ) {
 

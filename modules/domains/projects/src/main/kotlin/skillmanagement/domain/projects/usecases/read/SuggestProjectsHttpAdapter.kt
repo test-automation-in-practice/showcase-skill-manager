@@ -10,7 +10,7 @@ import skillmanagement.domain.projects.searchindex.ProjectSearchIndex
 
 @HttpAdapter
 @RequestMapping("/api/projects/_suggest")
-class SuggestProjectsHttpAdapter(
+internal class SuggestProjectsHttpAdapter(
     private val searchIndex: ProjectSearchIndex
 ) {
 

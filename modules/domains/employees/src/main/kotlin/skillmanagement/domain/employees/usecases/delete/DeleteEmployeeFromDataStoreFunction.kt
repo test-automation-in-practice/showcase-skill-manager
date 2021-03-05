@@ -6,7 +6,7 @@ import skillmanagement.common.stereotypes.TechnicalFunction
 import java.util.UUID
 
 @TechnicalFunction
-class DeleteEmployeeFromDataStoreFunction(
+internal class DeleteEmployeeFromDataStoreFunction(
     private val jdbcTemplate: NamedParameterJdbcTemplate
 ) {
 

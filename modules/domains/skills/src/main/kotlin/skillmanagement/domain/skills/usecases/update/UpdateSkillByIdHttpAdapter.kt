@@ -22,7 +22,7 @@ import java.util.UUID
 
 @HttpAdapter
 @RequestMapping("/api/skills/{skillId}")
-class UpdateSkillByIdHttpAdapter(
+internal class UpdateSkillByIdHttpAdapter(
     private val updateSkillById: UpdateSkillByIdFunction,
     private val applyPatch: ApplyPatch
 ) {

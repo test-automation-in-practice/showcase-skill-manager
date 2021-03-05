@@ -19,7 +19,7 @@ private const val RESOURCE_BASE = "api/employees"
 
 @JsonInclude(NON_NULL)
 @Relation(itemRelation = "employee", collectionRelation = "employees")
-data class EmployeeResource(
+internal data class EmployeeResource(
     val id: UUID,
 
     val firstName: FirstName,
@@ -41,13 +41,13 @@ data class EmployeeResource(
     val lastUpdate: Instant
 ) : RepresentationModel<EmployeeResource>()
 
-data class SkillKnowledgeResource(
+internal data class SkillKnowledgeResource(
     val label: String,
     val level: SkillLevel,
     val secret: Boolean
 ) : RepresentationModel<SkillKnowledgeResource>()
 
-data class ProjectAssignmentResource(
+internal data class ProjectAssignmentResource(
     val label: String,
     val description: String,
     val contribution: ProjectContribution,
@@ -55,7 +55,7 @@ data class ProjectAssignmentResource(
     val endDate: LocalDate?
 ) : RepresentationModel<SkillKnowledgeResource>()
 
-fun Employee.toResource() = EmployeeResource(
+internal fun Employee.toResource() = EmployeeResource(
     id = id,
     firstName = firstName,
     lastName = lastName,
@@ -76,7 +76,7 @@ fun Employee.toResource() = EmployeeResource(
     add(linkToEmployee(id).withRel("delete"))
 }
 
-fun SkillKnowledge.toResource(employeeId: UUID) = SkillKnowledgeResource(
+internal fun SkillKnowledge.toResource(employeeId: UUID) = SkillKnowledgeResource(
     label = skill.label,
     level = level,
     secret = secret
@@ -86,7 +86,7 @@ fun SkillKnowledge.toResource(employeeId: UUID) = SkillKnowledgeResource(
     add(linkToSkill(skill.id).withRel("skill"))
 }
 
-fun ProjectAssignment.toResource(employeeId: UUID) = ProjectAssignmentResource(
+internal fun ProjectAssignment.toResource(employeeId: UUID) = ProjectAssignmentResource(
     label = project.label,
     description = project.description,
     contribution = contribution,
@@ -98,7 +98,7 @@ fun ProjectAssignment.toResource(employeeId: UUID) = ProjectAssignmentResource(
     add(linkToProject(project.id).withRel("project"))
 }
 
-fun Page<Employee>.toAllResource(): PagedModel<EmployeeResource> =
+internal fun Page<Employee>.toAllResource(): PagedModel<EmployeeResource> =
     PagedModel.of(content.map(Employee::toResource), toMetaData())
         .apply {
             add(linkToEmployees(pageIndex, pageSize).withSelfRel())
@@ -106,12 +106,12 @@ fun Page<Employee>.toAllResource(): PagedModel<EmployeeResource> =
             if (hasNext()) add(linkToEmployees(pageIndex + 1, pageSize).withRel("nextPage"))
         }
 
-fun linkToEmployees(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
+internal fun linkToEmployees(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
     val queryPart = "?page=$pageIndex&size=$pageSize"
     return linkToCurrentMapping().slash(RESOURCE_BASE + queryPart)
 }
 
-fun Page<Employee>.toSearchResource(): PagedModel<EmployeeResource> =
+internal fun Page<Employee>.toSearchResource(): PagedModel<EmployeeResource> =
     PagedModel.of(content.map(Employee::toResource), toMetaData())
         .apply {
             add(linkToEmployeesSearch(pageIndex, pageSize).withSelfRel())
@@ -119,22 +119,22 @@ fun Page<Employee>.toSearchResource(): PagedModel<EmployeeResource> =
             if (hasNext()) add(linkToEmployeesSearch(pageIndex + 1, pageSize).withRel("nextPage"))
         }
 
-fun linkToEmployeesSearch(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
+internal fun linkToEmployeesSearch(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
     val queryPart = "/_search?page=$pageIndex&size=$pageSize"
     return linkToCurrentMapping().slash(RESOURCE_BASE + queryPart)
 }
 
-fun linkToEmployee(id: UUID) =
+internal fun linkToEmployee(id: UUID) =
     linkToCurrentMapping().slash("$RESOURCE_BASE/$id")
 
-fun linkToSkillKnowledge(employeeId: UUID, skillId: UUID) =
+internal fun linkToSkillKnowledge(employeeId: UUID, skillId: UUID) =
     linkToCurrentMapping().slash("$RESOURCE_BASE/$employeeId/skills/$skillId")
 
-fun linkToSkill(id: UUID) =
+internal fun linkToSkill(id: UUID) =
     linkToCurrentMapping().slash("api/employees/$id")
 
-fun linkToProjectAssignment(employeeId: UUID, assignmentId: UUID) =
+internal fun linkToProjectAssignment(employeeId: UUID, assignmentId: UUID) =
     linkToCurrentMapping().slash("$RESOURCE_BASE/$employeeId/projects/$assignmentId")
 
-fun linkToProject(id: UUID) =
+internal fun linkToProject(id: UUID) =
     linkToCurrentMapping().slash("api/projects/$id")

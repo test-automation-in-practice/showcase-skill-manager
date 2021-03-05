@@ -6,7 +6,7 @@ import skillmanagement.domain.employees.searchindex.EmployeeSearchIndex
 import java.util.UUID
 
 @BusinessFunction
-class GetEmployeeIdsFunction(
+class GetEmployeeIdsFunction internal constructor(
     private val searchIndex: EmployeeSearchIndex
 ) {
 

@@ -15,4 +15,4 @@ import org.springframework.transaction.annotation.Transactional
     )
 )
 @Transactional
-annotation class RetryOnConcurrentEmployeeUpdate
+internal annotation class RetryOnConcurrentEmployeeUpdate

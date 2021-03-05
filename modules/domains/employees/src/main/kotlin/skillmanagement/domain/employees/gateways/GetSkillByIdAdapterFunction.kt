@@ -16,7 +16,7 @@ import java.util.UUID
  * (e.g. HTTP or RSocket etc.).
  */
 @BusinessFunction
-class GetSkillByIdAdapterFunction(
+internal class GetSkillByIdAdapterFunction(
     private val getSkillById: GetSkillByIdFunction
 ) {
     operator fun invoke(id: UUID): SkillData? = getSkillById(id)?.toData()

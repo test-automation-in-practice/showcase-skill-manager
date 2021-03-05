@@ -10,7 +10,7 @@ import skillmanagement.domain.projects.model.ProjectLabel
 import java.time.Clock
 
 @BusinessFunction
-class CreateProjectFunction(
+class CreateProjectFunction internal constructor(
     private val idGenerator: IdGenerator,
     private val insertProjectIntoDataStore: InsertProjectIntoDataStoreFunction,
     private val publishEvent: PublishEvent,

@@ -25,7 +25,7 @@ import java.util.UUID
 
 @HttpAdapter
 @RequestMapping("/api/employees/{employeeId}/skills/{skillId}")
-class UpdateSkillKnowledgeByIdHttpAdapter(
+internal class UpdateSkillKnowledgeByIdHttpAdapter(
     private val updateSkillKnowledgeById: UpdateSkillKnowledgeByIdFunction,
     private val applyPatch: ApplyPatch
 ) {

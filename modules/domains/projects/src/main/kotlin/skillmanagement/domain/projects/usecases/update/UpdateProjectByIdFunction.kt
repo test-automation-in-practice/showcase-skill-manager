@@ -10,7 +10,7 @@ import skillmanagement.domain.projects.usecases.update.UpdateProjectByIdResult.S
 import java.util.UUID
 
 @BusinessFunction
-class UpdateProjectByIdFunction(
+class UpdateProjectByIdFunction internal constructor(
     private val getProjectById: GetProjectByIdFunction,
     private val updateProjectInDataStore: UpdateProjectInDataStoreFunction,
     private val publishEvent: PublishEvent

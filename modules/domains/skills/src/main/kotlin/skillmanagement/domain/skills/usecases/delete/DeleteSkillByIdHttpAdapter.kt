@@ -10,7 +10,7 @@ import java.util.UUID
 
 @HttpAdapter
 @RequestMapping("/api/skills/{id}")
-class DeleteSkillByIdHttpAdapter(
+internal class DeleteSkillByIdHttpAdapter(
     private val deleteSkillById: DeleteSkillByIdFunction
 ) {
 

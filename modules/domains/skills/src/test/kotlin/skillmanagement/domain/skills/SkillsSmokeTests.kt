@@ -21,7 +21,7 @@ import java.lang.Thread.sleep
 
 @SmokeTest
 @SpringBootTestWithDockerizedDependencies
-class SkillsSmokeTests(
+internal class SkillsSmokeTests(
     @Autowired val deleteSkillsFromDataStore: DeleteSkillFromDataStoreFunction,
     @Autowired val searchIndex: SkillSearchIndex,
     @LocalServerPort val port: Int

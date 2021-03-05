@@ -19,7 +19,7 @@ private const val EMPLOYEE_UPDATED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.EmployeeUpdat
 private const val EMPLOYEE_DELETED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.EmployeeDeletedEvent"
 
 @EventHandler
-class EmployeeSearchIndexUpdatingEventHandler(
+internal class EmployeeSearchIndexUpdatingEventHandler(
     private val searchIndex: EmployeeSearchIndex
 ) {
 
@@ -46,7 +46,7 @@ class EmployeeSearchIndexUpdatingEventHandler(
 }
 
 @Configuration
-class EmployeeSearchIndexUpdatingEventHandlerConfiguration {
+internal class EmployeeSearchIndexUpdatingEventHandlerConfiguration {
 
     @Bean("$CONTEXT.EmployeeAddedEvent.Queue")
     fun employeeAddedEventQueue() = durableQueue(EMPLOYEE_ADDED_QUEUE)

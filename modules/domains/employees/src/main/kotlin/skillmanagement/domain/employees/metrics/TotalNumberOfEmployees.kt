@@ -13,7 +13,7 @@ private const val RATE_PROPERTY = "\${metrics.employees.total.update.rate}"
 private const val DELAY_PROPERTY = "\${metrics.employees.total.update.delay}"
 
 @LastingMetric
-class TotalNumberOfEmployeesMeterBinder(
+internal class TotalNumberOfEmployeesMeterBinder(
     private val getTotalNumberOfEmployeesFromDataStore: GetTotalNumberOfEmployeesFromDataStoreFunction
 ) : MeterBinder {
 
@@ -35,7 +35,7 @@ class TotalNumberOfEmployeesMeterBinder(
 }
 
 @TechnicalFunction
-class GetTotalNumberOfEmployeesFromDataStoreFunction(
+internal class GetTotalNumberOfEmployeesFromDataStoreFunction(
     private val jdbcTemplate: JdbcTemplate
 ) {
 

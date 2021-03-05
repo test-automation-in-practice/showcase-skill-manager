@@ -12,7 +12,7 @@ import java.sql.ResultSet
 import java.util.UUID
 
 @TechnicalFunction
-class GetSkillsFromDataStoreFunction(
+internal class GetSkillsFromDataStoreFunction(
     private val jdbcTemplate: NamedParameterJdbcTemplate,
     objectMapper: ObjectMapper
 ) {

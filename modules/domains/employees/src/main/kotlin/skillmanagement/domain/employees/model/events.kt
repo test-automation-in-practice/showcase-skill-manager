@@ -5,14 +5,14 @@ import skillmanagement.common.events.Event
 /**
  * Tagging interface for _all_ [Employee] related event types.
  */
-interface EmployeeEvent : Event
+internal interface EmployeeEvent : Event
 
-data class EmployeeAddedEvent(val employee: Employee) : EmployeeEvent
-data class EmployeeUpdatedEvent(val employee: Employee) : EmployeeEvent
-data class EmployeeDeletedEvent(val employee: Employee) : EmployeeEvent
+internal data class EmployeeAddedEvent(val employee: Employee) : EmployeeEvent
+internal data class EmployeeUpdatedEvent(val employee: Employee) : EmployeeEvent
+internal data class EmployeeDeletedEvent(val employee: Employee) : EmployeeEvent
 
-data class SkillUpdatedEvent(val skill: SkillData) : EmployeeEvent
-data class SkillDeletedEvent(val skill: SkillData) : EmployeeEvent
+internal data class SkillUpdatedEvent(val skill: SkillData) : EmployeeEvent
+internal data class SkillDeletedEvent(val skill: SkillData) : EmployeeEvent
 
-data class ProjectUpdatedEvent(val project: ProjectData) : EmployeeEvent
-data class ProjectDeletedEvent(val project: ProjectData) : EmployeeEvent
+internal data class ProjectUpdatedEvent(val project: ProjectData) : EmployeeEvent
+internal data class ProjectDeletedEvent(val project: ProjectData) : EmployeeEvent

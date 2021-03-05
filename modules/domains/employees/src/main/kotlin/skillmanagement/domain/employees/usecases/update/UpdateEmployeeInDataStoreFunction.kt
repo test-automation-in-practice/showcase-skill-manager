@@ -7,7 +7,7 @@ import skillmanagement.domain.employees.model.Employee
 import java.time.Clock
 
 @TechnicalFunction
-class UpdateEmployeeInDataStoreFunction(
+internal class UpdateEmployeeInDataStoreFunction(
     private val jdbcTemplate: NamedParameterJdbcTemplate,
     private val objectMapper: ObjectMapper,
     private val clock: Clock

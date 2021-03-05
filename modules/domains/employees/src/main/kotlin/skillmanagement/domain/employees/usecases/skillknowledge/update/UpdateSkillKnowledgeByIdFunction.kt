@@ -14,7 +14,7 @@ import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult
 import java.util.UUID
 
 @BusinessFunction
-class UpdateSkillKnowledgeByIdFunction(
+class UpdateSkillKnowledgeByIdFunction internal constructor(
     private val updateEmployeeById: UpdateEmployeeByIdFunction
 ) {
 

@@ -17,7 +17,7 @@ import java.util.UUID
 
 @HttpAdapter
 @RequestMapping("/api/employees/{employeeId}/projects/{assignmentId}")
-class DeleteProjectAssignmentOfEmployeeHttpAdapter(
+internal class DeleteProjectAssignmentOfEmployeeHttpAdapter(
     private val deleteProjectAssignmentOfEmployee: DeleteProjectAssignmentOfEmployeeFunction
 ) {
 

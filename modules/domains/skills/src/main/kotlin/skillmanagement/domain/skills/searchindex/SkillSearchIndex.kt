@@ -10,7 +10,7 @@ import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.Tag
 
 @Component
-class SkillSearchIndex(
+internal class SkillSearchIndex(
     override val client: RestHighLevelClient
 ) : AbstractSearchIndex<Skill>() {
 

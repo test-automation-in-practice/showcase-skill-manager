@@ -19,7 +19,7 @@ import java.lang.Thread.sleep
 
 @SmokeTest
 @SpringBootTestWithDockerizedDependencies
-class ProjectsSmokeTests(
+internal class ProjectsSmokeTests(
     @Autowired val deleteProjectsFromDataStore: DeleteProjectFromDataStoreFunction,
     @Autowired val searchIndex: ProjectSearchIndex,
     @LocalServerPort val port: Int

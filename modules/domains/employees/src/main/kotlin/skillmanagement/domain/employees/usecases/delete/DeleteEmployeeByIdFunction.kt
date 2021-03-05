@@ -9,7 +9,7 @@ import skillmanagement.domain.employees.usecases.read.GetEmployeeByIdFunction
 import java.util.UUID
 
 @BusinessFunction
-class DeleteEmployeeByIdFunction(
+class DeleteEmployeeByIdFunction internal constructor(
     private val getEmployeeById: GetEmployeeByIdFunction,
     private val deleteEmployeeFromDataStore: DeleteEmployeeFromDataStoreFunction,
     private val publishEvent: PublishEvent

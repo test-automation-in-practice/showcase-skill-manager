@@ -9,7 +9,7 @@ import skillmanagement.domain.projects.usecases.read.SearchProjectsHttpAdapter
 import skillmanagement.test.AbstractHttpTestDriver
 import java.util.UUID
 
-class ProjectsTestDriver(
+internal class ProjectsTestDriver(
     host: String = "localhost",
     port: Int = 8080
 ) : AbstractHttpTestDriver(host, port) {
