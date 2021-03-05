@@ -10,7 +10,7 @@ import skillmanagement.domain.skills.usecases.read.GetSkillsFromDataStoreFunctio
 
 @Task
 @WebEndpoint(id = "reconstructSkillSearchIndex")
-class ReconstructSkillSearchIndexTask(
+internal class ReconstructSkillSearchIndexTask(
     override val searchIndex: SkillSearchIndex,
     private val getSkillsFromDataStore: GetSkillsFromDataStoreFunction
 ) : AbstractReconstructSearchIndexTask<Skill>() {

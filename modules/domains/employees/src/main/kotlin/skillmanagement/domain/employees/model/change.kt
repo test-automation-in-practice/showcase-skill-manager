@@ -2,7 +2,7 @@ package skillmanagement.domain.employees.model
 
 import java.time.LocalDate
 
-data class EmployeeChangeData(
+internal data class EmployeeChangeData(
     val firstName: FirstName,
     val lastName: LastName,
     val title: JobTitle,
@@ -17,18 +17,18 @@ data class EmployeeChangeData(
     val jobHistory: List<Job>
 )
 
-data class ProjectAssignmentChangeData(
+internal data class ProjectAssignmentChangeData(
     val contribution: ProjectContribution,
     val startDate: LocalDate,
     val endDate: LocalDate?
 )
 
-data class SkillKnowledgeChangeData(
+internal data class SkillKnowledgeChangeData(
     val level: SkillLevel,
     val secret: Boolean
 )
 
-fun Employee.toChangeData(): EmployeeChangeData =
+internal fun Employee.toChangeData(): EmployeeChangeData =
     EmployeeChangeData(
         firstName = firstName,
         lastName = lastName,
@@ -43,7 +43,7 @@ fun Employee.toChangeData(): EmployeeChangeData =
         jobHistory = jobHistory
     )
 
-fun Employee.merge(changes: EmployeeChangeData): Employee =
+internal fun Employee.merge(changes: EmployeeChangeData): Employee =
     copy(
         firstName = changes.firstName,
         lastName = changes.lastName,
@@ -58,14 +58,14 @@ fun Employee.merge(changes: EmployeeChangeData): Employee =
         jobHistory = changes.jobHistory
     )
 
-fun ProjectAssignment.toChangeData(): ProjectAssignmentChangeData =
+internal fun ProjectAssignment.toChangeData(): ProjectAssignmentChangeData =
     ProjectAssignmentChangeData(contribution = contribution, startDate = startDate, endDate = endDate)
 
-fun ProjectAssignment.merge(changes: ProjectAssignmentChangeData): ProjectAssignment =
+internal fun ProjectAssignment.merge(changes: ProjectAssignmentChangeData): ProjectAssignment =
     copy(contribution = changes.contribution, startDate = changes.startDate, endDate = changes.endDate)
 
-fun SkillKnowledge.toChangeData(): SkillKnowledgeChangeData =
+internal fun SkillKnowledge.toChangeData(): SkillKnowledgeChangeData =
     SkillKnowledgeChangeData(level = level, secret = secret)
 
-fun SkillKnowledge.merge(changes: SkillKnowledgeChangeData): SkillKnowledge =
+internal fun SkillKnowledge.merge(changes: SkillKnowledgeChangeData): SkillKnowledge =
     copy(level = changes.level, secret = changes.secret)

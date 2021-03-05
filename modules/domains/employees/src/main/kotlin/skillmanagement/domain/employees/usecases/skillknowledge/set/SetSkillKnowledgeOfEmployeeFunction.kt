@@ -15,7 +15,7 @@ import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult
 import java.util.UUID
 
 @BusinessFunction
-class SetSkillKnowledgeOfEmployeeFunction(
+class SetSkillKnowledgeOfEmployeeFunction internal constructor(
     private val getSkillById: GetSkillByIdAdapterFunction,
     private val updateEmployeeById: UpdateEmployeeByIdFunction
 ) {

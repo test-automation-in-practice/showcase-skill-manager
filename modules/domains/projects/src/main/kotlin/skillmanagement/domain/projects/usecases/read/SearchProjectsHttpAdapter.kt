@@ -13,7 +13,7 @@ import skillmanagement.domain.projects.model.toSearchResource
 
 @HttpAdapter
 @RequestMapping("/api/projects/_search")
-class SearchProjectsHttpAdapter(
+internal class SearchProjectsHttpAdapter(
     private val getProjects: GetProjectsFunction
 ) {
 

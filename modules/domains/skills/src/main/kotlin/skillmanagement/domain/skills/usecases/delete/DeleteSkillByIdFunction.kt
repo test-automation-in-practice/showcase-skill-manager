@@ -9,7 +9,7 @@ import skillmanagement.domain.skills.usecases.read.GetSkillByIdFunction
 import java.util.UUID
 
 @BusinessFunction
-class DeleteSkillByIdFunction(
+class DeleteSkillByIdFunction internal constructor(
     private val getSkillById: GetSkillByIdFunction,
     private val deleteSkillFromDataStore: DeleteSkillFromDataStoreFunction,
     private val publishEvent: PublishEvent

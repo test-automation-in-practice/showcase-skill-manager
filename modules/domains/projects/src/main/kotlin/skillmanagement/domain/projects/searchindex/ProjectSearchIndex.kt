@@ -9,7 +9,7 @@ import skillmanagement.common.search.AbstractSearchIndex
 import skillmanagement.domain.projects.model.Project
 
 @Component
-class ProjectSearchIndex(
+internal class ProjectSearchIndex(
     override val client: RestHighLevelClient
 ) : AbstractSearchIndex<Project>() {
 

@@ -20,7 +20,7 @@ private const val CONTEXT = "ProjectAssignmentDeletingEventHandler"
 private const val PROJECT_DELETED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.ProjectDeletedEvent"
 
 @EventHandler
-class ProjectAssignmentDeletingEventHandler(
+internal class ProjectAssignmentDeletingEventHandler(
     private val getEmployeeIds: GetEmployeeIdsFunction,
     private val updateEmployeeById: UpdateEmployeeByIdFunction
 ) {
@@ -46,7 +46,7 @@ class ProjectAssignmentDeletingEventHandler(
 }
 
 @Configuration
-class ProjectAssignmentDeletingEventHandlerConfiguration {
+internal class ProjectAssignmentDeletingEventHandlerConfiguration {
 
     @Bean("$CONTEXT.ProjectDeletedEvent.Queue")
     fun projectDeletedEventQueue() = durableQueue(PROJECT_DELETED_QUEUE)

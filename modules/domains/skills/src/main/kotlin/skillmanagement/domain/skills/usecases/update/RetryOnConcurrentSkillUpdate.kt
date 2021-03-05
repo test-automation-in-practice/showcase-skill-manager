@@ -15,4 +15,4 @@ import org.springframework.transaction.annotation.Transactional
     )
 )
 @Transactional
-annotation class RetryOnConcurrentSkillUpdate
+internal annotation class RetryOnConcurrentSkillUpdate

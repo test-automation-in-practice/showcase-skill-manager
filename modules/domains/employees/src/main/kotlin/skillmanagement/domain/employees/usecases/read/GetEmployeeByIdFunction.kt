@@ -5,7 +5,7 @@ import skillmanagement.domain.employees.model.Employee
 import java.util.UUID
 
 @BusinessFunction
-class GetEmployeeByIdFunction(
+class GetEmployeeByIdFunction internal constructor(
     private val getEmployeeFromDataStore: GetEmployeesFromDataStoreFunction
 ) {
 

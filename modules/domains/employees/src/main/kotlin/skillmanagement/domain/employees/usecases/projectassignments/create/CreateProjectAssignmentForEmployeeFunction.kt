@@ -17,7 +17,7 @@ import java.time.LocalDate
 import java.util.UUID
 
 @BusinessFunction
-class CreateProjectAssignmentForEmployeeFunction(
+class CreateProjectAssignmentForEmployeeFunction internal constructor(
     private val idGenerator: IdGenerator,
     private val getProjectById: GetProjectByIdAdapterFunction,
     private val updateEmployeeById: UpdateEmployeeByIdFunction

@@ -18,7 +18,7 @@ private const val CONTEXT = "SkillKnowledgeDeletingEventHandler"
 private const val SKILL_DELETED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.SkillDeletedEvent"
 
 @EventHandler
-class SkillKnowledgeDeletingEventHandler(
+internal class SkillKnowledgeDeletingEventHandler(
     private val getEmployeeIds: GetEmployeeIdsFunction,
     private val updateEmployeeById: UpdateEmployeeByIdFunction
 ) {
@@ -41,7 +41,7 @@ class SkillKnowledgeDeletingEventHandler(
 }
 
 @Configuration
-class SkillKnowledgeDeletingEventHandlerConfiguration {
+internal class SkillKnowledgeDeletingEventHandlerConfiguration {
 
     @Bean("$CONTEXT.SkillDeletedEvent.Queue")
     fun skillDeletedEventQueue() = durableQueue(SKILL_DELETED_QUEUE)

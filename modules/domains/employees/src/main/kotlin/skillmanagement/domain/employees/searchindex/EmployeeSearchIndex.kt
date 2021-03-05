@@ -9,7 +9,7 @@ import skillmanagement.common.search.AbstractSearchIndex
 import skillmanagement.domain.employees.model.Employee
 
 @Component
-class EmployeeSearchIndex(
+internal class EmployeeSearchIndex(
     override val client: RestHighLevelClient
 ) : AbstractSearchIndex<Employee>() {
 

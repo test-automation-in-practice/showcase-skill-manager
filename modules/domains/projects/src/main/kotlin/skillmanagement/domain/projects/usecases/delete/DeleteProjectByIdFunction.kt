@@ -9,7 +9,7 @@ import skillmanagement.domain.projects.usecases.read.GetProjectByIdFunction
 import java.util.UUID
 
 @BusinessFunction
-class DeleteProjectByIdFunction(
+class DeleteProjectByIdFunction internal constructor(
     private val getProjectById: GetProjectByIdFunction,
     private val deleteProjectFromDataStore: DeleteProjectFromDataStoreFunction,
     private val publishEvent: PublishEvent

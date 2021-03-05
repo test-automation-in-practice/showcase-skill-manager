@@ -11,7 +11,7 @@ import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult
 import java.util.UUID
 
 @BusinessFunction
-class UpdateEmployeeByIdFunction(
+class UpdateEmployeeByIdFunction internal constructor(
     private val getEmployeeById: GetEmployeeByIdFunction,
     private val updateEmployeeInDataStore: UpdateEmployeeInDataStoreFunction,
     private val publishEvent: PublishEvent

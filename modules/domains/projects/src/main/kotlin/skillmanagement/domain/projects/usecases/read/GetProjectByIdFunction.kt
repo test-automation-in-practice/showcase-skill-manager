@@ -5,7 +5,7 @@ import skillmanagement.domain.projects.model.Project
 import java.util.UUID
 
 @BusinessFunction
-class GetProjectByIdFunction(
+class GetProjectByIdFunction internal constructor(
     private val getProjectsFromDataStore: GetProjectsFromDataStoreFunction
 ) {
 

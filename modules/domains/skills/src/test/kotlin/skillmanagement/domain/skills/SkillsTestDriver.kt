@@ -13,7 +13,7 @@ import skillmanagement.test.AbstractHttpTestDriver
 import java.util.Collections.emptySortedSet
 import java.util.UUID
 
-class SkillsTestDriver(
+internal class SkillsTestDriver(
     host: String = "localhost",
     port: Int = 8080
 ) : AbstractHttpTestDriver(host, port) {

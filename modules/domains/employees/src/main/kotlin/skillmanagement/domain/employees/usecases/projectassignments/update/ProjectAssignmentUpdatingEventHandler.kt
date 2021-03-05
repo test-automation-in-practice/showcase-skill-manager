@@ -20,7 +20,7 @@ private const val CONTEXT = "ProjectAssignmentUpdatingEventHandler"
 private const val PROJECT_UPDATED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.ProjectUpdatedEvent"
 
 @EventHandler
-class ProjectAssignmentUpdatingEventHandler(
+internal class ProjectAssignmentUpdatingEventHandler(
     private val getEmployeeIds: GetEmployeeIdsFunction,
     private val updateEmployeeById: UpdateEmployeeByIdFunction
 ) {
@@ -51,7 +51,7 @@ class ProjectAssignmentUpdatingEventHandler(
 }
 
 @Configuration
-class ProjectAssignmentUpdatingEventHandlerConfiguration {
+internal class ProjectAssignmentUpdatingEventHandlerConfiguration {
 
     @Bean("${CONTEXT}.ProjectUpdatedEvent.Queue")
     fun projectUpdatedEventQueue() = durableQueue(PROJECT_UPDATED_QUEUE)

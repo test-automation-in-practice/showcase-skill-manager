@@ -7,7 +7,7 @@ import skillmanagement.domain.projects.model.Project
 import java.time.Clock
 
 @TechnicalFunction
-class UpdateProjectInDataStoreFunction(
+internal class UpdateProjectInDataStoreFunction(
     private val jdbcTemplate: NamedParameterJdbcTemplate,
     private val objectMapper: ObjectMapper,
     private val clock: Clock
@@ -47,4 +47,4 @@ class UpdateProjectInDataStoreFunction(
 
 }
 
-class ConcurrentProjectUpdateException : RuntimeException()
+internal class ConcurrentProjectUpdateException : RuntimeException()

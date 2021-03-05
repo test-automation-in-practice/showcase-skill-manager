@@ -13,7 +13,7 @@ import skillmanagement.domain.employees.model.TelephoneNumber
 import java.time.Clock
 
 @BusinessFunction
-class CreateEmployeeFunction(
+class CreateEmployeeFunction internal constructor(
     private val idGenerator: IdGenerator,
     private val insertEmployeeIntoDataStore: InsertEmployeeIntoDataStoreFunction,
     private val publishEvent: PublishEvent,

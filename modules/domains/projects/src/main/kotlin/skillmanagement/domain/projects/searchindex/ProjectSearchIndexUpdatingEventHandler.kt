@@ -19,7 +19,7 @@ private const val PROJECT_UPDATED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.ProjectUpdated
 private const val PROJECT_DELETED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.ProjectDeletedEvent"
 
 @EventHandler
-class ProjectSearchIndexUpdatingEventHandler(
+internal class ProjectSearchIndexUpdatingEventHandler(
     private val searchIndex: ProjectSearchIndex
 ) {
 
@@ -46,7 +46,7 @@ class ProjectSearchIndexUpdatingEventHandler(
 }
 
 @Configuration
-class ProjectSearchIndexUpdatingEventHandlerConfiguration {
+internal class ProjectSearchIndexUpdatingEventHandlerConfiguration {
 
     @Bean("$CONTEXT.ProjectAddedEvent.Queue")
     fun projectAddedEventQueue() = durableQueue(PROJECT_ADDED_QUEUE)

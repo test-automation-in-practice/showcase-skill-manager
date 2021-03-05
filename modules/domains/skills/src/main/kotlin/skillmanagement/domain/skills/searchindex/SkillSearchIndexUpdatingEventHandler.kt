@@ -19,7 +19,7 @@ private const val SKILL_UPDATED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.SkillUpdatedEven
 private const val SKILL_DELETED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.SkillDeletedEvent"
 
 @EventHandler
-class SkillSearchIndexUpdatingEventHandler(
+internal class SkillSearchIndexUpdatingEventHandler(
     private val searchIndex: SkillSearchIndex
 ) {
 
@@ -46,7 +46,7 @@ class SkillSearchIndexUpdatingEventHandler(
 }
 
 @Configuration
-class SkillSearchIndexUpdatingEventHandlerConfiguration {
+internal class SkillSearchIndexUpdatingEventHandlerConfiguration {
 
     @Bean("$CONTEXT.SkillAddedEvent.Queue")
     fun skillAddedEventQueue() = durableQueue(SKILL_ADDED_QUEUE)

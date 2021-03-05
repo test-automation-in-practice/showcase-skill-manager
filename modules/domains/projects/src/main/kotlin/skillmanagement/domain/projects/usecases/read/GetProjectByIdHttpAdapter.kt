@@ -13,7 +13,7 @@ import java.util.UUID
 
 @HttpAdapter
 @RequestMapping("/api/projects/{id}")
-class GetProjectByIdHttpAdapter(
+internal class GetProjectByIdHttpAdapter(
     private val getProjectById: GetProjectByIdFunction
 ) {
 

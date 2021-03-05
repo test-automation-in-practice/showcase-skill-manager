@@ -23,7 +23,7 @@ import java.util.UUID
 
 @HttpAdapter
 @RequestMapping("/api/employees/{employeeId}")
-class UpdateEmployeeByIdHttpAdapter(
+internal class UpdateEmployeeByIdHttpAdapter(
     private val updateEmployeeById: UpdateEmployeeByIdFunction,
     private val applyPatch: ApplyPatch
 ) {

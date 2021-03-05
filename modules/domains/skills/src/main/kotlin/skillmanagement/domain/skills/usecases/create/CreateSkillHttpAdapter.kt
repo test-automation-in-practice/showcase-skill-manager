@@ -21,7 +21,7 @@ import java.util.SortedSet
  */
 @HttpAdapter
 @RequestMapping("/api/skills")
-class CreateSkillHttpAdapter(
+internal class CreateSkillHttpAdapter(
     private val createSkill: CreateSkillFunction
 ) {
 

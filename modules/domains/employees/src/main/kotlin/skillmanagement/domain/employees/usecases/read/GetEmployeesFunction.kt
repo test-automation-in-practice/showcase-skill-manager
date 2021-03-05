@@ -6,7 +6,7 @@ import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.searchindex.EmployeeSearchIndex
 
 @BusinessFunction
-class GetEmployeesFunction(
+class GetEmployeesFunction internal constructor(
     private val getEmployeeFromDataStore: GetEmployeesFromDataStoreFunction,
     private val searchIndex: EmployeeSearchIndex
 ) {

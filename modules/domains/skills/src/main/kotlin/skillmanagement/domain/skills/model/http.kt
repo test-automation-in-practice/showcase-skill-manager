@@ -11,14 +11,14 @@ import java.util.SortedSet
 import java.util.UUID
 
 @Relation(itemRelation = "skill", collectionRelation = "skills")
-data class SkillResource(
+internal data class SkillResource(
     val id: UUID,
     val label: SkillLabel,
     val description: SkillDescription?,
     val tags: SortedSet<Tag>
 ) : RepresentationModel<SkillResource>()
 
-fun Skill.toResource() = SkillResource(
+internal fun Skill.toResource() = SkillResource(
     id = id,
     label = label,
     description = description,
@@ -28,7 +28,7 @@ fun Skill.toResource() = SkillResource(
     add(linkToSkill(id).withRel("delete"))
 }
 
-fun Page<Skill>.toAllResource(): PagedModel<SkillResource> =
+internal fun Page<Skill>.toAllResource(): PagedModel<SkillResource> =
     PagedModel.of(content.map(Skill::toResource), toMetaData())
         .apply {
             add(linkToSkills(pageIndex, pageSize).withSelfRel())
@@ -36,12 +36,12 @@ fun Page<Skill>.toAllResource(): PagedModel<SkillResource> =
             if (hasNext()) add(linkToSkills(pageIndex + 1, pageSize).withRel("nextPage"))
         }
 
-fun linkToSkills(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
+internal fun linkToSkills(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
     val queryPart = "?page=$pageIndex&size=$pageSize"
     return linkToCurrentMapping().slash("api/skills$queryPart")
 }
 
-fun Page<Skill>.toSearchResource(): PagedModel<SkillResource> =
+internal fun Page<Skill>.toSearchResource(): PagedModel<SkillResource> =
     PagedModel.of(content.map(Skill::toResource), toMetaData())
         .apply {
             add(linkToSkillsSearch(pageIndex, pageSize).withSelfRel())
@@ -49,10 +49,10 @@ fun Page<Skill>.toSearchResource(): PagedModel<SkillResource> =
             if (hasNext()) add(linkToSkillsSearch(pageIndex + 1, pageSize).withRel("nextPage"))
         }
 
-fun linkToSkillsSearch(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
+internal fun linkToSkillsSearch(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
     val queryPart = "/_search?page=$pageIndex&size=$pageSize"
     return linkToCurrentMapping().slash("api/skills$queryPart")
 }
 
-fun linkToSkill(id: UUID) =
+internal fun linkToSkill(id: UUID) =
     linkToCurrentMapping().slash("api/skills/$id")

@@ -10,7 +10,7 @@ import skillmanagement.domain.skills.searchindex.SkillSearchIndex
 
 @HttpAdapter
 @RequestMapping("/api/skills/_suggest")
-class SuggestSkillsHttpAdapter(
+internal class SuggestSkillsHttpAdapter(
     private val searchIndex: SkillSearchIndex
 ) {
 

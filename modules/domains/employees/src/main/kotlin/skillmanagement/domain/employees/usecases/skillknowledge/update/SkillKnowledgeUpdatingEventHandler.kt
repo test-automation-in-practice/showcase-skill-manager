@@ -20,7 +20,7 @@ private const val CONTEXT = "SkillKnowledgeUpdatingEventHandler"
 private const val SKILL_UPDATED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.SkillUpdatedEvent"
 
 @EventHandler
-class SkillKnowledgeUpdatingEventHandler(
+internal class SkillKnowledgeUpdatingEventHandler(
     private val getEmployeeIds: GetEmployeeIdsFunction,
     private val updateEmployeeById: UpdateEmployeeByIdFunction
 ) {
@@ -51,7 +51,7 @@ class SkillKnowledgeUpdatingEventHandler(
 }
 
 @Configuration
-class SkillKnowledgeUpdatingEventHandlerConfiguration {
+internal class SkillKnowledgeUpdatingEventHandlerConfiguration {
 
     @Bean("$CONTEXT.SkillUpdatedEvent.Queue")
     fun skillUpdatedEventQueue() = durableQueue(SKILL_UPDATED_QUEUE)

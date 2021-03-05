@@ -10,7 +10,7 @@ import skillmanagement.domain.skills.usecases.update.UpdateSkillByIdResult.Succe
 import java.util.UUID
 
 @BusinessFunction
-class UpdateSkillByIdFunction(
+class UpdateSkillByIdFunction internal constructor(
     private val getSkillById: GetSkillByIdFunction,
     private val updateSkillInDataStore: UpdateSkillInDataStoreFunction,
     private val publishEvent: PublishEvent

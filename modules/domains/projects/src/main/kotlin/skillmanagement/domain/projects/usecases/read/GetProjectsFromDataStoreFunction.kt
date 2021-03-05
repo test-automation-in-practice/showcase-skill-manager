@@ -12,7 +12,7 @@ import java.sql.ResultSet
 import java.util.UUID
 
 @TechnicalFunction
-class GetProjectsFromDataStoreFunction(
+internal class GetProjectsFromDataStoreFunction(
     private val jdbcTemplate: NamedParameterJdbcTemplate,
     objectMapper: ObjectMapper
 ) {

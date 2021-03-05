@@ -20,7 +20,7 @@ import java.util.UUID
 
 @HttpAdapter
 @RequestMapping("/api/employees/{employeeId}/projects")
-class CreateProjectAssignmentForEmployeeHttpAdapter(
+internal class CreateProjectAssignmentForEmployeeHttpAdapter(
     private val createProjectAssignmentForEmployee: CreateProjectAssignmentForEmployeeFunction
 ) {
 
