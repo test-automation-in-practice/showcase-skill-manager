@@ -13,6 +13,7 @@ plugins {
 
 allprojects {
     extra["okhttp3.version"] = "4.9.1"
+    extra["rest-assured.version"] = "4.3.3"
 
     tasks {
         withType<JavaCompile> {
