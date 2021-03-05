@@ -2,7 +2,7 @@ package skillmanagement.domain.projects.tasks
 
 import mu.KotlinLogging.logger
 import org.springframework.boot.actuate.endpoint.web.annotation.WebEndpoint
-import skillmanagement.common.search.AbstractReconstructSearchIndexTask
+import skillmanagement.common.searchindices.AbstractReconstructSearchIndexTask
 import skillmanagement.common.stereotypes.Task
 import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.searchindex.ProjectSearchIndex

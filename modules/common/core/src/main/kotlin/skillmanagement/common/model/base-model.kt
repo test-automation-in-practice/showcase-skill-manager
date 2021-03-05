@@ -3,6 +3,7 @@ package skillmanagement.common.model
 import skillmanagement.common.validation.hasMaxLength
 import skillmanagement.common.validation.isNotBlank
 import skillmanagement.common.validation.matchesPattern
+import java.util.UUID
 
 private val namePattern = Regex("""(?U)[\w][\w -]*""") // unicode word characters
 
@@ -23,3 +24,5 @@ abstract class Text(value: String, maxLength: Int = DEFAULT_MAX_TEXT_LENGTH) :
 
 abstract class Label(value: String, maxLength: Int = DEFAULT_MAX_LABEL_LENGTH) :
     StringType(value, { isNotBlank(); hasMaxLength(maxLength) })
+
+data class Suggestion(val id: UUID, val label: String)

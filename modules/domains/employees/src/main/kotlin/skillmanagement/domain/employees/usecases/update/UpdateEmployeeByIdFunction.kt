@@ -1,6 +1,6 @@
 package skillmanagement.domain.employees.usecases.update
 
-import skillmanagement.common.events.PublishEvent
+import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.EmployeeUpdatedEvent
@@ -14,7 +14,7 @@ import java.util.UUID
 class UpdateEmployeeByIdFunction internal constructor(
     private val getEmployeeById: GetEmployeeByIdFunction,
     private val updateEmployeeInDataStore: UpdateEmployeeInDataStoreFunction,
-    private val publishEvent: PublishEvent
+    private val publishEvent: PublishEventFunction
 ) {
 
     @RetryOnConcurrentEmployeeUpdate

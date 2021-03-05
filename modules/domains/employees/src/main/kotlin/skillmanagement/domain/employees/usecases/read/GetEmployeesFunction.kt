@@ -1,6 +1,6 @@
 package skillmanagement.domain.employees.usecases.read
 
-import skillmanagement.common.search.Page
+import skillmanagement.common.searchindices.Page
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.searchindex.EmployeeSearchIndex

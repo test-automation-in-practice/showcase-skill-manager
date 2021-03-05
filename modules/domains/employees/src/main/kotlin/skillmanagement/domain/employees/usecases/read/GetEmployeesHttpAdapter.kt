@@ -4,8 +4,8 @@ import org.springframework.hateoas.PagedModel
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import skillmanagement.common.search.PageIndex
-import skillmanagement.common.search.PageSize
+import skillmanagement.common.searchindices.PageIndex
+import skillmanagement.common.searchindices.PageSize
 import skillmanagement.common.stereotypes.HttpAdapter
 import skillmanagement.domain.employees.model.EmployeeResource
 import skillmanagement.domain.employees.model.toAllResource

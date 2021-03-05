@@ -1,9 +1,9 @@
 package skillmanagement.domain.employees.usecases.read
 
-import skillmanagement.common.search.PageIndex
-import skillmanagement.common.search.PageSize
-import skillmanagement.common.search.PagedFindAllQuery
-import skillmanagement.common.search.PagedStringQuery
+import skillmanagement.common.searchindices.PageIndex
+import skillmanagement.common.searchindices.PageSize
+import skillmanagement.common.searchindices.PagedFindAllQuery
+import skillmanagement.common.searchindices.PagedStringQuery
 import java.util.UUID
 
 sealed class EmployeesQuery

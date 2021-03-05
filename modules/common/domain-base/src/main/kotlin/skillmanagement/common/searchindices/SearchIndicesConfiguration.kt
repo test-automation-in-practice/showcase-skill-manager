@@ -1,12 +1,10 @@
-package skillmanagement.common.configuration
+package skillmanagement.common.searchindices
 
-import org.apache.http.HttpHost
 import org.elasticsearch.client.RestClient
 import org.elasticsearch.client.RestHighLevelClient
-import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.boot.context.properties.ConstructorBinding
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Configuration
 
 /**
@@ -15,23 +13,14 @@ import org.springframework.context.annotation.Configuration
  * @see RestHighLevelClient
  */
 @Configuration
+@ComponentScan
 @EnableConfigurationProperties(ElasticsearchProperties::class)
-class ElasticsearchConfiguration {
+class SearchIndicesConfiguration {
 
     @Bean(destroyMethod = "close")
     fun elasticsearchClient(properties: ElasticsearchProperties): RestHighLevelClient =
         createElasticsearchClient(properties)
 
-}
-
-@ConstructorBinding
-@ConfigurationProperties("storage.elasticsearch")
-data class ElasticsearchProperties(
-    val schema: String = "http",
-    val host: String = "localhost",
-    val port: Int = 9200
-) {
-    fun toHttpHost() = HttpHost(host, port, schema)
 }
 
 fun createElasticsearchClient(properties: ElasticsearchProperties): RestHighLevelClient =

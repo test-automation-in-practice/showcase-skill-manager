@@ -9,17 +9,16 @@ import org.junit.jupiter.api.assertThrows
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.testit.testutils.logrecorder.api.LogRecord
 import org.testit.testutils.logrecorder.junit5.RecordLoggers
-import skillmanagement.common.messaging.EVENT_EXCHANGE
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.UnitTest
 
 @UnitTest
 @ResetMocksAfterEachTest
-internal class PublishEventTests {
+internal class PublishEventFunctionTests {
 
     private val rabbitTemplate: RabbitTemplate = mockk(relaxed = true)
     private val counter: EventCounter = mockk(relaxed = true)
-    private val publishEvent = PublishEvent(rabbitTemplate, counter)
+    private val publishEvent = PublishEventFunction(rabbitTemplate, counter)
 
     @Test
     fun `events are published to the exchange`() {
@@ -28,7 +27,7 @@ internal class PublishEventTests {
     }
 
     @Test
-    @RecordLoggers(PublishEvent::class)
+    @RecordLoggers(PublishEventFunction::class)
     fun `published events are logged`(log: LogRecord) {
         listOf(TestEventOne, TestEventTwo).forEach { publishEvent(it) }
         assertThat(log.messages)

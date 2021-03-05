@@ -2,8 +2,6 @@ package skillmanagement.common.events
 
 import mu.KotlinLogging.logger
 import org.springframework.amqp.rabbit.core.RabbitTemplate
-import skillmanagement.common.messaging.EVENT_EXCHANGE
-import skillmanagement.common.messaging.routingKey
 import skillmanagement.common.stereotypes.TechnicalFunction
 
 /**
@@ -14,7 +12,7 @@ import skillmanagement.common.stereotypes.TechnicalFunction
  * event.
  */
 @TechnicalFunction
-class PublishEvent(
+class PublishEventFunction(
     private val rabbitTemplate: RabbitTemplate,
     private val counter: EventCounter
 ) {

@@ -7,10 +7,8 @@ import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.core.Relation
 import org.springframework.hateoas.server.mvc.BasicLinkBuilder
 import org.springframework.hateoas.server.mvc.BasicLinkBuilder.linkToCurrentMapping
-import skillmanagement.common.model.Label
-import skillmanagement.common.model.Text
-import skillmanagement.common.search.Page
-import skillmanagement.common.search.toMetaData
+import skillmanagement.common.searchindices.Page
+import skillmanagement.common.searchindices.toMetaData
 import java.time.Instant
 import java.time.LocalDate
 import java.util.*

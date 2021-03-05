@@ -1,4 +1,4 @@
-package skillmanagement.common.search
+package skillmanagement.common.searchindices
 
 import mu.KLogger
 import org.springframework.boot.actuate.endpoint.annotation.WriteOperation

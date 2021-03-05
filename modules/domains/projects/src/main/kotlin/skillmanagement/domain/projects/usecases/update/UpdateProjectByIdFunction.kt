@@ -1,6 +1,6 @@
 package skillmanagement.domain.projects.usecases.update
 
-import skillmanagement.common.events.PublishEvent
+import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.model.ProjectUpdatedEvent
@@ -13,7 +13,7 @@ import java.util.UUID
 class UpdateProjectByIdFunction internal constructor(
     private val getProjectById: GetProjectByIdFunction,
     private val updateProjectInDataStore: UpdateProjectInDataStoreFunction,
-    private val publishEvent: PublishEvent
+    private val publishEvent: PublishEventFunction
 ) {
 
     @RetryOnConcurrentProjectUpdate

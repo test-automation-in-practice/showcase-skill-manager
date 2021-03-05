@@ -1,4 +1,4 @@
-package skillmanagement.common.search
+package skillmanagement.common.searchindices
 
 import org.elasticsearch.action.DocWriteRequest.OpType.INDEX
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest
@@ -59,16 +59,16 @@ abstract class AbstractSearchIndex<T : Any> {
     fun query(query: PagedStringQuery): Page<UUID> =
         queryForIds(
             query = buildQuery(query.queryString),
-            pageIndex = query.pageIndex.value,
-            pageSize = query.pageSize.value,
+            pageIndex = query.pageIndex.toInt(),
+            pageSize = query.pageSize.toInt(),
             sort = ScoreSortBuilder().order(DESC)
         )
 
     fun findAll(query: PagedFindAllQuery): Page<UUID> =
         queryForIds(
             query = MatchAllQueryBuilder(),
-            pageIndex = query.pageIndex.value,
-            pageSize = query.pageSize.value,
+            pageIndex = query.pageIndex.toInt(),
+            pageSize = query.pageSize.toInt(),
             sort = FieldSortBuilder(sortFieldName)
         )
 

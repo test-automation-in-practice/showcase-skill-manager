@@ -5,7 +5,7 @@ import org.elasticsearch.index.query.Operator.AND
 import org.elasticsearch.index.query.QueryBuilders.queryStringQuery
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
-import skillmanagement.common.search.AbstractSearchIndex
+import skillmanagement.common.searchindices.AbstractSearchIndex
 import skillmanagement.domain.projects.model.Project
 
 @Component
