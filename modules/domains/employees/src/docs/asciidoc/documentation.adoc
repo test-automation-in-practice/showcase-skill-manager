@@ -1,1 +1,19 @@
-= SkillManager - Employees API Documentation
+= SkillManager - Employees Documentation
+
+:data-uri:
+
+== Data Consistency
+
+=== Search Index
+
+[plantuml,consistency_search-index,svg]
+....
+include::../plantuml/consistency_search-index.puml[]
+....
+
+=== Database
+
+[plantuml,consistency_database,svg]
+....
+include::../plantuml/consistency_database.puml[]
+....
