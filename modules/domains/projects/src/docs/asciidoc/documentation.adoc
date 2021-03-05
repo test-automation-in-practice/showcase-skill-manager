@@ -1,1 +1,12 @@
-= SkillManager - Projects API Documentation
+= SkillManager - Projects Documentation
+
+:data-uri:
+
+== Data Consistency
+
+=== Search Index
+
+[plantuml,consistency_search-index,svg]
+....
+include::../plantuml/consistency_search-index.puml[]
+....
