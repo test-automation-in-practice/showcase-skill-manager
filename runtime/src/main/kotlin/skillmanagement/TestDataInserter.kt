@@ -11,7 +11,7 @@ import skillmanagement.domain.employees.model.LastName
 import skillmanagement.domain.employees.model.ProjectContribution
 import skillmanagement.domain.employees.model.SkillLevel
 import skillmanagement.domain.employees.model.TelephoneNumber
-import skillmanagement.domain.employees.usecases.create.CreatEmployeeFunction
+import skillmanagement.domain.employees.usecases.create.CreateEmployeeFunction
 import skillmanagement.domain.employees.usecases.projectassignments.create.CreateProjectAssignmentForEmployeeFunction
 import skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnowledgeOfEmployeeFunction
 import skillmanagement.domain.projects.model.ProjectDescription
@@ -30,7 +30,7 @@ class TestDataInserter(
     private val clock: Clock,
     private val createSkill: CreateSkillFunction,
     private val createProject: CreateProjectFunction,
-    private val creatEmployee: CreatEmployeeFunction,
+    private val createEmployee: CreateEmployeeFunction,
     private val setSkillKnowledgeOfEmployee: SetSkillKnowledgeOfEmployeeFunction,
     private val createProjectAssignmentForEmployee: CreateProjectAssignmentForEmployeeFunction
 ) : ApplicationRunner {
@@ -45,7 +45,7 @@ class TestDataInserter(
             label = ProjectLabel("Starlink"),
             description = ProjectDescription("Lorem ipsum ..")
         )
-        val maxMustermann = creatEmployee(
+        val maxMustermann = createEmployee(
             firstName = FirstName("Max"),
             lastName = LastName("Mustermann"),
             title = JobTitle("Managing Consultant"),
