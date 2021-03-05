@@ -16,7 +16,8 @@ dependencies {
 
     api("org.testcontainers:testcontainers:1.15.1")
     api("io.rest-assured:rest-assured:4.3.3")
-    api("com.tngtech.archunit:archunit:0.16.0")
+    api("io.rest-assured:json-path:4.3.3")
+    api("io.rest-assured:xml-path:4.3.3")
 
     api("org.springframework.boot:spring-boot-starter-test")
     api("org.springframework.restdocs:spring-restdocs-mockmvc")

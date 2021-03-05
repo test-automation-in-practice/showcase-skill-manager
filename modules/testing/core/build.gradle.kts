@@ -13,6 +13,7 @@ dependencies {
     api("org.assertj:assertj-core")
     api("io.kotlintest:kotlintest-assertions:3.4.2")
     api("info.novatec.testit:testutils-logrecorder-logback:0.3.4")
+    api("com.tngtech.archunit:archunit:0.16.0")
 
     implementation("org.springframework.boot:spring-boot-starter-test")
 }
