@@ -15,7 +15,7 @@ import skillmanagement.domain.skills.model.skill_java
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_python
 import skillmanagement.test.events.EventingIntegrationTestConfiguration
-import skillmanagement.test.PROPERTY_DOCKERIZED_BROKER_PORT
+import skillmanagement.test.e2e.PROPERTY_DOCKERIZED_BROKER_PORT
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.events.RunWithDockerizedRabbitMq

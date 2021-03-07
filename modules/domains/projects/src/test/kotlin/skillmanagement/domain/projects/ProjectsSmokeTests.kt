@@ -14,7 +14,7 @@ import skillmanagement.domain.projects.model.ProjectResource
 import skillmanagement.domain.projects.searchindex.ProjectSearchIndex
 import skillmanagement.domain.projects.usecases.delete.DeleteProjectFromDataStoreFunction
 import skillmanagement.test.SmokeTest
-import skillmanagement.test.SpringBootTestWithDockerizedDependencies
+import skillmanagement.test.e2e.SpringBootTestWithDockerizedDependencies
 import java.lang.Thread.sleep
 
 @SmokeTest

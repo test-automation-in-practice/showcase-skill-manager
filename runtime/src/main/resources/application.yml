@@ -26,28 +26,18 @@ metrics:
         rate: "PT1M"
         delay: "PT10S"
 
-storage:
-  database:
-    jdbc-url: "jdbc:postgresql://localhost:5432/database"
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/database"
     username: user
     password: password
   elasticsearch:
-    schema: http
-    host: localhost
-    port: 9200
-  broker:
-    host: localhost
-    port: 5672
-
-spring:
-  datasource:
-    url: ${storage.database.jdbc-url}
-    username: ${storage.database.username}
-    password: ${storage.database.password}
+    rest:
+      uris: "http://localhost:9200"
   jackson:
     default-property-inclusion: non_null
   main:
     allow-bean-definition-overriding: false
   rabbitmq:
-    host: ${storage.broker.host}
-    port: ${storage.broker.port}
+    host: localhost
+    port: 5672

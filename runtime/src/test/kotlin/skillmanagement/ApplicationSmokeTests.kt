@@ -2,7 +2,7 @@ package skillmanagement
 
 import org.junit.jupiter.api.Test
 import skillmanagement.test.SmokeTest
-import skillmanagement.test.SpringBootTestWithDockerizedDependencies
+import skillmanagement.test.e2e.SpringBootTestWithDockerizedDependencies
 
 @SmokeTest
 @SpringBootTestWithDockerizedDependencies

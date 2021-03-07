@@ -1,0 +1,247 @@
+CREATE (EventCounter:TransientMetric {name:'EventCounter', fullName:'skillmanagement.common.events.EventCounter'})
+CREATE (PublishEventFunction:TechnicalFunction {name:'PublishEventFunction', fullName:'skillmanagement.common.events.PublishEventFunction'})
+CREATE (ApplyPatch:TechnicalFunction {name:'ApplyPatch', fullName:'skillmanagement.common.http.patch.ApplyPatch'})
+CREATE (GetProjectByIdAdapterFunction:BusinessFunction {name:'GetProjectByIdAdapterFunction', fullName:'skillmanagement.domain.employees.gateways.GetProjectByIdAdapterFunction'})
+CREATE (GetSkillByIdAdapterFunction:BusinessFunction {name:'GetSkillByIdAdapterFunction', fullName:'skillmanagement.domain.employees.gateways.GetSkillByIdAdapterFunction'})
+CREATE (GetTotalNumberOfEmployeesFromDataStoreFunction:TechnicalFunction {name:'GetTotalNumberOfEmployeesFromDataStoreFunction', fullName:'skillmanagement.domain.employees.metrics.GetTotalNumberOfEmployeesFromDataStoreFunction'})
+CREATE (TotalNumberOfEmployeesMeterBinder:LastingMetric {name:'TotalNumberOfEmployeesMeterBinder', fullName:'skillmanagement.domain.employees.metrics.TotalNumberOfEmployeesMeterBinder'})
+CREATE (EmployeeSearchIndex:Component {name:'EmployeeSearchIndex', fullName:'skillmanagement.domain.employees.searchindex.EmployeeSearchIndex'})
+CREATE (EmployeeSearchIndexUpdatingEventHandler:EventHandler {name:'EmployeeSearchIndexUpdatingEventHandler', fullName:'skillmanagement.domain.employees.searchindex.EmployeeSearchIndexUpdatingEventHandler'})
+CREATE (ReconstructEmployeeSearchIndexTask:Task {name:'ReconstructEmployeeSearchIndexTask', fullName:'skillmanagement.domain.employees.tasks.ReconstructEmployeeSearchIndexTask'})
+CREATE (CreateEmployeeFunction:BusinessFunction {name:'CreateEmployeeFunction', fullName:'skillmanagement.domain.employees.usecases.create.CreateEmployeeFunction'})
+CREATE (CreateEmployeeHttpAdapter:HttpAdapter {name:'CreateEmployeeHttpAdapter', fullName:'skillmanagement.domain.employees.usecases.create.CreateEmployeeHttpAdapter'})
+CREATE (InsertEmployeeIntoDataStoreFunction:TechnicalFunction {name:'InsertEmployeeIntoDataStoreFunction', fullName:'skillmanagement.domain.employees.usecases.create.InsertEmployeeIntoDataStoreFunction'})
+CREATE (DeleteEmployeeByIdFunction:BusinessFunction {name:'DeleteEmployeeByIdFunction', fullName:'skillmanagement.domain.employees.usecases.delete.DeleteEmployeeByIdFunction'})
+CREATE (DeleteEmployeeByIdHttpAdapter:HttpAdapter {name:'DeleteEmployeeByIdHttpAdapter', fullName:'skillmanagement.domain.employees.usecases.delete.DeleteEmployeeByIdHttpAdapter'})
+CREATE (DeleteEmployeeFromDataStoreFunction:TechnicalFunction {name:'DeleteEmployeeFromDataStoreFunction', fullName:'skillmanagement.domain.employees.usecases.delete.DeleteEmployeeFromDataStoreFunction'})
+CREATE (CreateProjectAssignmentForEmployeeFunction:BusinessFunction {name:'CreateProjectAssignmentForEmployeeFunction', fullName:'skillmanagement.domain.employees.usecases.projectassignments.create.CreateProjectAssignmentForEmployeeFunction'})
+CREATE (CreateProjectAssignmentForEmployeeHttpAdapter:HttpAdapter {name:'CreateProjectAssignmentForEmployeeHttpAdapter', fullName:'skillmanagement.domain.employees.usecases.projectassignments.create.CreateProjectAssignmentForEmployeeHttpAdapter'})
+CREATE (DeleteProjectAssignmentOfEmployeeFunction:BusinessFunction {name:'DeleteProjectAssignmentOfEmployeeFunction', fullName:'skillmanagement.domain.employees.usecases.projectassignments.delete.DeleteProjectAssignmentOfEmployeeFunction'})
+CREATE (DeleteProjectAssignmentOfEmployeeHttpAdapter:HttpAdapter {name:'DeleteProjectAssignmentOfEmployeeHttpAdapter', fullName:'skillmanagement.domain.employees.usecases.projectassignments.delete.DeleteProjectAssignmentOfEmployeeHttpAdapter'})
+CREATE (ProjectAssignmentDeletingEventHandler:EventHandler {name:'ProjectAssignmentDeletingEventHandler', fullName:'skillmanagement.domain.employees.usecases.projectassignments.delete.ProjectAssignmentDeletingEventHandler'})
+CREATE (ProjectAssignmentUpdatingEventHandler:EventHandler {name:'ProjectAssignmentUpdatingEventHandler', fullName:'skillmanagement.domain.employees.usecases.projectassignments.update.ProjectAssignmentUpdatingEventHandler'})
+CREATE (UpdateProjectAssignmentByIdFunction:BusinessFunction {name:'UpdateProjectAssignmentByIdFunction', fullName:'skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentByIdFunction'})
+CREATE (UpdateProjectAssignmentByIdHttpAdapter:HttpAdapter {name:'UpdateProjectAssignmentByIdHttpAdapter', fullName:'skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentByIdHttpAdapter'})
+CREATE (GetEmployeeByIdFunction:BusinessFunction {name:'GetEmployeeByIdFunction', fullName:'skillmanagement.domain.employees.usecases.read.GetEmployeeByIdFunction'})
+CREATE (GetEmployeeByIdHttpAdapter:HttpAdapter {name:'GetEmployeeByIdHttpAdapter', fullName:'skillmanagement.domain.employees.usecases.read.GetEmployeeByIdHttpAdapter'})
+CREATE (GetEmployeeIdsFunction:BusinessFunction {name:'GetEmployeeIdsFunction', fullName:'skillmanagement.domain.employees.usecases.read.GetEmployeeIdsFunction'})
+CREATE (GetEmployeesFromDataStoreFunction:TechnicalFunction {name:'GetEmployeesFromDataStoreFunction', fullName:'skillmanagement.domain.employees.usecases.read.GetEmployeesFromDataStoreFunction'})
+CREATE (GetEmployeesFunction:BusinessFunction {name:'GetEmployeesFunction', fullName:'skillmanagement.domain.employees.usecases.read.GetEmployeesFunction'})
+CREATE (GetEmployeesHttpAdapter:HttpAdapter {name:'GetEmployeesHttpAdapter', fullName:'skillmanagement.domain.employees.usecases.read.GetEmployeesHttpAdapter'})
+CREATE (SearchEmployeesHttpAdapter:HttpAdapter {name:'SearchEmployeesHttpAdapter', fullName:'skillmanagement.domain.employees.usecases.read.SearchEmployeesHttpAdapter'})
+CREATE (SuggestEmployeesHttpAdapter:HttpAdapter {name:'SuggestEmployeesHttpAdapter', fullName:'skillmanagement.domain.employees.usecases.read.SuggestEmployeesHttpAdapter'})
+CREATE (DeleteSkillKnowledgeOfEmployeeFunction:BusinessFunction {name:'DeleteSkillKnowledgeOfEmployeeFunction', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.delete.DeleteSkillKnowledgeOfEmployeeFunction'})
+CREATE (DeleteSkillKnowledgeOfEmployeeHttpAdapter:HttpAdapter {name:'DeleteSkillKnowledgeOfEmployeeHttpAdapter', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.delete.DeleteSkillKnowledgeOfEmployeeHttpAdapter'})
+CREATE (SkillKnowledgeDeletingEventHandler:EventHandler {name:'SkillKnowledgeDeletingEventHandler', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.delete.SkillKnowledgeDeletingEventHandler'})
+CREATE (SetSkillKnowledgeOfEmployeeFunction:BusinessFunction {name:'SetSkillKnowledgeOfEmployeeFunction', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnowledgeOfEmployeeFunction'})
+CREATE (SetSkillKnowledgeOfEmployeeHttpAdapter:HttpAdapter {name:'SetSkillKnowledgeOfEmployeeHttpAdapter', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnowledgeOfEmployeeHttpAdapter'})
+CREATE (SkillKnowledgeUpdatingEventHandler:EventHandler {name:'SkillKnowledgeUpdatingEventHandler', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.update.SkillKnowledgeUpdatingEventHandler'})
+CREATE (UpdateSkillKnowledgeByIdFunction:BusinessFunction {name:'UpdateSkillKnowledgeByIdFunction', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSkillKnowledgeByIdFunction'})
+CREATE (UpdateSkillKnowledgeByIdHttpAdapter:HttpAdapter {name:'UpdateSkillKnowledgeByIdHttpAdapter', fullName:'skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSkillKnowledgeByIdHttpAdapter'})
+CREATE (UpdateEmployeeByIdFunction:BusinessFunction {name:'UpdateEmployeeByIdFunction', fullName:'skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction'})
+CREATE (UpdateEmployeeByIdHttpAdapter:HttpAdapter {name:'UpdateEmployeeByIdHttpAdapter', fullName:'skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdHttpAdapter'})
+CREATE (UpdateEmployeeInDataStoreFunction:TechnicalFunction {name:'UpdateEmployeeInDataStoreFunction', fullName:'skillmanagement.domain.employees.usecases.update.UpdateEmployeeInDataStoreFunction'})
+CREATE (GetTotalNumberOfProjectsFromDataStoreFunction:TechnicalFunction {name:'GetTotalNumberOfProjectsFromDataStoreFunction', fullName:'skillmanagement.domain.projects.metrics.GetTotalNumberOfProjectsFromDataStoreFunction'})
+CREATE (TotalNumberOfProjectsMeterBinder:LastingMetric {name:'TotalNumberOfProjectsMeterBinder', fullName:'skillmanagement.domain.projects.metrics.TotalNumberOfProjectsMeterBinder'})
+CREATE (ProjectSearchIndex:Component {name:'ProjectSearchIndex', fullName:'skillmanagement.domain.projects.searchindex.ProjectSearchIndex'})
+CREATE (ProjectSearchIndexUpdatingEventHandler:EventHandler {name:'ProjectSearchIndexUpdatingEventHandler', fullName:'skillmanagement.domain.projects.searchindex.ProjectSearchIndexUpdatingEventHandler'})
+CREATE (ReconstructProjectSearchIndexTask:Task {name:'ReconstructProjectSearchIndexTask', fullName:'skillmanagement.domain.projects.tasks.ReconstructProjectSearchIndexTask'})
+CREATE (CreateProjectFunction:BusinessFunction {name:'CreateProjectFunction', fullName:'skillmanagement.domain.projects.usecases.create.CreateProjectFunction'})
+CREATE (CreateProjectHttpAdapter:HttpAdapter {name:'CreateProjectHttpAdapter', fullName:'skillmanagement.domain.projects.usecases.create.CreateProjectHttpAdapter'})
+CREATE (InsertProjectIntoDataStoreFunction:TechnicalFunction {name:'InsertProjectIntoDataStoreFunction', fullName:'skillmanagement.domain.projects.usecases.create.InsertProjectIntoDataStoreFunction'})
+CREATE (DeleteProjectByIdFunction:BusinessFunction {name:'DeleteProjectByIdFunction', fullName:'skillmanagement.domain.projects.usecases.delete.DeleteProjectByIdFunction'})
+CREATE (DeleteProjectByIdHttpAdapter:HttpAdapter {name:'DeleteProjectByIdHttpAdapter', fullName:'skillmanagement.domain.projects.usecases.delete.DeleteProjectByIdHttpAdapter'})
+CREATE (DeleteProjectFromDataStoreFunction:TechnicalFunction {name:'DeleteProjectFromDataStoreFunction', fullName:'skillmanagement.domain.projects.usecases.delete.DeleteProjectFromDataStoreFunction'})
+CREATE (GetProjectByIdFunction:BusinessFunction {name:'GetProjectByIdFunction', fullName:'skillmanagement.domain.projects.usecases.read.GetProjectByIdFunction'})
+CREATE (GetProjectByIdHttpAdapter:HttpAdapter {name:'GetProjectByIdHttpAdapter', fullName:'skillmanagement.domain.projects.usecases.read.GetProjectByIdHttpAdapter'})
+CREATE (GetProjectsFromDataStoreFunction:TechnicalFunction {name:'GetProjectsFromDataStoreFunction', fullName:'skillmanagement.domain.projects.usecases.read.GetProjectsFromDataStoreFunction'})
+CREATE (GetProjectsFunction:BusinessFunction {name:'GetProjectsFunction', fullName:'skillmanagement.domain.projects.usecases.read.GetProjectsFunction'})
+CREATE (GetProjectsHttpAdapter:HttpAdapter {name:'GetProjectsHttpAdapter', fullName:'skillmanagement.domain.projects.usecases.read.GetProjectsHttpAdapter'})
+CREATE (SearchProjectsHttpAdapter:HttpAdapter {name:'SearchProjectsHttpAdapter', fullName:'skillmanagement.domain.projects.usecases.read.SearchProjectsHttpAdapter'})
+CREATE (SuggestProjectsHttpAdapter:HttpAdapter {name:'SuggestProjectsHttpAdapter', fullName:'skillmanagement.domain.projects.usecases.read.SuggestProjectsHttpAdapter'})
+CREATE (UpdateProjectByIdFunction:BusinessFunction {name:'UpdateProjectByIdFunction', fullName:'skillmanagement.domain.projects.usecases.update.UpdateProjectByIdFunction'})
+CREATE (UpdateProjectByIdHttpAdapter:HttpAdapter {name:'UpdateProjectByIdHttpAdapter', fullName:'skillmanagement.domain.projects.usecases.update.UpdateProjectByIdHttpAdapter'})
+CREATE (UpdateProjectInDataStoreFunction:TechnicalFunction {name:'UpdateProjectInDataStoreFunction', fullName:'skillmanagement.domain.projects.usecases.update.UpdateProjectInDataStoreFunction'})
+CREATE (GetTotalNumberOfSkillsFromDataStoreFunction:TechnicalFunction {name:'GetTotalNumberOfSkillsFromDataStoreFunction', fullName:'skillmanagement.domain.skills.metrics.GetTotalNumberOfSkillsFromDataStoreFunction'})
+CREATE (TotalNumberOfSkillsMeterBinder:LastingMetric {name:'TotalNumberOfSkillsMeterBinder', fullName:'skillmanagement.domain.skills.metrics.TotalNumberOfSkillsMeterBinder'})
+CREATE (SkillSearchIndex:Component {name:'SkillSearchIndex', fullName:'skillmanagement.domain.skills.searchindex.SkillSearchIndex'})
+CREATE (SkillSearchIndexUpdatingEventHandler:EventHandler {name:'SkillSearchIndexUpdatingEventHandler', fullName:'skillmanagement.domain.skills.searchindex.SkillSearchIndexUpdatingEventHandler'})
+CREATE (ReconstructSkillSearchIndexTask:Task {name:'ReconstructSkillSearchIndexTask', fullName:'skillmanagement.domain.skills.tasks.ReconstructSkillSearchIndexTask'})
+CREATE (CreateSkillFunction:BusinessFunction {name:'CreateSkillFunction', fullName:'skillmanagement.domain.skills.usecases.create.CreateSkillFunction'})
+CREATE (CreateSkillHttpAdapter:HttpAdapter {name:'CreateSkillHttpAdapter', fullName:'skillmanagement.domain.skills.usecases.create.CreateSkillHttpAdapter'})
+CREATE (InsertSkillIntoDataStoreFunction:TechnicalFunction {name:'InsertSkillIntoDataStoreFunction', fullName:'skillmanagement.domain.skills.usecases.create.InsertSkillIntoDataStoreFunction'})
+CREATE (DeleteSkillByIdFunction:BusinessFunction {name:'DeleteSkillByIdFunction', fullName:'skillmanagement.domain.skills.usecases.delete.DeleteSkillByIdFunction'})
+CREATE (DeleteSkillByIdHttpAdapter:HttpAdapter {name:'DeleteSkillByIdHttpAdapter', fullName:'skillmanagement.domain.skills.usecases.delete.DeleteSkillByIdHttpAdapter'})
+CREATE (DeleteSkillFromDataStoreFunction:TechnicalFunction {name:'DeleteSkillFromDataStoreFunction', fullName:'skillmanagement.domain.skills.usecases.delete.DeleteSkillFromDataStoreFunction'})
+CREATE (GetSkillByIdFunction:BusinessFunction {name:'GetSkillByIdFunction', fullName:'skillmanagement.domain.skills.usecases.read.GetSkillByIdFunction'})
+CREATE (GetSkillByIdHttpAdapter:HttpAdapter {name:'GetSkillByIdHttpAdapter', fullName:'skillmanagement.domain.skills.usecases.read.GetSkillByIdHttpAdapter'})
+CREATE (GetSkillsFromDataStoreFunction:TechnicalFunction {name:'GetSkillsFromDataStoreFunction', fullName:'skillmanagement.domain.skills.usecases.read.GetSkillsFromDataStoreFunction'})
+CREATE (GetSkillsFunction:BusinessFunction {name:'GetSkillsFunction', fullName:'skillmanagement.domain.skills.usecases.read.GetSkillsFunction'})
+CREATE (GetSkillsHttpAdapter:HttpAdapter {name:'GetSkillsHttpAdapter', fullName:'skillmanagement.domain.skills.usecases.read.GetSkillsHttpAdapter'})
+CREATE (SearchSkillsHttpAdapter:HttpAdapter {name:'SearchSkillsHttpAdapter', fullName:'skillmanagement.domain.skills.usecases.read.SearchSkillsHttpAdapter'})
+CREATE (SuggestSkillsHttpAdapter:HttpAdapter {name:'SuggestSkillsHttpAdapter', fullName:'skillmanagement.domain.skills.usecases.read.SuggestSkillsHttpAdapter'})
+CREATE (UpdateSkillByIdFunction:BusinessFunction {name:'UpdateSkillByIdFunction', fullName:'skillmanagement.domain.skills.usecases.update.UpdateSkillByIdFunction'})
+CREATE (UpdateSkillByIdHttpAdapter:HttpAdapter {name:'UpdateSkillByIdHttpAdapter', fullName:'skillmanagement.domain.skills.usecases.update.UpdateSkillByIdHttpAdapter'})
+CREATE (UpdateSkillInDataStoreFunction:TechnicalFunction {name:'UpdateSkillInDataStoreFunction', fullName:'skillmanagement.domain.skills.usecases.update.UpdateSkillInDataStoreFunction'})
+CREATE (PublishEventFunction)-[:USES]->(EventCounter)
+
+CREATE (GetProjectByIdAdapterFunction)-[:USES]->(GetProjectByIdFunction)
+
+CREATE (GetSkillByIdAdapterFunction)-[:USES]->(GetSkillByIdFunction)
+
+CREATE (TotalNumberOfEmployeesMeterBinder)-[:USES]->(GetTotalNumberOfEmployeesFromDataStoreFunction)
+
+CREATE (EmployeeSearchIndexUpdatingEventHandler)-[:USES]->(EmployeeSearchIndex)
+
+CREATE (ReconstructEmployeeSearchIndexTask)-[:USES]->(EmployeeSearchIndex),
+       (ReconstructEmployeeSearchIndexTask)-[:USES]->(GetEmployeesFromDataStoreFunction)
+
+CREATE (CreateEmployeeFunction)-[:USES]->(InsertEmployeeIntoDataStoreFunction),
+       (CreateEmployeeFunction)-[:USES]->(PublishEventFunction)
+
+CREATE (CreateEmployeeHttpAdapter)-[:USES]->(CreateEmployeeFunction)
+
+CREATE (DeleteEmployeeByIdFunction)-[:USES]->(GetEmployeeByIdFunction),
+       (DeleteEmployeeByIdFunction)-[:USES]->(DeleteEmployeeFromDataStoreFunction),
+       (DeleteEmployeeByIdFunction)-[:USES]->(PublishEventFunction)
+
+CREATE (DeleteEmployeeByIdHttpAdapter)-[:USES]->(DeleteEmployeeByIdFunction)
+
+CREATE (CreateProjectAssignmentForEmployeeFunction)-[:USES]->(GetProjectByIdAdapterFunction),
+       (CreateProjectAssignmentForEmployeeFunction)-[:USES]->(UpdateEmployeeByIdFunction)
+
+CREATE (CreateProjectAssignmentForEmployeeHttpAdapter)-[:USES]->(CreateProjectAssignmentForEmployeeFunction)
+
+CREATE (DeleteProjectAssignmentOfEmployeeFunction)-[:USES]->(UpdateEmployeeByIdFunction)
+
+CREATE (DeleteProjectAssignmentOfEmployeeHttpAdapter)-[:USES]->(DeleteProjectAssignmentOfEmployeeFunction)
+
+CREATE (ProjectAssignmentDeletingEventHandler)-[:USES]->(GetEmployeeIdsFunction),
+       (ProjectAssignmentDeletingEventHandler)-[:USES]->(UpdateEmployeeByIdFunction)
+
+CREATE (ProjectAssignmentUpdatingEventHandler)-[:USES]->(GetEmployeeIdsFunction),
+       (ProjectAssignmentUpdatingEventHandler)-[:USES]->(UpdateEmployeeByIdFunction)
+
+CREATE (UpdateProjectAssignmentByIdFunction)-[:USES]->(UpdateEmployeeByIdFunction)
+
+CREATE (UpdateProjectAssignmentByIdHttpAdapter)-[:USES]->(UpdateProjectAssignmentByIdFunction),
+       (UpdateProjectAssignmentByIdHttpAdapter)-[:USES]->(ApplyPatch)
+
+CREATE (GetEmployeeByIdFunction)-[:USES]->(GetEmployeesFromDataStoreFunction)
+
+CREATE (GetEmployeeByIdHttpAdapter)-[:USES]->(GetEmployeeByIdFunction)
+
+CREATE (GetEmployeeIdsFunction)-[:USES]->(EmployeeSearchIndex)
+
+CREATE (GetEmployeesFunction)-[:USES]->(GetEmployeesFromDataStoreFunction),
+       (GetEmployeesFunction)-[:USES]->(EmployeeSearchIndex)
+
+CREATE (GetEmployeesHttpAdapter)-[:USES]->(GetEmployeesFunction)
+
+CREATE (SearchEmployeesHttpAdapter)-[:USES]->(GetEmployeesFunction)
+
+CREATE (SuggestEmployeesHttpAdapter)-[:USES]->(EmployeeSearchIndex)
+
+CREATE (DeleteSkillKnowledgeOfEmployeeFunction)-[:USES]->(UpdateEmployeeByIdFunction)
+
+CREATE (DeleteSkillKnowledgeOfEmployeeHttpAdapter)-[:USES]->(DeleteSkillKnowledgeOfEmployeeFunction)
+
+CREATE (SkillKnowledgeDeletingEventHandler)-[:USES]->(GetEmployeeIdsFunction),
+       (SkillKnowledgeDeletingEventHandler)-[:USES]->(UpdateEmployeeByIdFunction)
+
+CREATE (SetSkillKnowledgeOfEmployeeFunction)-[:USES]->(GetSkillByIdAdapterFunction),
+       (SetSkillKnowledgeOfEmployeeFunction)-[:USES]->(UpdateEmployeeByIdFunction)
+
+CREATE (SetSkillKnowledgeOfEmployeeHttpAdapter)-[:USES]->(SetSkillKnowledgeOfEmployeeFunction)
+
+CREATE (SkillKnowledgeUpdatingEventHandler)-[:USES]->(GetEmployeeIdsFunction),
+       (SkillKnowledgeUpdatingEventHandler)-[:USES]->(UpdateEmployeeByIdFunction)
+
+CREATE (UpdateSkillKnowledgeByIdFunction)-[:USES]->(UpdateEmployeeByIdFunction)
+
+CREATE (UpdateSkillKnowledgeByIdHttpAdapter)-[:USES]->(UpdateSkillKnowledgeByIdFunction),
+       (UpdateSkillKnowledgeByIdHttpAdapter)-[:USES]->(ApplyPatch)
+
+CREATE (UpdateEmployeeByIdFunction)-[:USES]->(GetEmployeeByIdFunction),
+       (UpdateEmployeeByIdFunction)-[:USES]->(UpdateEmployeeInDataStoreFunction),
+       (UpdateEmployeeByIdFunction)-[:USES]->(PublishEventFunction)
+
+CREATE (UpdateEmployeeByIdHttpAdapter)-[:USES]->(UpdateEmployeeByIdFunction),
+       (UpdateEmployeeByIdHttpAdapter)-[:USES]->(ApplyPatch)
+
+CREATE (TotalNumberOfProjectsMeterBinder)-[:USES]->(GetTotalNumberOfProjectsFromDataStoreFunction)
+
+CREATE (ProjectSearchIndexUpdatingEventHandler)-[:USES]->(ProjectSearchIndex)
+
+CREATE (ReconstructProjectSearchIndexTask)-[:USES]->(ProjectSearchIndex),
+       (ReconstructProjectSearchIndexTask)-[:USES]->(GetProjectsFromDataStoreFunction)
+
+CREATE (CreateProjectFunction)-[:USES]->(InsertProjectIntoDataStoreFunction),
+       (CreateProjectFunction)-[:USES]->(PublishEventFunction)
+
+CREATE (CreateProjectHttpAdapter)-[:USES]->(CreateProjectFunction)
+
+CREATE (DeleteProjectByIdFunction)-[:USES]->(GetProjectByIdFunction),
+       (DeleteProjectByIdFunction)-[:USES]->(DeleteProjectFromDataStoreFunction),
+       (DeleteProjectByIdFunction)-[:USES]->(PublishEventFunction)
+
+CREATE (DeleteProjectByIdHttpAdapter)-[:USES]->(DeleteProjectByIdFunction)
+
+CREATE (GetProjectByIdFunction)-[:USES]->(GetProjectsFromDataStoreFunction)
+
+CREATE (GetProjectByIdHttpAdapter)-[:USES]->(GetProjectByIdFunction)
+
+CREATE (GetProjectsFunction)-[:USES]->(GetProjectsFromDataStoreFunction),
+       (GetProjectsFunction)-[:USES]->(ProjectSearchIndex)
+
+CREATE (GetProjectsHttpAdapter)-[:USES]->(GetProjectsFunction)
+
+CREATE (SearchProjectsHttpAdapter)-[:USES]->(GetProjectsFunction)
+
+CREATE (SuggestProjectsHttpAdapter)-[:USES]->(ProjectSearchIndex)
+
+CREATE (UpdateProjectByIdFunction)-[:USES]->(GetProjectByIdFunction),
+       (UpdateProjectByIdFunction)-[:USES]->(UpdateProjectInDataStoreFunction),
+       (UpdateProjectByIdFunction)-[:USES]->(PublishEventFunction)
+
+CREATE (UpdateProjectByIdHttpAdapter)-[:USES]->(UpdateProjectByIdFunction),
+       (UpdateProjectByIdHttpAdapter)-[:USES]->(ApplyPatch)
+
+CREATE (TotalNumberOfSkillsMeterBinder)-[:USES]->(GetTotalNumberOfSkillsFromDataStoreFunction)
+
+CREATE (SkillSearchIndexUpdatingEventHandler)-[:USES]->(SkillSearchIndex)
+
+CREATE (ReconstructSkillSearchIndexTask)-[:USES]->(SkillSearchIndex),
+       (ReconstructSkillSearchIndexTask)-[:USES]->(GetSkillsFromDataStoreFunction)
+
+CREATE (CreateSkillFunction)-[:USES]->(InsertSkillIntoDataStoreFunction),
+       (CreateSkillFunction)-[:USES]->(PublishEventFunction)
+
+CREATE (CreateSkillHttpAdapter)-[:USES]->(CreateSkillFunction)
+
+CREATE (DeleteSkillByIdFunction)-[:USES]->(GetSkillByIdFunction),
+       (DeleteSkillByIdFunction)-[:USES]->(DeleteSkillFromDataStoreFunction),
+       (DeleteSkillByIdFunction)-[:USES]->(PublishEventFunction)
+
+CREATE (DeleteSkillByIdHttpAdapter)-[:USES]->(DeleteSkillByIdFunction)
+
+CREATE (GetSkillByIdFunction)-[:USES]->(GetSkillsFromDataStoreFunction)
+
+CREATE (GetSkillByIdHttpAdapter)-[:USES]->(GetSkillByIdFunction)
+
+CREATE (GetSkillsFunction)-[:USES]->(GetSkillsFromDataStoreFunction),
+       (GetSkillsFunction)-[:USES]->(SkillSearchIndex)
+
+CREATE (GetSkillsHttpAdapter)-[:USES]->(GetSkillsFunction)
+
+CREATE (SearchSkillsHttpAdapter)-[:USES]->(GetSkillsFunction)
+
+CREATE (SuggestSkillsHttpAdapter)-[:USES]->(SkillSearchIndex)
+
+CREATE (UpdateSkillByIdFunction)-[:USES]->(GetSkillByIdFunction),
+       (UpdateSkillByIdFunction)-[:USES]->(UpdateSkillInDataStoreFunction),
+       (UpdateSkillByIdFunction)-[:USES]->(PublishEventFunction)
+
+CREATE (UpdateSkillByIdHttpAdapter)-[:USES]->(UpdateSkillByIdFunction),
+       (UpdateSkillByIdHttpAdapter)-[:USES]->(ApplyPatch)
+

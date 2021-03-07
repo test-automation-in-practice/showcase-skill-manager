@@ -1,12 +1,12 @@
 package skillmanagement.test.searchindices
 
+import org.apache.http.HttpHost
+import org.elasticsearch.client.RestClient
 import org.elasticsearch.client.RestHighLevelClient
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.extension.ParameterContext
 import org.springframework.core.io.ClassPathResource
-import skillmanagement.common.searchindices.ElasticsearchProperties
-import skillmanagement.common.searchindices.createElasticsearchClient
 import skillmanagement.test.docker.AbstractDockerContainerExtension
 import skillmanagement.test.docker.Container
 import kotlin.annotation.AnnotationTarget.CLASS
@@ -42,7 +42,9 @@ private class ElasticsearchContainerExtension : AbstractDockerContainerExtension
 
     private fun initClient(context: ExtensionContext): RestHighLevelClient {
         val container = getOrInitializeContainer(context)
-        return createElasticsearchClient(ElasticsearchProperties(port = container.getMappedPort()))
+        val port = container.getMappedPort()
+        val httpHost = HttpHost("localhost", port, "http")
+        return RestHighLevelClient(RestClient.builder(httpHost))
     }
 
     @Suppress("UNCHECKED_CAST")
