@@ -1,14 +1,20 @@
-package skillmanagement.test.docker
+package skillmanagement.test.events
 
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.extension.ParameterContext
+import skillmanagement.test.docker.AbstractDockerContainerExtension
+import skillmanagement.test.docker.Container
 import kotlin.annotation.AnnotationTarget.CLASS
 
 @Retention
 @Target(CLASS)
 @ExtendWith(RabbitMqContainerExtension::class)
 annotation class RunWithDockerizedRabbitMq
+
+class RabbitMqContainer : Container("rabbitmq:3.8") {
+    override fun getMappedPort(): Int = getMappedPort(5672)
+}
 
 private class RabbitMqContainerExtension : AbstractDockerContainerExtension<RabbitMqContainer>() {
 

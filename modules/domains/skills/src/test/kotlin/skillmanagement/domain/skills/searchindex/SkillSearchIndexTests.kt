@@ -1,6 +1,7 @@
 package skillmanagement.domain.skills.searchindex
 
 import org.assertj.core.api.Assertions.assertThat
+import org.elasticsearch.client.RestHighLevelClient
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import skillmanagement.common.model.Suggestion
@@ -8,33 +9,25 @@ import skillmanagement.common.searchindices.PageIndex
 import skillmanagement.common.searchindices.PageSize
 import skillmanagement.common.searchindices.PagedFindAllQuery
 import skillmanagement.common.searchindices.PagedStringQuery
-import skillmanagement.common.searchindices.ElasticsearchProperties
-import skillmanagement.common.searchindices.createElasticsearchClient
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.skill
-import skillmanagement.test.TechnologyIntegrationTest
-import skillmanagement.test.docker.ElasticsearchContainer
-import skillmanagement.test.docker.RunWithDockerizedElasticsearch
+import skillmanagement.test.searchindices.SearchIndexIntegrationTest
 import java.util.UUID
 
-@TechnologyIntegrationTest
-@RunWithDockerizedElasticsearch
-internal class SkillSearchIndexTests(
-    container: ElasticsearchContainer
-) {
+@SearchIndexIntegrationTest
+internal class SkillSearchIndexTests(client: RestHighLevelClient) {
 
     // TODO: test find all + pagination
 
-    val properties = ElasticsearchProperties(port = container.getMappedPort())
-    val cut = SkillSearchIndex(createElasticsearchClient(properties))
+    private val cut = SkillSearchIndex(client)
 
-    val kotlin1 = skill(label = "Kotlin #1", tags = setOf("language", "cool"))
-    val kotlin2 = skill(label = "Kotlin #2")
-    val python = skill(label = "Python", tags = setOf("language", "scripting"))
-    val java = skill(label = "Java", tags = setOf("language"))
+    private val kotlin1 = skill(label = "Kotlin #1", tags = setOf("language", "cool"))
+    private val kotlin2 = skill(label = "Kotlin #2")
+    private val python = skill(label = "Python", tags = setOf("language", "scripting"))
+    private val java = skill(label = "Java", tags = setOf("language"))
 
     @BeforeEach
-    fun reset() {
+    fun `reset search index`() {
         cut.reset()
     }
 
