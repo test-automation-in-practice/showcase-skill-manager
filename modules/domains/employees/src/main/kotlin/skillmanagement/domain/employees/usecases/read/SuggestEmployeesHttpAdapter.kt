@@ -19,7 +19,7 @@ internal class SuggestEmployeesHttpAdapter(
     fun post(
         @RequestParam(defaultValue = "100") size: Int,
         @RequestBody request: Request
-    ): List<Suggestion> = searchIndex.suggestExisting(input = request.input, size = size)
+    ): List<Suggestion> = searchIndex.suggest(input = request.input, size = size)
 
     data class Request(
         val input: String

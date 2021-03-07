@@ -92,7 +92,7 @@ abstract class AbstractSearchIndex<T : Any> : SearchIndexAdmin<T>, InitializingB
         )
     }
 
-    override fun suggestExisting(input: String, size: Int): List<Suggestion> {
+    override fun suggest(input: String, size: Int): List<Suggestion> {
         val source = SearchSourceBuilder()
             .fetchSource(labelFieldName, null)
             .query(buildQuery("*$input*"))
