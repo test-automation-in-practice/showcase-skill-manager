@@ -14,11 +14,11 @@ import skillmanagement.domain.skills.model.SkillUpdatedEvent
 import skillmanagement.domain.skills.model.skill_java
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_python
-import skillmanagement.test.EventingIntegrationTestConfiguration
+import skillmanagement.test.events.EventingIntegrationTestConfiguration
 import skillmanagement.test.PROPERTY_DOCKERIZED_BROKER_PORT
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.TechnologyIntegrationTest
-import skillmanagement.test.docker.RunWithDockerizedRabbitMq
+import skillmanagement.test.events.RunWithDockerizedRabbitMq
 
 @TechnologyIntegrationTest
 @RunWithDockerizedRabbitMq

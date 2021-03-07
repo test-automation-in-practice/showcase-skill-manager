@@ -8,22 +8,27 @@ import org.junit.jupiter.api.extension.ParameterResolver
 
 internal abstract class AbstractDockerContainerExtension<T : Container> : BeforeAllCallback, ParameterResolver {
 
-    private val namespace = Namespace.create(javaClass)
+    protected val namespace: Namespace = Namespace.create(javaClass)
 
     protected abstract val port: Int
     protected abstract val portProperty: String
 
     override fun resolveParameter(parameterContext: ParameterContext, extensionContext: ExtensionContext): Any? =
-        extensionContext.container
+        getOrInitializeContainer(extensionContext)
 
     override fun beforeAll(context: ExtensionContext) {
-        if (context.container == null) {
-            val resource = createResource()
-                .apply { addExposedPort(port) }
-                .apply { start() }
-            System.setProperty(portProperty, "${resource.getMappedPort(port)}")
-            context.container = resource
-        }
+        getOrInitializeContainer(context)
+    }
+
+    protected fun getOrInitializeContainer(context: ExtensionContext): T =
+        context.container ?: initContainer().also { context.container = it }
+
+    private fun initContainer(): T {
+        val resource = createResource()
+            .apply { addExposedPort(port) }
+            .apply { start() }
+        System.setProperty(portProperty, "${resource.getMappedPort(port)}")
+        return resource
     }
 
     protected abstract fun createResource(): T

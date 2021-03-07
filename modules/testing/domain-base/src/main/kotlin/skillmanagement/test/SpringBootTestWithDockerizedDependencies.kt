@@ -4,9 +4,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
 import org.springframework.test.annotation.DirtiesContext
-import skillmanagement.test.docker.RunWithDockerizedElasticsearch
+import skillmanagement.test.searchindices.RunWithDockerizedElasticsearch
 import skillmanagement.test.docker.RunWithDockerizedPostgres
-import skillmanagement.test.docker.RunWithDockerizedRabbitMq
+import skillmanagement.test.events.RunWithDockerizedRabbitMq
 import kotlin.annotation.AnnotationTarget.CLASS
 
 const val PROPERTY_DOCKERIZED_DATABASE_URL =

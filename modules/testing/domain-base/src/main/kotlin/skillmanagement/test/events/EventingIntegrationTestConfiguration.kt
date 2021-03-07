@@ -1,4 +1,4 @@
-package skillmanagement.test
+package skillmanagement.test.events
 
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
