@@ -3,6 +3,9 @@
     "label": {
       "type": "text"
     },
+    "description": {
+      "type": "text"
+    },
     "tags": {
       "type": "keyword"
     },

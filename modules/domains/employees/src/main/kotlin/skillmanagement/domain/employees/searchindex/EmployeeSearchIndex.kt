@@ -3,6 +3,7 @@ package skillmanagement.domain.employees.searchindex
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.index.query.Operator.AND
 import org.elasticsearch.index.query.QueryBuilders.queryStringQuery
+import org.elasticsearch.index.query.QueryStringQueryBuilder
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
 import skillmanagement.common.searchindices.AbstractSearchIndex
@@ -14,8 +15,9 @@ internal class EmployeeSearchIndex(
 ) : AbstractSearchIndex<Employee>() {
 
     override val indexName = "employees"
-    override val labelFieldName: String = "name"
-    override val sortFieldName: String = "_sort"
+    override val sortFieldName = "_sort"
+    override val suggestFieldName = "name"
+
     override val mappingResource = ClassPathResource("/indices/employees-mapping.json")
 
     override fun toSource(instance: Employee) =
@@ -26,8 +28,8 @@ internal class EmployeeSearchIndex(
                 "lastName" to lastName.toString(),
                 "title" to title.toString(),
                 "email" to email.toString(),
-                "skills" to skills.map { it.skill.label.toString() },
-                "projects" to projects.map { it.project.label.toString() },
+                "skills" to skills.map { it.skill.label },
+                "projects" to projects.map { it.project.label },
                 "_sort" to "$lastName, $firstName",
                 "_skillIds" to skills.map { it.skill.id.toString() },
                 "_projectIds" to projects.map { it.project.id.toString() }
@@ -36,7 +38,7 @@ internal class EmployeeSearchIndex(
 
     override fun id(instance: Employee) = instance.id
 
-    override fun buildQuery(queryString: String) =
+    override fun buildQuery(queryString: String): QueryStringQueryBuilder =
         queryStringQuery(queryString)
             .defaultField("name")
             .defaultOperator(AND)

@@ -18,7 +18,7 @@ internal class SkillsTestDriver(
     port: Int = 8080
 ) : AbstractHttpTestDriver(host, port) {
 
-    fun add(
+    fun create(
         label: String = "Dummy Skill",
         description: String? = null,
         tags: Set<String> = emptySortedSet()
