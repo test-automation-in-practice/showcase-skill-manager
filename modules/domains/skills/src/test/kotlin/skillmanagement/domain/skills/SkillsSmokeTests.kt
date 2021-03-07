@@ -16,7 +16,7 @@ import skillmanagement.domain.skills.model.Tag
 import skillmanagement.domain.skills.searchindex.SkillSearchIndex
 import skillmanagement.domain.skills.usecases.delete.DeleteSkillFromDataStoreFunction
 import skillmanagement.test.SmokeTest
-import skillmanagement.test.SpringBootTestWithDockerizedDependencies
+import skillmanagement.test.e2e.SpringBootTestWithDockerizedDependencies
 import java.lang.Thread.sleep
 
 @SmokeTest
