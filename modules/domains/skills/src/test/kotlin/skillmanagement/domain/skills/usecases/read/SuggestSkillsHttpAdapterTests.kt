@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Import
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
+import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.skill_kotlin_suggestion
@@ -49,7 +50,7 @@ internal class SuggestSkillsHttpAdapterTests(
             }
             .andDocument("empty")
 
-        verify { searchIndex.suggest(input = "kotlin", size = 100) }
+        verify { searchIndex.suggest(input = "kotlin", max = MaxSuggestions(100)) }
     }
 
     @Test
@@ -58,7 +59,7 @@ internal class SuggestSkillsHttpAdapterTests(
             .returns(listOf(skill_kotlin_suggestion, skill_python_suggestion))
 
         mockMvc
-            .post("/api/skills/_suggest?size=5") {
+            .post("/api/skills/_suggest?max=5") {
                 contentType = APPLICATION_JSON
                 content = """{"input": "t"}"""
             }
@@ -84,7 +85,7 @@ internal class SuggestSkillsHttpAdapterTests(
             }
             .andDocument("multiple")
 
-        verify { searchIndex.suggest(input = "t", size = 5) }
+        verify { searchIndex.suggest(input = "t", max = MaxSuggestions(5)) }
     }
 
 }

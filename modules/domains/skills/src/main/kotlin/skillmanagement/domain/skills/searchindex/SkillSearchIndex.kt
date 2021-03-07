@@ -3,6 +3,7 @@ package skillmanagement.domain.skills.searchindex
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.index.query.Operator.AND
 import org.elasticsearch.index.query.QueryBuilders.queryStringQuery
+import org.elasticsearch.index.query.QueryStringQueryBuilder
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
 import skillmanagement.common.searchindices.AbstractSearchIndex
@@ -23,13 +24,12 @@ internal class SkillSearchIndex(
         mapOf(
             "label" to instance.label.toString(),
             "tags" to instance.tags.map(Tag::toString),
-            "_sort" to instance.label.toString(),
-            "label_suggest" to instance.label.toString()
+            "_sort" to instance.label.toString()
         )
 
     override fun id(instance: Skill) = instance.id
 
-    override fun buildQuery(queryString: String) =
+    override fun buildQuery(queryString: String): QueryStringQueryBuilder =
         queryStringQuery(queryString)
             .defaultField("label")
             .defaultOperator(AND)

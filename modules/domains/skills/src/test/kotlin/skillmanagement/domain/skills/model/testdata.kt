@@ -136,7 +136,7 @@ internal val skill_python_suggestion = skill_python.toSuggestion()
 private fun Skill.toResourceWithoutLinks() =
     SkillResource(id = id, label = label, description = description, tags = tags)
 
-private fun Skill.toSuggestion() =
+internal fun Skill.toSuggestion() =
     Suggestion(id = id, label = label.toString())
 
 internal fun skill(
