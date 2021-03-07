@@ -7,7 +7,9 @@ import org.springframework.context.annotation.Configuration
 import skillmanagement.common.events.QUEUE_PREFIX
 import skillmanagement.common.events.durableQueue
 import skillmanagement.common.events.eventBinding
+import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.common.stereotypes.EventHandler
+import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillAddedEvent
 import skillmanagement.domain.skills.model.SkillDeletedEvent
 import skillmanagement.domain.skills.model.SkillUpdatedEvent
@@ -20,7 +22,7 @@ private const val SKILL_DELETED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.SkillDeletedEven
 
 @EventHandler
 internal class SkillSearchIndexUpdatingEventHandler(
-    private val searchIndex: SkillSearchIndex
+    private val searchIndex: SearchIndex<Skill>
 ) {
 
     private val log = logger {}

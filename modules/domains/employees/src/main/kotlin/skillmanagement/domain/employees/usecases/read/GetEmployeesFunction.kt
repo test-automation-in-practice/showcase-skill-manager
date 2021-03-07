@@ -1,14 +1,14 @@
 package skillmanagement.domain.employees.usecases.read
 
 import skillmanagement.common.searchindices.Page
+import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.Employee
-import skillmanagement.domain.employees.searchindex.EmployeeSearchIndex
 
 @BusinessFunction
 class GetEmployeesFunction internal constructor(
     private val getEmployeeFromDataStore: GetEmployeesFromDataStoreFunction,
-    private val searchIndex: EmployeeSearchIndex
+    private val searchIndex: SearchIndex<Employee>
 ) {
 
     operator fun invoke(query: EmployeesQuery): Page<Employee> {

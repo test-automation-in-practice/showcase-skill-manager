@@ -21,13 +21,13 @@ import org.elasticsearch.search.sort.FieldSortBuilder
 import org.elasticsearch.search.sort.ScoreSortBuilder
 import org.elasticsearch.search.sort.SortBuilder
 import org.elasticsearch.search.sort.SortOrder.DESC
+import org.springframework.beans.factory.InitializingBean
 import org.springframework.core.io.Resource
 import skillmanagement.common.model.Suggestion
 import java.io.BufferedReader
 import java.util.UUID
-import javax.annotation.PostConstruct
 
-abstract class AbstractSearchIndex<T : Any> {
+abstract class AbstractSearchIndex<T : Any> : SearchIndexAdmin<T>, InitializingBean {
 
     protected abstract val client: RestHighLevelClient
 
@@ -36,12 +36,11 @@ abstract class AbstractSearchIndex<T : Any> {
     protected abstract val sortFieldName: String
     protected abstract val mappingResource: Resource
 
-    @PostConstruct
-    fun init() {
+    override fun afterPropertiesSet() {
         if (!indexExists()) createIndex()
     }
 
-    fun index(instance: T) {
+    override fun index(instance: T) {
         val request = IndexRequest(indexName)
             .id(id(instance).toString())
             .source(toSource(instance), JSON)
@@ -52,11 +51,11 @@ abstract class AbstractSearchIndex<T : Any> {
     protected abstract fun toSource(instance: T): Map<String, Any>
     protected abstract fun id(instance: T): UUID
 
-    fun deleteById(id: UUID) {
+    override fun deleteById(id: UUID) {
         client.delete(DeleteRequest(indexName, id.toString()), DEFAULT)
     }
 
-    fun query(query: PagedStringQuery): Page<UUID> =
+    override fun query(query: PagedStringQuery): Page<UUID> =
         queryForIds(
             query = buildQuery(query.queryString),
             pageIndex = query.pageIndex.toInt(),
@@ -64,7 +63,7 @@ abstract class AbstractSearchIndex<T : Any> {
             sort = ScoreSortBuilder().order(DESC)
         )
 
-    fun findAll(query: PagedFindAllQuery): Page<UUID> =
+    override fun findAll(query: PagedFindAllQuery): Page<UUID> =
         queryForIds(
             query = MatchAllQueryBuilder(),
             pageIndex = query.pageIndex.toInt(),
@@ -93,7 +92,7 @@ abstract class AbstractSearchIndex<T : Any> {
         )
     }
 
-    fun suggestExisting(input: String, size: Int): List<Suggestion> {
+    override fun suggestExisting(input: String, size: Int): List<Suggestion> {
         val source = SearchSourceBuilder()
             .fetchSource(labelFieldName, null)
             .query(buildQuery("*$input*"))
@@ -118,14 +117,14 @@ abstract class AbstractSearchIndex<T : Any> {
 
     protected abstract fun buildQuery(queryString: String): QueryStringQueryBuilder
 
-    fun reset() {
+    override fun reset() {
         if (indexExists()) {
             deleteIndex()
         }
         createIndex()
     }
 
-    fun refresh() {
+    override fun refresh() {
         client.indices().refresh(RefreshRequest(indexName), DEFAULT)
     }
 

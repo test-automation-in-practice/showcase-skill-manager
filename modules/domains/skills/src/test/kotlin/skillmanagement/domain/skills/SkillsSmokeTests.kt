@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.hateoas.RepresentationModel
 import skillmanagement.common.model.Suggestion
+import skillmanagement.common.searchindices.SearchIndexAdmin
+import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.SkillResource
@@ -23,7 +25,7 @@ import java.lang.Thread.sleep
 @SpringBootTestWithDockerizedDependencies
 internal class SkillsSmokeTests(
     @Autowired val deleteSkillsFromDataStore: DeleteSkillFromDataStoreFunction,
-    @Autowired val searchIndex: SkillSearchIndex,
+    @Autowired val searchIndex: SearchIndexAdmin<Skill>,
     @LocalServerPort val port: Int
 ) {
 

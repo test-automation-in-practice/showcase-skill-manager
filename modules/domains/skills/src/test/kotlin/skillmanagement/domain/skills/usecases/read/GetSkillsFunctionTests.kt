@@ -4,19 +4,19 @@ import io.kotlintest.shouldBe
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
+import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.common.searchindices.pageOf
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_python
-import skillmanagement.domain.skills.searchindex.SkillSearchIndex
 import skillmanagement.test.UnitTest
 
 @UnitTest
 internal class GetSkillsFunctionTests {
 
-    val getSkillsFromDataStore: GetSkillsFromDataStoreFunction = mockk()
-    val searchIndex: SkillSearchIndex = mockk()
-    val findSkills = GetSkillsFunction(getSkillsFromDataStore, searchIndex)
+    private val getSkillsFromDataStore: GetSkillsFromDataStoreFunction = mockk()
+    private val searchIndex: SearchIndex<Skill> = mockk()
+    private val findSkills = GetSkillsFunction(getSkillsFromDataStore, searchIndex)
 
     @Test
     fun `AllSkillsQuery just returns all skills from database`() {
@@ -38,6 +38,6 @@ internal class GetSkillsFunctionTests {
         findSkills(query) shouldBe pageOf(listOf(skill_kotlin))
     }
 
-    fun skillMap(vararg skills: Skill) = skills.map { it.id to it }.toMap()
+    private fun skillMap(vararg skills: Skill) = skills.map { it.id to it }.toMap()
 
 }

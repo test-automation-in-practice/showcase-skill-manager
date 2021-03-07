@@ -5,21 +5,21 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import skillmanagement.common.model.Suggestion
+import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.common.stereotypes.HttpAdapter
-import skillmanagement.domain.projects.searchindex.ProjectSearchIndex
+import skillmanagement.domain.projects.model.Project
 
 @HttpAdapter
 @RequestMapping("/api/projects/_suggest")
 internal class SuggestProjectsHttpAdapter(
-    private val searchIndex: ProjectSearchIndex
+    private val searchIndex: SearchIndex<Project>
 ) {
 
     @PostMapping
     fun post(
         @RequestParam(defaultValue = "100") size: Int,
         @RequestBody request: Request
-    ): List<Suggestion> =
-        searchIndex.suggestExisting(input = request.input, size = size)
+    ): List<Suggestion> = searchIndex.suggestExisting(input = request.input, size = size)
 
     data class Request(
         val input: String
