@@ -16,7 +16,6 @@ import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.skill_kotlin_suggestion
 import skillmanagement.domain.skills.model.skill_python_suggestion
-import skillmanagement.domain.skills.searchindex.SkillSearchIndex
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.andDocument
@@ -34,7 +33,7 @@ internal class SuggestSkillsHttpAdapterTests(
 
     @Test
     fun `responds with 200 Ok and empty list if there are no matching Skills`() {
-        every { searchIndex.suggestExisting(any(), any()) } returns emptyList()
+        every { searchIndex.suggest(any(), any()) } returns emptyList()
 
         mockMvc
             .post("/api/skills/_suggest") {
@@ -50,12 +49,12 @@ internal class SuggestSkillsHttpAdapterTests(
             }
             .andDocument("empty")
 
-        verify { searchIndex.suggestExisting(input = "kotlin", size = 100) }
+        verify { searchIndex.suggest(input = "kotlin", size = 100) }
     }
 
     @Test
     fun `responds with 200 Ok and Skills if there are any`() {
-        every { searchIndex.suggestExisting(any(), any()) }
+        every { searchIndex.suggest(any(), any()) }
             .returns(listOf(skill_kotlin_suggestion, skill_python_suggestion))
 
         mockMvc
@@ -85,7 +84,7 @@ internal class SuggestSkillsHttpAdapterTests(
             }
             .andDocument("multiple")
 
-        verify { searchIndex.suggestExisting(input = "t", size = 5) }
+        verify { searchIndex.suggest(input = "t", size = 5) }
     }
 
 }

@@ -72,7 +72,7 @@ internal class SkillSearchIndexTests(client: RestHighLevelClient) {
         val skill4 = skill(label = "Python")
         index(skill1, skill2, skill3, skill4)
 
-        assertThat(cut.suggestExisting("ko", 3))
+        assertThat(cut.suggest("ko", 3))
             .containsOnly(
                 suggestion(skill1),
                 suggestion(skill2),

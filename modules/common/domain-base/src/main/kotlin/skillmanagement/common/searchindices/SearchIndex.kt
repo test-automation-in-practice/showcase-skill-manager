@@ -9,5 +9,5 @@ interface SearchIndex<T : Any> {
 
     fun query(query: PagedStringQuery): Page<UUID>
     fun findAll(query: PagedFindAllQuery): Page<UUID>
-    fun suggestExisting(input: String, size: Int): List<Suggestion>
+    fun suggest(input: String, size: Int): List<Suggestion>
 }
