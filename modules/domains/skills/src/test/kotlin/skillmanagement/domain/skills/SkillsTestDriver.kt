@@ -64,7 +64,7 @@ internal class SkillsTestDriver(
     }
 
     fun suggest(input: String, size: Int = 100): List<Suggestion> {
-        val response = post("/api/skills/_suggest?size=$size") {
+        val response = post("/api/skills/_suggest?max=$size") {
             SuggestSkillsHttpAdapter.Request(input)
         }
         return when (response.code) {
