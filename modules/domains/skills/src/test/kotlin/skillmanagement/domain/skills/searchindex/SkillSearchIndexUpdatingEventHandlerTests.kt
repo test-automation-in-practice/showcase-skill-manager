@@ -4,7 +4,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import skillmanagement.common.events.PublishEventFunction
@@ -14,19 +13,12 @@ import skillmanagement.domain.skills.model.SkillUpdatedEvent
 import skillmanagement.domain.skills.model.skill_java
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_python
-import skillmanagement.test.events.EventingIntegrationTestConfiguration
-import skillmanagement.test.e2e.PROPERTY_DOCKERIZED_BROKER_PORT
 import skillmanagement.test.ResetMocksAfterEachTest
-import skillmanagement.test.TechnologyIntegrationTest
-import skillmanagement.test.events.RunWithDockerizedRabbitMq
+import skillmanagement.test.events.EventingSpringIntegrationTest
 
-@TechnologyIntegrationTest
-@RunWithDockerizedRabbitMq
-@SpringBootTest(
-    classes = [SkillSearchIndexUpdatingEventHandlerTestsConfiguration::class],
-    properties = [PROPERTY_DOCKERIZED_BROKER_PORT]
-)
 @ResetMocksAfterEachTest
+@EventingSpringIntegrationTest
+@Import(SkillSearchIndexUpdatingEventHandlerTestsConfiguration::class)
 internal class SkillSearchIndexUpdatingEventHandlerTests(
     @Autowired private val searchIndex: SkillSearchIndex,
     @Autowired private val publishEvent: PublishEventFunction
@@ -54,8 +46,7 @@ internal class SkillSearchIndexUpdatingEventHandlerTests(
 
 @Import(
     SkillSearchIndexUpdatingEventHandler::class,
-    SkillSearchIndexUpdatingEventHandlerConfiguration::class,
-    EventingIntegrationTestConfiguration::class
+    SkillSearchIndexUpdatingEventHandlerConfiguration::class
 )
 private class SkillSearchIndexUpdatingEventHandlerTestsConfiguration {
     @Bean
