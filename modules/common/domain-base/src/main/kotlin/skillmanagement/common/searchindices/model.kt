@@ -2,9 +2,6 @@ package skillmanagement.common.searchindices
 
 import org.springframework.hateoas.PagedModel
 import skillmanagement.common.model.IntType
-import skillmanagement.common.validation.Validation.Companion.validate
-import skillmanagement.common.validation.isGreaterThanOrEqualTo
-import skillmanagement.common.validation.isLessThanOrEqualTo
 
 interface PagedFindAllQuery {
     val pageIndex: PageIndex
@@ -27,6 +24,13 @@ class PageSize(value: Int) : IntType(value, min = 1, max = 10_000) {
     companion object {
         val DEFAULT = PageSize(100)
         val MAX = PageSize(10_000)
+    }
+}
+
+class MaxSuggestions(value: Int) : IntType(value, min = 1, max = 10_000) {
+    companion object {
+        val DEFAULT = MaxSuggestions(100)
+        val MAX = MaxSuggestions(10_000)
     }
 }
 

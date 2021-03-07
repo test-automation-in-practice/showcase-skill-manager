@@ -6,6 +6,9 @@ import org.elasticsearch.action.admin.indices.refresh.RefreshRequest
 import org.elasticsearch.action.delete.DeleteRequest
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.search.SearchRequest
+import org.elasticsearch.action.support.WriteRequest.RefreshPolicy
+import org.elasticsearch.action.support.WriteRequest.RefreshPolicy.IMMEDIATE
+import org.elasticsearch.action.support.WriteRequest.RefreshPolicy.NONE
 import org.elasticsearch.client.RequestOptions.DEFAULT
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.client.indices.CreateIndexRequest
@@ -36,12 +39,19 @@ abstract class AbstractSearchIndex<T : Any> : SearchIndexAdmin<T>, InitializingB
     protected abstract val sortFieldName: String
     protected abstract val mappingResource: Resource
 
+    private var refreshPolicy: RefreshPolicy = NONE
+
+    fun enabledTestMode() {
+        refreshPolicy = IMMEDIATE
+    }
+
     override fun afterPropertiesSet() {
         if (!indexExists()) createIndex()
     }
 
     override fun index(instance: T) {
         val request = IndexRequest(indexName)
+            .setRefreshPolicy(refreshPolicy)
             .id(id(instance).toString())
             .source(toSource(instance), JSON)
             .opType(INDEX)
@@ -52,7 +62,9 @@ abstract class AbstractSearchIndex<T : Any> : SearchIndexAdmin<T>, InitializingB
     protected abstract fun id(instance: T): UUID
 
     override fun deleteById(id: UUID) {
-        client.delete(DeleteRequest(indexName, id.toString()), DEFAULT)
+        val request = DeleteRequest(indexName, id.toString())
+            .setRefreshPolicy(refreshPolicy)
+        client.delete(request, DEFAULT)
     }
 
     override fun query(query: PagedStringQuery): Page<UUID> =
@@ -92,12 +104,12 @@ abstract class AbstractSearchIndex<T : Any> : SearchIndexAdmin<T>, InitializingB
         )
     }
 
-    override fun suggest(input: String, size: Int): List<Suggestion> {
+    override fun suggest(input: String, max: MaxSuggestions): List<Suggestion> {
         val source = SearchSourceBuilder()
             .fetchSource(labelFieldName, null)
             .query(buildQuery("*$input*"))
-            .from(0 * size)
-            .size(size)
+            .from(0)
+            .size(max.toInt())
             .sort(ScoreSortBuilder().order(DESC))
         val request = SearchRequest(indexName)
             .source(source)
