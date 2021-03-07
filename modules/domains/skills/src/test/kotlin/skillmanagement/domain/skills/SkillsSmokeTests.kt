@@ -15,7 +15,6 @@ import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.SkillResource
 import skillmanagement.domain.skills.model.Tag
-import skillmanagement.domain.skills.searchindex.SkillSearchIndex
 import skillmanagement.domain.skills.usecases.delete.DeleteSkillFromDataStoreFunction
 import skillmanagement.test.SmokeTest
 import skillmanagement.test.e2e.SpringBootTestWithDockerizedDependencies
@@ -200,6 +199,16 @@ internal class SkillsSmokeTests(
 
         private fun suggest(input: String, size: Int = 100) =
             skills.suggest(input = input, size = size).toSet()
+
+    }
+
+    @Nested
+    inner class ActuatorEndpoints {
+
+        @Test
+        fun `trigger ReconstructSkillSearchIndexTask`() {
+            skills.triggerSearchIndexReconstruction()
+        }
 
     }
 

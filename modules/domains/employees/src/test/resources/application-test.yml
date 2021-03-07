@@ -3,6 +3,12 @@ logging:
     root: INFO
     skillmanagement: DEBUG
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
 metrics:
   employees:
     total:

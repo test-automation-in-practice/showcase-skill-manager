@@ -80,6 +80,13 @@ internal class SkillsTestDriver(
         }
     }
 
+    fun triggerSearchIndexReconstruction() {
+        val response = post("/actuator/reconstructSkillSearchIndex")
+        if (response.code != 204) {
+            error(unmappedCase(response))
+        }
+    }
+
     private class SkillsPageModel : PagedModel<SkillResource>()
     private class SkillSuggestions : ArrayList<Suggestion>()
 
