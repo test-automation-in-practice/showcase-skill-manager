@@ -8,10 +8,11 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.server.LocalServerPort
 import org.springframework.hateoas.RepresentationModel
+import skillmanagement.common.searchindices.SearchIndexAdmin
+import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.model.ProjectDescription
 import skillmanagement.domain.projects.model.ProjectLabel
 import skillmanagement.domain.projects.model.ProjectResource
-import skillmanagement.domain.projects.searchindex.ProjectSearchIndex
 import skillmanagement.domain.projects.usecases.delete.DeleteProjectFromDataStoreFunction
 import skillmanagement.test.SmokeTest
 import skillmanagement.test.e2e.SpringBootTestWithDockerizedDependencies
@@ -21,7 +22,7 @@ import java.lang.Thread.sleep
 @SpringBootTestWithDockerizedDependencies
 internal class ProjectsSmokeTests(
     @Autowired val deleteProjectsFromDataStore: DeleteProjectFromDataStoreFunction,
-    @Autowired val searchIndex: ProjectSearchIndex,
+    @Autowired val searchIndex: SearchIndexAdmin<Project>,
     @LocalServerPort val port: Int
 ) {
 

@@ -1,6 +1,7 @@
 package skillmanagement.domain.projects.usecases.read
 
 import skillmanagement.common.searchindices.Page
+import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.searchindex.ProjectSearchIndex
@@ -8,7 +9,7 @@ import skillmanagement.domain.projects.searchindex.ProjectSearchIndex
 @BusinessFunction
 class GetProjectsFunction internal constructor(
     private val getProjectsFromDataStore: GetProjectsFromDataStoreFunction,
-    private val searchIndex: ProjectSearchIndex
+    private val searchIndex: SearchIndex<Project>
 ) {
 
     operator fun invoke(query: ProjectsQuery): Page<Project> {

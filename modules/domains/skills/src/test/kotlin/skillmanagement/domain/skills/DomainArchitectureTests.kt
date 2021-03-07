@@ -38,6 +38,7 @@ internal class DomainArchitectureTests {
             .layer("usecases").definedBy("$basePackage.usecases..")
             .whereLayer("metrics").mayNotBeAccessedByAnyLayer()
             .whereLayer("model").mayOnlyBeAccessedByLayers("searchindex", "tasks", "usecases")
+            .whereLayer("searchindex").mayNotBeAccessedByAnyLayer()
             .whereLayer("tasks").mayNotBeAccessedByAnyLayer()
             .whereLayer("usecases").mayOnlyBeAccessedByLayers("tasks")
             .check(classesOf(basePackage))

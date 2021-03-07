@@ -7,7 +7,7 @@ import kotlin.system.measureTimeMillis
 abstract class AbstractReconstructSearchIndexTask<T : Any> : Runnable {
 
     protected abstract val log: KLogger
-    protected abstract val searchIndex: AbstractSearchIndex<T>
+    protected abstract val searchIndex: SearchIndexAdmin<T>
 
     @WriteOperation
     override fun run() {

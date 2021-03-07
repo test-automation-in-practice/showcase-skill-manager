@@ -3,15 +3,15 @@ package skillmanagement.domain.employees.tasks
 import mu.KotlinLogging.logger
 import org.springframework.boot.actuate.endpoint.web.annotation.WebEndpoint
 import skillmanagement.common.searchindices.AbstractReconstructSearchIndexTask
+import skillmanagement.common.searchindices.SearchIndexAdmin
 import skillmanagement.common.stereotypes.Task
 import skillmanagement.domain.employees.model.Employee
-import skillmanagement.domain.employees.searchindex.EmployeeSearchIndex
 import skillmanagement.domain.employees.usecases.read.GetEmployeesFromDataStoreFunction
 
 @Task
 @WebEndpoint(id = "reconstructEmployeeSearchIndex")
 internal class ReconstructEmployeeSearchIndexTask(
-    override val searchIndex: EmployeeSearchIndex,
+    override val searchIndex: SearchIndexAdmin<Employee>,
     private val getEmployeeFromDataStore: GetEmployeesFromDataStoreFunction
 ) : AbstractReconstructSearchIndexTask<Employee>() {
 

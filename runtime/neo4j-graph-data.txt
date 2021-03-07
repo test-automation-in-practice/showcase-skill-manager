@@ -91,10 +91,7 @@ CREATE (GetSkillByIdAdapterFunction)-[:USES]->(GetSkillByIdFunction)
 
 CREATE (TotalNumberOfEmployeesMeterBinder)-[:USES]->(GetTotalNumberOfEmployeesFromDataStoreFunction)
 
-CREATE (EmployeeSearchIndexUpdatingEventHandler)-[:USES]->(EmployeeSearchIndex)
-
-CREATE (ReconstructEmployeeSearchIndexTask)-[:USES]->(EmployeeSearchIndex),
-       (ReconstructEmployeeSearchIndexTask)-[:USES]->(GetEmployeesFromDataStoreFunction)
+CREATE (ReconstructEmployeeSearchIndexTask)-[:USES]->(GetEmployeesFromDataStoreFunction)
 
 CREATE (CreateEmployeeFunction)-[:USES]->(InsertEmployeeIntoDataStoreFunction),
        (CreateEmployeeFunction)-[:USES]->(PublishEventFunction)
@@ -131,16 +128,11 @@ CREATE (GetEmployeeByIdFunction)-[:USES]->(GetEmployeesFromDataStoreFunction)
 
 CREATE (GetEmployeeByIdHttpAdapter)-[:USES]->(GetEmployeeByIdFunction)
 
-CREATE (GetEmployeeIdsFunction)-[:USES]->(EmployeeSearchIndex)
-
-CREATE (GetEmployeesFunction)-[:USES]->(GetEmployeesFromDataStoreFunction),
-       (GetEmployeesFunction)-[:USES]->(EmployeeSearchIndex)
+CREATE (GetEmployeesFunction)-[:USES]->(GetEmployeesFromDataStoreFunction)
 
 CREATE (GetEmployeesHttpAdapter)-[:USES]->(GetEmployeesFunction)
 
 CREATE (SearchEmployeesHttpAdapter)-[:USES]->(GetEmployeesFunction)
-
-CREATE (SuggestEmployeesHttpAdapter)-[:USES]->(EmployeeSearchIndex)
 
 CREATE (DeleteSkillKnowledgeOfEmployeeFunction)-[:USES]->(UpdateEmployeeByIdFunction)
 
@@ -171,10 +163,7 @@ CREATE (UpdateEmployeeByIdHttpAdapter)-[:USES]->(UpdateEmployeeByIdFunction),
 
 CREATE (TotalNumberOfProjectsMeterBinder)-[:USES]->(GetTotalNumberOfProjectsFromDataStoreFunction)
 
-CREATE (ProjectSearchIndexUpdatingEventHandler)-[:USES]->(ProjectSearchIndex)
-
-CREATE (ReconstructProjectSearchIndexTask)-[:USES]->(ProjectSearchIndex),
-       (ReconstructProjectSearchIndexTask)-[:USES]->(GetProjectsFromDataStoreFunction)
+CREATE (ReconstructProjectSearchIndexTask)-[:USES]->(GetProjectsFromDataStoreFunction)
 
 CREATE (CreateProjectFunction)-[:USES]->(InsertProjectIntoDataStoreFunction),
        (CreateProjectFunction)-[:USES]->(PublishEventFunction)
@@ -191,14 +180,11 @@ CREATE (GetProjectByIdFunction)-[:USES]->(GetProjectsFromDataStoreFunction)
 
 CREATE (GetProjectByIdHttpAdapter)-[:USES]->(GetProjectByIdFunction)
 
-CREATE (GetProjectsFunction)-[:USES]->(GetProjectsFromDataStoreFunction),
-       (GetProjectsFunction)-[:USES]->(ProjectSearchIndex)
+CREATE (GetProjectsFunction)-[:USES]->(GetProjectsFromDataStoreFunction)
 
 CREATE (GetProjectsHttpAdapter)-[:USES]->(GetProjectsFunction)
 
 CREATE (SearchProjectsHttpAdapter)-[:USES]->(GetProjectsFunction)
-
-CREATE (SuggestProjectsHttpAdapter)-[:USES]->(ProjectSearchIndex)
 
 CREATE (UpdateProjectByIdFunction)-[:USES]->(GetProjectByIdFunction),
        (UpdateProjectByIdFunction)-[:USES]->(UpdateProjectInDataStoreFunction),
@@ -209,10 +195,7 @@ CREATE (UpdateProjectByIdHttpAdapter)-[:USES]->(UpdateProjectByIdFunction),
 
 CREATE (TotalNumberOfSkillsMeterBinder)-[:USES]->(GetTotalNumberOfSkillsFromDataStoreFunction)
 
-CREATE (SkillSearchIndexUpdatingEventHandler)-[:USES]->(SkillSearchIndex)
-
-CREATE (ReconstructSkillSearchIndexTask)-[:USES]->(SkillSearchIndex),
-       (ReconstructSkillSearchIndexTask)-[:USES]->(GetSkillsFromDataStoreFunction)
+CREATE (ReconstructSkillSearchIndexTask)-[:USES]->(GetSkillsFromDataStoreFunction)
 
 CREATE (CreateSkillFunction)-[:USES]->(InsertSkillIntoDataStoreFunction),
        (CreateSkillFunction)-[:USES]->(PublishEventFunction)
@@ -229,14 +212,11 @@ CREATE (GetSkillByIdFunction)-[:USES]->(GetSkillsFromDataStoreFunction)
 
 CREATE (GetSkillByIdHttpAdapter)-[:USES]->(GetSkillByIdFunction)
 
-CREATE (GetSkillsFunction)-[:USES]->(GetSkillsFromDataStoreFunction),
-       (GetSkillsFunction)-[:USES]->(SkillSearchIndex)
+CREATE (GetSkillsFunction)-[:USES]->(GetSkillsFromDataStoreFunction)
 
 CREATE (GetSkillsHttpAdapter)-[:USES]->(GetSkillsFunction)
 
 CREATE (SearchSkillsHttpAdapter)-[:USES]->(GetSkillsFunction)
-
-CREATE (SuggestSkillsHttpAdapter)-[:USES]->(SkillSearchIndex)
 
 CREATE (UpdateSkillByIdFunction)-[:USES]->(GetSkillByIdFunction),
        (UpdateSkillByIdFunction)-[:USES]->(UpdateSkillInDataStoreFunction),
