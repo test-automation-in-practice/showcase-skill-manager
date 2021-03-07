@@ -1,11 +1,13 @@
 package skillmanagement.domain.projects
 
 import org.springframework.hateoas.PagedModel
+import skillmanagement.common.model.Suggestion
 import skillmanagement.domain.projects.model.ProjectDescription
 import skillmanagement.domain.projects.model.ProjectLabel
 import skillmanagement.domain.projects.model.ProjectResource
 import skillmanagement.domain.projects.usecases.create.CreateProjectHttpAdapter
 import skillmanagement.domain.projects.usecases.read.SearchProjectsHttpAdapter
+import skillmanagement.domain.projects.usecases.read.SuggestProjectsHttpAdapter
 import skillmanagement.test.AbstractHttpTestDriver
 import java.util.UUID
 
@@ -14,7 +16,7 @@ internal class ProjectsTestDriver(
     port: Int = 8080
 ) : AbstractHttpTestDriver(host, port) {
 
-    fun add(
+    fun create(
         label: String = "Dummy Project",
         description: String = "Lorem Ipsum ..."
     ): ProjectResource {
@@ -57,6 +59,16 @@ internal class ProjectsTestDriver(
         }
     }
 
+    fun suggest(input: String, size: Int = 100): List<Suggestion> {
+        val response = post("/api/projects/_suggest?max=$size") {
+            SuggestProjectsHttpAdapter.Request(input)
+        }
+        return when (response.code) {
+            200 -> response.readBodyAs(ProjectSuggestions::class)
+            else -> error(unmappedCase(response))
+        }
+    }
+
     fun delete(id: UUID) {
         val response = delete("/api/projects/$id")
         if (response.code != 204) {
@@ -64,6 +76,14 @@ internal class ProjectsTestDriver(
         }
     }
 
+    fun triggerSearchIndexReconstruction() {
+        val response = post("/actuator/reconstructProjectSearchIndex")
+        if (response.code != 204) {
+            error(unmappedCase(response))
+        }
+    }
+
     private class ProjectsPageModel : PagedModel<ProjectResource>()
+    private class ProjectSuggestions : ArrayList<Suggestion>()
 
 }

@@ -16,16 +16,21 @@ internal class SkillSearchIndex(
 ) : AbstractSearchIndex<Skill>() {
 
     override val indexName = "skills"
-    override val labelFieldName: String = "label"
-    override val sortFieldName: String = "_sort"
+    override val sortFieldName = "_sort"
+    override val suggestFieldName = "label"
+
     override val mappingResource = ClassPathResource("/indices/skills-mapping.json")
 
     override fun toSource(instance: Skill) =
-        mapOf(
+        mutableMapOf(
             "label" to instance.label.toString(),
             "tags" to instance.tags.map(Tag::toString),
             "_sort" to instance.label.toString()
-        )
+        ).apply {
+            if (instance.description != null) {
+                "description" to instance.description.toString()
+            }
+        }
 
     override fun id(instance: Skill) = instance.id
 

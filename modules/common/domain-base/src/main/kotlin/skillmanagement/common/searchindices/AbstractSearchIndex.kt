@@ -16,7 +16,9 @@ import org.elasticsearch.client.indices.GetIndexRequest
 import org.elasticsearch.common.unit.TimeValue.timeValueMinutes
 import org.elasticsearch.common.xcontent.XContentType.JSON
 import org.elasticsearch.index.query.MatchAllQueryBuilder
+import org.elasticsearch.index.query.Operator.AND
 import org.elasticsearch.index.query.QueryBuilder
+import org.elasticsearch.index.query.QueryBuilders.queryStringQuery
 import org.elasticsearch.index.query.QueryStringQueryBuilder
 import org.elasticsearch.search.SearchHit
 import org.elasticsearch.search.builder.SearchSourceBuilder
@@ -35,8 +37,8 @@ abstract class AbstractSearchIndex<T : Any> : SearchIndexAdmin<T>, InitializingB
     protected abstract val client: RestHighLevelClient
 
     protected abstract val indexName: String
-    protected abstract val labelFieldName: String
     protected abstract val sortFieldName: String
+    protected abstract val suggestFieldName: String
     protected abstract val mappingResource: Resource
 
     private var refreshPolicy: RefreshPolicy = NONE
@@ -105,9 +107,12 @@ abstract class AbstractSearchIndex<T : Any> : SearchIndexAdmin<T>, InitializingB
     }
 
     override fun suggest(input: String, max: MaxSuggestions): List<Suggestion> {
+        val query = queryStringQuery("*$input*")
+            .field(suggestFieldName)
+            .defaultOperator(AND)
         val source = SearchSourceBuilder()
-            .fetchSource(labelFieldName, null)
-            .query(buildQuery("*$input*"))
+            .fetchSource(suggestFieldName, null)
+            .query(query)
             .from(0)
             .size(max.toInt())
             .sort(ScoreSortBuilder().order(DESC))
@@ -115,14 +120,13 @@ abstract class AbstractSearchIndex<T : Any> : SearchIndexAdmin<T>, InitializingB
             .source(source)
 
         val response = client.search(request, DEFAULT)
-
         return response.hits.map(::suggestion)
     }
 
     private fun suggestion(hit: SearchHit): Suggestion =
         Suggestion(
             id = id(hit),
-            label = (hit.sourceAsMap[labelFieldName] as? String) ?: ""
+            label = (hit.sourceAsMap[suggestFieldName] as? String) ?: ""
         )
 
     private fun id(it: SearchHit) = UUID.fromString(it.id)

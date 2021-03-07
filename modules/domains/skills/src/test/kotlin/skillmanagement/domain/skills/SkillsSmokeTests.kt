@@ -1,224 +1,140 @@
 package skillmanagement.domain.skills
 
-import io.mockk.InternalPlatformDsl.toStr
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.DynamicTest
+import org.junit.jupiter.api.DynamicTest.dynamicTest
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
+import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
+import org.junit.jupiter.api.TestMethodOrder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.server.LocalServerPort
-import org.springframework.hateoas.RepresentationModel
-import skillmanagement.common.model.Suggestion
 import skillmanagement.common.searchindices.SearchIndexAdmin
 import skillmanagement.domain.skills.model.Skill
-import skillmanagement.domain.skills.model.SkillDescription
-import skillmanagement.domain.skills.model.SkillLabel
-import skillmanagement.domain.skills.model.SkillResource
-import skillmanagement.domain.skills.model.Tag
-import skillmanagement.domain.skills.usecases.delete.DeleteSkillFromDataStoreFunction
 import skillmanagement.test.SmokeTest
 import skillmanagement.test.e2e.SpringBootTestWithDockerizedDependencies
 import java.lang.Thread.sleep
 
+private const val CREATE = 1
+private const val READ = 10
+private const val DELETE = 20
+private const val ACTUATOR = 100
+
 @SmokeTest
 @SpringBootTestWithDockerizedDependencies
+@TestMethodOrder(OrderAnnotation::class)
 internal class SkillsSmokeTests(
-    @Autowired val deleteSkillsFromDataStore: DeleteSkillFromDataStoreFunction,
     @Autowired val searchIndex: SearchIndexAdmin<Skill>,
     @LocalServerPort val port: Int
 ) {
 
     private val skills = SkillsTestDriver(port = port)
 
-    @AfterEach
-    fun cleanUp() {
-        deleteSkillsFromDataStore()
-        searchIndex.reset()
+    @Order(CREATE)
+    @TestFactory
+    fun `skills can be created`(): List<DynamicTest> =
+        listOf(
+            dynamicTest("create 'Kotlin'") { skills.create(label = "Kotlin", tags = setOf("language")) },
+            dynamicTest("create 'Kotlin Coroutines'") { skills.create(label = "Kotlin Coroutines") },
+            dynamicTest("create 'Java'") { skills.create(label = "Java", tags = setOf("language")) },
+            dynamicTest("create 'Python'") { skills.create(label = "Python", tags = setOf("language")) },
+            dynamicTest("create 'Spring Boot'") { skills.create(label = "Spring Boot", tags = setOf("framework")) },
+            dynamicTest("[wait for index refresh]") { waitUntilSearchIndexIsRefreshed() }
+        )
+
+    @Order(READ)
+    @TestFactory
+    fun `skills can be got by their ID`(): List<DynamicTest> =
+        skills.getAll()
+            .also { assertThat(it).isNotEmpty }
+            .map { skill ->
+                dynamicTest("get '${skill.label}'") {
+                    assertThat(skills.get(skill.id)).isEqualTo(skill)
+                }
+            }
+
+    @Order(READ)
+    @TestFactory
+    fun `getting all skills returns a paged result`() =
+        listOf(
+            0 to listOf("Java", "Kotlin", "Kotlin Coroutines"),
+            1 to listOf("Python", "Spring Boot")
+        ).map { (page, expected) ->
+            dynamicTest("getAll page #$page >> $expected") {
+                assertThat(getAllLabels(page = page)).isEqualTo(expected)
+            }
+        }
+
+    private fun getAllLabels(page: Int): List<String> =
+        skills.getAll(page = page, size = 3).map { it.label.toString() }
+
+    @Order(READ)
+    @TestFactory
+    fun `searching for skills returns a paged result`() =
+        listOf(
+            "tags:language" to setOf("Java", "Kotlin", "Python"),
+            "kot*" to setOf("Kotlin", "Kotlin Coroutines"),
+            "boot" to setOf("Spring Boot")
+        ).map { (query, expected) ->
+            dynamicTest("query [$query] >> $expected") {
+                assertThat(searchLabels(query)).isEqualTo(expected)
+            }
+        }
+
+    private fun searchLabels(query: String): Set<String> =
+        skills.search(query = query, page = 0, size = 100).map { it.label.toString() }.toSet()
+
+    @Order(READ)
+    @TestFactory
+    fun `getting suggestions for skills returns their labels`() =
+        listOf(
+            "ko" to setOf("Kotlin", "Kotlin Coroutines"),
+            "or" to setOf("Kotlin Coroutines"),
+            "spring" to setOf("Spring Boot")
+        ).map { (input, expected) ->
+            dynamicTest("suggest for [$input] >> $expected") {
+                assertThat(suggest(input)).isEqualTo(expected)
+            }
+        }
+
+    private fun suggest(input: String): Set<String> =
+        skills.suggest(input = input, size = 100).map { it.label }.toSet()
+
+    @Order(DELETE)
+    @TestFactory
+    fun `skills can be deleted by their ID`(): List<DynamicTest> {
+        assertThatThereAreSkills()
+
+        val deleteByIdTests = skills.getAll()
+            .map { skill ->
+                dynamicTest("""delete "${skill.label}"""") {
+                    skills.delete(skill.id)
+                    assertThat(skills.get(skill.id)).isNull()
+                }
+            }
+
+        val getAllTest = dynamicTest("getting all skills returns empty result") {
+            waitUntilSearchIndexIsRefreshed()
+            assertThat(skills.getAll()).isEmpty()
+        }
+
+        return deleteByIdTests + getAllTest
     }
 
-    @Nested
-    inner class CrudOperations {
-
-        @Test
-        fun `skills can be added`() {
-            val actual = skills.add(
-                label = "Kotlin",
-                description = "The coolest language on the JVM!",
-                tags = setOf("language", "cool")
-            )
-
-            val expected = SkillResource(
-                id = actual.id,
-                label = SkillLabel("Kotlin"),
-                description = SkillDescription("The coolest language on the JVM!"),
-                tags = sortedSetOf(Tag("language"), Tag("cool"))
-            )
-
-            assertThat(actual).isEqualTo(expected)
-            assertThat(linkNames(actual)).containsOnly("self", "delete")
-        }
-
-        @Test
-        fun `skills can be got by their ID`() {
-            val addedResource = skills.add(
-                label = "Python",
-                description = "Not just a snake...",
-                tags = setOf("language")
-            )
-            val gotResource = skills.get(addedResource.id)
-
-            assertThat(gotResource).isEqualTo(addedResource)
-            assertThat(linkNames(gotResource)).containsOnly("self", "delete")
-        }
-
-        @Test
-        fun `skills can be deleted by their ID`() {
-            val skillId = skills.add().id
-
-            assertThat(skills.get(skillId)).isNotNull()
-            skills.delete(skillId)
-            assertThat(skills.get(skillId)).isNull()
-        }
-
-    }
-
-    @Nested
-    inner class FindingAllSkills {
-
-        @Test
-        fun `getting all skills returns a paged result`() {
-            val python = skills.add(label = "Python")
-            val kotlin = skills.add(
-                label = "Kotlin",
-                description = "The coolest language on the JVM!",
-                tags = setOf("language", "cool")
-            )
-
-            waitUntilSearchIndexIsRefreshed()
-
-            assertThat(getAll()).containsExactly(kotlin, python)
-        }
-
-        @Test
-        fun `pagination works properly`() {
-            val skill1 = skills.add(label = "Skill #1")
-            val skill2 = skills.add(label = "Skill #2")
-            val skill3 = skills.add(label = "Skill #3")
-            val skill4 = skills.add(label = "Skill #4")
-            val skill5 = skills.add(label = "Skill #5")
-
-            waitUntilSearchIndexIsRefreshed()
-
-            assertThat(getAll(page = 0, size = 3))
-                .containsExactly(skill1, skill2, skill3)
-            assertThat(getAll(page = 1, size = 3))
-                .containsExactly(skill4, skill5)
-        }
-
-        private fun getAll(page: Int = 0, size: Int = 100) =
-            skills.getAll(page = page, size = size).content
-
-    }
-
-    @Nested
-    inner class SearchingForSkills {
-
-        @Test
-        fun `searching for skills returns a paged result`() {
-            val python1 = skills.add(label = "Python #1")
-            val python2 = skills.add(label = "Python #2")
-            val kotlin1 = skills.add(label = "Kotlin #1")
-            val kotlin2 = skills.add(
-                label = "Kotlin #2",
-                description = "The coolest language on the JVM!",
-                tags = setOf("language", "cool")
-            )
-
-            waitUntilSearchIndexIsRefreshed()
-
-            assertThat(search("python")).containsOnly(python1, python2)
-            assertThat(search("#1")).containsOnly(kotlin1, python1)
-            assertThat(search("tags:cool")).containsOnly(kotlin2)
-        }
-
-        @Test
-        fun `pagination works properly`() {
-            val skill1 = skills.add(label = "Skill #1")
-            val skill2 = skills.add(label = "Skill #2")
-            val skill3 = skills.add(label = "Skill #3")
-            val skill4 = skills.add(label = "Skill #4")
-            val skill5 = skills.add(label = "Skill #5")
-
-            waitUntilSearchIndexIsRefreshed()
-
-            val resultsFromPage1 = search(query = "skill", page = 0, size = 3)
-            val resultsFromPage2 = search(query = "skill", page = 1, size = 3)
-
-            assertThat(resultsFromPage1).hasSize(3)
-            assertThat(resultsFromPage2).hasSize(2)
-            assertThat(resultsFromPage1 + resultsFromPage2)
-                .containsOnly(skill1, skill2, skill3, skill4, skill5)
-        }
-
-        private fun search(query: String, page: Int = 0, size: Int = 100) =
-            skills.search(query = query, page = page, size = size).content
-
-    }
-
-    @Nested
-    inner class SuggestingForSkills {
-
-        @Test
-        fun `getting suggestions for skills returns limited list`() {
-            val python1 = skills.add(label = "Python #1")
-            val python2 = skills.add(label = "Python #2")
-            val kotlin1 = skills.add(label = "Kotlin #1")
-
-            waitUntilSearchIndexIsRefreshed()
-
-            assertThat(suggest("py")).containsOnly(python1.toSuggestion(), python2.toSuggestion())
-            assertThat(suggest("1")).containsOnly(kotlin1.toSuggestion(), python1.toSuggestion())
-        }
-
-        @Test
-        fun `sizing works properly`() {
-            skills.add(label = "Skill #1")
-            skills.add(label = "Skill #2")
-            skills.add(label = "Skill #3")
-            skills.add(label = "Skill #4")
-            skills.add(label = "Skill #5")
-
-            waitUntilSearchIndexIsRefreshed()
-
-            val results1 = suggest(input = "skill", size = 3)
-            val results2 = suggest(input = "skill")
-
-            assertThat(results1).hasSize(3)
-            assertThat(results2).hasSize(5)
-        }
-
-        private fun suggest(input: String, size: Int = 100) =
-            skills.suggest(input = input, size = size).toSet()
-
-    }
-
-    @Nested
-    inner class ActuatorEndpoints {
-
-        @Test
-        fun `trigger ReconstructSkillSearchIndexTask`() {
-            skills.triggerSearchIndexReconstruction()
-        }
-
+    @Test
+    @Order(ACTUATOR)
+    fun `actuator endpoint for triggering ReconstructSkillSearchIndexTask exists`() {
+        skills.triggerSearchIndexReconstruction()
     }
 
     private fun waitUntilSearchIndexIsRefreshed() {
         searchIndex.refresh()
-        sleep(1_500)
+        sleep(2_000)
     }
 
-    private fun linkNames(model: RepresentationModel<*>?) =
-        model?.links?.map { it.rel.toStr() }?.toSet()
+    private fun assertThatThereAreSkills() {
+        assertThat(skills.getAll()).isNotEmpty()
+    }
 
-    private fun SkillResource.toSuggestion() = Suggestion(id = id, label = label.toString())
 }

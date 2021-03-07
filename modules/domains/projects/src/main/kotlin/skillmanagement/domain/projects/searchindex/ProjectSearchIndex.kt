@@ -3,6 +3,7 @@ package skillmanagement.domain.projects.searchindex
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.index.query.Operator.AND
 import org.elasticsearch.index.query.QueryBuilders.queryStringQuery
+import org.elasticsearch.index.query.QueryStringQueryBuilder
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
 import skillmanagement.common.searchindices.AbstractSearchIndex
@@ -14,8 +15,9 @@ internal class ProjectSearchIndex(
 ) : AbstractSearchIndex<Project>() {
 
     override val indexName = "projects"
-    override val labelFieldName: String = "label"
-    override val sortFieldName: String = "_sort"
+    override val sortFieldName = "_sort"
+    override val suggestFieldName = "label"
+
     override val mappingResource = ClassPathResource("/indices/projects-mapping.json")
 
     override fun toSource(instance: Project) =
@@ -27,10 +29,9 @@ internal class ProjectSearchIndex(
 
     override fun id(instance: Project) = instance.id
 
-    override fun buildQuery(queryString: String) =
+    override fun buildQuery(queryString: String): QueryStringQueryBuilder =
         queryStringQuery(queryString)
-            .field("label", 3.0f)
-            .field("description")
+            .defaultField("label")
             .defaultOperator(AND)
 
 }

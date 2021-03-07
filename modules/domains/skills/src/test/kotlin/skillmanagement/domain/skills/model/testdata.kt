@@ -139,6 +139,9 @@ private fun Skill.toResourceWithoutLinks() =
 internal fun Skill.toSuggestion() =
     Suggestion(id = id, label = label.toString())
 
+internal fun SkillResource.toSuggestion() =
+    Suggestion(id = id, label = label.toString())
+
 internal fun skill(
     id: String = uuid().toString(),
     version: Int = 1,
