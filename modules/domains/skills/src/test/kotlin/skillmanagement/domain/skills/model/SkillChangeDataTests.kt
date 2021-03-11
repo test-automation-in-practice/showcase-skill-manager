@@ -28,6 +28,11 @@ internal class SkillChangeDataTests {
             description = SkillDescription("Much needed for these tests."),
             tags = sortedSetOf(Tag("foo"), Tag("bar")),
         )
+        private val changedData = SkillChangeData(
+            label = SkillLabel("Changed Data"),
+            description = SkillDescription("Completely different."),
+            tags = sortedSetOf(Tag("xur")),
+        )
 
         @Test
         fun `toChangeData function creates correct instance`() {
@@ -36,10 +41,10 @@ internal class SkillChangeDataTests {
 
         @Test
         fun `merge function creates skill with overridden properties`() {
-            skill.merge(changeData) shouldBe skill.copy(
-                label = changeData.label,
-                description = changeData.description,
-                tags = changeData.tags
+            skill.merge(changedData) shouldBe skill.copy(
+                label = changedData.label,
+                description = changedData.description,
+                tags = changedData.tags
             )
         }
 

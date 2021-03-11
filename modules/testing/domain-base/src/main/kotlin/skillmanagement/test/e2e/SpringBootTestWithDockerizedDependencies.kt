@@ -9,13 +9,13 @@ import skillmanagement.test.events.RunWithDockerizedRabbitMq
 import skillmanagement.test.searchindices.RunWithDockerizedElasticsearch
 import kotlin.annotation.AnnotationTarget.CLASS
 
-const val PROPERTY_DOCKERIZED_DATABASE_URL =
-    "spring.datasource.url=jdbc:postgresql://localhost:\${POSTGRES_PORT}/database"
+const val PROPERTY_DOCKERIZED_DATABASE_URL = "spring.datasource.url=" +
+        "jdbc:postgresql://localhost:\${POSTGRES_PORT}/database"
 const val PROPERTY_DOCKERIZED_DATABASE_USER = "spring.datasource.username=user"
 const val PROPERTY_DOCKERIZED_DATABASE_PASSWORD = "spring.datasource.password=password"
 
-const val PROPERTY_DOCKERIZED_ELASTICSEARCH_PORT =
-    "spring.elasticsearch.rest.uris=http://localhost:\${ELASTICSEARCH_PORT}"
+const val PROPERTY_DOCKERIZED_ELASTICSEARCH_PORT = "spring.elasticsearch.rest.uris=" +
+        "http://localhost:\${ELASTICSEARCH_PORT}"
 
 const val PROPERTY_DOCKERIZED_BROKER_HOST = "spring.rabbitmq.host=localhost"
 const val PROPERTY_DOCKERIZED_BROKER_PORT = "spring.rabbitmq.port=\${RABBITMQ_PORT}"
