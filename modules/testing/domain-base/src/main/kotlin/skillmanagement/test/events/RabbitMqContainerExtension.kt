@@ -12,7 +12,7 @@ import kotlin.annotation.AnnotationTarget.CLASS
 @ExtendWith(RabbitMqContainerExtension::class)
 annotation class RunWithDockerizedRabbitMq
 
-class RabbitMqContainer : Container("rabbitmq:3.8") {
+private class RabbitMqContainer : Container("rabbitmq:3.8") {
     override fun getMappedPort(): Int = getMappedPort(5672)
 }
 
