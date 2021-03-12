@@ -28,7 +28,7 @@ internal class SkillSearchIndex(
             "_sort" to instance.label.toString()
         ).apply {
             if (instance.description != null) {
-                "description" to instance.description.toString()
+                put("description", instance.description.toString())
             }
         }
 

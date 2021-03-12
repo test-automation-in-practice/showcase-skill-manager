@@ -3,8 +3,11 @@ package skillmanagement.domain.skills.searchindex
 import org.assertj.core.api.Assertions.assertThat
 import org.elasticsearch.client.RestHighLevelClient
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.DynamicTest
+import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
 import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.PageIndex
 import skillmanagement.common.searchindices.PageSize
@@ -93,6 +96,30 @@ internal class SkillSearchIndexTests(client: RestHighLevelClient) {
 
             assertThat(query("swift")).containsOnly(swift)
             assertThat(query("language")).isEmpty()
+        }
+
+        @TestFactory
+        fun `properties can be queried`(): List<DynamicTest> = listOf(
+            "label:value" to skill(
+                label = "value",
+                description = "unknown",
+                tags = setOf("unknown", "unknown")
+            ),
+            "description:value" to skill(
+                label = "unknown",
+                description = "value",
+                tags = setOf("unknown", "unknown")
+            ),
+            "tags:value" to skill(
+                label = "unknown",
+                description = "unknown",
+                tags = setOf("value", "unknown")
+            )
+        ).map { (query, skill) ->
+            dynamicTest(query) {
+                val skillId = index(skill).id
+                assertThat(query(query)).containsOnly(skillId)
+            }
         }
 
     }
