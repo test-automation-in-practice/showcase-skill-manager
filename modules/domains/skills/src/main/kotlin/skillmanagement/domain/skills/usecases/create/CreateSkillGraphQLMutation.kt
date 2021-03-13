@@ -10,7 +10,7 @@ import skillmanagement.domain.skills.model.Tag
 import java.util.Collections
 
 @Component
-class CreateSkillGraphQLMutation(
+internal class CreateSkillGraphQLMutation(
     private val createSkill: CreateSkillFunction
 ) : GraphQLMutationResolver {
 

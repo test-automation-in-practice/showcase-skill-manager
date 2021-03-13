@@ -8,7 +8,7 @@ import skillmanagement.domain.projects.usecases.delete.DeleteProjectByIdResult.S
 import java.util.UUID
 
 @Component
-class DeleteProjectByIdGraphQLMutation(
+internal class DeleteProjectByIdGraphQLMutation(
     private val deleteProjectById: DeleteProjectByIdFunction
 ) : GraphQLMutationResolver {
 

@@ -1,0 +1,8 @@
+mutation {
+    createSkill(label: "Kotlin", description: "The coolest programming language.", tags: ["cool", "language"]) {
+        id
+        label
+        description
+        tags
+    }
+}
