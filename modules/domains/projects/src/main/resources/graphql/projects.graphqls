@@ -1,0 +1,15 @@
+type Project {
+    id: ID!
+    label: String!
+    description: String!
+}
+
+extend type Query {
+    getProjectsPage(page: Int!, size: Int!): [Project]!
+    getProjectById(id: ID!): Project
+}
+
+extend type Mutation {
+    createProject(label: String!, description: String!) : Project!
+    deleteProjectById(id: ID!) : Boolean!
+}

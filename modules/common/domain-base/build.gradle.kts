@@ -1,6 +1,5 @@
 plugins {
     id("org.springframework.boot") apply false
-
     kotlin("jvm")
     kotlin("plugin.spring")
 }
@@ -24,6 +23,7 @@ dependencies {
     api("org.elasticsearch.client:elasticsearch-rest-high-level-client")
 
     api("com.github.java-json-tools:json-patch:1.13")
+    api("com.graphql-java-kickstart:graphql-spring-boot-starter:11.0.0")
 
     testImplementation(project(":modules:testing:core"))
 }
