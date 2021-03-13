@@ -2,8 +2,9 @@ package skillmanagement.domain.skills.usecases.create
 
 import io.kotlintest.shouldBe
 import io.mockk.confirmVerified
+import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verifyOrder
+import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.springframework.util.IdGenerator
 import skillmanagement.common.events.PublishEventFunction
@@ -12,61 +13,70 @@ import skillmanagement.domain.skills.model.SkillAddedEvent
 import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.Tag
+import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.UnitTest
-import skillmanagement.test.sequentialClock
-import skillmanagement.test.sequentialIdGenerator
+import skillmanagement.test.fixedClock
 import skillmanagement.test.uuid
 import java.time.Instant
 import java.util.Collections.emptySortedSet
 
 @UnitTest
+@ResetMocksAfterEachTest
 internal class CreateSkillFunctionTests {
 
-    val ids = arrayOf("312f3bfc-c9b0-4b4c-9cc4-33242cdfc39e", "da8748e1-405b-456c-92d4-26fdad09a0c9")
-    val idGenerator: IdGenerator = sequentialIdGenerator(*ids)
-    val insertSkillIntoDataStore: InsertSkillIntoDataStoreFunction = mockk(relaxUnitFun = true)
-    val publishEvent: PublishEventFunction = mockk(relaxUnitFun = true)
-    val clock = sequentialClock("2020-07-14T12:34:56.789Z", "2020-07-14T13:34:56.789Z")
+    private val idGenerator: IdGenerator = mockk()
+    private val insertSkillIntoDataStore: InsertSkillIntoDataStoreFunction = mockk(relaxUnitFun = true)
+    private val publishEvent: PublishEventFunction = mockk(relaxUnitFun = true)
+    private val clock = fixedClock("2020-07-14T12:34:56.789Z")
 
-    val addSkill = CreateSkillFunction(idGenerator, insertSkillIntoDataStore, publishEvent, clock)
+    private val addSkill = CreateSkillFunction(idGenerator, insertSkillIntoDataStore, publishEvent, clock)
 
     @Test
-    fun `correct Skill instances are constructed and stored`() {
-        val actualSkill1 = addSkill(
-            label = SkillLabel("Skill #1"),
-            description = null,
-            tags = emptySortedSet()
+    fun `correct Skill instance is constructed and stored for min data`() {
+        every { idGenerator.generateId() } returns uuid("312f3bfc-c9b0-4b4c-9cc4-33242cdfc39e")
+
+        val actual = addSkill(
+            label = SkillLabel("Skill #1")
         )
-        val expectedSkill1 = Skill(
-            id = uuid(ids[0]),
+        val expected = Skill(
+            id = uuid("312f3bfc-c9b0-4b4c-9cc4-33242cdfc39e"),
             version = 1,
             label = SkillLabel("Skill #1"),
             description = null,
             tags = emptySortedSet(),
             lastUpdate = Instant.parse("2020-07-14T12:34:56.789Z")
         )
-        actualSkill1 shouldBe expectedSkill1
+        actual shouldBe expected
 
-        val actualSkill2 = addSkill(
+        verify {
+            insertSkillIntoDataStore(expected)
+            publishEvent(SkillAddedEvent(expected))
+        }
+        confirmVerified(insertSkillIntoDataStore, publishEvent)
+    }
+
+    @Test
+    fun `correct Skill instance is constructed and stored for max data`() {
+        every { idGenerator.generateId() } returns uuid("da8748e1-405b-456c-92d4-26fdad09a0c9")
+
+        val actual = addSkill(
             label = SkillLabel("Skill #2"),
             description = SkillDescription("description"),
             tags = sortedSetOf(Tag("foo-bar"))
         )
-        val expectedSkill2 = Skill(
-            id = uuid(ids[1]),
+        val expected = Skill(
+            id = uuid("da8748e1-405b-456c-92d4-26fdad09a0c9"),
             version = 1,
             label = SkillLabel("Skill #2"),
             description = SkillDescription("description"),
             tags = sortedSetOf(Tag("foo-bar")),
-            lastUpdate = Instant.parse("2020-07-14T13:34:56.789Z")
+            lastUpdate = Instant.parse("2020-07-14T12:34:56.789Z")
         )
-        actualSkill2 shouldBe expectedSkill2
+        actual shouldBe expected
 
-        verifyOrder {
-            insertSkillIntoDataStore(expectedSkill1)
-            publishEvent(SkillAddedEvent(expectedSkill1))
-            insertSkillIntoDataStore(expectedSkill2)
-            publishEvent(SkillAddedEvent(expectedSkill2))
+        verify {
+            insertSkillIntoDataStore(expected)
+            publishEvent(SkillAddedEvent(expected))
         }
         confirmVerified(insertSkillIntoDataStore, publishEvent)
     }
