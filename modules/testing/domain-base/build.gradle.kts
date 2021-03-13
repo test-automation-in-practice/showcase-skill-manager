@@ -16,6 +16,7 @@ dependencies {
     api("io.rest-assured:rest-assured")
 
     api("org.testcontainers:testcontainers:1.15.1")
+    api("com.graphql-java-kickstart:graphql-spring-boot-starter-test:11.0.0")
 
     api("org.springframework.boot:spring-boot-starter-test")
     api("org.springframework.restdocs:spring-restdocs-mockmvc")

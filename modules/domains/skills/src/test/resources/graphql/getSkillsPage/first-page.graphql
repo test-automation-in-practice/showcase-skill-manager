@@ -1,0 +1,8 @@
+query {
+    getSkillsPage(page: 0, size: 10) {
+        id
+        label
+        description
+        tags
+    }
+}

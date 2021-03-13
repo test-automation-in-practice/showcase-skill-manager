@@ -8,7 +8,7 @@ import skillmanagement.common.searchindices.PageSize
 import skillmanagement.domain.skills.model.Skill
 
 @Component
-class GetSkillsPageGraphQLQuery(
+internal class GetSkillsPageGraphQLQuery(
     private val getSkills: GetSkillsFunction
 ) : GraphQLQueryResolver {
 

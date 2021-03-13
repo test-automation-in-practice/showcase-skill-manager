@@ -7,7 +7,7 @@ import skillmanagement.domain.projects.model.Project
 import java.util.UUID
 
 @Component
-class GetProjectByIdGraphQLQuery(
+internal class GetProjectByIdGraphQLQuery(
     private val getProjectById: GetProjectByIdFunction
 ) : GraphQLQueryResolver {
 

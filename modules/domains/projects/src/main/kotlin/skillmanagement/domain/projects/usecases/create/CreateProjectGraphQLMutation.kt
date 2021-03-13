@@ -8,7 +8,7 @@ import skillmanagement.domain.projects.model.ProjectDescription
 import skillmanagement.domain.projects.model.ProjectLabel
 
 @Component
-class CreateProjectGraphQLMutation(
+internal class CreateProjectGraphQLMutation(
     private val createProject: CreateProjectFunction
 ) : GraphQLMutationResolver {
 
