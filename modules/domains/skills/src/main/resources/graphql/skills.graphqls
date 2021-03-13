@@ -1,0 +1,16 @@
+type Skill {
+    id: ID!
+    label: String!
+    description: String
+    tags: [String]!
+}
+
+extend type Query {
+    getSkillsPage(page: Int!, size: Int!): [Skill]!
+    getSkillById(id: ID!): Skill
+}
+
+extend type Mutation {
+    createSkill(label: String!, description: String, tags: [String!]) : Skill!
+    deleteSkillById(id: ID!) : Boolean!
+}
