@@ -41,3 +41,8 @@ spring:
   rabbitmq:
     host: localhost
     port: 5672
+
+custom:
+  security:
+    cors:
+      allowed-origins: "http://localhost:4200"
