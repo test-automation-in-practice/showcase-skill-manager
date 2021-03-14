@@ -15,8 +15,12 @@ import org.springframework.http.HttpStatus.OK
 import skillmanagement.common.model.Page
 import skillmanagement.common.model.PageIndex
 import skillmanagement.common.model.PageSize
+import skillmanagement.common.searchindices.MaxSuggestions
+import skillmanagement.common.searchindices.SearchIndex
+import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.skill_java
 import skillmanagement.domain.skills.model.skill_kotlin
+import skillmanagement.domain.skills.model.skill_kotlin_suggestion
 import skillmanagement.domain.skills.model.skill_python
 import skillmanagement.domain.skills.usecases.create.CreateSkillFunction
 import skillmanagement.domain.skills.usecases.delete.DeleteSkillByIdFunction
@@ -25,6 +29,7 @@ import skillmanagement.domain.skills.usecases.delete.DeleteSkillByIdResult.Succe
 import skillmanagement.domain.skills.usecases.read.AllSkillsQuery
 import skillmanagement.domain.skills.usecases.read.GetSkillByIdFunction
 import skillmanagement.domain.skills.usecases.read.GetSkillsPageFunction
+import skillmanagement.domain.skills.usecases.read.SkillsMatchingQuery
 import skillmanagement.test.ResetMocksAfterEachTest
 
 @GraphQLTest
@@ -102,6 +107,44 @@ internal class SkillsGraphQLTest(
     }
 
     @Test
+    fun `search skills - found`(@Autowired getSkillsPage: GetSkillsPageFunction) {
+        every { getSkillsPage(SkillsMatchingQuery(PageIndex(0), PageSize(10), queryString = "tags:language")) }
+            .returns(Page(listOf(skill_kotlin, skill_python), 0, 10, 2))
+        assertRequestResponse(
+            request = "/graphql/searchSkills/first-page.graphql",
+            expectedResponseBody = "/graphql/searchSkills/found.json"
+        )
+    }
+
+    @Test
+    fun `search skills - empty`(@Autowired getSkillsPage: GetSkillsPageFunction) {
+        every { getSkillsPage(SkillsMatchingQuery(PageIndex(1), PageSize(10), queryString = "tags:language")) }
+            .returns(Page(emptyList(), 1, 10, 2))
+        assertRequestResponse(
+            request = "/graphql/searchSkills/second-page.graphql",
+            expectedResponseBody = "/graphql/searchSkills/empty.json"
+        )
+    }
+
+    @Test
+    fun `suggest skills - found`(@Autowired searchIndex: SearchIndex<Skill>) {
+        every { searchIndex.suggest("ko", MaxSuggestions(10)) } returns listOf(skill_kotlin_suggestion)
+        assertRequestResponse(
+            request = "/graphql/suggestSkills/request.graphql",
+            expectedResponseBody = "/graphql/suggestSkills/found.json"
+        )
+    }
+
+    @Test
+    fun `suggest skills - empty`(@Autowired searchIndex: SearchIndex<Skill>) {
+        every { searchIndex.suggest("ko", MaxSuggestions(10)) } returns emptyList()
+        assertRequestResponse(
+            request = "/graphql/suggestSkills/request.graphql",
+            expectedResponseBody = "/graphql/suggestSkills/empty.json"
+        )
+    }
+
+    @Test
     fun `delete skill by ID - deleted`(@Autowired deleteSkillById: DeleteSkillByIdFunction) {
         every { deleteSkillById(skill_kotlin.id) } returns SuccessfullyDeleted
         assertRequestResponse(
@@ -142,5 +185,8 @@ private class TestConfiguration {
 
     @Bean
     fun getSkillsFunction(): GetSkillsPageFunction = mockk()
+
+    @Bean
+    fun searchIndex(): SearchIndex<Skill> = mockk()
 
 }

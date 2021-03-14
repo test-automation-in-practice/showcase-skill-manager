@@ -13,8 +13,14 @@ internal class GetSkillsPageGraphQLAdapter(
     private val getSkillsPage: GetSkillsPageFunction
 ) : GraphQLQueryResolver {
 
-    fun getSkillsPage(index: Int, size: Int): Page<Skill> = withErrorHandling {
-        getSkillsPage(AllSkillsQuery(PageIndex(index), PageSize(size)))
+    fun getSkillsPage(index: Int?, size: Int?): Page<Skill> = withErrorHandling {
+        getSkillsPage(query(index, size))
     }
+
+    private fun query(index: Int?, size: Int?) =
+        AllSkillsQuery(
+            pageIndex = index?.let(::PageIndex) ?: PageIndex.DEFAULT,
+            pageSize = size?.let(::PageSize) ?: PageSize.DEFAULT
+        )
 
 }

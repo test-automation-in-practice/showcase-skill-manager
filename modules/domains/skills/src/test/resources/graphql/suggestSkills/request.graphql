@@ -1,0 +1,6 @@
+query {
+    suggestSkills(input: "ko", max: 10) {
+        id
+        label
+    }
+}

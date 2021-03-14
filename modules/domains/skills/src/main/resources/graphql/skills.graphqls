@@ -15,8 +15,10 @@ type SkillsPage {
 }
 
 extend type Query {
-    getSkillsPage(index: Int!, size: Int!): SkillsPage
     getSkillById(id: ID!): Skill
+    getSkillsPage(index: Int, size: Int): SkillsPage!
+    searchSkills(query: String!, index: Int, size: Int): SkillsPage!
+    suggestSkills(input: String!, max: Int): [Suggestion]!
 }
 
 extend type Mutation {
