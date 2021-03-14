@@ -1,8 +1,15 @@
 query {
-    getSkillsPage(page: 0, size: 10) {
-        id
-        label
-        description
-        tags
+    getSkillsPage(index: 0, size: 10) {
+        content {
+            id
+            label
+            description
+            tags
+        }
+        pageIndex
+        pageSize
+        totalElements
+        hasPrevious
+        hasNext
     }
 }

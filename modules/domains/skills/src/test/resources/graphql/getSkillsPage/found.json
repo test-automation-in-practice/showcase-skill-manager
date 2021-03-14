@@ -1,20 +1,27 @@
 {
   "data": {
-    "getSkillsPage": [
-      {
-        "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
-        "label": "Kotlin",
-        "description": "The coolest programming language.",
-        "tags": [
-          "cool",
-          "language"
-        ]
-      },
-      {
-        "id": "6935e550-d041-418a-9070-e37431069232",
-        "label": "Python",
-        "tags": []
-      }
-    ]
+    "getSkillsPage": {
+      "content": [
+        {
+          "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
+          "label": "Kotlin",
+          "description": "The coolest programming language.",
+          "tags": [
+            "cool",
+            "language"
+          ]
+        },
+        {
+          "id": "6935e550-d041-418a-9070-e37431069232",
+          "label": "Python",
+          "tags": []
+        }
+      ],
+      "pageIndex": 0,
+      "pageSize": 10,
+      "totalElements": 2,
+      "hasPrevious": false,
+      "hasNext": false
+    }
   }
 }

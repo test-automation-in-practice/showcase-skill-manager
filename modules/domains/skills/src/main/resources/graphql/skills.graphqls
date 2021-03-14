@@ -5,8 +5,17 @@ type Skill {
     tags: [String]!
 }
 
+type SkillsPage {
+    content: [Skill]!
+    pageIndex: Int!
+    pageSize: Int!
+    totalElements: Int!
+    hasPrevious: Boolean!
+    hasNext: Boolean!
+}
+
 extend type Query {
-    getSkillsPage(page: Int!, size: Int!): [Skill]!
+    getSkillsPage(index: Int!, size: Int!): SkillsPage
     getSkillById(id: ID!): Skill
 }
 

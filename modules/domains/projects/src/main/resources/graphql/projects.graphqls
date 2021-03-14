@@ -4,8 +4,17 @@ type Project {
     description: String!
 }
 
+type ProjectsPage {
+    content: [Project]!
+    pageIndex: Int!
+    pageSize: Int!
+    totalElements: Int!
+    hasPrevious: Boolean!
+    hasNext: Boolean!
+}
+
 extend type Query {
-    getProjectsPage(page: Int!, size: Int!): [Project]!
+    getProjectsPage(page: Int!, size: Int!): ProjectsPage!
     getProjectById(id: ID!): Project
 }
 
