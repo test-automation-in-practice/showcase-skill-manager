@@ -155,7 +155,7 @@
 												"body": {
 													"mode": "graphql",
 													"graphql": {
-														"query": "mutation {\n    createProject(label: \"Morpheus\", description: \"PS-VR\") {\n        id\n        label\n        description\n    }\n}\n",
+														"query": "mutation {\n    createProject(label: \"Orbis\", description: \"PS4\") {\n        id\n        label\n        description\n    }\n}\n",
 														"variables": ""
 													}
 												},
@@ -335,6 +335,61 @@
 											"response": []
 										}
 									]
+								}
+							]
+						},
+						{
+							"name": "Search",
+							"item": [
+								{
+									"name": "Find Projects matching Query (paged)",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "query {\n    searchProjects(query: \"description:ps4\", index: 0, size: 10) {\n        content {\n            id\n            label\n            description\n        }\n        pageIndex\n        pageSize\n        totalElements\n        hasPrevious\n        hasNext\n    }\n}\n",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{base-url}}/api/graphql",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Suggest Projects matching Input",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "query {\n    suggestProjects(input: \"n\", max: 10) {\n        id\n        label\n    }\n}\n",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{base-url}}/api/graphql",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"graphql"
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						}
@@ -537,6 +592,61 @@
 											"response": []
 										}
 									]
+								}
+							]
+						},
+						{
+							"name": "Search",
+							"item": [
+								{
+									"name": "Find Skills matching Query (paged)",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "query {\n    searchSkills(query: \"tags:language\", index: 0, size: 10) {\n        content {\n            id\n            label\n            description\n            tags\n        }\n        pageIndex\n        pageSize\n        totalElements\n        hasPrevious\n        hasNext\n    }\n}\n",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{base-url}}/api/graphql",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"graphql"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Suggest Skills matching Input",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "graphql",
+											"graphql": {
+												"query": "query {\n    suggestSkills(input: \"sp\", max: 10) {\n        id\n        label\n    }\n}\n",
+												"variables": ""
+											}
+										},
+										"url": {
+											"raw": "{{base-url}}/api/graphql",
+											"host": [
+												"{{base-url}}"
+											],
+											"path": [
+												"api",
+												"graphql"
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						}

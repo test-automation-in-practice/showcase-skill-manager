@@ -14,8 +14,10 @@ type ProjectsPage {
 }
 
 extend type Query {
-    getProjectsPage(index: Int!, size: Int!): ProjectsPage!
     getProjectById(id: ID!): Project
+    getProjectsPage(index: Int, size: Int): ProjectsPage!
+    searchProjects(query: String!, index: Int, size: Int): ProjectsPage!
+    suggestProjects(input: String!, max: Int): [Suggestion]!
 }
 
 extend type Mutation {

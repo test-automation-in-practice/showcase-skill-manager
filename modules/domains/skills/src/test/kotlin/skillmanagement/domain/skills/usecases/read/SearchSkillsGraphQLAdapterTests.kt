@@ -15,31 +15,33 @@ import skillmanagement.test.UnitTest
 
 @UnitTest
 @ResetMocksAfterEachTest
-internal class GetSkillsPageGraphQLAdapterTests {
+internal class SearchSkillsGraphQLAdapterTests {
 
     private val getSkillsPage: GetSkillsPageFunction = mockk()
-    private val cut = GetSkillsPageGraphQLAdapter(getSkillsPage)
+    private val cut = SearchSkillsGraphQLAdapter(getSkillsPage)
 
     @Test
     fun `translates and delegates retrieval to business function`() {
         val page: Page<Skill> = mockk()
-        every { getSkillsPage(AllSkillsQuery(PageIndex(3), PageSize(42))) } returns page
-        assertThat(tryToGetSkillsPage(index = 3, size = 42)).isEqualTo(page)
+        every { getSkillsPage(SkillsMatchingQuery(PageIndex(3), PageSize(42), "query")) } returns page
+        assertThat(tryToSearchSkills(query = "query", index = 3, size = 42)).isEqualTo(page)
     }
 
     @Test
     fun `default values are used when necessary`() {
         val page: Page<Skill> = mockk()
-        every { getSkillsPage(AllSkillsQuery(PageIndex.DEFAULT, PageSize.DEFAULT)) } returns page
-        assertThat(tryToGetSkillsPage()).isEqualTo(page)
+        every { getSkillsPage(SkillsMatchingQuery(PageIndex.DEFAULT, PageSize.DEFAULT, "query")) } returns page
+        assertThat(tryToSearchSkills(query = "query")).isEqualTo(page)
     }
 
     @Test
     fun `validation errors are translated to GraphQL compatible exception`() {
         assertThrows<GraphQLClientSideException> {
-            tryToGetSkillsPage(index = -1)
+            tryToSearchSkills(index = -1)
         }
     }
 
-    private fun tryToGetSkillsPage(index: Int? = null, size: Int? = null) = cut.getSkillsPage(index, size)
+    private fun tryToSearchSkills(query: String = "*", index: Int? = null, size: Int? = null) =
+        cut.searchSkills(query, index, size)
+
 }
