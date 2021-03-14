@@ -28,6 +28,7 @@ import org.elasticsearch.search.sort.SortBuilder
 import org.elasticsearch.search.sort.SortOrder.DESC
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.core.io.Resource
+import skillmanagement.common.model.Page
 import skillmanagement.common.model.Suggestion
 import java.io.BufferedReader
 import java.util.UUID

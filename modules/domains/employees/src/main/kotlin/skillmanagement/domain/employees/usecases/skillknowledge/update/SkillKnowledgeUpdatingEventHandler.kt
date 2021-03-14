@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration
 import skillmanagement.common.events.QUEUE_PREFIX
 import skillmanagement.common.events.durableQueue
 import skillmanagement.common.events.eventBinding
-import skillmanagement.common.searchindices.PageSize
+import skillmanagement.common.model.PageSize
 import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.SkillData

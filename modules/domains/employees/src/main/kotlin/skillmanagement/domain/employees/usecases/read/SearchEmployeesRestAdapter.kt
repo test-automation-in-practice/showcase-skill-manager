@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import skillmanagement.common.searchindices.PageIndex
-import skillmanagement.common.searchindices.PageSize
+import skillmanagement.common.model.PageIndex
+import skillmanagement.common.model.PageSize
 import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.domain.employees.model.EmployeeResource
 import skillmanagement.domain.employees.model.toSearchResource

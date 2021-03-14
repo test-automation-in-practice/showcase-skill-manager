@@ -6,8 +6,8 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import skillmanagement.common.searchindices.MaxSuggestions
-import skillmanagement.common.searchindices.PageIndex
-import skillmanagement.common.searchindices.PageSize
+import skillmanagement.common.model.PageIndex
+import skillmanagement.common.model.PageSize
 import skillmanagement.common.searchindices.PagedFindAllQuery
 import skillmanagement.common.searchindices.PagedStringQuery
 import skillmanagement.domain.projects.model.Project

@@ -1,6 +1,6 @@
 package skillmanagement.domain.skills.usecases.read
 
-import skillmanagement.common.searchindices.Page
+import skillmanagement.common.model.Page
 import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.skills.model.Skill

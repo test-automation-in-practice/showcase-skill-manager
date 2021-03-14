@@ -5,7 +5,7 @@ import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import skillmanagement.common.searchindices.SearchIndex
-import skillmanagement.common.searchindices.pageOf
+import skillmanagement.common.model.pageOf
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_python
