@@ -23,7 +23,7 @@ import skillmanagement.domain.skills.usecases.delete.DeleteSkillByIdResult.Skill
 import skillmanagement.domain.skills.usecases.delete.DeleteSkillByIdResult.SuccessfullyDeleted
 import skillmanagement.domain.skills.usecases.read.AllSkillsQuery
 import skillmanagement.domain.skills.usecases.read.GetSkillByIdFunction
-import skillmanagement.domain.skills.usecases.read.GetSkillsFunction
+import skillmanagement.domain.skills.usecases.read.GetSkillsPageFunction
 import skillmanagement.test.ResetMocksAfterEachTest
 
 @GraphQLTest
@@ -72,8 +72,8 @@ internal class SkillsGraphQLTest(
     }
 
     @Test
-    fun `get skills page - found`(@Autowired getSkills: GetSkillsFunction) {
-        every { getSkills(AllSkillsQuery(PageIndex(0), PageSize(10))) }
+    fun `get skills page - found`(@Autowired getSkillsPage: GetSkillsPageFunction) {
+        every { getSkillsPage(AllSkillsQuery(PageIndex(0), PageSize(10))) }
             .returns(Page(listOf(skill_kotlin, skill_python), 0, 10, 2))
         assertRequestResponse(
             request = "/graphql/getSkillsPage/first-page.graphql",
@@ -82,8 +82,8 @@ internal class SkillsGraphQLTest(
     }
 
     @Test
-    fun `get skills page - empty`(@Autowired getSkills: GetSkillsFunction) {
-        every { getSkills(AllSkillsQuery(PageIndex(1), PageSize(10))) }
+    fun `get skills page - empty`(@Autowired getSkillsPage: GetSkillsPageFunction) {
+        every { getSkillsPage(AllSkillsQuery(PageIndex(1), PageSize(10))) }
             .returns(Page(emptyList(), 1, 10, 2))
         assertRequestResponse(
             request = "/graphql/getSkillsPage/second-page.graphql",
@@ -131,6 +131,6 @@ private class TestConfiguration {
     fun getSkillByIdFunction(): GetSkillByIdFunction = mockk()
 
     @Bean
-    fun getSkillsFunction(): GetSkillsFunction = mockk()
+    fun getSkillsFunction(): GetSkillsPageFunction = mockk()
 
 }

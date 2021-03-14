@@ -5,9 +5,9 @@ import skillmanagement.common.model.Suggestion
 import skillmanagement.domain.projects.model.ProjectDescription
 import skillmanagement.domain.projects.model.ProjectLabel
 import skillmanagement.domain.projects.model.ProjectResource
-import skillmanagement.domain.projects.usecases.create.CreateProjectHttpAdapter
-import skillmanagement.domain.projects.usecases.read.SearchProjectsHttpAdapter
-import skillmanagement.domain.projects.usecases.read.SuggestProjectsHttpAdapter
+import skillmanagement.domain.projects.usecases.create.CreateProjectRestAdapter
+import skillmanagement.domain.projects.usecases.read.SearchProjectsRestAdapter
+import skillmanagement.domain.projects.usecases.read.SuggestProjectsRestAdapter
 import skillmanagement.test.AbstractHttpTestDriver
 import java.util.UUID
 
@@ -21,7 +21,7 @@ internal class ProjectsTestDriver(
         description: String = "Lorem Ipsum ..."
     ): ProjectResource {
         val response = post("/api/projects") {
-            CreateProjectHttpAdapter.Request(
+            CreateProjectRestAdapter.Request(
                 label = ProjectLabel(label),
                 description = description.let(::ProjectDescription)
             )
@@ -51,7 +51,7 @@ internal class ProjectsTestDriver(
 
     fun search(query: String, page: Int = 0, size: Int = 100): PagedModel<ProjectResource> {
         val response = post("/api/projects/_search?page=$page&size=$size") {
-            SearchProjectsHttpAdapter.Request(query)
+            SearchProjectsRestAdapter.Request(query)
         }
         return when (response.code) {
             200 -> response.readBodyAs(ProjectsPageModel::class)
@@ -61,7 +61,7 @@ internal class ProjectsTestDriver(
 
     fun suggest(input: String, size: Int = 100): List<Suggestion> {
         val response = post("/api/projects/_suggest?max=$size") {
-            SuggestProjectsHttpAdapter.Request(input)
+            SuggestProjectsRestAdapter.Request(input)
         }
         return when (response.code) {
             200 -> response.readBodyAs(ProjectSuggestions::class)
