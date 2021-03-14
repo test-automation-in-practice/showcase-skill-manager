@@ -7,7 +7,7 @@ import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.Tag
-import java.util.Collections
+import java.util.Collections.emptySortedSet
 
 @GraphQLAdapter
 internal class CreateSkillGraphQLAdapter(
@@ -18,7 +18,7 @@ internal class CreateSkillGraphQLAdapter(
         createSkill(
             label = SkillLabel(label),
             description = description?.let(::SkillDescription),
-            tags = tags?.map(::Tag)?.toSortedSet() ?: Collections.emptySortedSet()
+            tags = tags?.map(::Tag)?.toSortedSet() ?: emptySortedSet()
         )
     }
 

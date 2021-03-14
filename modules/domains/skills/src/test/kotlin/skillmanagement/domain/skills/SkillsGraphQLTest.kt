@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus.OK
 import skillmanagement.common.model.Page
 import skillmanagement.common.model.PageIndex
 import skillmanagement.common.model.PageSize
+import skillmanagement.domain.skills.model.skill_java
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_python
 import skillmanagement.domain.skills.usecases.create.CreateSkillFunction
@@ -68,6 +69,15 @@ internal class SkillsGraphQLTest(
         assertRequestResponse(
             request = "/graphql/getSkillById/python.graphql",
             expectedResponseBody = "/graphql/getSkillById/python.json"
+        )
+    }
+
+    @Test
+    fun `get skill by id - not found`(@Autowired getSkillById: GetSkillByIdFunction) {
+        every { getSkillById(skill_java.id) } returns null
+        assertRequestResponse(
+            request = "/graphql/getSkillById/java.graphql",
+            expectedResponseBody = "/graphql/getSkillById/not-found.json"
         )
     }
 
