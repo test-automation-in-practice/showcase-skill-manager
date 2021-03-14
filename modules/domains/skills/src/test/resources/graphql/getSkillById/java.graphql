@@ -1,0 +1,8 @@
+query {
+    getSkillById(id: "f8948935-dab6-4c33-80d0-9f66ae546a7c") {
+        id
+        label
+        description
+        tags
+    }
+}

@@ -6,6 +6,8 @@ fun <T> withErrorHandling(block: () -> T): T {
     try {
         return block()
     } catch (e: ValidationException) {
-        throw GraphQLValidationException(e)
+        throw GraphQLClientSideException(e)
+    } catch (e: IllegalArgumentException) {
+        throw GraphQLClientSideException(e)
     }
 }
