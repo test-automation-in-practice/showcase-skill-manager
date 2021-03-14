@@ -11,8 +11,9 @@ import org.junit.jupiter.api.Test
 import org.springframework.stereotype.Component
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.common.stereotypes.EventHandler
-import skillmanagement.common.stereotypes.HttpAdapter
+import skillmanagement.common.stereotypes.GraphQLAdapter
 import skillmanagement.common.stereotypes.LastingMetric
+import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.common.stereotypes.Task
 import skillmanagement.common.stereotypes.TechnicalFunction
 import skillmanagement.common.stereotypes.TransientMetric
@@ -29,7 +30,8 @@ class BuildDependencyGraph {
 
     private val businessFunctions = classes.extract(BusinessFunction::class, ClassType.BusinessFunction)
     private val eventHandlers = classes.extract(EventHandler::class, ClassType.EventHandler)
-    private val httpAdapters = classes.extract(HttpAdapter::class, ClassType.HttpAdapter)
+    private val restAdapters = classes.extract(RestAdapter::class, ClassType.RestAdapter)
+    private val graphQLAdapters = classes.extract(GraphQLAdapter::class, ClassType.GraphQLAdapter)
     private val lastingMetrics = classes.extract(LastingMetric::class, ClassType.LastingMetric)
     private val tasks = classes.extract(Task::class, ClassType.Task)
     private val technicalFunctions = classes.extract(TechnicalFunction::class, ClassType.TechnicalFunction)
@@ -38,7 +40,8 @@ class BuildDependencyGraph {
         .removeClasseByName("TestDataInserter")
         .removeClasseByName("BusinessFunction")
         .removeClasseByName("EventHandler")
-        .removeClasseByName("HttpAdapter")
+        .removeClasseByName("RestAdapter")
+        .removeClasseByName("GraphQLAdapter")
         .removeClasseByName("LastingMetric")
         .removeClasseByName("Task")
         .removeClasseByName("TechnicalFunction")
@@ -46,7 +49,8 @@ class BuildDependencyGraph {
     private val allClassesWithTypes = listOf(
         businessFunctions,
         eventHandlers,
-        httpAdapters,
+        restAdapters,
+        graphQLAdapters,
         lastingMetrics,
         tasks,
         technicalFunctions,
@@ -129,7 +133,8 @@ data class ClassWithDependencies(val clazz: JavaClass, val dependencies: List<Ja
 enum class ClassType {
     BusinessFunction,
     EventHandler,
-    HttpAdapter,
+    RestAdapter,
+    GraphQLAdapter,
     LastingMetric,
     Task,
     TechnicalFunction,

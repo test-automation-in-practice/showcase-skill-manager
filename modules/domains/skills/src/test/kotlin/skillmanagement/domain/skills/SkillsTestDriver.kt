@@ -6,9 +6,9 @@ import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.SkillResource
 import skillmanagement.domain.skills.model.Tag
-import skillmanagement.domain.skills.usecases.create.CreateSkillHttpAdapter
-import skillmanagement.domain.skills.usecases.read.SearchSkillsHttpAdapter
-import skillmanagement.domain.skills.usecases.read.SuggestSkillsHttpAdapter
+import skillmanagement.domain.skills.usecases.create.CreateSkillRestAdapter
+import skillmanagement.domain.skills.usecases.read.SearchSkillsRestAdapter
+import skillmanagement.domain.skills.usecases.read.SuggestSkillsRestAdapter
 import skillmanagement.test.AbstractHttpTestDriver
 import java.util.Collections.emptySortedSet
 import java.util.UUID
@@ -24,7 +24,7 @@ internal class SkillsTestDriver(
         tags: Set<String> = emptySortedSet()
     ): SkillResource {
         val response = post("/api/skills") {
-            CreateSkillHttpAdapter.Request(
+            CreateSkillRestAdapter.Request(
                 label = SkillLabel(label),
                 description = description?.let(::SkillDescription),
                 tags = tags.map(::Tag).toSortedSet()
@@ -55,7 +55,7 @@ internal class SkillsTestDriver(
 
     fun search(query: String, page: Int = 0, size: Int = 100): PagedModel<SkillResource> {
         val response = post("/api/skills/_search?page=$page&size=$size") {
-            SearchSkillsHttpAdapter.Request(query)
+            SearchSkillsRestAdapter.Request(query)
         }
         return when (response.code) {
             200 -> response.readBodyAs(SkillsPageModel::class)
@@ -65,7 +65,7 @@ internal class SkillsTestDriver(
 
     fun suggest(input: String, size: Int = 100): List<Suggestion> {
         val response = post("/api/skills/_suggest?max=$size") {
-            SuggestSkillsHttpAdapter.Request(input)
+            SuggestSkillsRestAdapter.Request(input)
         }
         return when (response.code) {
             200 -> response.readBodyAs(SkillSuggestions::class)
