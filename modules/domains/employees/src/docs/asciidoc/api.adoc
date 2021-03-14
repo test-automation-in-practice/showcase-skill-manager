@@ -1,1 +1,15 @@
 = SkillManager - Employees API Documentation
+
+== REST API
+
+**Resource:** `/api/employees`
+
+== GraphQL API
+
+**Resource:** `/api/graphql`
+
+=== Schema
+
+```
+include::../../main/resources/graphql/employees.graphqls[]
+```

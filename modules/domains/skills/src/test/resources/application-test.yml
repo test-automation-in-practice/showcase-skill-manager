@@ -1,3 +1,7 @@
+graphql:
+  servlet:
+    mapping: /api/graphql
+
 logging:
   level:
     root: INFO

@@ -13,8 +13,8 @@ internal class GetProjectsPageGraphQLAdapter(
     private val getProjectsPage: GetProjectsPageFunction
 ) : GraphQLQueryResolver {
 
-    fun getProjectsPage(page: Int, size: Int): Page<Project> = withErrorHandling {
-        getProjectsPage(AllProjectsQuery(PageIndex(page), PageSize(size)))
+    fun getProjectsPage(index: Int, size: Int): Page<Project> = withErrorHandling {
+        getProjectsPage(AllProjectsQuery(PageIndex(index), PageSize(size)))
     }
 
 }
