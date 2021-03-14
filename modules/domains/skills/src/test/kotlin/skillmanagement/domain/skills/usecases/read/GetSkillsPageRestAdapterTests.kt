@@ -29,7 +29,7 @@ import java.time.Clock
 @TechnologyIntegrationTest
 @WebMvcTest(GetSkillsPageRestAdapter::class)
 @Import(GetSkillsPageRestAdapterTestsConfiguration::class)
-@AutoConfigureRestDocs("build/generated-snippets/skills/find-all", uriPort = 80)
+@AutoConfigureRestDocs("build/generated-snippets/skills/get-page", uriPort = 80)
 internal class GetSkillsPageRestAdapterTests(
     @Autowired val mockMvc: MockMvc,
     @Autowired val getSkillsPage: GetSkillsPageFunction

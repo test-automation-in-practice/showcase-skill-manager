@@ -1,1 +1,15 @@
 = SkillManager - Projects API Documentation
+
+== REST API
+
+**Resource:** `/api/projects`
+
+== GraphQL API
+
+**Resource:** `/api/graphql`
+
+=== Schema
+
+```
+include::../../main/resources/graphql/projects.graphqls[]
+```
