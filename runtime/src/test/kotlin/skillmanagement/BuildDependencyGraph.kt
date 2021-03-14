@@ -60,7 +60,7 @@ class BuildDependencyGraph {
 
     @Test
     fun `generate Neo4J graph data`() {
-        createFile("neo4j-graph-data.txt", Neo4JGraphDataGenerator.generate(allClassesWithTypes))
+        createFile("build/neo4j-graph-data.txt", Neo4JGraphDataGenerator.generate(allClassesWithTypes))
     }
 
     private fun JavaClasses.extract(annotation: KClass<out Annotation>, type: ClassType) =
