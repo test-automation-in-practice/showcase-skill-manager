@@ -12,9 +12,9 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.core.io.ClassPathResource
 import org.springframework.http.HttpStatus.OK
-import skillmanagement.common.searchindices.Page
-import skillmanagement.common.searchindices.PageIndex
-import skillmanagement.common.searchindices.PageSize
+import skillmanagement.common.model.Page
+import skillmanagement.common.model.PageIndex
+import skillmanagement.common.model.PageSize
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_python
 import skillmanagement.domain.skills.usecases.create.CreateSkillFunction
