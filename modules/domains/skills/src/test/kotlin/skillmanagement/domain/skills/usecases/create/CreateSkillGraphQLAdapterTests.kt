@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import skillmanagement.common.graphql.GraphQLClientSideException
 import skillmanagement.domain.skills.model.skill
+import skillmanagement.domain.skills.usecases.create.CreateSkillGraphQLAdapter.SkillInput
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.UnitTest
 
@@ -38,6 +39,6 @@ internal class CreateSkillGraphQLAdapterTests {
     private fun tryToCreateSkill(
         label: String = "label",
         description: String = "description",
-        tags: List<String> = listOf("abc", "def")
-    ) = cut.createSkill(label = label, description = description, tags = tags)
+        tags: Set<String> = setOf("abc", "def")
+    ) = cut.createSkill(SkillInput( label = label, description = description, tags = tags))
 }

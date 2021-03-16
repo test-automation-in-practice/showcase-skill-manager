@@ -12,11 +12,16 @@ internal class CreateProjectGraphQLAdapter(
     private val createProject: CreateProjectFunction
 ) : GraphQLMutationResolver {
 
-    fun createProject(label: String, description: String): Project = withErrorHandling {
+    fun createProject(input: ProjectInput): Project = withErrorHandling {
         createProject(
-            label = ProjectLabel(label),
-            description = ProjectDescription(description)
+            label = ProjectLabel(input.label),
+            description = ProjectDescription(input.description)
         )
     }
+
+    data class ProjectInput(
+        val label: String,
+        val description: String
+    )
 
 }

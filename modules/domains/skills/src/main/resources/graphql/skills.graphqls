@@ -21,7 +21,13 @@ extend type Query {
     suggestSkills(input: String!, max: Int): [Suggestion]!
 }
 
+input SkillInput {
+    label: String!
+    description: String
+    tags: [String]
+}
+
 extend type Mutation {
-    createSkill(label: String!, description: String, tags: [String!]) : Skill!
+    createSkill(input: SkillInput!) : Skill!
     deleteSkillById(id: ID!) : Boolean!
 }

@@ -14,12 +14,18 @@ internal class CreateSkillGraphQLAdapter(
     private val createSkill: CreateSkillFunction
 ) : GraphQLMutationResolver {
 
-    fun createSkill(label: String, description: String?, tags: List<String>?): Skill = withErrorHandling {
+    fun createSkill(input: SkillInput): Skill = withErrorHandling {
         createSkill(
-            label = SkillLabel(label),
-            description = description?.let(::SkillDescription),
-            tags = tags?.map(::Tag)?.toSortedSet() ?: emptySortedSet()
+            label = SkillLabel(input.label),
+            description = input.description?.let(::SkillDescription),
+            tags = input.tags?.map(::Tag)?.toSortedSet() ?: emptySortedSet()
         )
     }
+
+    data class SkillInput(
+        val label: String,
+        val description: String?,
+        val tags: Set<String>?
+    )
 
 }
