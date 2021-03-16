@@ -20,7 +20,12 @@ extend type Query {
     suggestProjects(input: String!, max: Int): [Suggestion]!
 }
 
+input ProjectInput {
+    label: String!
+    description: String!
+}
+
 extend type Mutation {
-    createProject(label: String!, description: String!) : Project!
+    createProject(input: ProjectInput) : Project!
     deleteProjectById(id: ID!) : Boolean!
 }

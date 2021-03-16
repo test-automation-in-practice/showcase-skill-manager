@@ -1,5 +1,7 @@
 mutation {
-    createSkill(label: "Python") {
+    createSkill(input: {
+        label: "Python"
+    }) {
         id
         label
         description
