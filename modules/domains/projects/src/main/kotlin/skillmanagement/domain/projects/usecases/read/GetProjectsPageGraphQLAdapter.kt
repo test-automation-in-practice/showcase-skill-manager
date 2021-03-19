@@ -1,6 +1,7 @@
 package skillmanagement.domain.projects.usecases.read
 
 import graphql.kickstart.tools.GraphQLQueryResolver
+import skillmanagement.common.graphql.Pagination
 import skillmanagement.common.graphql.withErrorHandling
 import skillmanagement.common.model.Page
 import skillmanagement.common.model.PageIndex
@@ -13,8 +14,14 @@ internal class GetProjectsPageGraphQLAdapter(
     private val getProjectsPage: GetProjectsPageFunction
 ) : GraphQLQueryResolver {
 
-    fun getProjectsPage(index: Int, size: Int): Page<Project> = withErrorHandling {
-        getProjectsPage(AllProjectsQuery(PageIndex(index), PageSize(size)))
+    fun getProjectsPage(pagination: Pagination?): Page<Project> = withErrorHandling {
+        getProjectsPage(query(pagination))
     }
+
+    private fun query(pagination: Pagination?) =
+        AllProjectsQuery(
+            pageIndex = pagination?.index?.let(::PageIndex) ?: PageIndex.DEFAULT,
+            pageSize = pagination?.size?.let(::PageSize) ?: PageSize.DEFAULT
+        )
 
 }

@@ -6,6 +6,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import skillmanagement.common.graphql.GraphQLClientSideException
+import skillmanagement.common.graphql.Pagination
 import skillmanagement.common.model.Page
 import skillmanagement.common.model.PageIndex
 import skillmanagement.common.model.PageSize
@@ -42,6 +43,6 @@ internal class SearchSkillsGraphQLAdapterTests {
     }
 
     private fun tryToSearchSkills(query: String = "*", index: Int? = null, size: Int? = null) =
-        cut.searchSkills(query, index, size)
+        cut.searchSkills(query, Pagination(index, size))
 
 }

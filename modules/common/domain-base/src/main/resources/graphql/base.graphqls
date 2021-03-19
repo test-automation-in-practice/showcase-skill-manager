@@ -5,3 +5,8 @@ type Suggestion {
     id: ID!
     label: String!
 }
+
+input Pagination {
+    index: Int,
+    size: Int
+}

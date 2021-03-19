@@ -1,5 +1,5 @@
 query {
-    searchSkills(query: "tags:language", index: 0, size: 10) {
+    searchSkills(query: "tags:language", pagination: { index: 0, size: 10 }) {
         content {
             id
             label
