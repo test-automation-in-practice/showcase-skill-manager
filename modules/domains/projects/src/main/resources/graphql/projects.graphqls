@@ -15,8 +15,8 @@ type ProjectsPage {
 
 extend type Query {
     getProjectById(id: ID!): Project
-    getProjectsPage(index: Int, size: Int): ProjectsPage!
-    searchProjects(query: String!, index: Int, size: Int): ProjectsPage!
+    getProjectsPage(pagination: Pagination): ProjectsPage!
+    searchProjects(query: String!, pagination: Pagination): ProjectsPage!
     suggestProjects(input: String!, max: Int): [Suggestion]!
 }
 

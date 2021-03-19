@@ -16,8 +16,8 @@ type SkillsPage {
 
 extend type Query {
     getSkillById(id: ID!): Skill
-    getSkillsPage(index: Int, size: Int): SkillsPage!
-    searchSkills(query: String!, index: Int, size: Int): SkillsPage!
+    getSkillsPage(pagination: Pagination): SkillsPage!
+    searchSkills(query: String!, pagination: Pagination): SkillsPage!
     suggestSkills(input: String!, max: Int): [Suggestion]!
 }
 

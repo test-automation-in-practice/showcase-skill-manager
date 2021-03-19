@@ -1,6 +1,7 @@
 package skillmanagement.domain.skills.usecases.read
 
 import graphql.kickstart.tools.GraphQLQueryResolver
+import skillmanagement.common.graphql.Pagination
 import skillmanagement.common.graphql.withErrorHandling
 import skillmanagement.common.model.Page
 import skillmanagement.common.model.PageIndex
@@ -13,14 +14,15 @@ internal class SearchSkillsGraphQLAdapter(
     private val getSkillsPage: GetSkillsPageFunction
 ) : GraphQLQueryResolver {
 
-    fun searchSkills(query: String, index: Int?, size: Int?): Page<Skill> = withErrorHandling {
-        getSkillsPage(query(query, index, size))
+    fun searchSkills(query: String, pagination: Pagination?): Page<Skill> = withErrorHandling {
+        getSkillsPage(query(query, pagination))
     }
 
-    private fun query(query: String, index: Int?, size: Int?) =
-        SkillsMatchingQuery(queryString = query, pageIndex = pageIndex(index), pageSize = pageSize(size))
-
-    private fun pageIndex(index: Int?) = index?.let(::PageIndex) ?: PageIndex.DEFAULT
-    private fun pageSize(size: Int?) = size?.let(::PageSize) ?: PageSize.DEFAULT
+    private fun query(query: String, pagination: Pagination?) =
+        SkillsMatchingQuery(
+            queryString = query,
+            pageIndex = pagination?.index?.let(::PageIndex) ?: PageIndex.DEFAULT,
+            pageSize = pagination?.size?.let(::PageSize) ?: PageSize.DEFAULT
+        )
 
 }
