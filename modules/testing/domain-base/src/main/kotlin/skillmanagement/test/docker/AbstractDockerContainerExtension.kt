@@ -3,8 +3,10 @@ package skillmanagement.test.docker
 import org.junit.jupiter.api.extension.BeforeAllCallback
 import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace
+import org.junit.jupiter.api.extension.ExtensionContext.Namespace.GLOBAL
 import org.junit.jupiter.api.extension.ParameterContext
 import org.junit.jupiter.api.extension.ParameterResolver
+import java.util.concurrent.CompletableFuture.supplyAsync
 
 internal abstract class AbstractDockerContainerExtension<T : Container> : BeforeAllCallback, ParameterResolver {
 
@@ -14,16 +16,24 @@ internal abstract class AbstractDockerContainerExtension<T : Container> : Before
     protected abstract val portProperty: String
 
     override fun resolveParameter(parameterContext: ParameterContext, extensionContext: ExtensionContext): Any? =
-        getOrInitializeContainer(extensionContext)
+        getOrInitializeContainerResource(extensionContext).getContainer()
 
     override fun beforeAll(context: ExtensionContext) {
-        getOrInitializeContainer(context)
+        getOrInitializeContainerResource(context)
     }
 
-    protected fun getOrInitializeContainer(context: ExtensionContext): T =
-        context.container ?: initContainer().also { context.container = it }
+    protected fun getOrInitializeContainerResource(context: ExtensionContext): ContainerResource<T> =
+        context.container ?: initializeContainerResource(context)
 
-    private fun initContainer(): T {
+    private fun initializeContainerResource(context: ExtensionContext): ContainerResource<T> {
+        val future = supplyAsync { createAndStartContainer() }
+        val resource = ContainerResource(future)
+        context.container = resource
+        context.containers.add(resource)
+        return resource
+    }
+
+    private fun createAndStartContainer(): T {
         val resource = createResource()
             .apply { addExposedPort(port) }
             .apply { start() }
@@ -34,8 +44,18 @@ internal abstract class AbstractDockerContainerExtension<T : Container> : Before
     protected abstract fun createResource(): T
 
     @Suppress("UNCHECKED_CAST")
-    private var ExtensionContext.container: T?
-        get() = getStore(namespace).get("container") as T?
+    private var ExtensionContext.container: ContainerResource<T>?
+        get() = getStore(namespace).get("container") as ContainerResource<T>?
         set(value) = getStore(namespace).put("container", value)
 
 }
+
+@Suppress("UNCHECKED_CAST")
+internal val ExtensionContext.containers: MutableSet<ContainerResource<out Container>>
+    get() {
+        val store = getStore(GLOBAL)
+        val containers = store.getOrComputeIfAbsent("containers") {
+            mutableSetOf<ContainerResource<out Container>>()
+        }
+        return containers as MutableSet<ContainerResource<out Container>>
+    }

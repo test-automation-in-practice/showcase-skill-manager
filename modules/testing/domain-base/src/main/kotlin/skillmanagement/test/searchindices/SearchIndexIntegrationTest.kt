@@ -1,10 +1,12 @@
 package skillmanagement.test.searchindices
 
 import skillmanagement.test.TechnologyIntegrationTest
+import skillmanagement.test.docker.WaitForAllContainersToStart
 import kotlin.annotation.AnnotationTarget.CLASS
 
 @Retention
 @Target(CLASS)
 @TechnologyIntegrationTest
 @RunWithDockerizedElasticsearch
+@WaitForAllContainersToStart
 annotation class SearchIndexIntegrationTest

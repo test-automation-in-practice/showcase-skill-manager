@@ -32,7 +32,7 @@ private class ElasticsearchContainerExtension : AbstractDockerContainerExtension
 
     override fun resolveParameter(parameterContext: ParameterContext, extensionContext: ExtensionContext): Any? =
         when {
-            isElasticsearchContainer(parameterContext) -> getOrInitializeContainer(extensionContext)
+            isElasticsearchContainer(parameterContext) -> getOrInitializeContainerResource(extensionContext)
             isElasticsearchClient(parameterContext) -> getOrInitializeClient(extensionContext)
             else -> null
         }
@@ -41,8 +41,8 @@ private class ElasticsearchContainerExtension : AbstractDockerContainerExtension
         context.client ?: initClient(context).also { context.client = it }
 
     private fun initClient(context: ExtensionContext): RestHighLevelClient {
-        val container = getOrInitializeContainer(context)
-        val port = container.getMappedPort()
+        val containerResource = getOrInitializeContainerResource(context)
+        val port = containerResource.getContainer().getMappedPort()
         val httpHost = HttpHost("localhost", port, "http")
         return RestHighLevelClient(RestClient.builder(httpHost))
     }
