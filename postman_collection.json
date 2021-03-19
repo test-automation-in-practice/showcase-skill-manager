@@ -155,7 +155,7 @@
 												"body": {
 													"mode": "graphql",
 													"graphql": {
-														"query": "mutation {\n    createProject(label: \"Orbis\", description: \"PS4\") {\n        id\n        label\n        description\n    }\n}\n",
+														"query": "mutation {\n    createProject(\n        input: {\n            label: \"Orbis\",\n            description: \"PS4\"\n        }\n    ) {\n        id\n        label\n        description\n    }\n}\n",
 														"variables": ""
 													}
 												},
@@ -208,7 +208,7 @@
 												"body": {
 													"mode": "graphql",
 													"graphql": {
-														"query": "query {\n    getProjectsPage(index: 0, size: 10) {\n        content {\n            id\n            label\n            description\n        }\n        pageIndex\n        pageSize\n        totalElements\n        hasPrevious\n        hasNext\n    }\n}\n",
+														"query": "query {\n    getProjectsPage(\n        pagination: { index: 0, size: 10 }\n    ) {\n        content {\n            id\n            label\n            description\n        }\n        pageIndex\n        pageSize\n        totalElements\n        hasPrevious\n        hasNext\n    }\n}\n",
 														"variables": ""
 													}
 												},
@@ -349,7 +349,7 @@
 										"body": {
 											"mode": "graphql",
 											"graphql": {
-												"query": "query {\n    searchProjects(query: \"description:ps4\", index: 0, size: 10) {\n        content {\n            id\n            label\n            description\n        }\n        pageIndex\n        pageSize\n        totalElements\n        hasPrevious\n        hasNext\n    }\n}\n",
+												"query": "query {\n    searchProjects(\n        query: \"description:ps4\", \n        pagination: { index: 0, size: 10 }\n    ) {\n        content {\n            id\n            label\n            description\n        }\n        pageIndex\n        pageSize\n        totalElements\n        hasPrevious\n        hasNext\n    }\n}\n",
 												"variables": ""
 											}
 										},
@@ -412,7 +412,7 @@
 												"body": {
 													"mode": "graphql",
 													"graphql": {
-														"query": "mutation {\n    createSkill(label: \"Kotlin\", description: \"The coolest programming language.\", tags: [\"cool\", \"language\"]) {\n        id\n        label\n        description\n        tags\n    }\n}\n",
+														"query": "mutation {\n    createSkill(\n        input: { \n            label: \"Kotlin\",\n            description: \"The coolest programming language.\", \n            tags: [\"cool\", \"language\"]\n        }\n    ) {\n        id\n        label\n        description\n        tags\n    }\n}\n",
 														"variables": ""
 													}
 												},
@@ -465,7 +465,7 @@
 												"body": {
 													"mode": "graphql",
 													"graphql": {
-														"query": "query {\n    getSkillsPage(index: 0, size: 10) {\n        content {\n            id\n            label\n            description\n            tags\n        }\n        pageIndex\n        pageSize\n        totalElements\n        hasPrevious\n        hasNext\n    }\n}\n",
+														"query": "query {\n    getSkillsPage(\n        pagination: { index: 0, size: 10 }\n    ) {\n        content {\n            id\n            label\n            description\n            tags\n        }\n        pageIndex\n        pageSize\n        totalElements\n        hasPrevious\n        hasNext\n    }\n}\n",
 														"variables": ""
 													}
 												},
@@ -606,7 +606,7 @@
 										"body": {
 											"mode": "graphql",
 											"graphql": {
-												"query": "query {\n    searchSkills(query: \"tags:language\", index: 0, size: 10) {\n        content {\n            id\n            label\n            description\n            tags\n        }\n        pageIndex\n        pageSize\n        totalElements\n        hasPrevious\n        hasNext\n    }\n}\n",
+												"query": "query {\n    searchSkills(\n        query: \"tags:language\",\n        pagination: { index: 0, size: 10 }\n    ) {\n        content {\n            id\n            label\n            description\n            tags\n        }\n        pageIndex\n        pageSize\n        totalElements\n        hasPrevious\n        hasNext\n    }\n}\n",
 												"variables": ""
 											}
 										},
@@ -2887,6 +2887,41 @@
 					]
 				}
 			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "admin",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "admin",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
