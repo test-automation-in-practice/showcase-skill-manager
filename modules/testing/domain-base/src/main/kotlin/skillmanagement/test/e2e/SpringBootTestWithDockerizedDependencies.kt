@@ -4,7 +4,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
 import org.springframework.test.annotation.DirtiesContext
-import skillmanagement.test.docker.RunWithDockerizedPostgres
+import skillmanagement.test.database.RunWithDockerizedPostgres
+import skillmanagement.test.docker.WaitForAllContainersToStart
 import skillmanagement.test.events.RunWithDockerizedRabbitMq
 import skillmanagement.test.searchindices.RunWithDockerizedElasticsearch
 import kotlin.annotation.AnnotationTarget.CLASS
@@ -25,6 +26,7 @@ const val PROPERTY_DOCKERIZED_BROKER_PORT = "spring.rabbitmq.port=\${RABBITMQ_PO
 @RunWithDockerizedRabbitMq
 @RunWithDockerizedElasticsearch
 @RunWithDockerizedPostgres
+@WaitForAllContainersToStart
 @SpringBootTest(
     webEnvironment = RANDOM_PORT,
     properties = [
