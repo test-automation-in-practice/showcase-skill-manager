@@ -7,7 +7,7 @@
 
 === Search Index
 
-[plantuml,consistency_search-index,svg]
+[plantuml,consistency_search-index,svg,align="center"]
 ....
 include::../plantuml/consistency_search-index.puml[]
 ....
@@ -16,7 +16,7 @@ include::../plantuml/consistency_search-index.puml[]
 
 === Search Index Reconstruction
 
-[plantuml,task_seach-index_reconstruct,svg]
+[plantuml,task_seach-index_reconstruct,svg,align="center"]
 ....
 include::../plantuml/task_seach-index_reconstruct.puml[]
 ....
