@@ -95,17 +95,14 @@ include::{snippets}/skills/suggest/empty/http-response.adoc[]
 
 **Endpoint:** `/api/graphql`
 
-=== Common Schema
+=== Schema
 
-```
+[source]
+----
 include::../../../../../common/domain-base/src/main/resources/graphql/base.graphqls[]
-```
 
-=== Skills Schema
-
-```
 include::../../main/resources/graphql/skills.graphqls[]
-```
+----
 
 == Important Notes
 

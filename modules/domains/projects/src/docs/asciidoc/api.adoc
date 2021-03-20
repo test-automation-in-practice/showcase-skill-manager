@@ -10,17 +10,14 @@
 
 **Endpoint:** `/api/graphql`
 
-=== Common Schema
+=== Schema
 
-```
+[source]
+----
 include::../../../../../common/domain-base/src/main/resources/graphql/base.graphqls[]
-```
 
-=== Projects Schema
-
-```
 include::../../main/resources/graphql/projects.graphqls[]
-```
+----
 
 == Important Notes
 
