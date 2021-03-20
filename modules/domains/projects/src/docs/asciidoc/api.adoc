@@ -1,5 +1,6 @@
 = Projects API Documentation
 
+:data-uri:
 :nofooter:
 
 == REST API
