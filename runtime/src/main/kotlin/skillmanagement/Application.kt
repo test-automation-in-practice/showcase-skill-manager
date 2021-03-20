@@ -40,6 +40,7 @@ class Application
 )
 class ApplicationConfiguration
 
+@Suppress("SpreadOperator")
 fun main(args: Array<String>) {
     runApplication<Application>(*args)
 }

@@ -1,3 +1,5 @@
+@file:Suppress("MatchingDeclarationName")
+
 package skillmanagement.domain.projects.model
 
 internal data class ProjectChangeData(

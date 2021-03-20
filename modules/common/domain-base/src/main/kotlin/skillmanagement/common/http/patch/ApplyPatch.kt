@@ -11,6 +11,7 @@ class ApplyPatch(
     private val objectMapper: ObjectMapper
 ) {
 
+    @Suppress("TooGenericExceptionCaught")
     operator fun <T : Any> invoke(patch: JsonPatch, patchable: T): T {
         try {
             val patchedJsonNode = patch.apply(objectMapper.convertValue<JsonNode>(patchable))

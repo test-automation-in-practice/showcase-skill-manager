@@ -7,10 +7,6 @@ plugins {
     kotlin("plugin.spring")
 }
 
-repositories {
-    mavenCentral()
-}
-
 dependencies {
     implementation(project(":modules:domains:employees"))
     implementation(project(":modules:domains:projects"))

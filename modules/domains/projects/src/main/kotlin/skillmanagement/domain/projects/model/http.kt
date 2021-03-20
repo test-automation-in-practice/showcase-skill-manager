@@ -1,3 +1,5 @@
+@file:Suppress("MatchingDeclarationName")
+
 package skillmanagement.domain.projects.model
 
 import org.springframework.hateoas.PagedModel
@@ -5,11 +7,9 @@ import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.core.Relation
 import org.springframework.hateoas.server.mvc.BasicLinkBuilder
 import org.springframework.hateoas.server.mvc.BasicLinkBuilder.linkToCurrentMapping
-import skillmanagement.common.model.Page
 import skillmanagement.common.http.toMetaData
+import skillmanagement.common.model.Page
 import java.util.UUID
-
-private const val RESOURCE_BASE = "api/projects"
 
 @Relation(itemRelation = "project", collectionRelation = "projects")
 internal data class ProjectResource(
@@ -37,7 +37,7 @@ internal fun Page<Project>.toAllResource(): PagedModel<ProjectResource> =
 
 internal fun linkToProjects(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
     val queryPart = "?page=$pageIndex&size=$pageSize"
-    return linkToCurrentMapping().slash(RESOURCE_BASE + queryPart)
+    return linkToCurrentMapping().slash("api/projects$queryPart")
 }
 
 internal fun Page<Project>.toSearchResource(): PagedModel<ProjectResource> =
@@ -50,8 +50,8 @@ internal fun Page<Project>.toSearchResource(): PagedModel<ProjectResource> =
 
 internal fun linkToProjectsSearch(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
     val queryPart = "/_search?page=$pageIndex&size=$pageSize"
-    return linkToCurrentMapping().slash(RESOURCE_BASE + queryPart)
+    return linkToCurrentMapping().slash("api/projects$queryPart")
 }
 
 internal fun linkToProject(id: UUID) =
-    linkToCurrentMapping().slash("$RESOURCE_BASE/${id}")
+    linkToCurrentMapping().slash("api/projects/$id")

@@ -14,7 +14,7 @@ import skillmanagement.common.validation.Validation.Companion.validate
  *  - String representation (`toString()`) is delegated to the wrapped value.
  *  - Wrapped value is used when serializing instances to JSON.
  */
-abstract class ValueType<T : Any>(
+open class ValueType<T : Any> protected constructor(
     @JsonValue protected val value: T,
     requirements: Validation<T>.() -> Unit = {}
 ) {

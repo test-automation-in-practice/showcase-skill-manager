@@ -1,9 +1,7 @@
 package skillmanagement.domain.employees.gateways
 
 import skillmanagement.common.stereotypes.BusinessFunction
-import skillmanagement.common.stereotypes.TechnicalFunction
 import skillmanagement.domain.employees.model.ProjectData
-import skillmanagement.domain.employees.model.SkillData
 import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.usecases.read.GetProjectByIdFunction
 import java.util.UUID
