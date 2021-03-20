@@ -1,4 +1,6 @@
-= SkillManager - API Documentation
+= SkillManager API Documentation
+
+:nofooter:
 
 == API Root
 

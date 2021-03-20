@@ -1,4 +1,6 @@
-= SkillManager - Skills API Documentation
+= Skills API Documentation
+
+:nofooter:
 
 == REST API
 
