@@ -22,6 +22,9 @@ data class Page<T : Any>(
 class PageIndex(value: Int) : IntType(value, min = 0) {
     companion object {
         val DEFAULT = PageIndex(0)
+
+        fun of(value: Int?): PageIndex =
+            value?.let(::PageIndex) ?: DEFAULT
     }
 }
 
@@ -29,6 +32,9 @@ class PageSize(value: Int) : IntType(value, min = 1, max = 10_000) {
     companion object {
         val DEFAULT = PageSize(100)
         val MAX = PageSize(10_000)
+
+        fun of(value: Int?): PageSize =
+            value?.let(::PageSize) ?: DEFAULT
     }
 }
 

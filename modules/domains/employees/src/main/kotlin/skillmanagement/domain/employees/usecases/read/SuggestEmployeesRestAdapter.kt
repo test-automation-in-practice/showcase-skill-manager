@@ -20,10 +20,7 @@ internal class SuggestEmployeesRestAdapter(
     fun post(
         @RequestParam(required = false) max: Int?,
         @RequestBody request: Request
-    ): List<Suggestion> = searchIndex.suggest(
-        input = request.input,
-        max = max?.let(::MaxSuggestions) ?: MaxSuggestions.DEFAULT
-    )
+    ): List<Suggestion> = searchIndex.suggest(input = request.input, max = MaxSuggestions.of(max))
 
     data class Request(
         val input: String

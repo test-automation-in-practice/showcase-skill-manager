@@ -19,9 +19,6 @@ internal class GetProjectsPageGraphQLAdapter(
     }
 
     private fun query(pagination: Pagination?) =
-        AllProjectsQuery(
-            pageIndex = pagination?.index?.let(::PageIndex) ?: PageIndex.DEFAULT,
-            pageSize = pagination?.size?.let(::PageSize) ?: PageSize.DEFAULT
-        )
+        AllProjectsQuery(pageIndex = PageIndex.of(pagination?.index), pageSize = PageSize.of(pagination?.size))
 
 }

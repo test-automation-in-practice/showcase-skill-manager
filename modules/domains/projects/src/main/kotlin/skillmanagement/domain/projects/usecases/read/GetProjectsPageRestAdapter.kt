@@ -26,9 +26,6 @@ internal class GetProjectsPageRestAdapter(
     }
 
     private fun query(page: Int?, size: Int?) =
-        AllProjectsQuery(
-            pageIndex = page?.let(::PageIndex) ?: PageIndex.DEFAULT,
-            pageSize = size?.let(::PageSize) ?: PageSize.DEFAULT
-        )
+        AllProjectsQuery(pageIndex = PageIndex.of(page), pageSize = PageSize.of(size))
 
 }

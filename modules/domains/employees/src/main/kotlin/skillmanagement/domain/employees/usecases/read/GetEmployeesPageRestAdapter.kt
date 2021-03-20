@@ -26,9 +26,6 @@ internal class GetEmployeesPageRestAdapter(
     }
 
     private fun query(page: Int?, size: Int?) =
-        AllEmployeesQuery(
-            pageIndex = page?.let(::PageIndex) ?: PageIndex.DEFAULT,
-            pageSize = size?.let(::PageSize) ?: PageSize.DEFAULT
-        )
+        AllEmployeesQuery(pageIndex = PageIndex.of(page), pageSize = PageSize.of(size))
 
 }

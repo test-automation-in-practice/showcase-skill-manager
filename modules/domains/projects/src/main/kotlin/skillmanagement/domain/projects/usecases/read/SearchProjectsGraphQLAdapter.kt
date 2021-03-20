@@ -21,8 +21,8 @@ internal class SearchProjectsGraphQLAdapter(
     private fun query(query: String, pagination: Pagination?) =
         ProjectsMatchingQuery(
             queryString = query,
-            pageIndex = pagination?.index?.let(::PageIndex) ?: PageIndex.DEFAULT,
-            pageSize = pagination?.size?.let(::PageSize) ?: PageSize.DEFAULT
+            pageIndex = PageIndex.of(pagination?.index),
+            pageSize = PageSize.of(pagination?.size)
         )
 
 }

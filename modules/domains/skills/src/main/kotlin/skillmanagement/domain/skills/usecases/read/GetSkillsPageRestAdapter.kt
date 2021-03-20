@@ -26,9 +26,6 @@ internal class GetSkillsPageRestAdapter(
     }
 
     private fun query(page: Int?, size: Int?) =
-        AllSkillsQuery(
-            pageIndex = page?.let(::PageIndex) ?: PageIndex.DEFAULT,
-            pageSize = size?.let(::PageSize) ?: PageSize.DEFAULT
-        )
+        AllSkillsQuery(pageIndex = PageIndex.of(page), pageSize = PageSize.of(size))
 
 }

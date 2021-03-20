@@ -28,11 +28,7 @@ internal class SearchProjectsRestAdapter(
     }
 
     private fun query(query: String, page: Int?, size: Int?) =
-        ProjectsMatchingQuery(
-            queryString = query,
-            pageIndex = page?.let(::PageIndex) ?: PageIndex.DEFAULT,
-            pageSize = size?.let(::PageSize) ?: PageSize.DEFAULT
-        )
+        ProjectsMatchingQuery(queryString = query, pageIndex = PageIndex.of(page), pageSize = PageSize.of(size))
 
     data class Request(
         val query: String
