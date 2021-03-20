@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import skillmanagement.common.stereotypes.TechnicalFunction
 import skillmanagement.domain.skills.model.Skill
 
-
 @TechnicalFunction
 internal class InsertSkillIntoDataStoreFunction(
     private val jdbcTemplate: NamedParameterJdbcTemplate,
