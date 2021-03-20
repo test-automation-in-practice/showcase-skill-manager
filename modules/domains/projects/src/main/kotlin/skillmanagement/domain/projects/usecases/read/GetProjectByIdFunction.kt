@@ -9,8 +9,6 @@ class GetProjectByIdFunction internal constructor(
     private val getProjectsFromDataStore: GetProjectsFromDataStoreFunction
 ) {
 
-    operator fun invoke(id: UUID): Project? {
-        return getProjectsFromDataStore(id)
-    }
+    operator fun invoke(id: UUID): Project? = getProjectsFromDataStore(id)
 
 }

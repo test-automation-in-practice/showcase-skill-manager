@@ -18,12 +18,9 @@ internal class GetEmployeeByIdRestAdapter(
 ) {
 
     @GetMapping
-    fun get(@PathVariable id: UUID): ResponseEntity<EmployeeResource> {
-        val employee = getEmployeeById(id)
-        if (employee != null) {
-            return ok(employee.toResource())
-        }
-        return noContent().build()
-    }
+    fun get(@PathVariable id: UUID): ResponseEntity<EmployeeResource> =
+        getEmployeeById(id)
+            ?.let { ok(it.toResource()) }
+            ?: noContent().build()
 
 }

@@ -18,12 +18,9 @@ internal class GetProjectByIdRestAdapter(
 ) {
 
     @GetMapping
-    fun get(@PathVariable id: UUID): ResponseEntity<ProjectResource> {
-        val project = getProjectById(id)
-        if (project != null) {
-            return ok(project.toResource())
-        }
-        return noContent().build()
-    }
+    fun get(@PathVariable id: UUID): ResponseEntity<ProjectResource> =
+        getProjectById(id)
+            ?.let { ok(it.toResource()) }
+            ?: noContent().build()
 
 }
