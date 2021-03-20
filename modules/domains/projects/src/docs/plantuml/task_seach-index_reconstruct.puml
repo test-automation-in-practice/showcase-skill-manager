@@ -1,5 +1,7 @@
 @startuml
 
+skinparam shadowing false
+
 actor "Admin" as admin
 participant "Projects Module" as module
 database "Search Index" as si

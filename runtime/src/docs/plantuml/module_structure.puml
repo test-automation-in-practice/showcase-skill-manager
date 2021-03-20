@@ -1,5 +1,7 @@
 @startuml
 
+skinparam shadowing false
+
 package "SkillManager Runtime" {
 
     node "Skills Module" as module_skills {
