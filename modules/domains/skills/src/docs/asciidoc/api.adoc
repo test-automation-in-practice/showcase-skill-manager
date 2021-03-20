@@ -1,5 +1,6 @@
 = Skills API Documentation
 
+:data-uri:
 :nofooter:
 
 == REST API
