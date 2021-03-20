@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Profile
 import org.springframework.http.HttpMethod
+import org.springframework.http.HttpMethod.GET
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.authentication.configurers.provisioning.InMemoryUserDetailsManagerConfigurer
@@ -44,6 +45,7 @@ class WebSecurityConfiguration(
             authorizeRequests { requests ->
                 requests.requestMatchers(to(InfoEndpoint::class.java, HealthEndpoint::class.java)).permitAll()
                 requests.requestMatchers(toAnyEndpoint()).hasRole("ACTUATOR")
+                requests.antMatchers(GET, "/docs/**").permitAll()
                 requests.anyRequest().fullyAuthenticated()
             }
         }

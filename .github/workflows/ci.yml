@@ -26,8 +26,6 @@ jobs:
         run: chmod +x gradlew
       - name: Build with Gradle
         run: ./gradlew build
-      - name: Generate Documentation
-        run: ./gradlew asciidoctor
 
       - name: Upload Dokumentation
         uses: actions/upload-artifact@v2

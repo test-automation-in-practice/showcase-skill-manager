@@ -19,6 +19,7 @@ subprojects {
 
     tasks {
         asciidoctor {
+            dependsOn("test")
             baseDirFollowsSourceDir()
             options(
                 mapOf(
