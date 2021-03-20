@@ -1,5 +1,7 @@
 @startuml
 
+skinparam shadowing false
+
 actor "User" as user
 participant "Projects Module" as module
 database "Database" as db
