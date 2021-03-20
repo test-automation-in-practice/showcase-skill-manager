@@ -1,3 +1,5 @@
+@file:Suppress("UnusedPrivateMember")
+
 package skillmanagement.common.validation
 
 import skillmanagement.common.validation.Validation.Companion.validate

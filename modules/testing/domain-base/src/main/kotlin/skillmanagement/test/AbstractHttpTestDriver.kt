@@ -12,7 +12,7 @@ import org.springframework.http.MediaType
 import java.net.URL
 import kotlin.reflect.KClass
 
-abstract class AbstractHttpTestDriver(
+open class AbstractHttpTestDriver protected constructor(
     private val host: String,
     private val port: Int
 ) {

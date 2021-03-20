@@ -1,3 +1,5 @@
+@file:Suppress("MatchingDeclarationName")
+
 package skillmanagement.domain.skills.model
 
 import java.util.SortedSet
