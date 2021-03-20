@@ -18,9 +18,12 @@ internal class SuggestProjectsRestAdapter(
 
     @PostMapping
     fun post(
-        @RequestParam(defaultValue = "100") max: Int,
+        @RequestParam(required = false) max: Int?,
         @RequestBody request: Request
-    ): List<Suggestion> = searchIndex.suggest(input = request.input, max = MaxSuggestions(max))
+    ): List<Suggestion> = searchIndex.suggest(
+        input = request.input,
+        max = max?.let(::MaxSuggestions) ?: MaxSuggestions.DEFAULT
+    )
 
     data class Request(
         val input: String

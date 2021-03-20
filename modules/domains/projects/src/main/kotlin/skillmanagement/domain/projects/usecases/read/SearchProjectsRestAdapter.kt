@@ -19,13 +19,20 @@ internal class SearchProjectsRestAdapter(
 
     @PostMapping
     fun post(
-        @RequestParam(defaultValue = "0") page: Int,
-        @RequestParam(defaultValue = "100") size: Int,
+        @RequestParam(required = false) page: Int?,
+        @RequestParam(required = false) size: Int?,
         @RequestBody request: Request
     ): PagedModel<ProjectResource> {
-        val projects = getProjectsPage(ProjectsMatchingQuery(PageIndex(page), PageSize(size), request.query))
+        val projects = getProjectsPage(query(request.query, page, size))
         return projects.toSearchResource()
     }
+
+    private fun query(query: String, page: Int?, size: Int?) =
+        ProjectsMatchingQuery(
+            queryString = query,
+            pageIndex = page?.let(::PageIndex) ?: PageIndex.DEFAULT,
+            pageSize = size?.let(::PageSize) ?: PageSize.DEFAULT
+        )
 
     data class Request(
         val query: String

@@ -30,7 +30,7 @@ internal fun Skill.toResource() = SkillResource(
     add(linkToSkill(id).withRel("delete"))
 }
 
-internal fun Page<Skill>.toAllResource(): PagedModel<SkillResource> =
+internal fun Page<Skill>.toResource(): PagedModel<SkillResource> =
     PagedModel.of(content.map(Skill::toResource), toMetaData())
         .apply {
             add(linkToSkills(pageIndex, pageSize).withSelfRel())

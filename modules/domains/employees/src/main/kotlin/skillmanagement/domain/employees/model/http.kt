@@ -7,11 +7,11 @@ import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.core.Relation
 import org.springframework.hateoas.server.mvc.BasicLinkBuilder
 import org.springframework.hateoas.server.mvc.BasicLinkBuilder.linkToCurrentMapping
-import skillmanagement.common.model.Page
 import skillmanagement.common.http.toMetaData
+import skillmanagement.common.model.Page
 import java.time.Instant
 import java.time.LocalDate
-import java.util.*
+import java.util.UUID
 
 private const val RESOURCE_BASE = "api/employees"
 
@@ -96,7 +96,7 @@ internal fun ProjectAssignment.toResource(employeeId: UUID) = ProjectAssignmentR
     add(linkToProject(project.id).withRel("project"))
 }
 
-internal fun Page<Employee>.toAllResource(): PagedModel<EmployeeResource> =
+internal fun Page<Employee>.toResource(): PagedModel<EmployeeResource> =
     PagedModel.of(content.map(Employee::toResource), toMetaData())
         .apply {
             add(linkToEmployees(pageIndex, pageSize).withSelfRel())

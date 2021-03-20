@@ -8,7 +8,7 @@ import skillmanagement.common.model.PageIndex
 import skillmanagement.common.model.PageSize
 import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.domain.employees.model.EmployeeResource
-import skillmanagement.domain.employees.model.toAllResource
+import skillmanagement.domain.employees.model.toResource
 
 @RestAdapter
 @RequestMapping("/api/employees")
@@ -18,11 +18,17 @@ internal class GetEmployeesPageRestAdapter(
 
     @GetMapping
     fun get(
-        @RequestParam(defaultValue = "0") page: Int,
-        @RequestParam(defaultValue = "100") size: Int
+        @RequestParam(required = false) page: Int?,
+        @RequestParam(required = false) size: Int?
     ): PagedModel<EmployeeResource> {
-        val employees = getEmployeesPage(AllEmployeesQuery(PageIndex(page), PageSize(size)))
-        return employees.toAllResource()
+        val employees = getEmployeesPage(query(page, size))
+        return employees.toResource()
     }
+
+    private fun query(page: Int?, size: Int?) =
+        AllEmployeesQuery(
+            pageIndex = page?.let(::PageIndex) ?: PageIndex.DEFAULT,
+            pageSize = size?.let(::PageSize) ?: PageSize.DEFAULT
+        )
 
 }

@@ -35,6 +35,11 @@ include::{snippets}/skills/get-by-id/not-found/http-response.adoc[]
 
 A page of all existing skills can be got by sending a request like this:
 
+include::{snippets}/skills/get-page/multiple-pages/http-request.adoc[]
+include::{snippets}/skills/get-page/multiple-pages/http-response.adoc[]
+
+Pagination parameters are _optional_, if none are provided the first page with a default size is returned:
+
 include::{snippets}/skills/get-page/multiple/http-request.adoc[]
 include::{snippets}/skills/get-page/multiple/http-response.adoc[]
 
@@ -72,6 +77,11 @@ In case the specified skill does not exist, the response will be the same.
 ==== Search
 
 Skills can also be searched using a _search_ request:
+
+include::{snippets}/skills/search/multiple-pages/http-request.adoc[]
+include::{snippets}/skills/search/multiple-pages/http-response.adoc[]
+
+Pagination parameters are _optional_, if none are provided the first page with a default size is returned:
 
 include::{snippets}/skills/search/multiple/http-request.adoc[]
 include::{snippets}/skills/search/multiple/http-response.adoc[]
