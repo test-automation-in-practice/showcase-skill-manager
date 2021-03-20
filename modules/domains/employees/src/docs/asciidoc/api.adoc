@@ -6,9 +6,15 @@
 
 == GraphQL API
 
-**Resource:** `/api/graphql`
+**Endpoint:** `/api/graphql`
 
-=== Schema
+=== Common Schema
+
+```
+include::../../../../../common/domain-base/src/main/resources/graphql/base.graphqls[]
+```
+
+=== Employees Schema
 
 ```
 include::../../main/resources/graphql/employees.graphqls[]

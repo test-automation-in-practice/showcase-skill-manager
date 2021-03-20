@@ -91,9 +91,15 @@ include::{snippets}/skills/suggest/empty/http-response.adoc[]
 
 == GraphQL API
 
-**Resource:** `/api/graphql`
+**Endpoint:** `/api/graphql`
 
-=== Schema
+=== Common Schema
+
+```
+include::../../../../../common/domain-base/src/main/resources/graphql/base.graphqls[]
+```
+
+=== Skills Schema
 
 ```
 include::../../main/resources/graphql/skills.graphqls[]
