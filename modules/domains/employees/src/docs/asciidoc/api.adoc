@@ -21,3 +21,22 @@ include::../../../../../common/domain-base/src/main/resources/graphql/base.graph
 ```
 include::../../main/resources/graphql/employees.graphqls[]
 ```
+
+== Important Notes
+
+**Why are freshly created employees not immediately reflected in search results?**
+
+Searching or getting suggestions for employees makes use of the search index's advanced querying capabilities.
+A drawback of this approach is the fact that changes to the search index are only eventually consistent.
+This has two reasons:
+
+1. The search index is updated asynchronously.
+2. The search index itself is optimized for write operations and only updates itself with new changes on a fixed delay (e.g. every 1.5 seconds).
+
+This is why freshly created employees might not be included immediately in search results.
+The following diagram illustrates this point further:
+
+[plantuml,delayed_inclusion_in_searches,svg,align="center"]
+....
+include::../plantuml/delayed_inclusion_in_searches.puml[]
+....
