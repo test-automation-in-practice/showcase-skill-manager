@@ -19,13 +19,20 @@ internal class SearchSkillsRestAdapter(
 
     @PostMapping
     fun post(
-        @RequestParam(defaultValue = "0") page: Int,
-        @RequestParam(defaultValue = "100") size: Int,
+        @RequestParam(required = false) page: Int?,
+        @RequestParam(required = false) size: Int?,
         @RequestBody request: Request
     ): PagedModel<SkillResource> {
-        val skills = getSkillsPage(SkillsMatchingQuery(PageIndex(page), PageSize(size), request.query))
+        val skills = getSkillsPage(query(request.query, page, size))
         return skills.toSearchResource()
     }
+
+    private fun query(query: String, page: Int?, size: Int?) =
+        SkillsMatchingQuery(
+            queryString = query,
+            pageIndex = page?.let(::PageIndex) ?: PageIndex.DEFAULT,
+            pageSize = size?.let(::PageSize) ?: PageSize.DEFAULT
+        )
 
     data class Request(
         val query: String

@@ -27,7 +27,7 @@ internal fun Project.toResource() = ProjectResource(
     add(linkToProject(id).withRel("delete"))
 }
 
-internal fun Page<Project>.toAllResource(): PagedModel<ProjectResource> =
+internal fun Page<Project>.toResource(): PagedModel<ProjectResource> =
     PagedModel.of(content.map(Project::toResource), toMetaData())
         .apply {
             add(linkToProjects(pageIndex, pageSize).withSelfRel())
