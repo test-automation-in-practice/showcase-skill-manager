@@ -1,0 +1,70 @@
+@startuml
+
+actor "User" as user
+participant "API" as module
+database "Database" as db
+database "Search Index" as si
+
+== Create / Update / Delete ==
+
+user -> module
+activate module
+module -> db: change
+activate db
+module <-- db
+deactivate db
+module -> si: asynchronous change
+activate si
+module <-- si
+
+note right
+Search index is periodically refreshed.
+Queries will reflect changes only after
+that refresh occurred.
+end note
+
+deactivate si
+user <- module
+deactivate module
+si --> si: delayed refresh
+
+== Get by ID ==
+
+user -> module: get by ID
+activate module
+module -> db: get by ID
+activate db
+module <- db: skill
+deactivate db
+
+note right
+Data is loaded directly from database.
+There is no delay.
+end note
+
+user <- module: skill
+deactivate module
+
+== Search / Suggest / etc. ==
+
+user -> module: query
+activate module
+module -> si: query
+activate si
+module <- si: IDs
+deactivate si
+
+note right
+Queries are executed against the search index.
+Depending on when the last refresh occurred
+previous changes might not yet be reflected.
+end note
+
+module -> db: get for IDs
+activate db
+module <- db: skills
+deactivate db
+user <- module: skills
+deactivate module
+
+@enduml
