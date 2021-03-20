@@ -19,9 +19,6 @@ internal class GetSkillsPageGraphQLAdapter(
     }
 
     private fun query(pagination: Pagination?) =
-        AllSkillsQuery(
-            pageIndex = pagination?.index?.let(::PageIndex) ?: PageIndex.DEFAULT,
-            pageSize = pagination?.size?.let(::PageSize) ?: PageSize.DEFAULT
-        )
+        AllSkillsQuery(pageIndex = PageIndex.of(pagination?.index), pageSize = PageSize.of(pagination?.size))
 
 }

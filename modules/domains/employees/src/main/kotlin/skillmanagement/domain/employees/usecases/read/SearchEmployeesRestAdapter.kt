@@ -28,11 +28,7 @@ internal class SearchEmployeesRestAdapter(
     }
 
     private fun query(query: String, page: Int?, size: Int?) =
-        EmployeesMatchingQuery(
-            queryString = query,
-            pageIndex = page?.let(::PageIndex) ?: PageIndex.DEFAULT,
-            pageSize = size?.let(::PageSize) ?: PageSize.DEFAULT
-        )
+        EmployeesMatchingQuery(queryString = query, pageIndex = PageIndex.of(page), pageSize = PageSize.of(size))
 
     data class SearchRequest(
         val query: String

@@ -14,9 +14,7 @@ internal class SuggestSkillsGraphQLAdapter(
 ) : GraphQLQueryResolver {
 
     fun suggestSkills(input: String, max: Int?): List<Suggestion> = withErrorHandling {
-        searchIndex.suggest(input = input, max = max(max))
+        searchIndex.suggest(input = input, max = MaxSuggestions.of(max))
     }
-
-    private fun max(max: Int?) = max?.let(::MaxSuggestions) ?: MaxSuggestions.DEFAULT
 
 }

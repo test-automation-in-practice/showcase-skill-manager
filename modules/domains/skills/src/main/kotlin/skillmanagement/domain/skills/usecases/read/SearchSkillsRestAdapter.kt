@@ -28,11 +28,7 @@ internal class SearchSkillsRestAdapter(
     }
 
     private fun query(query: String, page: Int?, size: Int?) =
-        SkillsMatchingQuery(
-            queryString = query,
-            pageIndex = page?.let(::PageIndex) ?: PageIndex.DEFAULT,
-            pageSize = size?.let(::PageSize) ?: PageSize.DEFAULT
-        )
+        SkillsMatchingQuery(queryString = query, pageIndex = PageIndex.of(page), pageSize = PageSize.of(size))
 
     data class Request(
         val query: String
