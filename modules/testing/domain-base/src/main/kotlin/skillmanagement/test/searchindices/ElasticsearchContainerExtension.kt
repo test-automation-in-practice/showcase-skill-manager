@@ -49,7 +49,7 @@ private class ElasticsearchContainerExtension : AbstractDockerContainerExtension
 
     @Suppress("UNCHECKED_CAST")
     private var ExtensionContext.client: RestHighLevelClient?
-        get() = getStore(namespace).get("client") as RestHighLevelClient?
+        get() = getStore(namespace).get("client") as? RestHighLevelClient
         set(value) = getStore(namespace).put("client", value)
 
     private fun isElasticsearchContainer(parameterContext: ParameterContext) =

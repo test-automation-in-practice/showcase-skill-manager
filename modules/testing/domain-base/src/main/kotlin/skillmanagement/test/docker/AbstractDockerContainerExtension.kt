@@ -45,7 +45,7 @@ internal abstract class AbstractDockerContainerExtension<T : Container> : Before
 
     @Suppress("UNCHECKED_CAST")
     private var ExtensionContext.container: ContainerResource<T>?
-        get() = getStore(namespace).get("container") as ContainerResource<T>?
+        get() = getStore(namespace).get("container") as? ContainerResource<T>
         set(value) = getStore(namespace).put("container", value)
 
 }

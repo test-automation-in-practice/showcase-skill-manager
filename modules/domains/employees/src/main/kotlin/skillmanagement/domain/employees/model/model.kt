@@ -1,7 +1,6 @@
 package skillmanagement.domain.employees.model
 
 import skillmanagement.common.model.IntType
-import skillmanagement.common.model.Label
 import skillmanagement.common.model.Name
 import skillmanagement.common.model.StringType
 import skillmanagement.common.model.Text
