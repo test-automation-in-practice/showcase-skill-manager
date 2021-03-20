@@ -9,8 +9,6 @@ class GetEmployeeByIdFunction internal constructor(
     private val getEmployeeFromDataStore: GetEmployeesFromDataStoreFunction
 ) {
 
-    operator fun invoke(id: UUID): Employee? {
-        return getEmployeeFromDataStore(id)
-    }
+    operator fun invoke(id: UUID): Employee? = getEmployeeFromDataStore(id)
 
 }

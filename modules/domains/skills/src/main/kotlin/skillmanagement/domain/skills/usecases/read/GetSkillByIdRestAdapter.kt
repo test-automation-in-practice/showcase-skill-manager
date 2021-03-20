@@ -18,12 +18,9 @@ internal class GetSkillByIdRestAdapter(
 ) {
 
     @GetMapping
-    fun get(@PathVariable id: UUID): ResponseEntity<SkillResource> {
-        val skill = getSkillById(id)
-        if (skill != null) {
-            return ok(skill.toResource())
-        }
-        return noContent().build()
-    }
+    fun get(@PathVariable id: UUID): ResponseEntity<SkillResource> =
+        getSkillById(id)
+            ?.let { ok(it.toResource()) }
+            ?: noContent().build()
 
 }

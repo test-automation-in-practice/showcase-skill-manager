@@ -9,8 +9,6 @@ class GetSkillByIdFunction internal constructor(
     private val getSkillsFromDataStore: GetSkillsFromDataStoreFunction
 ) {
 
-    operator fun invoke(id: UUID): Skill? {
-        return getSkillsFromDataStore(id)
-    }
+    operator fun invoke(id: UUID): Skill? = getSkillsFromDataStore(id)
 
 }
