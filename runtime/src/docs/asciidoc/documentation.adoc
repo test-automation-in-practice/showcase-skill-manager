@@ -1,6 +1,7 @@
 = SkillManager Runtime Documentation
 
 :data-uri:
+:nofooter:
 
 == Module Structure
 

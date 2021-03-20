@@ -1,4 +1,6 @@
-= SkillManager - Projects API Documentation
+= Projects API Documentation
+
+:nofooter:
 
 == REST API
 

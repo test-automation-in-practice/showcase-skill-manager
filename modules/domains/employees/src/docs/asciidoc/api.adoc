@@ -1,4 +1,6 @@
-= SkillManager - Employees API Documentation
+= Employees API Documentation
+
+:nofooter:
 
 == REST API
 

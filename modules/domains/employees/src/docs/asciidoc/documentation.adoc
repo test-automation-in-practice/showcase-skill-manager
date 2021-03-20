@@ -1,6 +1,7 @@
-= SkillManager - Employees Documentation
+= Employees Module Documentation
 
 :data-uri:
+:nofooter:
 
 == Data Consistency
 
