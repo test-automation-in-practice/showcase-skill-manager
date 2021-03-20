@@ -7,14 +7,14 @@
 
 === Search Index
 
-[plantuml,consistency_search-index,svg]
+[plantuml,consistency_search-index,svg,align="center"]
 ....
 include::../plantuml/consistency_search-index.puml[]
 ....
 
 === Database
 
-[plantuml,consistency_database,svg]
+[plantuml,consistency_database,svg,align="center"]
 ....
 include::../plantuml/consistency_database.puml[]
 ....
@@ -23,7 +23,7 @@ include::../plantuml/consistency_database.puml[]
 
 === Search Index Reconstruction
 
-[plantuml,task_seach-index_reconstruct,svg]
+[plantuml,task_seach-index_reconstruct,svg,align="center"]
 ....
 include::../plantuml/task_seach-index_reconstruct.puml[]
 ....

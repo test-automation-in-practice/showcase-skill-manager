@@ -5,7 +5,7 @@
 
 == Module Structure
 
-[plantuml, module_structure, svg]
+[plantuml, module_structure, svg, align="center"]
 ....
 include::../plantuml/module_structure.puml[]
 ....
@@ -14,28 +14,28 @@ include::../plantuml/module_structure.puml[]
 
 === Skill & Project Data of Employees
 
-[plantuml, consistency_database_employees, svg]
+[plantuml, consistency_database_employees, svg, align="center"]
 ....
 include::../../../../modules/domains/employees/src/docs/plantuml/consistency_database.puml[]
 ....
 
 === Employee Search Index
 
-[plantuml, consistency_search-index_employees, svg]
+[plantuml, consistency_search-index_employees, svg, align="center"]
 ....
 include::../../../../modules/domains/employees/src/docs/plantuml/consistency_search-index.puml[]
 ....
 
 === Project Search Index
 
-[plantuml, consistency_search-index_projects, svg]
+[plantuml, consistency_search-index_projects, svg, align="center"]
 ....
 include::../../../../modules/domains/projects/src/docs/plantuml/consistency_search-index.puml[]
 ....
 
 === Skills Search Index
 
-[plantuml, consistency_search-index_skills, svg]
+[plantuml, consistency_search-index_skills, svg, align="center"]
 ....
 include::../../../../modules/domains/skills/src/docs/plantuml/consistency_search-index.puml[]
 ....
