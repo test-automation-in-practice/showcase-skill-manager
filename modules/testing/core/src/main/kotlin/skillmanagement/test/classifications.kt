@@ -6,18 +6,23 @@ import kotlin.annotation.AnnotationTarget.CLASS
 import net.jqwik.api.Tag as JQwikTag
 import org.junit.jupiter.api.Tag as JUnitTag
 
+private const val TEST = "test"
+private const val UNIT_TEST = "unit-test"
+private const val INTEGRATION_TEST = "integration-test"
+private const val END2END_TEST = "end2end-test"
+
 @Retention
 @Target(CLASS)
-@JUnitTag("unit-test")
-@JQwikTag("unit-test")
+@JUnitTag(UNIT_TEST)
+@JQwikTag(UNIT_TEST)
 annotation class UnitTest
 
 @Retention
 @Target(CLASS)
 @DirtiesContext
-@JUnitTag("integration-test")
-@JQwikTag("integration-test")
-@ActiveProfiles("test", "integration-test")
+@JUnitTag(INTEGRATION_TEST)
+@JQwikTag(INTEGRATION_TEST)
+@ActiveProfiles(TEST, INTEGRATION_TEST)
 annotation class TechnologyIntegrationTest
 
 /**
@@ -44,9 +49,7 @@ annotation class TechnologyIntegrationTest
  */
 @Retention
 @Target(CLASS)
-@JUnitTag("end2end-test")
-@JQwikTag("end2end-test")
-@ActiveProfiles("test", "end2end-test")
+@JUnitTag(END2END_TEST)
+@JQwikTag(END2END_TEST)
+@ActiveProfiles(TEST, END2END_TEST)
 annotation class SmokeTest
-
-
