@@ -1,0 +1,12 @@
+= SkillManager - API Documentation
+
+== API Root
+
+The `/api` root resource returns information about available API endpoints in the form of `application/hal+json` links:
+
+include::{snippets}/api/get/ok/http-request.adoc[]
+include::{snippets}/api/get/ok/http-response.adoc[]
+
+Please take a look at the _employees_, _projects_ and _skills_ API documentation files for a detailed description of each of the available resources for those domains.
+The GraphQL endpoint is shared between all domains.
+The available operations for each domain are described in their respective API documentation files.
