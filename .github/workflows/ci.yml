@@ -40,3 +40,9 @@ jobs:
         with:
           name: test-results
           path: "**/build/reports/tests"
+
+      - name: Upload Detekt Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: detekt-reports
+          path: "**/build/reports/detekt/*.html"
