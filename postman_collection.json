@@ -2885,6 +2885,158 @@
 							]
 						}
 					]
+				},
+				{
+					"name": "Get API Root",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/api",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"api"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Documentation",
+			"item": [
+				{
+					"name": "Root API",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/docs/api.html",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"docs",
+								"api.html"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Employees API",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/docs/employees/api.html",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"docs",
+								"employees",
+								"api.html"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Projects API",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/docs/projects/api.html",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"docs",
+								"projects",
+								"api.html"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Skills API",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base-url}}/docs/skills/api.html",
+							"host": [
+								"{{base-url}}"
+							],
+							"path": [
+								"docs",
+								"skills",
+								"api.html"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}

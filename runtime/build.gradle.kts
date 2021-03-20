@@ -23,6 +23,11 @@ dependencies {
 
 tasks {
     asciidoctor {
+        dependsOn("test")
+        dependsOn(":modules:domains:employees:asciidoctor")
+        dependsOn(":modules:domains:projects:asciidoctor")
+        dependsOn(":modules:domains:skills:asciidoctor")
+
         baseDirFollowsSourceDir()
         options(
             mapOf(
@@ -39,10 +44,24 @@ tasks {
                 "sectlinks" to "true"
             )
         )
-
     }
     asciidoctorj {
         fatalWarnings("include file not found")
         modules { diagram.use() }
+    }
+    bootJar {
+        dependsOn("asciidoctor")
+        from("$rootDir/modules/domains/employees/build/docs/asciidoc/api.html") {
+            into("BOOT-INF/classes/static/docs/employees")
+        }
+        from("$rootDir/modules/domains/projects/build/docs/asciidoc/api.html") {
+            into("BOOT-INF/classes/static/docs/projects")
+        }
+        from("$rootDir/modules/domains/skills/build/docs/asciidoc/api.html") {
+            into("BOOT-INF/classes/static/docs/skills")
+        }
+        from(file("build/docs/asciidoc/api.html")) {
+            into("BOOT-INF/classes/static/docs")
+        }
     }
 }
