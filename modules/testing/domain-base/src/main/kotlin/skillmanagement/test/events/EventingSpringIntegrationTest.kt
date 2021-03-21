@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Import
 import skillmanagement.common.events.EventsConfiguration
 import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.test.TechnologyIntegrationTest
-import skillmanagement.test.docker.WaitForAllContainersToStart
+import skillmanagement.test.docker.WithDockerContainers
 import skillmanagement.test.e2e.PROPERTY_DOCKERIZED_BROKER_HOST
 import skillmanagement.test.e2e.PROPERTY_DOCKERIZED_BROKER_PORT
 import kotlin.annotation.AnnotationTarget.CLASS
@@ -29,8 +29,7 @@ import kotlin.annotation.AnnotationTarget.CLASS
 @Retention
 @Target(CLASS)
 @TechnologyIntegrationTest
-@RunWithDockerizedRabbitMq
-@WaitForAllContainersToStart
+@WithDockerContainers(RabbitMqContainerFactory::class)
 @SpringBootTest(
     classes = [EventingIntegrationTestConfiguration::class],
     properties = [PROPERTY_DOCKERIZED_BROKER_HOST, PROPERTY_DOCKERIZED_BROKER_PORT]

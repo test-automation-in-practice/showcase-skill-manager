@@ -6,6 +6,9 @@ import java.io.BufferedReader
 
 abstract class Container(image: String) : GenericContainer<Container>(image) {
 
+    abstract val port: Int
+    abstract val portProperty: String
+
     fun addEnvFromFile(resource: Resource) {
         resource.readAsString().lines()
             .filter { it.isNotBlank() }
@@ -14,7 +17,7 @@ abstract class Container(image: String) : GenericContainer<Container>(image) {
             .forEach { (key, value) -> addEnv(key, value) }
     }
 
-    abstract fun getMappedPort(): Int
+    fun getMappedPort(): Int = getMappedPort(port)
 
     private fun Resource.readAsString(): String =
         inputStream.bufferedReader().use(BufferedReader::readText)
