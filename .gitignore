@@ -34,3 +34,6 @@ out/
 
 ### MacOS ###
 **/.DS_Store
+
+### JQWIK ###
+**/.jqwik-database
