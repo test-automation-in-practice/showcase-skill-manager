@@ -4,10 +4,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT
 import org.springframework.test.annotation.DirtiesContext
-import skillmanagement.test.database.RunWithDockerizedPostgres
-import skillmanagement.test.docker.WaitForAllContainersToStart
-import skillmanagement.test.events.RunWithDockerizedRabbitMq
-import skillmanagement.test.searchindices.RunWithDockerizedElasticsearch
+import skillmanagement.test.database.PostgresContainerFactory
+import skillmanagement.test.docker.WithDockerContainers
+import skillmanagement.test.events.RabbitMqContainerFactory
+import skillmanagement.test.searchindices.ElasticsearchContainerFactory
 import kotlin.annotation.AnnotationTarget.CLASS
 
 const val PROPERTY_DOCKERIZED_DATABASE_URL = "spring.datasource.url=" +
@@ -23,10 +23,11 @@ const val PROPERTY_DOCKERIZED_BROKER_PORT = "spring.rabbitmq.port=\${RABBITMQ_PO
 
 @Retention
 @Target(CLASS)
-@RunWithDockerizedRabbitMq
-@RunWithDockerizedElasticsearch
-@RunWithDockerizedPostgres
-@WaitForAllContainersToStart
+@WithDockerContainers(
+    ElasticsearchContainerFactory::class,
+    PostgresContainerFactory::class,
+    RabbitMqContainerFactory::class
+)
 @SpringBootTest(
     webEnvironment = RANDOM_PORT,
     properties = [
