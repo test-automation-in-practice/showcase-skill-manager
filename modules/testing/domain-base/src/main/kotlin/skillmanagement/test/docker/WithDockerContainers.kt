@@ -47,7 +47,7 @@ private class WithDockerContainerExtension : BeforeAllCallback {
                             }
                     }
                 }
-                .map { supplier -> supplier.get(1, MINUTES) }
+                .map { supplier -> supplier.get(5, MINUTES) }
                 .forEach { container ->
                     context.containers.add(container)
                     System.setProperty(container.portProperty, "${container.getMappedPort()}")
