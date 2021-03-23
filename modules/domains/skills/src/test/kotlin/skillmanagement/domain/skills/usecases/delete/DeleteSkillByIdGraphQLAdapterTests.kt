@@ -4,8 +4,6 @@ import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
-import skillmanagement.common.graphql.GraphQLClientSideException
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.usecases.delete.DeleteSkillByIdResult.SkillNotFound
 import skillmanagement.domain.skills.usecases.delete.DeleteSkillByIdResult.SuccessfullyDeleted
@@ -29,13 +27,6 @@ internal class DeleteSkillByIdGraphQLAdapterTests {
     fun `translates and delegates deletion to business function - not found`() {
         every { deleteSkillById(skill_kotlin.id) } returns SkillNotFound
         assertThat(tryToDeleteSkill()).isFalse()
-    }
-
-    @Test
-    fun `validation errors are translated to GraphQL compatible exception`() {
-        assertThrows<GraphQLClientSideException> {
-            tryToDeleteSkill(id = "3f7985b9")
-        }
     }
 
     private fun tryToDeleteSkill(id: String = "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b") = cut.deleteSkillById(id)

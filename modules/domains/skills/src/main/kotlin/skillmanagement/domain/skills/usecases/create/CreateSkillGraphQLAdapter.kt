@@ -1,7 +1,6 @@
 package skillmanagement.domain.skills.usecases.create
 
 import graphql.kickstart.tools.GraphQLMutationResolver
-import skillmanagement.common.graphql.withErrorHandling
 import skillmanagement.common.stereotypes.GraphQLAdapter
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillDescription
@@ -14,18 +13,17 @@ internal class CreateSkillGraphQLAdapter(
     private val createSkill: CreateSkillFunction
 ) : GraphQLMutationResolver {
 
-    fun createSkill(input: SkillInput): Skill = withErrorHandling {
+    fun createSkill(input: SkillInput): Skill =
         createSkill(
-            label = SkillLabel(input.label),
-            description = input.description?.let(::SkillDescription),
-            tags = input.tags?.map(::Tag)?.toSortedSet() ?: emptySortedSet()
+            label = input.label,
+            description = input.description,
+            tags = input.tags?.toSortedSet() ?: emptySortedSet()
         )
-    }
 
     data class SkillInput(
-        val label: String,
-        val description: String?,
-        val tags: Set<String>?
+        val label: SkillLabel,
+        val description: SkillDescription?,
+        val tags: Set<Tag>?
     )
 
 }

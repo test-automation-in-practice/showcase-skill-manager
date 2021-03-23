@@ -4,8 +4,6 @@ import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
-import skillmanagement.common.graphql.GraphQLClientSideException
 import skillmanagement.common.graphql.Pagination
 import skillmanagement.common.model.Page
 import skillmanagement.common.model.PageIndex
@@ -35,14 +33,7 @@ internal class SearchSkillsGraphQLAdapterTests {
         assertThat(tryToSearchSkills(query = "query")).isEqualTo(page)
     }
 
-    @Test
-    fun `validation errors are translated to GraphQL compatible exception`() {
-        assertThrows<GraphQLClientSideException> {
-            tryToSearchSkills(index = -1)
-        }
-    }
-
     private fun tryToSearchSkills(query: String = "*", index: Int? = null, size: Int? = null) =
-        cut.searchSkills(query, Pagination(index, size))
+        cut.searchSkills(query, Pagination(PageIndex.of(index), PageSize.of(size)))
 
 }

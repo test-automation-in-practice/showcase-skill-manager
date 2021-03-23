@@ -2,6 +2,7 @@ graphql:
   servlet:
     actuator-metrics: true
     mapping: /api/graphql
+    exception-handlers-enabled: false
 
 logging:
   level:
@@ -33,6 +34,9 @@ metrics:
       update:
         rate: "PT1M"
         delay: "PT10S"
+
+server:
+  shutdown: graceful
 
 spring:
   datasource:

@@ -4,8 +4,6 @@ import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
-import skillmanagement.common.graphql.GraphQLClientSideException
 import skillmanagement.common.model.Page
 import skillmanagement.common.model.Suggestion
 import skillmanagement.common.searchindices.MaxSuggestions
@@ -35,13 +33,7 @@ internal class SuggestSkillsGraphQLAdapterTests {
         assertThat(tryToSuggestSkills(input = "input")).isEqualTo(page)
     }
 
-    @Test
-    fun `validation errors are translated to GraphQL compatible exception`() {
-        assertThrows<GraphQLClientSideException> {
-            tryToSuggestSkills(max = -1)
-        }
-    }
-
-    private fun tryToSuggestSkills(input: String = "*", max: Int? = null) = cut.suggestSkills(input, max)
+    private fun tryToSuggestSkills(input: String = "*", max: Int? = null) =
+        cut.suggestSkills(input, MaxSuggestions.of(max))
 
 }
