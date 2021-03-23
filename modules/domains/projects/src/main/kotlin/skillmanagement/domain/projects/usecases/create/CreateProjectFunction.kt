@@ -18,16 +18,21 @@ class CreateProjectFunction internal constructor(
 ) {
 
     operator fun invoke(label: ProjectLabel, description: ProjectDescription): Project {
-        val project = Project(
-            id = idGenerator.generateId(),
-            version = 1,
-            label = label,
-            description = description,
-            lastUpdate = clock.instant()
-        )
+        val project = project(label, description)
         insertProjectIntoDataStore(project)
         publishEvent(ProjectAddedEvent(project))
         return project
     }
+
+    private fun project(
+        label: ProjectLabel,
+        description: ProjectDescription
+    ) = Project(
+        id = idGenerator.generateId(),
+        version = 1,
+        label = label,
+        description = description,
+        lastUpdate = clock.instant()
+    )
 
 }

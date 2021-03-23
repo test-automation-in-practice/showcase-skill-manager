@@ -26,5 +26,7 @@ dependencies {
     api("com.github.java-json-tools:json-patch:1.13")
     api("com.graphql-java-kickstart:graphql-spring-boot-starter:11.0.0")
 
+    implementation("org.springframework.security:spring-security-core")
+
     testImplementation(project(":modules:testing:core"))
 }

@@ -15,6 +15,7 @@ import org.springframework.http.HttpMethod.GET
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.authentication.configurers.provisioning.InMemoryUserDetailsManagerConfigurer
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -33,6 +34,7 @@ class WebSecurityConfiguration(
     @Profile("!unsecured")
     @Configuration
     @EnableWebSecurity
+    @EnableGlobalMethodSecurity(jsr250Enabled = true)
     class DefaultWebSecurityConfiguration : WebSecurityConfigurerAdapter() {
 
         private val encoder = createDelegatingPasswordEncoder();
@@ -57,6 +59,14 @@ class WebSecurityConfiguration(
                         .password(encoder.encode("admin"))
                         .roles("ADMIN", "ACTUATOR")
                         .build()
+
+                )
+                withUser(
+                    User.withUsername("actuator")
+                        .password(encoder.encode("actuator"))
+                        .roles("ACTUATOR")
+                        .build()
+
                 )
             }
         }

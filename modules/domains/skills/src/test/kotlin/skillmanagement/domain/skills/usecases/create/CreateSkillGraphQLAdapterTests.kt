@@ -4,8 +4,9 @@ import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
-import skillmanagement.common.graphql.GraphQLClientSideException
+import skillmanagement.domain.skills.model.SkillDescription
+import skillmanagement.domain.skills.model.SkillLabel
+import skillmanagement.domain.skills.model.Tag
 import skillmanagement.domain.skills.model.skill
 import skillmanagement.domain.skills.usecases.create.CreateSkillGraphQLAdapter.SkillInput
 import skillmanagement.test.ResetMocksAfterEachTest
@@ -29,16 +30,15 @@ internal class CreateSkillGraphQLAdapterTests {
         assertThat(tryToCreateSkill()).isEqualTo(skill)
     }
 
-    @Test
-    fun `validation errors are translated to GraphQL compatible exception`() {
-        assertThrows<GraphQLClientSideException> {
-            tryToCreateSkill(label = "")
-        }
-    }
-
     private fun tryToCreateSkill(
         label: String = "label",
         description: String = "description",
         tags: Set<String> = setOf("abc", "def")
-    ) = cut.createSkill(SkillInput( label = label, description = description, tags = tags))
+    ) = cut.createSkill(
+        SkillInput(
+            label = SkillLabel(label),
+            description = SkillDescription(description),
+            tags = tags.map(::Tag).toSet()
+        )
+    )
 }
