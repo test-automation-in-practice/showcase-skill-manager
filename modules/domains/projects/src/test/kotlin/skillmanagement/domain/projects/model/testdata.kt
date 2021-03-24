@@ -34,6 +34,14 @@ internal val project_resource_neo_json = """
     }
     """.trimIndent()
 
+internal val project_creation_data_neo = project_neo.toCreationData()
+internal val project_creation_data_neo_json = """
+    {
+      "label": "Neo",
+      "description": "The PlayStation 4 Pro."
+    }
+    """.trimIndent()
+
 internal val project_change_data_neo = project_neo.toChangeData()
 internal val project_change_data_neo_json = """
     {
@@ -71,6 +79,14 @@ internal val project_resource_orbis_json = """
       "label": "Orbis",
       "description": "The PlayStation 4.",
       "links": []
+    }
+    """.trimIndent()
+
+internal val project_creation_data_orbis = project_orbis.toCreationData()
+internal val project_creation_data_orbis_json = """
+    {
+      "label": "Orbis",
+      "description": "The PlayStation 4."
     }
     """.trimIndent()
 
@@ -114,6 +130,14 @@ internal val project_resource_morpheus_json = """
     }
     """.trimIndent()
 
+internal val project_creation_data_morpheus = project_morpheus.toCreationData()
+internal val project_creation_data_morpheus_json = """
+    {
+      "label": "Morpheus",
+      "description": "The PlayStation VR Headset."
+    }
+    """.trimIndent()
+
 internal val project_change_data_morpheus = project_morpheus.toChangeData()
 internal val project_change_data_morpheus_json = """
     {
@@ -128,6 +152,9 @@ internal val project_morpheus_suggestion = project_morpheus.toSuggestion()
 
 private fun Project.toResourceWithoutLinks() =
     ProjectResource(id = id, label = label, description = description)
+
+private fun Project.toCreationData() =
+    ProjectCreationData(label = label, description = description)
 
 internal fun Project.toSuggestion() =
     Suggestion(id = id, label = label.toString())

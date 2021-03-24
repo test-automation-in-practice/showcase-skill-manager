@@ -5,12 +5,8 @@ import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillAddedEvent
-import skillmanagement.domain.skills.model.SkillDescription
-import skillmanagement.domain.skills.model.SkillLabel
-import skillmanagement.domain.skills.model.Tag
+import skillmanagement.domain.skills.model.SkillCreationData
 import java.time.Clock
-import java.util.Collections.emptySortedSet
-import java.util.SortedSet
 
 @BusinessFunction
 class CreateSkillFunction internal constructor(
@@ -20,28 +16,21 @@ class CreateSkillFunction internal constructor(
     private val clock: Clock
 ) {
 
-    operator fun invoke(
-        label: SkillLabel,
-        description: SkillDescription? = null,
-        tags: SortedSet<Tag> = emptySortedSet()
-    ): Skill {
-        val skill = skill(label, description, tags)
+    operator fun invoke(data: SkillCreationData): Skill {
+        val skill = data.toSkill()
         insertSkillIntoDataStore(skill)
         publishEvent(SkillAddedEvent(skill))
         return skill
     }
 
-    private fun skill(
-        label: SkillLabel,
-        description: SkillDescription?,
-        tags: SortedSet<Tag>
-    ) = Skill(
-        id = idGenerator.generateId(),
-        version = 1,
-        label = label,
-        description = description,
-        tags = tags,
-        lastUpdate = clock.instant()
-    )
+    private fun SkillCreationData.toSkill() =
+        Skill(
+            id = idGenerator.generateId(),
+            version = 1,
+            label = label,
+            description = description,
+            tags = tags,
+            lastUpdate = clock.instant()
+        )
 
 }

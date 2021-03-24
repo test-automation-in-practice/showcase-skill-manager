@@ -2,10 +2,10 @@ package skillmanagement.domain.projects
 
 import org.springframework.hateoas.PagedModel
 import skillmanagement.common.model.Suggestion
+import skillmanagement.domain.projects.model.ProjectCreationData
 import skillmanagement.domain.projects.model.ProjectDescription
 import skillmanagement.domain.projects.model.ProjectLabel
 import skillmanagement.domain.projects.model.ProjectResource
-import skillmanagement.domain.projects.usecases.create.CreateProjectRestAdapter
 import skillmanagement.domain.projects.usecases.read.SearchProjectsRestAdapter
 import skillmanagement.domain.projects.usecases.read.SuggestProjectsRestAdapter
 import skillmanagement.test.AbstractHttpTestDriver
@@ -21,7 +21,7 @@ internal class ProjectsTestDriver(
         description: String = "Lorem Ipsum ..."
     ): ProjectResource {
         val response = post("/api/projects") {
-            CreateProjectRestAdapter.Request(
+            ProjectCreationData(
                 label = ProjectLabel(label),
                 description = description.let(::ProjectDescription)
             )

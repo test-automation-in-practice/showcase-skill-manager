@@ -2,11 +2,11 @@ package skillmanagement.domain.skills
 
 import org.springframework.hateoas.PagedModel
 import skillmanagement.common.model.Suggestion
+import skillmanagement.domain.skills.model.SkillCreationData
 import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.SkillResource
 import skillmanagement.domain.skills.model.Tag
-import skillmanagement.domain.skills.usecases.create.CreateSkillRestAdapter
 import skillmanagement.domain.skills.usecases.read.SearchSkillsRestAdapter
 import skillmanagement.domain.skills.usecases.read.SuggestSkillsRestAdapter
 import skillmanagement.test.AbstractHttpTestDriver
@@ -24,7 +24,7 @@ internal class SkillsTestDriver(
         tags: Set<String> = emptySortedSet()
     ): SkillResource {
         val response = post("/api/skills") {
-            CreateSkillRestAdapter.Request(
+            SkillCreationData(
                 label = SkillLabel(label),
                 description = description?.let(::SkillDescription),
                 tags = tags.map(::Tag).toSortedSet()

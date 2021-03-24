@@ -20,8 +20,8 @@ import skillmanagement.test.events.EventingSpringIntegrationTest
 
 @ResetMocksAfterEachTest
 @EventingSpringIntegrationTest
-@Import(SkillSearchIndexUpdatingEventHandlerTestsConfiguration::class)
-internal class SkillSearchIndexUpdatingEventHandlerTests(
+@Import(ProjectSearchIndexUpdatingEventHandlerTestsConfiguration::class)
+internal class ProjectSearchIndexUpdatingEventHandlerTests(
     @Autowired private val searchIndex: SearchIndex<Project>,
     @Autowired private val publishEvent: PublishEventFunction
 ) {
@@ -50,7 +50,7 @@ internal class SkillSearchIndexUpdatingEventHandlerTests(
     ProjectSearchIndexUpdatingEventHandler::class,
     ProjectSearchIndexUpdatingEventHandlerConfiguration::class
 )
-private class SkillSearchIndexUpdatingEventHandlerTestsConfiguration {
+private class ProjectSearchIndexUpdatingEventHandlerTestsConfiguration {
     @Bean
     fun searchIndex(): SearchIndex<Project> = mockk(relaxed = true)
 }

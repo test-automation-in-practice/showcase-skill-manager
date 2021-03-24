@@ -3,13 +3,9 @@ package skillmanagement.domain.employees.usecases.create
 import org.springframework.util.IdGenerator
 import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.stereotypes.BusinessFunction
-import skillmanagement.domain.employees.model.EmailAddress
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.EmployeeAddedEvent
-import skillmanagement.domain.employees.model.FirstName
-import skillmanagement.domain.employees.model.JobTitle
-import skillmanagement.domain.employees.model.LastName
-import skillmanagement.domain.employees.model.TelephoneNumber
+import skillmanagement.domain.employees.model.EmployeeCreationData
 import java.time.Clock
 
 @BusinessFunction
@@ -20,14 +16,15 @@ class CreateEmployeeFunction internal constructor(
     private val clock: Clock
 ) {
 
-    operator fun invoke(
-        firstName: FirstName,
-        lastName: LastName,
-        title: JobTitle,
-        email: EmailAddress,
-        telephone: TelephoneNumber
-    ): Employee {
-        val employee = Employee(
+    operator fun invoke(data: EmployeeCreationData): Employee {
+        val employee = data.toEmployee()
+        insertEmployeeIntoDataStore(employee)
+        publishEvent(EmployeeAddedEvent(employee))
+        return employee
+    }
+
+    private fun EmployeeCreationData.toEmployee() =
+        Employee(
             id = idGenerator.generateId(),
             version = 1,
             firstName = firstName,
@@ -37,9 +34,5 @@ class CreateEmployeeFunction internal constructor(
             telephone = telephone,
             lastUpdate = clock.instant()
         )
-        insertEmployeeIntoDataStore(employee)
-        publishEvent(EmployeeAddedEvent(employee))
-        return employee
-    }
 
 }
