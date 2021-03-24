@@ -7,6 +7,101 @@
 
 **Resource:** `/api/projects`
 
+=== CRUD
+
+==== Create
+
+A new project can be created by sending a request like this:
+
+include::{snippets}/projects/create/created/http-request.adoc[]
+include::{snippets}/projects/create/created/http-response.adoc[]
+
+In case the request contains invalid data, the response will look something like this:
+
+include::{snippets}/projects/create/bad-request/http-request.adoc[]
+include::{snippets}/projects/create/bad-request/http-response.adoc[]
+
+==== Get
+
+An existing project be got by sending a request like this:
+
+include::{snippets}/projects/get-by-id/found/http-request.adoc[]
+include::{snippets}/projects/get-by-id/found/http-response.adoc[]
+
+In case the specified project does not exist, the response will look like this:
+
+include::{snippets}/projects/get-by-id/not-found/http-response.adoc[]
+
+==== Get Page
+
+A page of all existing projects can be got by sending a request like this:
+
+include::{snippets}/projects/get-page/multiple-pages/http-request.adoc[]
+include::{snippets}/projects/get-page/multiple-pages/http-response.adoc[]
+
+Pagination parameters are _optional_, if none are provided the first page with a default size is returned:
+
+include::{snippets}/projects/get-page/multiple/http-request.adoc[]
+include::{snippets}/projects/get-page/multiple/http-response.adoc[]
+
+In case there are no projects to be found, the response will look like this:
+
+include::{snippets}/projects/get-page/empty/http-response.adoc[]
+
+==== Update
+
+An existing project can be completely updated by sending a request like this:
+
+include::{snippets}/projects/update/put/updated/http-request.adoc[]
+include::{snippets}/projects/update/put/updated/http-response.adoc[]
+
+In case the specified project does not exist, the response will look like this:
+
+include::{snippets}/projects/update/put/not-found/http-response.adoc[]
+
+For partial updates JSON Patch is also supported:
+
+include::{snippets}/projects/update/patch/updated/http-request.adoc[]
+include::{snippets}/projects/update/patch/updated/http-response.adoc[]
+
+==== Delete
+
+An existing project can be deleted by sending a request like this:
+
+include::{snippets}/projects/delete-by-id/deleted/http-request.adoc[]
+include::{snippets}/projects/delete-by-id/deleted/http-response.adoc[]
+
+In case the specified project does not exist, the response will be the same.
+
+=== Querying
+
+==== Search
+
+Projects can also be searched using a _search_ request:
+
+include::{snippets}/projects/search/multiple-pages/http-request.adoc[]
+include::{snippets}/projects/search/multiple-pages/http-response.adoc[]
+
+Pagination parameters are _optional_, if none are provided the first page with a default size is returned:
+
+include::{snippets}/projects/search/multiple/http-request.adoc[]
+include::{snippets}/projects/search/multiple/http-response.adoc[]
+
+In case the request does not result in any projects, the response will look like this:
+
+include::{snippets}/projects/search/empty/http-response.adoc[]
+
+==== Suggest
+
+Projects can also be suggested using a _suggestion_ request:
+
+include::{snippets}/projects/suggest/multiple/http-request.adoc[]
+include::{snippets}/projects/suggest/multiple/http-response.adoc[]
+
+In case the request does not result in any projects, the response will look like this:
+
+include::{snippets}/projects/suggest/empty/http-response.adoc[]
+
 == GraphQL API
 
 **Endpoint:** `/api/graphql`
