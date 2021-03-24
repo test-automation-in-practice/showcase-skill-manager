@@ -13,13 +13,13 @@
 
 A new skill can be created by sending a request like this:
 
-include::{snippets}/skills/add/created/http-request.adoc[]
-include::{snippets}/skills/add/created/http-response.adoc[]
+include::{snippets}/skills/create/created/http-request.adoc[]
+include::{snippets}/skills/create/created/http-response.adoc[]
 
 In case the request contains invalid data, the response will look something like this:
 
-include::{snippets}/skills/add/bad-request/http-request.adoc[]
-include::{snippets}/skills/add/bad-request/http-response.adoc[]
+include::{snippets}/skills/create/bad-request/http-request.adoc[]
+include::{snippets}/skills/create/bad-request/http-response.adoc[]
 
 ==== Get
 

@@ -5,15 +5,17 @@ import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import skillmanagement.domain.skills.model.skill_kotlin
+import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.UnitTest
 
 @UnitTest
+@ResetMocksAfterEachTest
 internal class GetSkillByIdFunctionTests {
 
-    val id = skill_kotlin.id
+    private val id = skill_kotlin.id
 
-    val getSkillsFromDataStore: GetSkillsFromDataStoreFunction = mockk()
-    val getSkillById = GetSkillByIdFunction(getSkillsFromDataStore)
+    private val getSkillsFromDataStore: GetSkillsFromDataStoreFunction = mockk()
+    private val getSkillById = GetSkillByIdFunction(getSkillsFromDataStore)
 
     @Test
     fun `returns NULL if nothing found with given ID`() {

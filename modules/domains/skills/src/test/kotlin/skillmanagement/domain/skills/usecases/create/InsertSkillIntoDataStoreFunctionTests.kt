@@ -26,11 +26,11 @@ internal class InsertSkillIntoDataStoreFunctionTests(
     @Autowired val objectMapper: ObjectMapper
 ) {
 
-    val getSkill = GetSkillsFromDataStoreFunction(jdbcTemplate, objectMapper)
-    val insertSkillIntoDataStore = InsertSkillIntoDataStoreFunction(jdbcTemplate, objectMapper)
+    private val getSkill = GetSkillsFromDataStoreFunction(jdbcTemplate, objectMapper)
+    private val insertSkillIntoDataStore = InsertSkillIntoDataStoreFunction(jdbcTemplate, objectMapper)
 
     @Test
-    fun `inserts complete Skill data into data store`() {
+    fun `inserts complete skill data into data store`() {
         val skill = skill_kotlin.copy(id = uuid())
 
         getSkill(skill.id) shouldBe null

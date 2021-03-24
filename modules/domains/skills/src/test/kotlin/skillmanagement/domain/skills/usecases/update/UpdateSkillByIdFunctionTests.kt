@@ -33,8 +33,8 @@ import skillmanagement.test.uuid
 
 internal class UpdateSkillByIdFunctionTests {
 
-    val id = uuid()
-    val skill = Skill(
+    private val id = uuid()
+    private val skill = Skill(
         id = id,
         version = 2,
         label = SkillLabel("Old Label"),
@@ -45,13 +45,14 @@ internal class UpdateSkillByIdFunctionTests {
 
     @Nested
     @UnitTest
+    @ResetMocksAfterEachTest
     inner class FunctionalTests {
 
-        val getSkillById: GetSkillByIdFunction = mockk()
-        val updateSkillInDataStore: UpdateSkillInDataStoreFunction = mockk()
-        val publishEvent: PublishEventFunction = mockk(relaxUnitFun = true)
+        private val getSkillById: GetSkillByIdFunction = mockk()
+        private val updateSkillInDataStore: UpdateSkillInDataStoreFunction = mockk()
+        private val publishEvent: PublishEventFunction = mockk(relaxUnitFun = true)
 
-        val updateSkillById = UpdateSkillByIdFunction(getSkillById, updateSkillInDataStore, publishEvent)
+        private val updateSkillById = UpdateSkillByIdFunction(getSkillById, updateSkillInDataStore, publishEvent)
 
         @Test
         fun `updating an existing skill stores it in the data store and publishes an event`() {
@@ -120,9 +121,9 @@ internal class UpdateSkillByIdFunctionTests {
     @TechnologyIntegrationTest
     @SpringBootTest(classes = [RetryTestsConfiguration::class])
     inner class RetryTests(
-        @Autowired val getSkillById: GetSkillByIdFunction,
-        @Autowired val updateSkillInDataStore: UpdateSkillInDataStoreFunction,
-        @Autowired val updateSkillById: UpdateSkillByIdFunction
+        @Autowired private val getSkillById: GetSkillByIdFunction,
+        @Autowired private val updateSkillInDataStore: UpdateSkillInDataStoreFunction,
+        @Autowired private val updateSkillById: UpdateSkillByIdFunction
     ) {
 
         @Test

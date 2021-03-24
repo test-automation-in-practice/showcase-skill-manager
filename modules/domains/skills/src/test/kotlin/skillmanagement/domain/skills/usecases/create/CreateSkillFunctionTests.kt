@@ -30,13 +30,13 @@ internal class CreateSkillFunctionTests {
     private val publishEvent: PublishEventFunction = mockk(relaxUnitFun = true)
     private val clock = fixedClock("2020-07-14T12:34:56.789Z")
 
-    private val addSkill = CreateSkillFunction(idGenerator, insertSkillIntoDataStore, publishEvent, clock)
+    private val createSkill = CreateSkillFunction(idGenerator, insertSkillIntoDataStore, publishEvent, clock)
 
     @Test
     fun `correct Skill instance is constructed and stored for min data`() {
         every { idGenerator.generateId() } returns uuid("312f3bfc-c9b0-4b4c-9cc4-33242cdfc39e")
 
-        val actual = addSkill(
+        val actual = createSkill(
             SkillCreationData(
                 label = SkillLabel("Skill #1")
             )
@@ -62,7 +62,7 @@ internal class CreateSkillFunctionTests {
     fun `correct Skill instance is constructed and stored for max data`() {
         every { idGenerator.generateId() } returns uuid("da8748e1-405b-456c-92d4-26fdad09a0c9")
 
-        val actual = addSkill(
+        val actual = createSkill(
             SkillCreationData(
                 label = SkillLabel("Skill #2"),
                 description = SkillDescription("description"),

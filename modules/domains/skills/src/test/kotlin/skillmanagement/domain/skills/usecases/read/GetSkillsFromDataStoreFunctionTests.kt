@@ -37,9 +37,9 @@ internal class GetSkillsFromDataStoreFunctionTests(
     @Autowired val objectMapper: ObjectMapper
 ) {
 
-    val insertSkillIntoDataStore = InsertSkillIntoDataStoreFunction(jdbcTemplate, objectMapper)
-    val deleteSkillFromDataStore = DeleteSkillFromDataStoreFunction(jdbcTemplate)
-    val getSkillsFromDataStore = GetSkillsFromDataStoreFunction(jdbcTemplate, objectMapper)
+    private val insertSkillIntoDataStore = InsertSkillIntoDataStoreFunction(jdbcTemplate, objectMapper)
+    private val deleteSkillFromDataStore = DeleteSkillFromDataStoreFunction(jdbcTemplate)
+    private val getSkillsFromDataStore = GetSkillsFromDataStoreFunction(jdbcTemplate, objectMapper)
 
     @AfterEach
     fun deleteSkills() {
