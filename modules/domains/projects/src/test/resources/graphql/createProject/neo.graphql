@@ -1,0 +1,10 @@
+mutation {
+    createProject(input: {
+        label: "Neo",
+        description: "The PlayStation 4 Pro."
+    }) {
+        id
+        label
+        description
+    }
+}

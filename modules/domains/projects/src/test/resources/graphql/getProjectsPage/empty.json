@@ -1,0 +1,12 @@
+{
+  "data": {
+    "getProjectsPage": {
+      "content": [],
+      "pageIndex": 1,
+      "pageSize": 10,
+      "totalElements": 2,
+      "hasPrevious": true,
+      "hasNext": false
+    }
+  }
+}

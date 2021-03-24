@@ -1,0 +1,14 @@
+query {
+    searchProjects(query: "description:playstation", pagination: { index: 0, size: 10 }) {
+        content {
+            id
+            label
+            description
+        }
+        pageIndex
+        pageSize
+        totalElements
+        hasPrevious
+        hasNext
+    }
+}
