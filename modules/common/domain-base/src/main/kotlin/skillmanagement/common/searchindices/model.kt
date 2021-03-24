@@ -1,18 +1,15 @@
 package skillmanagement.common.searchindices
 
 import skillmanagement.common.model.IntType
-import skillmanagement.common.model.PageIndex
-import skillmanagement.common.model.PageSize
+import skillmanagement.common.model.Pagination
 
 interface PagedFindAllQuery {
-    val pageIndex: PageIndex
-    val pageSize: PageSize
+    val pagination: Pagination
 }
 
 interface PagedStringQuery {
-    val pageIndex: PageIndex
-    val pageSize: PageSize
     val queryString: String
+    val pagination: Pagination
 }
 
 class MaxSuggestions(value: Int) : IntType(value, min = 1, max = 10_000) {

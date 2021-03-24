@@ -8,6 +8,7 @@ import skillmanagement.common.events.QUEUE_PREFIX
 import skillmanagement.common.events.durableQueue
 import skillmanagement.common.events.eventBinding
 import skillmanagement.common.model.PageSize
+import skillmanagement.common.model.Pagination
 import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.SkillData
@@ -33,7 +34,7 @@ internal class SkillKnowledgeUpdatingEventHandler(
     fun handle(event: SkillUpdatedEvent) {
         log.debug { "Handling $event" }
         val skillId = event.skill.id
-        getEmployeeIds(EmployeesWithSkill(skillId = skillId, pageSize = PageSize.MAX))
+        getEmployeeIds(EmployeesWithSkill(skillId, Pagination(size = PageSize.MAX)))
             .onEach { log.info { "Updating knowledge of skill [$skillId] of employee [${it}]" } }
             .forEach { employeeId ->
                 updateEmployeeById(employeeId) { it.updateSkillKnowledgeOfSkill(event.skill) }

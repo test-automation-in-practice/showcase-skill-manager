@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import skillmanagement.common.model.PageIndex
 import skillmanagement.common.model.PageSize
+import skillmanagement.common.model.Pagination
 import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.domain.projects.model.ProjectResource
 import skillmanagement.domain.projects.model.toSearchResource
@@ -28,7 +29,7 @@ internal class SearchProjectsRestAdapter(
     }
 
     private fun query(query: String, page: Int?, size: Int?) =
-        ProjectsMatchingQuery(queryString = query, pageIndex = PageIndex.of(page), pageSize = PageSize.of(size))
+        ProjectsMatchingQuery(query, Pagination(PageIndex.of(page), PageSize.of(size)))
 
     data class Request(
         val query: String

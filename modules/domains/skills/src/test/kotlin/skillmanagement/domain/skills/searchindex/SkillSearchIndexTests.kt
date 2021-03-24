@@ -8,9 +8,10 @@ import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
-import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.model.PageIndex
 import skillmanagement.common.model.PageSize
+import skillmanagement.common.model.Pagination
+import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.PagedFindAllQuery
 import skillmanagement.common.searchindices.PagedStringQuery
 import skillmanagement.domain.skills.model.Skill
@@ -198,12 +199,12 @@ internal class SkillSearchIndexTests(client: RestHighLevelClient) {
         query: String,
         pageIndex: Int = PageIndex.DEFAULT.toInt(),
         pageSize: Int = PageSize.DEFAULT.toInt()
-    ) = cut.query(SimplePagedStringQuery(query, PageIndex(pageIndex), PageSize(pageSize)))
+    ) = cut.query(SimplePagedStringQuery(query, Pagination(PageIndex(pageIndex), PageSize(pageSize))))
 
     private fun findAll(
         pageIndex: Int = PageIndex.DEFAULT.toInt(),
         pageSize: Int = PageSize.DEFAULT.toInt()
-    ) = cut.findAll(SimplePagedFindAllQuery(PageIndex(pageIndex), PageSize(pageSize)))
+    ) = cut.findAll(SimplePagedFindAllQuery(Pagination(PageIndex(pageIndex), PageSize(pageSize))))
 
     private fun suggest(
         input: String,
@@ -212,12 +213,10 @@ internal class SkillSearchIndexTests(client: RestHighLevelClient) {
 
     private data class SimplePagedStringQuery(
         override val queryString: String,
-        override val pageIndex: PageIndex,
-        override val pageSize: PageSize
+        override val pagination: Pagination,
     ) : PagedStringQuery
 
     private data class SimplePagedFindAllQuery(
-        override val pageIndex: PageIndex,
-        override val pageSize: PageSize
+        override val pagination: Pagination
     ) : PagedFindAllQuery
 }

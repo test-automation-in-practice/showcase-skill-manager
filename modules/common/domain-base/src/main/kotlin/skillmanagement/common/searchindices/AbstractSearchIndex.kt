@@ -29,6 +29,7 @@ import org.elasticsearch.search.sort.SortOrder.DESC
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.core.io.Resource
 import skillmanagement.common.model.Page
+import skillmanagement.common.model.Pagination
 import skillmanagement.common.model.Suggestion
 import java.io.BufferedReader
 import java.util.UUID
@@ -73,25 +74,23 @@ abstract class AbstractSearchIndex<T : Any> : SearchIndexAdmin<T>, InitializingB
     override fun query(query: PagedStringQuery): Page<UUID> =
         queryForIds(
             query = buildQuery(query.queryString),
-            pageIndex = query.pageIndex.toInt(),
-            pageSize = query.pageSize.toInt(),
+            pagination = query.pagination,
             sort = ScoreSortBuilder().order(DESC)
         )
 
     override fun findAll(query: PagedFindAllQuery): Page<UUID> =
         queryForIds(
             query = MatchAllQueryBuilder(),
-            pageIndex = query.pageIndex.toInt(),
-            pageSize = query.pageSize.toInt(),
+            pagination = query.pagination,
             sort = FieldSortBuilder(sortFieldName)
         )
 
-    private fun queryForIds(query: QueryBuilder, pageIndex: Int, pageSize: Int, sort: SortBuilder<*>): Page<UUID> {
+    private fun queryForIds(query: QueryBuilder, pagination: Pagination, sort: SortBuilder<*>): Page<UUID> {
         val source = SearchSourceBuilder()
             .fetchSource(false)
             .query(query)
-            .from(pageIndex * pageSize)
-            .size(pageSize)
+            .from(pagination.index.toInt() * pagination.size.toInt())
+            .size(pagination.size.toInt())
             .sort(sort)
         val request = SearchRequest(indexName)
             .source(source)
@@ -101,8 +100,8 @@ abstract class AbstractSearchIndex<T : Any> : SearchIndexAdmin<T>, InitializingB
         val searchHits = response.hits
         return Page(
             content = searchHits.hits.map { id(it) },
-            pageIndex = pageIndex,
-            pageSize = pageSize,
+            pageIndex = pagination.index.toInt(),
+            pageSize = pagination.size.toInt(),
             totalElements = searchHits.totalHits?.value ?: 0
         )
     }
