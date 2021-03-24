@@ -8,6 +8,7 @@ import skillmanagement.common.events.QUEUE_PREFIX
 import skillmanagement.common.events.durableQueue
 import skillmanagement.common.events.eventBinding
 import skillmanagement.common.model.PageSize
+import skillmanagement.common.model.Pagination
 import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.ProjectData
@@ -33,7 +34,7 @@ internal class ProjectAssignmentUpdatingEventHandler(
     fun handle(event: ProjectUpdatedEvent) {
         log.debug { "Handling $event" }
         val projectId = event.project.id
-        getEmployeeIds(EmployeesWhoWorkedOnProject(projectId = projectId, pageSize = PageSize.MAX))
+        getEmployeeIds(EmployeesWhoWorkedOnProject(projectId, Pagination(size = PageSize.MAX)))
             .onEach { log.info { "Updating project assignments for project [$projectId] of employee [${it}]" } }
             .forEach { employeeId ->
                 updateEmployeeById(employeeId) { it.updateProjectAssignmentsOfProject(event.project) }

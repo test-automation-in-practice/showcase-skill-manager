@@ -1,8 +1,8 @@
 package skillmanagement.domain.skills.usecases.read
 
 import graphql.kickstart.tools.GraphQLQueryResolver
-import skillmanagement.common.graphql.Pagination
 import skillmanagement.common.model.Page
+import skillmanagement.common.model.Pagination
 import skillmanagement.common.stereotypes.GraphQLAdapter
 import skillmanagement.domain.skills.model.Skill
 
@@ -12,8 +12,6 @@ internal class GetSkillsPageGraphQLAdapter(
 ) : GraphQLQueryResolver {
 
     fun getSkillsPage(pagination: Pagination?): Page<Skill> =
-        getSkillsPage(query(pagination ?: Pagination.DEFAULT))
-
-    private fun query(pagination: Pagination) = AllSkillsQuery(pagination.index, pagination.size)
+        getSkillsPage(AllSkillsQuery(pagination ?: Pagination.DEFAULT))
 
 }

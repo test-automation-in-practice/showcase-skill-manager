@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus.OK
 import skillmanagement.common.model.Page
 import skillmanagement.common.model.PageIndex
 import skillmanagement.common.model.PageSize
+import skillmanagement.common.model.Pagination
 import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.domain.skills.model.Skill
@@ -88,7 +89,7 @@ internal class SkillsGraphQLTest(
 
     @Test
     fun `get skills page - found`(@Autowired getSkillsPage: GetSkillsPageFunction) {
-        every { getSkillsPage(AllSkillsQuery(PageIndex(0), PageSize(10))) }
+        every { getSkillsPage(AllSkillsQuery(Pagination(PageIndex(0), PageSize(10)))) }
             .returns(Page(listOf(skill_kotlin, skill_python), 0, 10, 2))
         assertRequestResponse(
             request = "/graphql/getSkillsPage/first-page.graphql",
@@ -98,7 +99,7 @@ internal class SkillsGraphQLTest(
 
     @Test
     fun `get skills page - empty`(@Autowired getSkillsPage: GetSkillsPageFunction) {
-        every { getSkillsPage(AllSkillsQuery(PageIndex(1), PageSize(10))) }
+        every { getSkillsPage(AllSkillsQuery(Pagination(PageIndex(1), PageSize(10)))) }
             .returns(Page(emptyList(), 1, 10, 2))
         assertRequestResponse(
             request = "/graphql/getSkillsPage/second-page.graphql",
@@ -108,7 +109,7 @@ internal class SkillsGraphQLTest(
 
     @Test
     fun `search skills - found`(@Autowired getSkillsPage: GetSkillsPageFunction) {
-        every { getSkillsPage(SkillsMatchingQuery(PageIndex(0), PageSize(10), queryString = "tags:language")) }
+        every { getSkillsPage(SkillsMatchingQuery("tags:language", Pagination(PageIndex(0), PageSize(10)))) }
             .returns(Page(listOf(skill_kotlin, skill_python), 0, 10, 2))
         assertRequestResponse(
             request = "/graphql/searchSkills/first-page.graphql",
@@ -118,7 +119,7 @@ internal class SkillsGraphQLTest(
 
     @Test
     fun `search skills - empty`(@Autowired getSkillsPage: GetSkillsPageFunction) {
-        every { getSkillsPage(SkillsMatchingQuery(PageIndex(1), PageSize(10), queryString = "tags:language")) }
+        every { getSkillsPage(SkillsMatchingQuery("tags:language", Pagination(PageIndex(1), PageSize(10)))) }
             .returns(Page(emptyList(), 1, 10, 2))
         assertRequestResponse(
             request = "/graphql/searchSkills/second-page.graphql",

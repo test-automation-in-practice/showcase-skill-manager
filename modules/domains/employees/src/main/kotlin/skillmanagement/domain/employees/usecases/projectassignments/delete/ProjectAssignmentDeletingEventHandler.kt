@@ -8,6 +8,7 @@ import skillmanagement.common.events.QUEUE_PREFIX
 import skillmanagement.common.events.durableQueue
 import skillmanagement.common.events.eventBinding
 import skillmanagement.common.model.PageSize
+import skillmanagement.common.model.Pagination
 import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.ProjectDeletedEvent
@@ -33,7 +34,7 @@ internal class ProjectAssignmentDeletingEventHandler(
     fun handle(event: ProjectDeletedEvent) {
         log.debug { "Handling $event" }
         val projectId = event.project.id
-        getEmployeeIds(EmployeesWhoWorkedOnProject(projectId = projectId, pageSize = PageSize.MAX))
+        getEmployeeIds(EmployeesWhoWorkedOnProject(projectId, Pagination(size = PageSize.MAX)))
             .onEach { log.info { "Removing projects assignments of project [$projectId] from employee [${it}]" } }
             .forEach { employeeId ->
                 updateEmployeeById(employeeId) { it.removeProjectAssignmentsByProjectId(projectId) }

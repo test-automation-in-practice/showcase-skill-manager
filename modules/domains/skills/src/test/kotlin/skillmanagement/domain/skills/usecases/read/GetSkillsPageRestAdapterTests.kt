@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import skillmanagement.common.model.PageIndex
 import skillmanagement.common.model.PageSize
+import skillmanagement.common.model.Pagination
 import skillmanagement.common.model.emptyPage
 import skillmanagement.common.model.pageOf
 import skillmanagement.domain.skills.model.skill_java
@@ -66,7 +67,7 @@ internal class GetSkillsPageRestAdapterTests(
             }
             .andDocument("empty")
 
-        verify { getSkillsPage(AllSkillsQuery(pageIndex = PageIndex.DEFAULT, pageSize = PageSize.DEFAULT)) }
+        verify { getSkillsPage(AllSkillsQuery(Pagination.DEFAULT)) }
     }
 
     @Test
@@ -137,7 +138,7 @@ internal class GetSkillsPageRestAdapterTests(
             }
             .andDocument("multiple")
 
-        verify { getSkillsPage(AllSkillsQuery(pageIndex = PageIndex.DEFAULT, pageSize = PageSize.DEFAULT)) }
+        verify { getSkillsPage(AllSkillsQuery(Pagination.DEFAULT)) }
     }
 
     @Test
@@ -198,7 +199,7 @@ internal class GetSkillsPageRestAdapterTests(
             }
             .andDocument("multiple-pages")
 
-        verify { getSkillsPage(AllSkillsQuery(pageIndex = PageIndex(1), pageSize = PageSize(1))) }
+        verify { getSkillsPage(AllSkillsQuery(Pagination(PageIndex(1), PageSize(1)))) }
     }
 
     @Test
@@ -209,7 +210,7 @@ internal class GetSkillsPageRestAdapterTests(
             .get("/api/skills?page=2&size=42")
             .andExpect { status { isOk() } }
 
-        verify { getSkillsPage(AllSkillsQuery(pageIndex = PageIndex(2), pageSize = PageSize(42))) }
+        verify { getSkillsPage(AllSkillsQuery(Pagination(PageIndex(2), PageSize(42)))) }
     }
 
 }

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import skillmanagement.common.model.PageIndex
 import skillmanagement.common.model.PageSize
+import skillmanagement.common.model.Pagination
 import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.domain.skills.model.SkillResource
 import skillmanagement.domain.skills.model.toResource
@@ -26,6 +27,6 @@ internal class GetSkillsPageRestAdapter(
     }
 
     private fun query(page: Int?, size: Int?) =
-        AllSkillsQuery(pageIndex = PageIndex.of(page), pageSize = PageSize.of(size))
+        AllSkillsQuery(Pagination(PageIndex.of(page), PageSize.of(size)))
 
 }

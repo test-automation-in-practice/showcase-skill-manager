@@ -19,6 +19,15 @@ data class Page<T : Any>(
 
 }
 
+data class Pagination(
+    val index: PageIndex = PageIndex.DEFAULT,
+    val size: PageSize = PageSize.DEFAULT
+) {
+    companion object {
+        val DEFAULT = Pagination()
+    }
+}
+
 class PageIndex(value: Int) : IntType(value, min = 0) {
     companion object {
         val DEFAULT = PageIndex(0)

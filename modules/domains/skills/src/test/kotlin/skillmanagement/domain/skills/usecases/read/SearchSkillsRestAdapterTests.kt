@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 import skillmanagement.common.model.PageIndex
 import skillmanagement.common.model.PageSize
+import skillmanagement.common.model.Pagination
 import skillmanagement.common.model.emptyPage
 import skillmanagement.common.model.pageOf
 import skillmanagement.domain.skills.model.skill_java
@@ -70,7 +71,7 @@ internal class SearchSkillsRestAdapterTests(
             }
             .andDocument("empty")
 
-        verify { getSkillsPage(SkillsMatchingQuery(PageIndex.DEFAULT, PageSize.DEFAULT, "kotlin")) }
+        verify { getSkillsPage(SkillsMatchingQuery("kotlin", Pagination.DEFAULT)) }
     }
 
     @Test
@@ -143,7 +144,7 @@ internal class SearchSkillsRestAdapterTests(
             }
             .andDocument("multiple")
 
-        verify { getSkillsPage(SkillsMatchingQuery(PageIndex.DEFAULT, PageSize.DEFAULT, "tags:language")) }
+        verify { getSkillsPage(SkillsMatchingQuery("tags:language", Pagination.DEFAULT)) }
     }
 
     @Test
@@ -207,7 +208,7 @@ internal class SearchSkillsRestAdapterTests(
             }
             .andDocument("multiple-pages")
 
-        verify { getSkillsPage(SkillsMatchingQuery(PageIndex(1), PageSize(1), "k*")) }
+        verify { getSkillsPage(SkillsMatchingQuery("k*", Pagination(PageIndex(1), PageSize(1)))) }
     }
 
     @Test
@@ -221,7 +222,7 @@ internal class SearchSkillsRestAdapterTests(
             }
             .andExpect { status { isOk() } }
 
-        verify { getSkillsPage(SkillsMatchingQuery(PageIndex(2), PageSize(42), "java")) }
+        verify { getSkillsPage(SkillsMatchingQuery("java", Pagination(PageIndex(2), PageSize(42)))) }
     }
 
 }
