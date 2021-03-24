@@ -27,7 +27,7 @@ import java.time.Clock
 @TechnologyIntegrationTest
 @WebMvcTest(CreateSkillRestAdapter::class)
 @Import(CreateSkillRestAdapterTestsConfiguration::class)
-@AutoConfigureRestDocs("build/generated-snippets/skills/add", uriPort = 80)
+@AutoConfigureRestDocs("build/generated-snippets/skills/create", uriPort = 80)
 internal class CreateSkillRestAdapterTests(
     @Autowired val mockMvc: MockMvc,
     @Autowired val createSkill: CreateSkillFunction
@@ -145,7 +145,7 @@ internal class CreateSkillRestAdapterTests(
 @Import(GlobalRestControllerAdvice::class)
 private class CreateSkillRestAdapterTestsConfiguration {
     @Bean
-    fun addSkill(): CreateSkillFunction = mockk()
+    fun createSkill(): CreateSkillFunction = mockk()
 
     @Bean
     fun clock(): Clock = fixedClock("2020-05-08T12:34:56.789Z")

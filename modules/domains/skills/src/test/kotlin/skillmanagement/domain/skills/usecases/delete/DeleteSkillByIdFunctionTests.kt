@@ -19,19 +19,16 @@ import skillmanagement.test.UnitTest
 @ResetMocksAfterEachTest
 internal class DeleteSkillByIdFunctionTests {
 
-    val getSkillById: GetSkillByIdFunction = mockk()
-    val deleteSkillFromDataStore: DeleteSkillFromDataStoreFunction = mockk(relaxUnitFun = true)
-    val publishEvent: PublishEventFunction = mockk(relaxUnitFun = true)
-    val deleteSkillById = DeleteSkillByIdFunction(getSkillById, deleteSkillFromDataStore, publishEvent)
-
-    val skill = skill_kotlin
-    val skillId = skill.id
+    private val getSkillById: GetSkillByIdFunction = mockk()
+    private val deleteSkillFromDataStore: DeleteSkillFromDataStoreFunction = mockk(relaxUnitFun = true)
+    private val publishEvent: PublishEventFunction = mockk(relaxUnitFun = true)
+    private val deleteSkillById = DeleteSkillByIdFunction(getSkillById, deleteSkillFromDataStore, publishEvent)
 
     @Test
     fun `given skill with ID does not exist when deleting by ID then the result will be SkillNotFound`() {
-        every { getSkillById(skillId) } returns null
+        every { getSkillById(skill_kotlin.id) } returns null
 
-        deleteSkillById(skillId) shouldBe SkillNotFound
+        deleteSkillById(skill_kotlin.id) shouldBe SkillNotFound
 
         verify { deleteSkillFromDataStore wasNot called }
         verify { publishEvent wasNot called }
@@ -39,12 +36,12 @@ internal class DeleteSkillByIdFunctionTests {
 
     @Test
     fun `given skill with ID exists when deleting by ID then the result will be SuccessfullyDeleted`() {
-        every { getSkillById(skillId) } returns skill
+        every { getSkillById(skill_kotlin.id) } returns skill_kotlin
 
-        deleteSkillById(skillId) shouldBe SuccessfullyDeleted
+        deleteSkillById(skill_kotlin.id) shouldBe SuccessfullyDeleted
 
-        verify { deleteSkillFromDataStore(skillId) }
-        verify { publishEvent(SkillDeletedEvent(skill)) }
+        verify { deleteSkillFromDataStore(skill_kotlin.id) }
+        verify { publishEvent(SkillDeletedEvent(skill_kotlin)) }
     }
 
 }

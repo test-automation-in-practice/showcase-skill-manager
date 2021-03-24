@@ -24,10 +24,10 @@ internal class DeleteSkillFromDataStoreFunctionTests(
     @Autowired val objectMapper: ObjectMapper
 ) {
 
-    val getSkill = GetSkillsFromDataStoreFunction(jdbcTemplate, objectMapper)
-    val insertSkillIntoDataStore = InsertSkillIntoDataStoreFunction(jdbcTemplate, objectMapper)
+    private val getSkill = GetSkillsFromDataStoreFunction(jdbcTemplate, objectMapper)
+    private val insertSkillIntoDataStore = InsertSkillIntoDataStoreFunction(jdbcTemplate, objectMapper)
 
-    val deleteSkillFromDataStore = DeleteSkillFromDataStoreFunction(jdbcTemplate)
+    private val deleteSkillFromDataStore = DeleteSkillFromDataStoreFunction(jdbcTemplate)
 
     @Test
     fun `does not fail if skill with id does not exist`() {

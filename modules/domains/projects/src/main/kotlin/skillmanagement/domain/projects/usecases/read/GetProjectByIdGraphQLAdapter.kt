@@ -10,7 +10,6 @@ internal class GetProjectByIdGraphQLAdapter(
     private val getProjectById: GetProjectByIdFunction
 ) : GraphQLQueryResolver {
 
-    fun getProjectById(id: String): Project? =
-        getProjectById(UUID.fromString(id))
+    fun getProjectById(id: String): Project? = getProjectById(UUID.fromString(id))
 
 }

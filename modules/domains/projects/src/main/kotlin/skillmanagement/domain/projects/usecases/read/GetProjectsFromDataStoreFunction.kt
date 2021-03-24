@@ -40,7 +40,7 @@ internal class GetProjectsFromDataStoreFunction(
 
 }
 
-private class ProjectRowMapper(private val objectMapper: ObjectMapper) : RowMapper<Project?> {
+internal class ProjectRowMapper(private val objectMapper: ObjectMapper) : RowMapper<Project?> {
 
     private val log = logger {}
 

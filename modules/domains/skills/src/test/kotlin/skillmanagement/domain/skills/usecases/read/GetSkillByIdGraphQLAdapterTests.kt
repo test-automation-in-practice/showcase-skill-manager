@@ -28,4 +28,5 @@ internal class GetSkillByIdGraphQLAdapterTests {
     }
 
     private fun tryToGetSkill(id: String = "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b") = cut.getSkillById(id)
+
 }

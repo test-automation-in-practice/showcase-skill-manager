@@ -1,4 +1,4 @@
-package skillmanagement.domain.skills.usecases.update
+package skillmanagement.domain.projects.usecases.update
 
 import io.mockk.every
 import io.mockk.mockk
@@ -15,10 +15,10 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.put
 import skillmanagement.common.http.patch.ApplyPatch
-import skillmanagement.domain.skills.model.Skill
-import skillmanagement.domain.skills.model.skill_kotlin
-import skillmanagement.domain.skills.usecases.update.UpdateSkillByIdResult.SkillNotFound
-import skillmanagement.domain.skills.usecases.update.UpdateSkillByIdResult.SuccessfullyUpdated
+import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.project_neo
+import skillmanagement.domain.projects.usecases.update.UpdateProjectByIdResult.ProjectNotFound
+import skillmanagement.domain.projects.usecases.update.UpdateProjectByIdResult.SuccessfullyUpdated
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.andDocument
 import skillmanagement.test.fixedClock
@@ -26,27 +26,27 @@ import skillmanagement.test.strictJson
 import java.time.Clock
 
 @TechnologyIntegrationTest
-@WebMvcTest(UpdateSkillByIdRestAdapter::class)
-@Import(UpdateSkillByIdRestAdapterTestsConfiguration::class)
-@AutoConfigureRestDocs("build/generated-snippets/skills/update", uriPort = 80)
-internal class UpdateSkillByIdRestAdapterTests(
+@WebMvcTest(UpdateProjectByIdRestAdapter::class)
+@Import(UpdateProjectByIdRestAdapterTestsConfiguration::class)
+@AutoConfigureRestDocs("build/generated-snippets/projects/update", uriPort = 80)
+internal class UpdateProjectByIdRestAdapterTests(
     @Autowired val mockMvc: MockMvc,
-    @Autowired val updateSkillById: UpdateSkillByIdFunction
+    @Autowired val updateProjectById: UpdateProjectByIdFunction
 ) {
 
-    private val skill = skill_kotlin
+    private val project = project_neo
 
     @Test
-    fun `PUT - when updating a complete skill it's updated state is returned`() {
-        every { updateSkillById(skill.id, any()) } answers {
-            val block: (Skill) -> (Skill) = secondArg()
-            SuccessfullyUpdated(block(skill))
+    fun `PUT - when updating a complete project it's updated state is returned`() {
+        every { updateProjectById(project.id, any()) } answers {
+            val block: (Project) -> (Project) = secondArg()
+            SuccessfullyUpdated(block(project))
         }
 
         mockMvc
-            .put("/api/skills/${skill.id}") {
+            .put("/api/projects/${project.id}") {
                 contentType = APPLICATION_JSON
-                content = """{ "label": "Kotlin (Language)", "description": "description", "tags": ["language"] }"""
+                content = """{ "label": "Project Neo", "description": "description" }"""
             }
             .andExpect {
                 status { isOk() }
@@ -55,16 +55,15 @@ internal class UpdateSkillByIdRestAdapterTests(
                     strictJson {
                         """
                         {
-                          "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
-                          "label": "Kotlin (Language)",
+                          "id": "f804d83f-466c-4eab-a58f-4b25ca1778f3",
+                          "label": "Project Neo",
                           "description": "description",
-                          "tags": ["language"],
                           "_links": {
                             "self": {
-                              "href": "http://localhost/api/skills/3f7985b9-f5f0-4662-bda9-1dcde01f5f3b"
+                              "href": "http://localhost/api/projects/f804d83f-466c-4eab-a58f-4b25ca1778f3"
                             },
                             "delete": {
-                              "href": "http://localhost/api/skills/3f7985b9-f5f0-4662-bda9-1dcde01f5f3b"
+                              "href": "http://localhost/api/projects/f804d83f-466c-4eab-a58f-4b25ca1778f3"
                             }
                           }
                         }
@@ -76,13 +75,13 @@ internal class UpdateSkillByIdRestAdapterTests(
     }
 
     @Test
-    fun `PUT - when updating a non-existing skill the response will be a 404`() {
-        every { updateSkillById(skill.id, any()) } returns SkillNotFound
+    fun `PUT - when updating a non-existing project the response will be a 404`() {
+        every { updateProjectById(project.id, any()) } returns ProjectNotFound
 
         mockMvc
-            .put("/api/skills/${skill.id}") {
+            .put("/api/projects/${project.id}") {
                 contentType = APPLICATION_JSON
-                content = """{ "label": "Kotlin (Language)", "tags": [] }"""
+                content = """{ "label": "Project Neo", "description": "description" }"""
             }
             .andExpect {
                 status { isNotFound() }
@@ -92,35 +91,26 @@ internal class UpdateSkillByIdRestAdapterTests(
     }
 
     @Test
-    fun `PATCH - JSON Patch can be used to update properties of a skill - label`() {
-        every { updateSkillById(skill.id, any()) } answers {
-            val block: (Skill) -> (Skill) = secondArg()
-            SuccessfullyUpdated(block(skill))
+    fun `PATCH - JSON Patch can be used to update properties of a project - label`() {
+        every { updateProjectById(project.id, any()) } answers {
+            val block: (Project) -> (Project) = secondArg()
+            SuccessfullyUpdated(block(project))
         }
 
         mockMvc
-            .patch("/api/skills/${skill.id}") {
+            .patch("/api/projects/${project.id}") {
                 contentType = MediaType("application","json-patch+json")
                 content = """
                     [
                       {
                         "op": "replace",
                         "path": "/label",
-                        "value": "Kotlin (Language)"
+                        "value": "Project Neo"
                       },
                       {
                         "op": "replace",
                         "path": "/description",
                         "value": "description"
-                      },
-                      {
-                        "op": "remove",
-                        "path": "/tags/0"
-                      },
-                      {
-                        "op": "add",
-                        "path": "/tags/-",
-                        "value": "current"
                       }
                     ]
                     """
@@ -132,16 +122,15 @@ internal class UpdateSkillByIdRestAdapterTests(
                     strictJson {
                         """
                         {
-                          "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
-                          "label": "Kotlin (Language)",
+                          "id": "f804d83f-466c-4eab-a58f-4b25ca1778f3",
+                          "label": "Project Neo",
                           "description": "description",
-                          "tags": ["current", "language"],
                           "_links": {
                             "self": {
-                              "href": "http://localhost/api/skills/3f7985b9-f5f0-4662-bda9-1dcde01f5f3b"
+                              "href": "http://localhost/api/projects/f804d83f-466c-4eab-a58f-4b25ca1778f3"
                             },
                             "delete": {
-                              "href": "http://localhost/api/skills/3f7985b9-f5f0-4662-bda9-1dcde01f5f3b"
+                              "href": "http://localhost/api/projects/f804d83f-466c-4eab-a58f-4b25ca1778f3"
                             }
                           }
                         }
@@ -153,18 +142,18 @@ internal class UpdateSkillByIdRestAdapterTests(
     }
 
     @Test
-    fun `PATCH - when updating a non-existing skill the response will be a 404`() {
-        every { updateSkillById(skill.id, any()) } returns SkillNotFound
+    fun `PATCH - when updating a non-existing project the response will be a 404`() {
+        every { updateProjectById(project.id, any()) } returns ProjectNotFound
 
         mockMvc
-            .patch("/api/skills/${skill.id}") {
+            .patch("/api/projects/${project.id}") {
                 contentType = MediaType("application","json-patch+json")
                 content = """
                     [
                       {
                         "op": "replace",
                         "path": "/label",
-                        "value": "Kotlin (Language)"
+                        "value": "Project Neo"
                       }
                     ]
                     """
@@ -179,10 +168,10 @@ internal class UpdateSkillByIdRestAdapterTests(
 }
 
 @Import(ApplyPatch::class)
-private class UpdateSkillByIdRestAdapterTestsConfiguration {
+private class UpdateProjectByIdRestAdapterTestsConfiguration {
     @Bean
-    fun updateSkillById(): UpdateSkillByIdFunction = mockk()
+    fun updateProjectById(): UpdateProjectByIdFunction = mockk()
 
     @Bean
-    fun clock(): Clock = fixedClock("2020-05-08T12:34:56.789Z")
+    fun clock(): Clock = fixedClock("2021-03-24T12:34:56.789Z")
 }

@@ -27,11 +27,11 @@ internal class UpdateSkillInDataStoreFunctionTests(
     @Autowired val objectMapper: ObjectMapper
 ) {
 
-    val clock = fixedClock("2020-07-16T12:34:56.789Z")
+    private val clock = fixedClock("2020-07-16T12:34:56.789Z")
 
-    val getSkill = GetSkillsFromDataStoreFunction(jdbcTemplate, objectMapper)
-    val insertSkillIntoDataStore = InsertSkillIntoDataStoreFunction(jdbcTemplate, objectMapper)
-    val updateSkillInDataStore = UpdateSkillInDataStoreFunction(jdbcTemplate, objectMapper, clock)
+    private val getSkill = GetSkillsFromDataStoreFunction(jdbcTemplate, objectMapper)
+    private val insertSkillIntoDataStore = InsertSkillIntoDataStoreFunction(jdbcTemplate, objectMapper)
+    private val updateSkillInDataStore = UpdateSkillInDataStoreFunction(jdbcTemplate, objectMapper, clock)
 
     @Test
     fun `updating an existing skill actually persists it`() {

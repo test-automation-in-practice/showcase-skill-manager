@@ -1,4 +1,4 @@
-package skillmanagement.domain.skills.usecases.delete
+package skillmanagement.domain.projects.usecases.delete
 
 import io.mockk.every
 import io.mockk.mockk
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.delete
-import skillmanagement.domain.skills.usecases.delete.DeleteSkillByIdResult.SuccessfullyDeleted
+import skillmanagement.domain.projects.usecases.delete.DeleteProjectByIdResult.SuccessfullyDeleted
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.andDocument
 import skillmanagement.test.fixedClock
@@ -19,36 +19,36 @@ import skillmanagement.test.uuid
 import java.time.Clock
 
 @TechnologyIntegrationTest
-@WebMvcTest(DeleteSkillByIdRestAdapter::class)
-@Import(DeleteSkillByIdRestAdapterTestsConfiguration::class)
-@AutoConfigureRestDocs("build/generated-snippets/skills/delete-by-id", uriPort = 80)
-internal class DeleteSkillByIdRestAdapterTests(
+@WebMvcTest(DeleteProjectByIdRestAdapter::class)
+@Import(DeleteProjectByIdRestAdapterTestsConfiguration::class)
+@AutoConfigureRestDocs("build/generated-snippets/projects/delete-by-id", uriPort = 80)
+internal class DeleteProjectByIdRestAdapterTests(
     @Autowired val mockMvc: MockMvc,
-    @Autowired val deleteSkillById: DeleteSkillByIdFunction
+    @Autowired val deleteProjectById: DeleteProjectByIdFunction
 ) {
 
-    private val skillId = uuid("14ae4e75-5cf6-4b30-9fc2-7037bd428584")
+    private val projectId = uuid("14ae4e75-5cf6-4b30-9fc2-7037bd428584")
 
     @Test
     fun `well formed request leads to correct response`() {
-        every { deleteSkillById(skillId) } returns SuccessfullyDeleted
+        every { deleteProjectById(projectId) } returns SuccessfullyDeleted
         mockMvc
-            .delete("/api/skills/$skillId")
+            .delete("/api/projects/$projectId")
             .andExpect {
                 status { isNoContent() }
                 content { string("") }
             }
             .andDocument("deleted")
 
-        verify { deleteSkillById(skillId) }
+        verify { deleteProjectById(projectId) }
     }
 
 }
 
-private class DeleteSkillByIdRestAdapterTestsConfiguration {
+private class DeleteProjectByIdRestAdapterTestsConfiguration {
     @Bean
-    fun deleteSkillById(): DeleteSkillByIdFunction = mockk()
+    fun deleteProjectById(): DeleteProjectByIdFunction = mockk()
 
     @Bean
-    fun clock(): Clock = fixedClock("2020-05-21T12:34:56.789Z")
+    fun clock(): Clock = fixedClock("2021-03-24T12:34:56.789Z")
 }
