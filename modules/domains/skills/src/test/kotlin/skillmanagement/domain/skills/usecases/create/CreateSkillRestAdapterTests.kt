@@ -2,7 +2,6 @@ package skillmanagement.domain.skills.usecases.create
 
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
@@ -15,9 +14,8 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 import skillmanagement.common.http.error.GlobalRestControllerAdvice
-import skillmanagement.domain.skills.model.SkillDescription
-import skillmanagement.domain.skills.model.SkillLabel
-import skillmanagement.domain.skills.model.Tag
+import skillmanagement.domain.skills.model.skill_creation_data_kotlin
+import skillmanagement.domain.skills.model.skill_creation_data_python
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_python
 import skillmanagement.test.TechnologyIntegrationTest
@@ -25,7 +23,6 @@ import skillmanagement.test.andDocument
 import skillmanagement.test.fixedClock
 import skillmanagement.test.strictJson
 import java.time.Clock
-import java.util.Collections.emptySortedSet
 
 @TechnologyIntegrationTest
 @WebMvcTest(CreateSkillRestAdapter::class)
@@ -38,7 +35,7 @@ internal class CreateSkillRestAdapterTests(
 
     @Test
     fun `well formed request leads to correct response`() {
-        every { createSkill(any(), any(), any()) } returns skill_kotlin
+        every { createSkill(skill_creation_data_kotlin) } returns skill_kotlin
 
         mockMvc
             .post("/api/skills") {
@@ -77,19 +74,11 @@ internal class CreateSkillRestAdapterTests(
                 }
             }
             .andDocument("created")
-
-        verify {
-            createSkill(
-                label = SkillLabel("Kotlin"),
-                description = SkillDescription("The coolest programming language."),
-                tags = sortedSetOf(Tag("language"), Tag("cool"))
-            )
-        }
     }
 
     @Test
     fun `tags are optional`() {
-        every { createSkill(any(), any(), any()) } returns skill_python
+        every { createSkill(skill_creation_data_python) } returns skill_python
 
         mockMvc
             .post("/api/skills") {
@@ -119,8 +108,6 @@ internal class CreateSkillRestAdapterTests(
                     }
                 }
             }
-
-        verify { createSkill(SkillLabel("Python"), null, emptySortedSet()) }
     }
 
     @Test

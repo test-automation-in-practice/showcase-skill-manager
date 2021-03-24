@@ -38,6 +38,15 @@ internal val skill_resource_kotlin_json = """
     }
     """.trimIndent()
 
+internal val skill_creation_data_kotlin = skill_kotlin.toCreationData()
+internal val skill_creation_data_kotlin_json = """
+    {
+      "label": "Kotlin",
+      "description": "The coolest programming language.",
+      "tags": [ "cool", "language" ]
+    }
+    """.trimIndent()
+
 internal val skill_change_data_kotlin = skill_kotlin.toChangeData()
 internal val skill_change_data_kotlin_json = """
     {
@@ -77,6 +86,14 @@ internal val skill_resource_java_json = """
       "label": "Java",
       "tags": [ "language" ],
       "links": []
+    }
+    """.trimIndent()
+
+internal val skill_creation_data_java = skill_java.toCreationData()
+internal val skill_creation_data_java_json = """
+    {
+      "label": "Java",
+      "tags": [ "language" ]
     }
     """.trimIndent()
 
@@ -121,6 +138,14 @@ internal val skill_resource_python_json = """
     }
     """.trimIndent()
 
+internal val skill_creation_data_python = skill_python.toCreationData()
+internal val skill_creation_data_python_json = """
+    {
+      "label": "Python",
+      "tags": []
+    }
+    """.trimIndent()
+
 internal val skill_change_data_python = skill_python.toChangeData()
 internal val skill_change_data_python_json = """
     {
@@ -135,6 +160,9 @@ internal val skill_python_suggestion = skill_python.toSuggestion()
 
 private fun Skill.toResourceWithoutLinks() =
     SkillResource(id = id, label = label, description = description, tags = tags)
+
+private fun Skill.toCreationData() =
+    SkillCreationData(label, description, tags)
 
 internal fun Skill.toSuggestion() =
     Suggestion(id = id, label = label.toString())

@@ -19,6 +19,8 @@ import skillmanagement.common.model.Pagination
 import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.skill_creation_data_kotlin
+import skillmanagement.domain.skills.model.skill_creation_data_python
 import skillmanagement.domain.skills.model.skill_java
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_kotlin_suggestion
@@ -44,7 +46,7 @@ internal class SkillsGraphQLTest(
 
     @Test
     fun `create skill - max data`(@Autowired createSkill: CreateSkillFunction) {
-        every { createSkill(skill_kotlin.label, skill_kotlin.description, skill_kotlin.tags) } returns skill_kotlin
+        every { createSkill(skill_creation_data_kotlin) } returns skill_kotlin
         assertRequestResponse(
             request = "/graphql/createSkill/kotlin.graphql",
             expectedResponseBody = "/graphql/createSkill/kotlin.json"
@@ -53,7 +55,7 @@ internal class SkillsGraphQLTest(
 
     @Test
     fun `create skill - min data`(@Autowired createSkill: CreateSkillFunction) {
-        every { createSkill(skill_python.label) } returns skill_python
+        every { createSkill(skill_creation_data_python) } returns skill_python
         assertRequestResponse(
             request = "/graphql/createSkill/python.graphql",
             expectedResponseBody = "/graphql/createSkill/python.json"

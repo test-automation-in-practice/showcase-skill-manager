@@ -3,20 +3,13 @@ package skillmanagement.domain.projects.usecases.create
 import graphql.kickstart.tools.GraphQLMutationResolver
 import skillmanagement.common.stereotypes.GraphQLAdapter
 import skillmanagement.domain.projects.model.Project
-import skillmanagement.domain.projects.model.ProjectDescription
-import skillmanagement.domain.projects.model.ProjectLabel
+import skillmanagement.domain.projects.model.ProjectCreationData
 
 @GraphQLAdapter
 internal class CreateProjectGraphQLAdapter(
-    private val createProject: CreateProjectFunction
+    private val createProjectFunction: CreateProjectFunction
 ) : GraphQLMutationResolver {
 
-    fun createProject(input: ProjectInput): Project =
-        createProject(input.label, input.description)
-
-    data class ProjectInput(
-        val label: ProjectLabel,
-        val description: ProjectDescription
-    )
+    fun createProject(input: ProjectCreationData): Project = createProjectFunction(input)
 
 }

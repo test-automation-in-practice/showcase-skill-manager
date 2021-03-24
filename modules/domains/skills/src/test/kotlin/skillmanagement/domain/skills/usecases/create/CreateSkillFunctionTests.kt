@@ -10,6 +10,7 @@ import org.springframework.util.IdGenerator
 import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillAddedEvent
+import skillmanagement.domain.skills.model.SkillCreationData
 import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.Tag
@@ -36,7 +37,9 @@ internal class CreateSkillFunctionTests {
         every { idGenerator.generateId() } returns uuid("312f3bfc-c9b0-4b4c-9cc4-33242cdfc39e")
 
         val actual = addSkill(
-            label = SkillLabel("Skill #1")
+            SkillCreationData(
+                label = SkillLabel("Skill #1")
+            )
         )
         val expected = Skill(
             id = uuid("312f3bfc-c9b0-4b4c-9cc4-33242cdfc39e"),
@@ -60,9 +63,11 @@ internal class CreateSkillFunctionTests {
         every { idGenerator.generateId() } returns uuid("da8748e1-405b-456c-92d4-26fdad09a0c9")
 
         val actual = addSkill(
-            label = SkillLabel("Skill #2"),
-            description = SkillDescription("description"),
-            tags = sortedSetOf(Tag("foo-bar"))
+            SkillCreationData(
+                label = SkillLabel("Skill #2"),
+                description = SkillDescription("description"),
+                tags = sortedSetOf(Tag("foo-bar"))
+            )
         )
         val expected = Skill(
             id = uuid("da8748e1-405b-456c-92d4-26fdad09a0c9"),
