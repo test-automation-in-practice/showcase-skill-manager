@@ -1,0 +1,10 @@
+mutation {
+    createProject(input: {
+        label: "Morpheus"
+        description: "The PlayStation VR Headset."
+    }) {
+        id
+        label
+        description
+    }
+}

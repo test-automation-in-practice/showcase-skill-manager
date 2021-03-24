@@ -1,0 +1,6 @@
+query {
+    suggestProjects(input: "ne", max: 10) {
+        id
+        label
+    }
+}

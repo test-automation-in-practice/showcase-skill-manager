@@ -1,0 +1,7 @@
+query {
+    getProjectById(id: "dce233f1-7c20-4250-817e-6676485ddb6e") {
+        id
+        label
+        description
+    }
+}
