@@ -9,7 +9,6 @@ import org.springframework.hateoas.server.mvc.BasicLinkBuilder
 import org.springframework.hateoas.server.mvc.BasicLinkBuilder.linkToCurrentMapping
 import skillmanagement.common.http.toMetaData
 import skillmanagement.common.model.Page
-import java.time.Instant
 import java.time.LocalDate
 import java.util.UUID
 
