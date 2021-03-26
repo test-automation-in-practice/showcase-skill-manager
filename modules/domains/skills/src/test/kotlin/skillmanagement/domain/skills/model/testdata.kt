@@ -56,7 +56,7 @@ internal val skill_change_data_kotlin_json = """
     }
     """.trimIndent()
 
-internal val skill_kotlin_suggestion = skill_kotlin.toSuggestion()
+internal val skill_suggestion_kotlin = skill_kotlin.toSuggestion()
 
 // Example #2
 
@@ -105,7 +105,7 @@ internal val skill_change_data_java_json = """
     }
     """.trimIndent()
 
-internal val skill_java_suggestion = skill_java.toSuggestion()
+internal val skill_suggestion_java = skill_java.toSuggestion()
 
 // Example #3
 
@@ -154,7 +154,7 @@ internal val skill_change_data_python_json = """
     }
     """.trimIndent()
 
-internal val skill_python_suggestion = skill_python.toSuggestion()
+internal val skill_suggestion_python = skill_python.toSuggestion()
 
 // Functions
 

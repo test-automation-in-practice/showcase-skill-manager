@@ -50,7 +50,7 @@ internal val project_change_data_neo_json = """
     }
     """.trimIndent()
 
-internal val project_neo_suggestion = project_neo.toSuggestion()
+internal val project_suggestion_neo = project_neo.toSuggestion()
 
 // Example #2
 
@@ -98,7 +98,7 @@ internal val project_change_data_orbis_json = """
     }
     """.trimIndent()
 
-internal val project_orbis_suggestion = project_orbis.toSuggestion()
+internal val project_suggestion_orbis = project_orbis.toSuggestion()
 
 // Example #3
 
@@ -146,7 +146,7 @@ internal val project_change_data_morpheus_json = """
     }
     """.trimIndent()
 
-internal val project_morpheus_suggestion = project_morpheus.toSuggestion()
+internal val project_suggestion_morpheus = project_morpheus.toSuggestion()
 
 // Functions
 

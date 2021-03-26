@@ -30,7 +30,9 @@ data class Employee(
     val projects: List<ProjectAssignment> = emptyList(),
 
     val lastUpdate: Instant
-)
+) {
+    fun compositeName() = "$firstName $lastName"
+}
 
 class FirstName(value: String) : Name(value)
 class LastName(value: String) : Name(value)

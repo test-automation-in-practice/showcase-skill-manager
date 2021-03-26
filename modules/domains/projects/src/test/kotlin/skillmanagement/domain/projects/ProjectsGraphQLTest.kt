@@ -23,7 +23,7 @@ import skillmanagement.domain.projects.model.project_creation_data_morpheus
 import skillmanagement.domain.projects.model.project_creation_data_neo
 import skillmanagement.domain.projects.model.project_morpheus
 import skillmanagement.domain.projects.model.project_neo
-import skillmanagement.domain.projects.model.project_neo_suggestion
+import skillmanagement.domain.projects.model.project_suggestion_neo
 import skillmanagement.domain.projects.model.project_orbis
 import skillmanagement.domain.projects.usecases.create.CreateProjectFunction
 import skillmanagement.domain.projects.usecases.delete.DeleteProjectByIdFunction
@@ -131,7 +131,7 @@ internal class ProjectsGraphQLTest(
 
     @Test
     fun `suggest projects - found`(@Autowired searchIndex: SearchIndex<Project>) {
-        every { searchIndex.suggest("ne", MaxSuggestions(10)) } returns listOf(project_neo_suggestion)
+        every { searchIndex.suggest("ne", MaxSuggestions(10)) } returns listOf(project_suggestion_neo)
         assertRequestResponse(
             request = "/graphql/suggestProjects/request.graphql",
             expectedResponseBody = "/graphql/suggestProjects/found.json"

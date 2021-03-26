@@ -15,8 +15,8 @@ import org.springframework.test.web.servlet.post
 import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.domain.projects.model.Project
-import skillmanagement.domain.projects.model.project_morpheus_suggestion
-import skillmanagement.domain.projects.model.project_neo_suggestion
+import skillmanagement.domain.projects.model.project_suggestion_morpheus
+import skillmanagement.domain.projects.model.project_suggestion_neo
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.andDocument
@@ -56,7 +56,7 @@ internal class SuggestProjectsRestAdapterTests(
     @Test
     fun `responds with 200 Ok and Projects if there are any`() {
         every { searchIndex.suggest(any(), any()) }
-            .returns(listOf(project_neo_suggestion, project_morpheus_suggestion))
+            .returns(listOf(project_suggestion_neo, project_suggestion_morpheus))
 
         mockMvc
             .post("/api/projects/_suggest?max=5") {
