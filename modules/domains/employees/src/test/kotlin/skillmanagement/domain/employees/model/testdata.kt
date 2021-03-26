@@ -179,8 +179,7 @@ internal val employee_jane_doe_json = """
         {
           "employer": "Example AG",
           "title": "Senior Software Engineer",
-          "start": "2020-01",
-          "end": null
+          "start": "2020-01"
         },
         {
           "employer": "Example AG",
@@ -227,8 +226,7 @@ internal val employee_jane_doe_json = """
             "description": "The PlayStation VR Headset."
           },
           "contribution": "Ut enim ad minim veniam ...",
-          "startDate": "2019-02-01",
-          "endDate": null
+          "startDate": "2019-02-01"
         }
       ],
       "lastUpdate": "2021-03-26T12:34:56.789Z"
@@ -274,8 +272,7 @@ internal val employee_resource_jane_doe_json = """
         {
           "employer": "Example AG",
           "title": "Senior Software Engineer",
-          "start": "2020-01",
-          "end": null
+          "start": "2020-01"
         },
         {
           "employer": "Example AG",
@@ -312,7 +309,6 @@ internal val employee_resource_jane_doe_json = """
           "description": "The PlayStation VR Headset.",
           "contribution": "Ut enim ad minim veniam ...",
           "startDate": "2019-02-01",
-          "endDate": null,
           "links": []
         }
       ],
@@ -370,8 +366,7 @@ internal val employee_change_data_jane_doe_json = """
         {
           "employer": "Example AG",
           "title": "Senior Software Engineer",
-          "start": "2020-01",
-          "end": null
+          "start": "2020-01"
         },
         {
           "employer": "Example AG",
@@ -438,8 +433,7 @@ internal val employee_john_doe_json = """
         {
           "employer": "Example AG",
           "title": "Consultant",
-          "start": "2009-03",
-          "end": null
+          "start": "2009-03"
         }
       ],
       "skills": [
@@ -492,8 +486,7 @@ internal val employee_resource_john_doe_json = """
         {
           "employer": "Example AG",
           "title": "Consultant",
-          "start": "2009-03",
-          "end": null
+          "start": "2009-03"
         }
       ],
       "skills": [
@@ -552,8 +545,7 @@ internal val employee_change_data_john_doe_json = """
         {
           "employer": "Example AG",
           "title": "Consultant",
-          "start": "2009-03",
-          "end": null
+          "start": "2009-03"
         }
       ]
     }
@@ -583,7 +575,6 @@ internal val employee_john_smith_json = """
       "title": "Junior Software Engineer",
       "email": "john.smith@example.com",
       "telephone": "+49 123 948675",
-      "description": null,
       "academicDegrees": [],
       "certifications": [],
       "publications": [],
@@ -635,7 +626,6 @@ internal val employee_change_data_john_smith_json = """
       "title": "Junior Software Engineer",
       "email": "john.smith@example.com",
       "telephone": "+49 123 948675",
-      "description": null,
       "academicDegrees": [],
       "certifications": [],
       "publications": [],
