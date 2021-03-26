@@ -23,7 +23,7 @@ internal class EmployeeSearchIndex(
     override fun toSource(instance: Employee) =
         with(instance) {
             mapOf(
-                "name" to "$firstName $lastName",
+                "name" to compositeName(),
                 "firstName" to firstName.toString(),
                 "lastName" to lastName.toString(),
                 "title" to title.toString(),

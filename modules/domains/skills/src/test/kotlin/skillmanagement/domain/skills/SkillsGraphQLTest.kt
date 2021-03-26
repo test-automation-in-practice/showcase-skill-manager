@@ -23,7 +23,7 @@ import skillmanagement.domain.skills.model.skill_creation_data_kotlin
 import skillmanagement.domain.skills.model.skill_creation_data_python
 import skillmanagement.domain.skills.model.skill_java
 import skillmanagement.domain.skills.model.skill_kotlin
-import skillmanagement.domain.skills.model.skill_kotlin_suggestion
+import skillmanagement.domain.skills.model.skill_suggestion_kotlin
 import skillmanagement.domain.skills.model.skill_python
 import skillmanagement.domain.skills.usecases.create.CreateSkillFunction
 import skillmanagement.domain.skills.usecases.delete.DeleteSkillByIdFunction
@@ -131,7 +131,7 @@ internal class SkillsGraphQLTest(
 
     @Test
     fun `suggest skills - found`(@Autowired searchIndex: SearchIndex<Skill>) {
-        every { searchIndex.suggest("ko", MaxSuggestions(10)) } returns listOf(skill_kotlin_suggestion)
+        every { searchIndex.suggest("ko", MaxSuggestions(10)) } returns listOf(skill_suggestion_kotlin)
         assertRequestResponse(
             request = "/graphql/suggestSkills/request.graphql",
             expectedResponseBody = "/graphql/suggestSkills/found.json"

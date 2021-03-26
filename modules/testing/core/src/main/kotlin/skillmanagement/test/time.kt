@@ -2,11 +2,17 @@ package skillmanagement.test
 
 import java.time.Clock
 import java.time.Instant
+import java.time.LocalDate
+import java.time.YearMonth
 import java.time.ZoneId
 import java.util.ArrayDeque
 import java.util.Deque
 
 fun instant(value: String): Instant = Instant.parse(value)
+
+fun localDate(value: String): LocalDate = LocalDate.parse(value)
+
+fun yearMonth(value: String): YearMonth = YearMonth.parse(value)
 
 /**
  * Creates a [Clock] which will return the same timestamps every time

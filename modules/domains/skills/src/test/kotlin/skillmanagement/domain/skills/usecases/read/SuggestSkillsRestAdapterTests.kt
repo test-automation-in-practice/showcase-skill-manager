@@ -15,8 +15,8 @@ import org.springframework.test.web.servlet.post
 import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.domain.skills.model.Skill
-import skillmanagement.domain.skills.model.skill_kotlin_suggestion
-import skillmanagement.domain.skills.model.skill_python_suggestion
+import skillmanagement.domain.skills.model.skill_suggestion_kotlin
+import skillmanagement.domain.skills.model.skill_suggestion_python
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.andDocument
@@ -56,7 +56,7 @@ internal class SuggestSkillsRestAdapterTests(
     @Test
     fun `responds with 200 Ok and Skills if there are any`() {
         every { searchIndex.suggest(any(), any()) }
-            .returns(listOf(skill_kotlin_suggestion, skill_python_suggestion))
+            .returns(listOf(skill_suggestion_kotlin, skill_suggestion_python))
 
         mockMvc
             .post("/api/skills/_suggest?max=5") {
