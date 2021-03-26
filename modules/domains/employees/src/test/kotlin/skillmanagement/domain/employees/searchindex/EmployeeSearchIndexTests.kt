@@ -165,7 +165,7 @@ internal class EmployeeSearchIndexTests(client: RestHighLevelClient) {
     private fun delete(vararg ids: UUID) = ids.forEach(cut::deleteById)
 
     private fun assertIndexContainsOnly(vararg ids: UUID) {
-        assertThat(findAll()).containsExactly(*ids)
+        assertThat(findAll()).containsOnly(*ids)
     }
 
     private fun assertIndexIsEmpty() {

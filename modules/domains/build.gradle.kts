@@ -47,7 +47,7 @@ subprojects {
             group = "verification"
             useJUnitPlatform()
             testLogging {
-                events(PASSED, FAILED, SKIPPED)
+                events(FAILED, SKIPPED)
             }
         }
 
