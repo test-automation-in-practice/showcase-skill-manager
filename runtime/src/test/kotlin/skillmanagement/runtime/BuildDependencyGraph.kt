@@ -1,4 +1,4 @@
-package skillmanagement
+package skillmanagement.runtime
 
 import com.tngtech.archunit.core.domain.JavaClass
 import com.tngtech.archunit.core.domain.JavaClasses

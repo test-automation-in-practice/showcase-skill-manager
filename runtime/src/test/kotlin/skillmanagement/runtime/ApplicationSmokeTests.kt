@@ -1,4 +1,4 @@
-package skillmanagement
+package skillmanagement.runtime
 
 import org.junit.jupiter.api.Test
 import skillmanagement.test.SmokeTest
