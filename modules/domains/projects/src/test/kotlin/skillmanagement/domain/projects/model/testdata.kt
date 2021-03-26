@@ -175,3 +175,17 @@ internal fun project(
     description = ProjectDescription(description),
     lastUpdate = instant(lastUpdate)
 )
+
+/**
+ * Creates an instance based on this [Project] which contains only those
+ * properties that would be set after creating a new [Project] based on
+ * [ProjectCreationData].
+ */
+internal fun Project.asFreshlyCreatedInstance() =
+    Project(
+        id = id,
+        version = 1,
+        label = label,
+        description = description,
+        lastUpdate = lastUpdate
+    )

@@ -14,6 +14,7 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 import skillmanagement.common.http.error.GlobalRestControllerAdvice
+import skillmanagement.domain.projects.model.asFreshlyCreatedInstance
 import skillmanagement.domain.projects.model.project_creation_data_neo
 import skillmanagement.domain.projects.model.project_neo
 import skillmanagement.test.TechnologyIntegrationTest
@@ -33,7 +34,7 @@ internal class CreateProjectRestAdapterTests(
 
     @Test
     fun `well formed request leads to correct response`() {
-        every { createProject(project_creation_data_neo) } returns project_neo
+        every { createProject(project_creation_data_neo) } returns project_neo.asFreshlyCreatedInstance()
 
         mockMvc
             .post("/api/projects") {
