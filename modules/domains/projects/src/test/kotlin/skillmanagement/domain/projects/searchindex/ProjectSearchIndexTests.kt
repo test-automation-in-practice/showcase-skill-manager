@@ -13,6 +13,9 @@ import skillmanagement.common.searchindices.PagedFindAllQuery
 import skillmanagement.common.searchindices.PagedStringQuery
 import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.model.project
+import skillmanagement.domain.projects.model.project_morpheus
+import skillmanagement.domain.projects.model.project_neo
+import skillmanagement.domain.projects.model.project_orbis
 import skillmanagement.domain.projects.model.toSuggestion
 import skillmanagement.test.searchindices.SearchIndexIntegrationTest
 import java.util.UUID
@@ -29,9 +32,9 @@ internal class ProjectSearchIndexTests(client: RestHighLevelClient) {
 
     @Test
     fun `entries can be deleted`() {
-        val project1 = index(project(label = "Project #1")).id
-        val project2 = index(project(label = "Project #2")).id
-        val project3 = index(project(label = "Project #3")).id
+        val project1 = index(project_neo).id
+        val project2 = index(project_morpheus).id
+        val project3 = index(project_orbis).id
 
         assertIndexContainsOnly(project1, project2, project3)
 
