@@ -16,6 +16,9 @@ import skillmanagement.common.searchindices.PagedFindAllQuery
 import skillmanagement.common.searchindices.PagedStringQuery
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.skill
+import skillmanagement.domain.skills.model.skill_java
+import skillmanagement.domain.skills.model.skill_kotlin
+import skillmanagement.domain.skills.model.skill_python
 import skillmanagement.domain.skills.model.toSuggestion
 import skillmanagement.test.searchindices.SearchIndexIntegrationTest
 import java.util.UUID
@@ -32,9 +35,9 @@ internal class SkillSearchIndexTests(client: RestHighLevelClient) {
 
     @Test
     fun `entries can be deleted`() {
-        val skill1 = index(skill(label = "Skill #1")).id
-        val skill2 = index(skill(label = "Skill #2")).id
-        val skill3 = index(skill(label = "Skill #3")).id
+        val skill1 = index(skill_kotlin).id
+        val skill2 = index(skill_java).id
+        val skill3 = index(skill_python).id
 
         assertIndexContainsOnly(skill1, skill2, skill3)
 

@@ -687,3 +687,23 @@ internal fun Employee.toSuggestion() =
         id = id,
         label = compositeName()
     )
+
+internal fun employee(
+    id: String = uuid().toString(),
+    version: Int = 1,
+    firstName: String = "Jane",
+    lastName: String = "Doe",
+    title: String = "Senior Software Engineer",
+    email: String = "$firstName.$lastName@example.com",
+    telephone: String = "+49 123 456789",
+    lastUpdate: String = "2021-03-26T12:34:56.789Z"
+) = Employee(
+    id = uuid(id),
+    version = version,
+    firstName = FirstName(firstName),
+    lastName = LastName(lastName),
+    title = JobTitle(title),
+    email = EmailAddress(email),
+    telephone = TelephoneNumber(telephone),
+    lastUpdate = instant(lastUpdate)
+)
