@@ -14,6 +14,7 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 import skillmanagement.common.http.error.GlobalRestControllerAdvice
+import skillmanagement.domain.skills.model.asFreshlyCreatedInstance
 import skillmanagement.domain.skills.model.skill_creation_data_kotlin
 import skillmanagement.domain.skills.model.skill_creation_data_python
 import skillmanagement.domain.skills.model.skill_kotlin
@@ -35,7 +36,7 @@ internal class CreateSkillRestAdapterTests(
 
     @Test
     fun `well formed request leads to correct response`() {
-        every { createSkill(skill_creation_data_kotlin) } returns skill_kotlin
+        every { createSkill(skill_creation_data_kotlin) } returns skill_kotlin.asFreshlyCreatedInstance()
 
         mockMvc
             .post("/api/skills") {

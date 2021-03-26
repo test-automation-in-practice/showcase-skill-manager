@@ -185,3 +185,18 @@ internal fun skill(
     tags = tags.map(::Tag).toSortedSet(),
     lastUpdate = instant(lastUpdate)
 )
+
+/**
+ * Creates an instance based on this [Skill] which contains only those
+ * properties that would be set after creating a new [Skill] based on
+ * [SkillCreationData].
+ */
+internal fun Skill.asFreshlyCreatedInstance() =
+    Skill(
+        id = id,
+        version = 1,
+        label = label,
+        description = description,
+        tags = tags,
+        lastUpdate = lastUpdate
+    )
