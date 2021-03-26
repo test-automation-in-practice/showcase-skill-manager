@@ -1,4 +1,4 @@
-package skillmanagement.configuration
+package skillmanagement.runtime.configuration
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding

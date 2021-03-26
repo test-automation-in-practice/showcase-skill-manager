@@ -1,4 +1,4 @@
-package skillmanagement
+package skillmanagement.runtime
 
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner

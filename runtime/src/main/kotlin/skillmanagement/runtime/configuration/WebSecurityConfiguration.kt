@@ -1,4 +1,4 @@
-package skillmanagement.configuration
+package skillmanagement.runtime.configuration
 
 import org.apache.http.HttpHeaders.AUTHORIZATION
 import org.apache.http.HttpHeaders.CACHE_CONTROL

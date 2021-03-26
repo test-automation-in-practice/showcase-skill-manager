@@ -1,4 +1,4 @@
-package skillmanagement.api
+package skillmanagement.runtime.api
 
 import org.springframework.hateoas.RepresentationModel
 import org.springframework.hateoas.server.mvc.BasicLinkBuilder.linkToCurrentMapping
