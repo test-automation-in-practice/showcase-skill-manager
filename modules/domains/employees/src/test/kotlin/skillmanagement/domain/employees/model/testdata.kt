@@ -312,7 +312,6 @@ internal val employee_resource_jane_doe_json = """
           "links": []
         }
       ],
-      "lastUpdate": "2021-03-26T12:34:56.789Z",
       "links": []
     }
     """.trimIndent()
@@ -507,7 +506,6 @@ internal val employee_resource_john_doe_json = """
           "links": []
         }
       ],
-      "lastUpdate": "2021-03-25T12:34:56.789Z",
       "links": []
     }
     """.trimIndent()
@@ -555,7 +553,10 @@ internal val employee_suggestion_john_doe = employee_john_doe.toSuggestion()
 
 // Example #3
 
-/** Only required properties are set (min example). */
+/**
+ * Only required properties are set (min example).
+ *
+ */
 internal val employee_john_smith = Employee(
     id = uuid("53b5f462-0c39-4e2a-83bf-aa407cf309be"),
     version = 1,
@@ -602,7 +603,6 @@ internal val employee_resource_john_smith_json = """
       "jobHistory": [],
       "skills": [],
       "projects": [],
-      "lastUpdate": "2021-03-24T12:34:56.789Z",
       "links": []
     }
     """.trimIndent()
@@ -653,8 +653,7 @@ private fun Employee.toResourceWithoutLinks() =
         languages = languages,
         jobHistory = jobHistory,
         skills = skills.map(SkillKnowledge::toResourceWithoutLinks),
-        projects = projects.map(ProjectAssignment::toResourceWithoutLinks),
-        lastUpdate = lastUpdate
+        projects = projects.map(ProjectAssignment::toResourceWithoutLinks)
     )
 
 private fun SkillKnowledge.toResourceWithoutLinks() =
@@ -707,3 +706,20 @@ internal fun employee(
     telephone = TelephoneNumber(telephone),
     lastUpdate = instant(lastUpdate)
 )
+
+/**
+ * Creates an instance based on this [Employee] which contains only those
+ * properties that would be set after creating a new [Employee] based on
+ * [EmployeeCreationData].
+ */
+internal fun Employee.asFreshlyCreatedInstance() =
+    Employee(
+        id = id,
+        version = 1,
+        firstName = firstName,
+        lastName = lastName,
+        title = title,
+        email = email,
+        telephone = telephone,
+        lastUpdate = lastUpdate
+    )

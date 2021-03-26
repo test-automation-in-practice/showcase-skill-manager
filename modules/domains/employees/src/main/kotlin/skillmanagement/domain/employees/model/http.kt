@@ -34,9 +34,7 @@ internal data class EmployeeResource(
     val jobHistory: List<Job>,
 
     val skills: List<SkillKnowledgeResource>,
-    val projects: List<ProjectAssignmentResource>,
-
-    val lastUpdate: Instant
+    val projects: List<ProjectAssignmentResource>
 ) : RepresentationModel<EmployeeResource>()
 
 internal data class SkillKnowledgeResource(
@@ -67,8 +65,7 @@ internal fun Employee.toResource() = EmployeeResource(
     languages = languages,
     jobHistory = jobHistory,
     skills = skills.map { it.toResource(id) },
-    projects = projects.map { it.toResource(id) },
-    lastUpdate = lastUpdate
+    projects = projects.map { it.toResource(id) }
 ).apply {
     add(linkToEmployee(id).withSelfRel())
     add(linkToEmployee(id).withRel("delete"))
