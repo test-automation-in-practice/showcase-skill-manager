@@ -8,9 +8,9 @@ import skillmanagement.domain.employees.usecases.projectassignments.update.Updat
 import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentResult.ProjectAssignmentNotFound
 import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentResult.SuccessfullyUpdatedProjectAssignment
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotChanged
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotFound
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdatedEmployee
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.EmployeeNotChanged
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdated
 import java.util.UUID
 
 @BusinessFunction
@@ -38,12 +38,12 @@ class UpdateProjectAssignmentByIdFunction internal constructor(
         }
 
         return when (updateResult) {
-            is NotUpdatedBecauseEmployeeNotFound -> EmployeeNotFound
-            is NotUpdatedBecauseEmployeeNotChanged -> when (assignmentExists) {
+            is UpdateEmployeeByIdResult.EmployeeNotFound -> EmployeeNotFound
+            is EmployeeNotChanged -> when (assignmentExists) {
                 true -> ProjectAssignmentNotChanged(updateResult.employee)
                 false -> ProjectAssignmentNotFound
             }
-            is SuccessfullyUpdatedEmployee -> SuccessfullyUpdatedProjectAssignment(updateResult.employee)
+            is SuccessfullyUpdated -> SuccessfullyUpdatedProjectAssignment(updateResult.employee)
         }
     }
 

@@ -9,9 +9,9 @@ import skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnow
 import skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnowledgeOfEmployeeResult.SkillNotFound
 import skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnowledgeOfEmployeeResult.SuccessfullyAssigned
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotChanged
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotFound
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdatedEmployee
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.EmployeeNotChanged
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdated
 import java.util.UUID
 
 @BusinessFunction
@@ -37,9 +37,9 @@ class SetSkillKnowledgeOfEmployeeFunction internal constructor(
         }
 
         return when (updateResult) {
-            is NotUpdatedBecauseEmployeeNotFound -> EmployeeNotFound
-            is NotUpdatedBecauseEmployeeNotChanged -> error("should not happen")
-            is SuccessfullyUpdatedEmployee -> SuccessfullyAssigned(updateResult.employee)
+            is UpdateEmployeeByIdResult.EmployeeNotFound -> EmployeeNotFound
+            is EmployeeNotChanged -> error("should not happen")
+            is SuccessfullyUpdated -> SuccessfullyAssigned(updateResult.employee)
         }
     }
 

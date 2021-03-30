@@ -8,9 +8,9 @@ import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSki
 import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSkillKnowledgeResult.SkillKnowledgeNotFound
 import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSkillKnowledgeResult.SuccessfullyUpdatedSkillKnowledge
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotChanged
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotFound
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdatedEmployee
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.EmployeeNotChanged
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdated
 import java.util.UUID
 
 @BusinessFunction
@@ -38,12 +38,12 @@ class UpdateSkillKnowledgeByIdFunction internal constructor(
         }
 
         return when (updateResult) {
-            is NotUpdatedBecauseEmployeeNotFound -> EmployeeNotFound
-            is NotUpdatedBecauseEmployeeNotChanged -> when (knowledgeExists) {
+            is UpdateEmployeeByIdResult.EmployeeNotFound -> EmployeeNotFound
+            is EmployeeNotChanged -> when (knowledgeExists) {
                 true -> SkillKnowledgeNotChanged(updateResult.employee)
                 false -> SkillKnowledgeNotFound
             }
-            is SuccessfullyUpdatedEmployee -> SuccessfullyUpdatedSkillKnowledge(updateResult.employee)
+            is SuccessfullyUpdated -> SuccessfullyUpdatedSkillKnowledge(updateResult.employee)
         }
     }
 

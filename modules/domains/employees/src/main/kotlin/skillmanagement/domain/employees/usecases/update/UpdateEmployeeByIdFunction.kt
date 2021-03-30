@@ -5,9 +5,9 @@ import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.EmployeeUpdatedEvent
 import skillmanagement.domain.employees.usecases.read.GetEmployeeByIdFunction
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotChanged
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotFound
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdatedEmployee
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.EmployeeNotChanged
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.EmployeeNotFound
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdated
 import java.util.UUID
 
 @BusinessFunction
@@ -19,15 +19,15 @@ class UpdateEmployeeByIdFunction internal constructor(
 
     @RetryOnConcurrentEmployeeUpdate
     operator fun invoke(employeeId: UUID, block: (Employee) -> Employee): UpdateEmployeeByIdResult {
-        val currentEmployee = getEmployeeById(employeeId) ?: return NotUpdatedBecauseEmployeeNotFound
+        val currentEmployee = getEmployeeById(employeeId) ?: return EmployeeNotFound
         val modifiedEmployee = block(currentEmployee)
 
-        if (currentEmployee == modifiedEmployee) return NotUpdatedBecauseEmployeeNotChanged(currentEmployee)
+        if (currentEmployee == modifiedEmployee) return EmployeeNotChanged(currentEmployee)
         assertNoInvalidModifications(currentEmployee, modifiedEmployee)
 
         val updatedEmployee = updateEmployeeInDataStore(modifiedEmployee)
         publishEvent(EmployeeUpdatedEvent(updatedEmployee))
-        return SuccessfullyUpdatedEmployee(updatedEmployee)
+        return SuccessfullyUpdated(updatedEmployee)
     }
 
     private fun assertNoInvalidModifications(currentEmployee: Employee, modifiedEmployee: Employee) {
@@ -39,7 +39,7 @@ class UpdateEmployeeByIdFunction internal constructor(
 }
 
 sealed class UpdateEmployeeByIdResult {
-    object NotUpdatedBecauseEmployeeNotFound : UpdateEmployeeByIdResult()
-    data class NotUpdatedBecauseEmployeeNotChanged(val employee: Employee) : UpdateEmployeeByIdResult()
-    data class SuccessfullyUpdatedEmployee(val employee: Employee) : UpdateEmployeeByIdResult()
+    object EmployeeNotFound : UpdateEmployeeByIdResult()
+    data class EmployeeNotChanged(val employee: Employee) : UpdateEmployeeByIdResult()
+    data class SuccessfullyUpdated(val employee: Employee) : UpdateEmployeeByIdResult()
 }
