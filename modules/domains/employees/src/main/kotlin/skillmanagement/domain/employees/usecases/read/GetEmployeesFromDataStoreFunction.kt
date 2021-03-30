@@ -40,7 +40,7 @@ internal class GetEmployeesFromDataStoreFunction(
 
 }
 
-private class EmployeeRowMapper(private val objectMapper: ObjectMapper) : RowMapper<Employee?> {
+internal class EmployeeRowMapper(private val objectMapper: ObjectMapper) : RowMapper<Employee?> {
 
     private val log = KotlinLogging.logger {}
 
