@@ -10,9 +10,9 @@ import skillmanagement.domain.employees.usecases.projectassignments.create.Assig
 import skillmanagement.domain.employees.usecases.projectassignments.create.AssignProjectToEmployeeResult.ProjectNotFound
 import skillmanagement.domain.employees.usecases.projectassignments.create.AssignProjectToEmployeeResult.SuccessfullyCreatedProjectAssignment
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotChanged
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotFound
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdatedEmployee
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.EmployeeNotChanged
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdated
 import java.time.LocalDate
 import java.util.UUID
 
@@ -43,9 +43,9 @@ class CreateProjectAssignmentForEmployeeFunction internal constructor(
         }
 
         return when (updateResult) {
-            is NotUpdatedBecauseEmployeeNotFound -> EmployeeNotFound
-            is NotUpdatedBecauseEmployeeNotChanged -> error("should not happen")
-            is SuccessfullyUpdatedEmployee -> SuccessfullyCreatedProjectAssignment(updateResult.employee)
+            is UpdateEmployeeByIdResult.EmployeeNotFound -> EmployeeNotFound
+            is EmployeeNotChanged -> error("should not happen")
+            is SuccessfullyUpdated -> SuccessfullyCreatedProjectAssignment(updateResult.employee)
         }
     }
 

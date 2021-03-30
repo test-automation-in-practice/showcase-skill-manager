@@ -6,9 +6,9 @@ import skillmanagement.domain.employees.usecases.skillknowledge.delete.DeleteSki
 import skillmanagement.domain.employees.usecases.skillknowledge.delete.DeleteSkillKnowledgeOfEmployeeResult.SkillKnowledgeNotFound
 import skillmanagement.domain.employees.usecases.skillknowledge.delete.DeleteSkillKnowledgeOfEmployeeResult.SuccessfullyDeletedSkillKnowledge
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotChanged
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotFound
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdatedEmployee
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.EmployeeNotChanged
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdated
 import java.util.UUID
 
 @BusinessFunction
@@ -21,9 +21,9 @@ class DeleteSkillKnowledgeOfEmployeeFunction internal constructor(
             it.removeSkillKnowledgeBySkillId(skillId)
         }
         return when (updateResult) {
-            is NotUpdatedBecauseEmployeeNotFound -> EmployeeNotFound
-            is NotUpdatedBecauseEmployeeNotChanged -> SkillKnowledgeNotFound
-            is SuccessfullyUpdatedEmployee -> SuccessfullyDeletedSkillKnowledge(updateResult.employee)
+            is UpdateEmployeeByIdResult.EmployeeNotFound -> EmployeeNotFound
+            is EmployeeNotChanged -> SkillKnowledgeNotFound
+            is SuccessfullyUpdated -> SuccessfullyDeletedSkillKnowledge(updateResult.employee)
         }
     }
 

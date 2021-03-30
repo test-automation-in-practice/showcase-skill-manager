@@ -16,9 +16,9 @@ import skillmanagement.domain.employees.model.EmployeeResource
 import skillmanagement.domain.employees.model.merge
 import skillmanagement.domain.employees.model.toChangeData
 import skillmanagement.domain.employees.model.toResource
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotChanged
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.NotUpdatedBecauseEmployeeNotFound
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdatedEmployee
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.EmployeeNotChanged
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.EmployeeNotFound
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdated
 import java.util.UUID
 
 @RestAdapter
@@ -37,9 +37,9 @@ internal class UpdateEmployeeByIdRestAdapter(
             it.merge(request)
         }
         return when (result) {
-            is NotUpdatedBecauseEmployeeNotFound -> notFound().build()
-            is NotUpdatedBecauseEmployeeNotChanged -> ok(result.employee.toResource())
-            is SuccessfullyUpdatedEmployee -> ok(result.employee.toResource())
+            is EmployeeNotFound -> notFound().build()
+            is EmployeeNotChanged -> ok(result.employee.toResource())
+            is SuccessfullyUpdated -> ok(result.employee.toResource())
         }
     }
 
@@ -52,9 +52,9 @@ internal class UpdateEmployeeByIdRestAdapter(
             it.merge(applyPatch(patch, it.toChangeData()))
         }
         return when (result) {
-            is NotUpdatedBecauseEmployeeNotFound -> notFound().build()
-            is NotUpdatedBecauseEmployeeNotChanged -> ok(result.employee.toResource())
-            is SuccessfullyUpdatedEmployee -> ok(result.employee.toResource())
+            is EmployeeNotFound -> notFound().build()
+            is EmployeeNotChanged -> ok(result.employee.toResource())
+            is SuccessfullyUpdated -> ok(result.employee.toResource())
         }
     }
 
