@@ -11,6 +11,7 @@ dependencies {
 
     api("com.fasterxml.jackson.core:jackson-annotations")
 
+    api("io.arrow-kt:arrow-core:0.13.0")
     api("io.github.microutils:kotlin-logging:2.0.4")
 
     implementation("org.springframework:spring-context")

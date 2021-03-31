@@ -14,11 +14,15 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.put
+import skillmanagement.common.failure
 import skillmanagement.common.http.patch.ApplyPatch
+import skillmanagement.common.success
 import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.project_change_data_morpheus_json
+import skillmanagement.domain.projects.model.project_morpheus
 import skillmanagement.domain.projects.model.project_neo
-import skillmanagement.domain.projects.usecases.update.UpdateProjectByIdResult.ProjectNotFound
-import skillmanagement.domain.projects.usecases.update.UpdateProjectByIdResult.SuccessfullyUpdated
+import skillmanagement.domain.projects.usecases.update.ProjectUpdateFailure.ProjectNotChanged
+import skillmanagement.domain.projects.usecases.update.ProjectUpdateFailure.ProjectNotFound
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.andDocument
 import skillmanagement.test.fixedClock
@@ -40,7 +44,7 @@ internal class UpdateProjectByIdRestAdapterTests(
     fun `PUT - when updating a complete project it's updated state is returned`() {
         every { updateProjectById(project.id, any()) } answers {
             val block: (Project) -> (Project) = secondArg()
-            SuccessfullyUpdated(block(project))
+            success(block(project))
         }
 
         mockMvc
@@ -75,8 +79,43 @@ internal class UpdateProjectByIdRestAdapterTests(
     }
 
     @Test
+    fun `PUT - when update does not change anything the response will be a 200`() {
+        every { updateProjectById(project_morpheus.id, any()) } returns failure(ProjectNotChanged(project_morpheus))
+
+        mockMvc
+            .put("/api/projects/${project_morpheus.id}") {
+                contentType = APPLICATION_JSON
+                content = project_change_data_morpheus_json
+            }
+            .andExpect {
+                status { isOk() }
+                content {
+                    contentType(HAL_JSON)
+                    strictJson {
+                        """
+                        {
+                          "id": "d5370813-a4cb-42d5-9d28-ce624c718538",
+                          "label": "Morpheus",
+                          "description": "The PlayStation VR Headset.",
+                          "_links": {
+                            "self": {
+                              "href": "http://localhost/api/projects/d5370813-a4cb-42d5-9d28-ce624c718538"
+                            },
+                            "delete": {
+                              "href": "http://localhost/api/projects/d5370813-a4cb-42d5-9d28-ce624c718538"
+                            }
+                          }
+                        }
+                        """
+                    }
+                }
+            }
+            .andDocument("put/not-changed")
+    }
+
+    @Test
     fun `PUT - when updating a non-existing project the response will be a 404`() {
-        every { updateProjectById(project.id, any()) } returns ProjectNotFound
+        every { updateProjectById(project.id, any()) } returns failure(ProjectNotFound)
 
         mockMvc
             .put("/api/projects/${project.id}") {
@@ -94,12 +133,12 @@ internal class UpdateProjectByIdRestAdapterTests(
     fun `PATCH - JSON Patch can be used to update properties of a project - label`() {
         every { updateProjectById(project.id, any()) } answers {
             val block: (Project) -> (Project) = secondArg()
-            SuccessfullyUpdated(block(project))
+            success(block(project))
         }
 
         mockMvc
             .patch("/api/projects/${project.id}") {
-                contentType = MediaType("application","json-patch+json")
+                contentType = MediaType("application", "json-patch+json")
                 content = """
                     [
                       {
@@ -142,12 +181,55 @@ internal class UpdateProjectByIdRestAdapterTests(
     }
 
     @Test
+    fun `PATCH - when update does not change anything the response will be a 200`() {
+        every { updateProjectById(project_morpheus.id, any()) } returns failure(ProjectNotChanged(project_morpheus))
+
+        mockMvc
+            .patch("/api/projects/${project_morpheus.id}") {
+                contentType = MediaType("application", "json-patch+json")
+                content = """
+                    [
+                      {
+                        "op": "replace",
+                        "path": "/label",
+                        "value": "Morpheus"
+                      }
+                    ]
+                    """
+            }
+            .andExpect {
+                status { isOk() }
+                content {
+                    contentType(HAL_JSON)
+                    strictJson {
+                        """
+                        {
+                          "id": "d5370813-a4cb-42d5-9d28-ce624c718538",
+                          "label": "Morpheus",
+                          "description": "The PlayStation VR Headset.",
+                          "_links": {
+                            "self": {
+                              "href": "http://localhost/api/projects/d5370813-a4cb-42d5-9d28-ce624c718538"
+                            },
+                            "delete": {
+                              "href": "http://localhost/api/projects/d5370813-a4cb-42d5-9d28-ce624c718538"
+                            }
+                          }
+                        }
+                        """
+                    }
+                }
+            }
+            .andDocument("patch/not-change")
+    }
+
+    @Test
     fun `PATCH - when updating a non-existing project the response will be a 404`() {
-        every { updateProjectById(project.id, any()) } returns ProjectNotFound
+        every { updateProjectById(project.id, any()) } returns failure(ProjectNotFound)
 
         mockMvc
             .patch("/api/projects/${project.id}") {
-                contentType = MediaType("application","json-patch+json")
+                contentType = MediaType("application", "json-patch+json")
                 content = """
                     [
                       {

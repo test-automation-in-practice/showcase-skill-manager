@@ -1,13 +1,15 @@
 package skillmanagement.domain.employees.usecases.update
 
+import arrow.core.Either
 import skillmanagement.common.events.PublishEventFunction
+import skillmanagement.common.failure
 import skillmanagement.common.stereotypes.BusinessFunction
+import skillmanagement.common.success
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.EmployeeUpdatedEvent
 import skillmanagement.domain.employees.usecases.read.GetEmployeeByIdFunction
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.EmployeeNotChanged
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.EmployeeNotFound
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdated
+import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure.EmployeeNotChanged
+import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure.EmployeeNotFound
 import java.util.UUID
 
 @BusinessFunction
@@ -18,16 +20,16 @@ class UpdateEmployeeByIdFunction internal constructor(
 ) {
 
     @RetryOnConcurrentEmployeeUpdate
-    operator fun invoke(employeeId: UUID, block: (Employee) -> Employee): UpdateEmployeeByIdResult {
-        val currentEmployee = getEmployeeById(employeeId) ?: return EmployeeNotFound
+    operator fun invoke(employeeId: UUID, block: (Employee) -> Employee): Either<EmployeeUpdateFailure, Employee> {
+        val currentEmployee = getEmployeeById(employeeId) ?: return failure(EmployeeNotFound)
         val modifiedEmployee = block(currentEmployee)
 
-        if (currentEmployee == modifiedEmployee) return EmployeeNotChanged(currentEmployee)
+        if (currentEmployee == modifiedEmployee) return failure(EmployeeNotChanged(currentEmployee))
         assertNoInvalidModifications(currentEmployee, modifiedEmployee)
 
         val updatedEmployee = updateEmployeeInDataStore(modifiedEmployee)
         publishEvent(EmployeeUpdatedEvent(updatedEmployee))
-        return SuccessfullyUpdated(updatedEmployee)
+        return success(updatedEmployee)
     }
 
     private fun assertNoInvalidModifications(currentEmployee: Employee, modifiedEmployee: Employee) {
@@ -38,8 +40,7 @@ class UpdateEmployeeByIdFunction internal constructor(
 
 }
 
-sealed class UpdateEmployeeByIdResult {
-    object EmployeeNotFound : UpdateEmployeeByIdResult()
-    data class EmployeeNotChanged(val employee: Employee) : UpdateEmployeeByIdResult()
-    data class SuccessfullyUpdated(val employee: Employee) : UpdateEmployeeByIdResult()
+sealed class EmployeeUpdateFailure {
+    object EmployeeNotFound : EmployeeUpdateFailure()
+    data class EmployeeNotChanged(val employee: Employee) : EmployeeUpdateFailure()
 }

@@ -14,11 +14,15 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.put
+import skillmanagement.common.failure
 import skillmanagement.common.http.patch.ApplyPatch
+import skillmanagement.common.success
 import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.skill_change_data_python_json
 import skillmanagement.domain.skills.model.skill_kotlin
-import skillmanagement.domain.skills.usecases.update.UpdateSkillByIdResult.SkillNotFound
-import skillmanagement.domain.skills.usecases.update.UpdateSkillByIdResult.SuccessfullyUpdated
+import skillmanagement.domain.skills.model.skill_python
+import skillmanagement.domain.skills.usecases.update.SkillUpdateFailure.SkillNotChanged
+import skillmanagement.domain.skills.usecases.update.SkillUpdateFailure.SkillNotFound
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.andDocument
 import skillmanagement.test.fixedClock
@@ -34,17 +38,15 @@ internal class UpdateSkillByIdRestAdapterTests(
     @Autowired val updateSkillById: UpdateSkillByIdFunction
 ) {
 
-    private val skill = skill_kotlin
-
     @Test
     fun `PUT - when updating a complete skill it's updated state is returned`() {
-        every { updateSkillById(skill.id, any()) } answers {
+        every { updateSkillById(skill_kotlin.id, any()) } answers {
             val block: (Skill) -> (Skill) = secondArg()
-            SuccessfullyUpdated(block(skill))
+            success(block(skill_kotlin))
         }
 
         mockMvc
-            .put("/api/skills/${skill.id}") {
+            .put("/api/skills/${skill_kotlin.id}") {
                 contentType = APPLICATION_JSON
                 content = """{ "label": "Kotlin (Language)", "description": "description", "tags": ["language"] }"""
             }
@@ -76,11 +78,46 @@ internal class UpdateSkillByIdRestAdapterTests(
     }
 
     @Test
-    fun `PUT - when updating a non-existing skill the response will be a 404`() {
-        every { updateSkillById(skill.id, any()) } returns SkillNotFound
+    fun `PUT - when update does not change anything the response will be a 200`() {
+        every { updateSkillById(skill_python.id, any()) } returns failure(SkillNotChanged(skill_python))
 
         mockMvc
-            .put("/api/skills/${skill.id}") {
+            .put("/api/skills/${skill_python.id}") {
+                contentType = APPLICATION_JSON
+                content = skill_change_data_python_json
+            }
+            .andExpect {
+                status { isOk() }
+                content {
+                    contentType(HAL_JSON)
+                    strictJson {
+                        """
+                        {
+                          "id": "6935e550-d041-418a-9070-e37431069232",
+                          "label": "Python",
+                          "tags": [],
+                          "_links": {
+                            "self": {
+                              "href": "http://localhost/api/skills/6935e550-d041-418a-9070-e37431069232"
+                            },
+                            "delete": {
+                              "href": "http://localhost/api/skills/6935e550-d041-418a-9070-e37431069232"
+                            }
+                          }
+                        }
+                        """
+                    }
+                }
+            }
+            .andDocument("put/not-changed")
+    }
+
+    @Test
+    fun `PUT - when updating a non-existing skill the response will be a 404`() {
+        every { updateSkillById(skill_kotlin.id, any()) } returns failure(SkillNotFound)
+
+        mockMvc
+            .put("/api/skills/${skill_kotlin.id}") {
                 contentType = APPLICATION_JSON
                 content = """{ "label": "Kotlin (Language)", "tags": [] }"""
             }
@@ -93,14 +130,14 @@ internal class UpdateSkillByIdRestAdapterTests(
 
     @Test
     fun `PATCH - JSON Patch can be used to update properties of a skill - label`() {
-        every { updateSkillById(skill.id, any()) } answers {
+        every { updateSkillById(skill_kotlin.id, any()) } answers {
             val block: (Skill) -> (Skill) = secondArg()
-            SuccessfullyUpdated(block(skill))
+            success(block(skill_kotlin))
         }
 
         mockMvc
-            .patch("/api/skills/${skill.id}") {
-                contentType = MediaType("application","json-patch+json")
+            .patch("/api/skills/${skill_kotlin.id}") {
+                contentType = MediaType("application", "json-patch+json")
                 content = """
                     [
                       {
@@ -153,12 +190,55 @@ internal class UpdateSkillByIdRestAdapterTests(
     }
 
     @Test
-    fun `PATCH - when updating a non-existing skill the response will be a 404`() {
-        every { updateSkillById(skill.id, any()) } returns SkillNotFound
+    fun `PATCH - when update does not change anything the response will be a 200`() {
+        every { updateSkillById(skill_python.id, any()) } returns failure(SkillNotChanged(skill_python))
 
         mockMvc
-            .patch("/api/skills/${skill.id}") {
-                contentType = MediaType("application","json-patch+json")
+            .patch("/api/skills/${skill_python.id}") {
+                contentType = MediaType("application", "json-patch+json")
+                content = """
+                    [
+                      {
+                        "op": "replace",
+                        "path": "/label",
+                        "value": "Python"
+                      }
+                    ]
+                    """
+            }
+            .andExpect {
+                status { isOk() }
+                content {
+                    contentType(HAL_JSON)
+                    strictJson {
+                        """
+                        {
+                          "id": "6935e550-d041-418a-9070-e37431069232",
+                          "label": "Python",
+                          "tags": [],
+                          "_links": {
+                            "self": {
+                              "href": "http://localhost/api/skills/6935e550-d041-418a-9070-e37431069232"
+                            },
+                            "delete": {
+                              "href": "http://localhost/api/skills/6935e550-d041-418a-9070-e37431069232"
+                            }
+                          }
+                        }
+                        """
+                    }
+                }
+            }
+            .andDocument("patch/not-changed")
+    }
+
+    @Test
+    fun `PATCH - when updating a non-existing skill the response will be a 404`() {
+        every { updateSkillById(skill_kotlin.id, any()) } returns failure(SkillNotFound)
+
+        mockMvc
+            .patch("/api/skills/${skill_kotlin.id}") {
+                contentType = MediaType("application", "json-patch+json")
                 content = """
                     [
                       {

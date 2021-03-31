@@ -1,12 +1,15 @@
 package skillmanagement.domain.projects.usecases.update
 
+import arrow.core.Either
 import skillmanagement.common.events.PublishEventFunction
+import skillmanagement.common.failure
 import skillmanagement.common.stereotypes.BusinessFunction
+import skillmanagement.common.success
 import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.model.ProjectUpdatedEvent
 import skillmanagement.domain.projects.usecases.read.GetProjectByIdFunction
-import skillmanagement.domain.projects.usecases.update.UpdateProjectByIdResult.ProjectNotFound
-import skillmanagement.domain.projects.usecases.update.UpdateProjectByIdResult.SuccessfullyUpdated
+import skillmanagement.domain.projects.usecases.update.ProjectUpdateFailure.ProjectNotChanged
+import skillmanagement.domain.projects.usecases.update.ProjectUpdateFailure.ProjectNotFound
 import java.util.UUID
 
 @BusinessFunction
@@ -17,15 +20,16 @@ class UpdateProjectByIdFunction internal constructor(
 ) {
 
     @RetryOnConcurrentProjectUpdate
-    operator fun invoke(projectId: UUID, block: (Project) -> Project): UpdateProjectByIdResult {
-        val currentProject = getProjectById(projectId) ?: return ProjectNotFound
+    operator fun invoke(projectId: UUID, block: (Project) -> Project): Either<ProjectUpdateFailure, Project> {
+        val currentProject = getProjectById(projectId) ?: return failure(ProjectNotFound)
         val modifiedProject = block(currentProject)
 
+        if (modifiedProject == currentProject) return failure(ProjectNotChanged(currentProject))
         assertNoInvalidModifications(currentProject, modifiedProject)
 
         val updatedProject = updateProjectInDataStore(modifiedProject)
         publishEvent(ProjectUpdatedEvent(updatedProject))
-        return SuccessfullyUpdated(updatedProject)
+        return success(updatedProject)
     }
 
     private fun assertNoInvalidModifications(currentProject: Project, modifiedProject: Project) {
@@ -36,7 +40,7 @@ class UpdateProjectByIdFunction internal constructor(
 
 }
 
-sealed class UpdateProjectByIdResult {
-    object ProjectNotFound : UpdateProjectByIdResult()
-    data class SuccessfullyUpdated(val project: Project) : UpdateProjectByIdResult()
+sealed class ProjectUpdateFailure {
+    object ProjectNotFound : ProjectUpdateFailure()
+    data class ProjectNotChanged(val project: Project) : ProjectUpdateFailure()
 }

@@ -1,5 +1,6 @@
 package skillmanagement.domain.employees.usecases.skillknowledge.delete
 
+import arrow.core.getOrHandle
 import mu.KotlinLogging.logger
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.noContent
@@ -10,9 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.domain.employees.model.EmployeeResource
 import skillmanagement.domain.employees.model.toResource
-import skillmanagement.domain.employees.usecases.skillknowledge.delete.DeleteSkillKnowledgeOfEmployeeResult.EmployeeNotFound
-import skillmanagement.domain.employees.usecases.skillknowledge.delete.DeleteSkillKnowledgeOfEmployeeResult.SkillKnowledgeNotFound
-import skillmanagement.domain.employees.usecases.skillknowledge.delete.DeleteSkillKnowledgeOfEmployeeResult.SuccessfullyDeletedSkillKnowledge
+import skillmanagement.domain.employees.usecases.skillknowledge.delete.DeletionFailure.EmployeeNotFound
+import skillmanagement.domain.employees.usecases.skillknowledge.delete.DeletionFailure.SkillKnowledgeNotFound
 import java.util.UUID
 
 @RestAdapter
@@ -28,10 +28,13 @@ internal class DeleteSkillKnowledgeOfEmployeeRestAdapter(
         log.info { "Deleting knowledge of skill [$skillId] of employee [$employeeId]" }
         val result = deleteSkillKnowledgeOfEmployee(employeeId, skillId)
         log.info { "Result: $result" }
-        return when (result) {
-            EmployeeNotFound, SkillKnowledgeNotFound -> noContent().build()
-            is SuccessfullyDeletedSkillKnowledge -> ok(result.employee.toResource())
-        }
+
+        return result.map { employee -> ok(employee.toResource()) }
+            .getOrHandle { failure ->
+                when (failure) {
+                    EmployeeNotFound, SkillKnowledgeNotFound -> noContent().build()
+                }
+            }
     }
 
 }

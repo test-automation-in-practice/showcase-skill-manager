@@ -29,6 +29,7 @@ internal class ProjectAssignmentDeletingEventHandler(
     private val log = logger {}
 
     // TODO: how to update more than one page? (ES eventual consistency)
+    // TODO: log update failures?
 
     @RabbitListener(queues = [PROJECT_DELETED_QUEUE])
     fun handle(event: ProjectDeletedEvent) {

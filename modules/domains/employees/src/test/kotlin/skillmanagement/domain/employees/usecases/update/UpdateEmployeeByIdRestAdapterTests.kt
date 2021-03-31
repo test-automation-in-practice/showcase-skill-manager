@@ -14,14 +14,15 @@ import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.put
+import skillmanagement.common.failure
 import skillmanagement.common.http.patch.ApplyPatch
+import skillmanagement.common.success
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.employee_change_data_jane_doe_json
 import skillmanagement.domain.employees.model.employee_change_data_john_smith_json
 import skillmanagement.domain.employees.model.employee_john_smith
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.EmployeeNotChanged
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.EmployeeNotFound
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdated
+import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure.EmployeeNotChanged
+import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure.EmployeeNotFound
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.andDocument
 import skillmanagement.test.fixedClock
@@ -41,7 +42,7 @@ internal class UpdateEmployeeByIdRestAdapterTests(
     fun `PUT - when updating a complete employee it's updated state is returned`() {
         every { updateEmployeeById(employee_john_smith.id, any()) } answers {
             val block: (Employee) -> (Employee) = secondArg()
-            SuccessfullyUpdated(block(employee_john_smith))
+            success(block(employee_john_smith))
         }
 
         mockMvc
@@ -121,7 +122,8 @@ internal class UpdateEmployeeByIdRestAdapterTests(
 
     @Test
     fun `PUT - when not actually changing anything the response will be a 200 Ok`() {
-        every { updateEmployeeById(employee_john_smith.id, any()) } returns EmployeeNotChanged(employee_john_smith)
+        every { updateEmployeeById(employee_john_smith.id, any()) } returns
+                failure(EmployeeNotChanged(employee_john_smith))
 
         mockMvc
             .put("/api/employees/${employee_john_smith.id}") {
@@ -165,7 +167,7 @@ internal class UpdateEmployeeByIdRestAdapterTests(
 
     @Test
     fun `PUT - when updating a non-existing employee the response will be a 404`() {
-        every { updateEmployeeById(employee_john_smith.id, any()) } returns EmployeeNotFound
+        every { updateEmployeeById(employee_john_smith.id, any()) } returns failure(EmployeeNotFound)
 
         mockMvc
             .put("/api/employees/${employee_john_smith.id}") {
@@ -183,12 +185,12 @@ internal class UpdateEmployeeByIdRestAdapterTests(
     fun `PATCH - JSON Patch can be used to update properties of a employee - label`() {
         every { updateEmployeeById(employee_john_smith.id, any()) } answers {
             val block: (Employee) -> (Employee) = secondArg()
-            SuccessfullyUpdated(block(employee_john_smith))
+            success(block(employee_john_smith))
         }
 
         mockMvc
             .patch("/api/employees/${employee_john_smith.id}") {
-                contentType = MediaType("application","json-patch+json")
+                contentType = MediaType("application", "json-patch+json")
                 content = """
                     [
                       {
@@ -244,14 +246,12 @@ internal class UpdateEmployeeByIdRestAdapterTests(
 
     @Test
     fun `PATCH - when not actually changing anything the response will be a 200 Ok`() {
-        every { updateEmployeeById(employee_john_smith.id, any()) } answers {
-            val block: (Employee) -> (Employee) = secondArg()
-            EmployeeNotChanged(block(employee_john_smith))
-        }
+        every { updateEmployeeById(employee_john_smith.id, any()) } returns
+                failure(EmployeeNotChanged(employee_john_smith))
 
         mockMvc
             .patch("/api/employees/${employee_john_smith.id}") {
-                contentType = MediaType("application","json-patch+json")
+                contentType = MediaType("application", "json-patch+json")
                 content = """
                     [
                       {
@@ -299,11 +299,11 @@ internal class UpdateEmployeeByIdRestAdapterTests(
 
     @Test
     fun `PATCH - when updating a non-existing employee the response will be a 404`() {
-        every { updateEmployeeById(employee_john_smith.id, any()) } returns EmployeeNotFound
+        every { updateEmployeeById(employee_john_smith.id, any()) } returns failure(EmployeeNotFound)
 
         mockMvc
             .patch("/api/employees/${employee_john_smith.id}") {
-                contentType = MediaType("application","json-patch+json")
+                contentType = MediaType("application", "json-patch+json")
                 content = """
                     [
                       {

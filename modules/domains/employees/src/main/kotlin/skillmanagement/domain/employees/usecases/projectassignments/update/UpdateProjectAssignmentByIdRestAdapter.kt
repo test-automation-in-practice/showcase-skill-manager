@@ -1,5 +1,6 @@
 package skillmanagement.domain.employees.usecases.projectassignments.update
 
+import arrow.core.getOrHandle
 import com.github.fge.jsonpatch.JsonPatch
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.notFound
@@ -17,10 +18,9 @@ import skillmanagement.domain.employees.model.ProjectAssignmentChangeData
 import skillmanagement.domain.employees.model.merge
 import skillmanagement.domain.employees.model.toChangeData
 import skillmanagement.domain.employees.model.toResource
-import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentResult.EmployeeNotFound
-import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentResult.ProjectAssignmentNotChanged
-import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentResult.ProjectAssignmentNotFound
-import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentResult.SuccessfullyUpdatedProjectAssignment
+import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateFailure.EmployeeNotFound
+import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateFailure.ProjectAssignmentNotChanged
+import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateFailure.ProjectAssignmentNotFound
 import java.util.UUID
 
 @RestAdapter
@@ -36,7 +36,7 @@ internal class UpdateProjectAssignmentByIdRestAdapter(
         @PathVariable assignmentId: UUID,
         @RequestBody request: ProjectAssignmentChangeData
     ): ResponseEntity<EmployeeResource> =
-        handleUpdate(employeeId, assignmentId) { it.merge(request) }
+        update(employeeId, assignmentId) { it.merge(request) }
 
     @PatchMapping(consumes = ["application/json-patch+json"])
     fun patch(
@@ -44,17 +44,19 @@ internal class UpdateProjectAssignmentByIdRestAdapter(
         @PathVariable assignmentId: UUID,
         @RequestBody patch: JsonPatch
     ): ResponseEntity<EmployeeResource> =
-        handleUpdate(employeeId, assignmentId) { it.merge(applyPatch(patch, it.toChangeData())) }
+        update(employeeId, assignmentId) { it.merge(applyPatch(patch, it.toChangeData())) }
 
-    private fun handleUpdate(
+    private fun update(
         employeeId: UUID,
         assignmentId: UUID,
         block: (ProjectAssignment) -> ProjectAssignment
-    ): ResponseEntity<EmployeeResource> =
-        when (val result = updateProjectAssignmentById(employeeId, assignmentId, block)) {
-            EmployeeNotFound, ProjectAssignmentNotFound -> notFound().build()
-            is ProjectAssignmentNotChanged -> ok(result.employee.toResource())
-            is SuccessfullyUpdatedProjectAssignment -> ok(result.employee.toResource())
+    ): ResponseEntity<EmployeeResource> = updateProjectAssignmentById(employeeId, assignmentId, block)
+        .map { employee -> ok(employee.toResource()) }
+        .getOrHandle { failure ->
+            when (failure) {
+                EmployeeNotFound, ProjectAssignmentNotFound -> notFound().build()
+                is ProjectAssignmentNotChanged -> ok(failure.employee.toResource())
+            }
         }
 
 }

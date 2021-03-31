@@ -1,12 +1,15 @@
 package skillmanagement.domain.skills.usecases.update
 
+import arrow.core.Either
 import skillmanagement.common.events.PublishEventFunction
+import skillmanagement.common.failure
 import skillmanagement.common.stereotypes.BusinessFunction
+import skillmanagement.common.success
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillUpdatedEvent
 import skillmanagement.domain.skills.usecases.read.GetSkillByIdFunction
-import skillmanagement.domain.skills.usecases.update.UpdateSkillByIdResult.SkillNotFound
-import skillmanagement.domain.skills.usecases.update.UpdateSkillByIdResult.SuccessfullyUpdated
+import skillmanagement.domain.skills.usecases.update.SkillUpdateFailure.SkillNotChanged
+import skillmanagement.domain.skills.usecases.update.SkillUpdateFailure.SkillNotFound
 import java.util.UUID
 
 @BusinessFunction
@@ -17,15 +20,16 @@ class UpdateSkillByIdFunction internal constructor(
 ) {
 
     @RetryOnConcurrentSkillUpdate
-    operator fun invoke(skillId: UUID, block: (Skill) -> Skill): UpdateSkillByIdResult {
-        val currentSkill = getSkillById(skillId) ?: return SkillNotFound
+    operator fun invoke(skillId: UUID, block: (Skill) -> Skill): Either<SkillUpdateFailure, Skill> {
+        val currentSkill = getSkillById(skillId) ?: return failure(SkillNotFound)
         val modifiedSkill = block(currentSkill)
 
+        if (modifiedSkill == currentSkill) return failure(SkillNotChanged(currentSkill))
         assertNoInvalidModifications(currentSkill, modifiedSkill)
 
         val updatedSkill = updateSkillInDataStore(modifiedSkill)
         publishEvent(SkillUpdatedEvent(updatedSkill))
-        return SuccessfullyUpdated(updatedSkill)
+        return success(updatedSkill)
     }
 
     private fun assertNoInvalidModifications(currentSkill: Skill, modifiedSkill: Skill) {
@@ -36,7 +40,7 @@ class UpdateSkillByIdFunction internal constructor(
 
 }
 
-sealed class UpdateSkillByIdResult {
-    object SkillNotFound : UpdateSkillByIdResult()
-    data class SuccessfullyUpdated(val skill: Skill) : UpdateSkillByIdResult()
+sealed class SkillUpdateFailure {
+    object SkillNotFound : SkillUpdateFailure()
+    data class SkillNotChanged(val skill: Skill) : SkillUpdateFailure()
 }

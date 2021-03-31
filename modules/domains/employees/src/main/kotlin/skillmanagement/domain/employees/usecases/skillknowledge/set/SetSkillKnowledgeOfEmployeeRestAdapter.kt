@@ -1,5 +1,6 @@
 package skillmanagement.domain.employees.usecases.skillknowledge.set
 
+import arrow.core.getOrHandle
 import mu.KotlinLogging.logger
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.notFound
@@ -12,9 +13,8 @@ import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.domain.employees.model.EmployeeResource
 import skillmanagement.domain.employees.model.SkillLevel
 import skillmanagement.domain.employees.model.toResource
-import skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnowledgeOfEmployeeResult.EmployeeNotFound
-import skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnowledgeOfEmployeeResult.SkillNotFound
-import skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnowledgeOfEmployeeResult.SuccessfullyAssigned
+import skillmanagement.domain.employees.usecases.skillknowledge.set.SettingFailure.EmployeeNotFound
+import skillmanagement.domain.employees.usecases.skillknowledge.set.SettingFailure.SkillNotFound
 import java.util.UUID
 
 @RestAdapter
@@ -38,10 +38,13 @@ internal class SetSkillKnowledgeOfEmployeeRestAdapter(
             secret = request.secret
         )
         log.info { "Result: $result" }
-        return when (result) {
-            EmployeeNotFound, SkillNotFound -> notFound().build()
-            is SuccessfullyAssigned -> ok(result.employee.toResource())
-        }
+
+        return result.map { employee -> ok(employee.toResource()) }
+            .getOrHandle { failure ->
+                when (failure) {
+                    EmployeeNotFound, SkillNotFound -> notFound().build()
+                }
+            }
     }
 
     data class Request(

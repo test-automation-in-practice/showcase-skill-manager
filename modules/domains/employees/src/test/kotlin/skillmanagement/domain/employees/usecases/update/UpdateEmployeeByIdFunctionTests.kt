@@ -17,6 +17,8 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.retry.annotation.EnableRetry
 import skillmanagement.common.events.PublishEventFunction
+import skillmanagement.common.failure
+import skillmanagement.common.success
 import skillmanagement.domain.employees.model.EmailAddress
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.EmployeeUpdatedEvent
@@ -25,9 +27,8 @@ import skillmanagement.domain.employees.model.JobTitle
 import skillmanagement.domain.employees.model.LastName
 import skillmanagement.domain.employees.model.TelephoneNumber
 import skillmanagement.domain.employees.usecases.read.GetEmployeeByIdFunction
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.EmployeeNotChanged
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.EmployeeNotFound
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdated
+import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure.EmployeeNotChanged
+import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure.EmployeeNotFound
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.UnitTest
@@ -81,7 +82,7 @@ internal class UpdateEmployeeByIdFunctionTests {
 
             val result = updateEmployeeById(id, change)
 
-            result shouldBe SuccessfullyUpdated(expectedUpdatedEmployee)
+            result shouldBe success(expectedUpdatedEmployee)
             verify { publishEvent(EmployeeUpdatedEvent(expectedUpdatedEmployee)) }
         }
 
@@ -91,7 +92,7 @@ internal class UpdateEmployeeByIdFunctionTests {
 
             val result = updateEmployeeById(employee.id) { it.copy(title = JobTitle("New-Title")) }
 
-            result shouldBe EmployeeNotFound
+            result shouldBe failure(EmployeeNotFound)
 
             verify { updateEmployeeInDataStore wasNot called }
             verify { publishEvent wasNot called }
@@ -103,7 +104,7 @@ internal class UpdateEmployeeByIdFunctionTests {
 
             val result = updateEmployeeById(employee.id) { it }
 
-            result shouldBe EmployeeNotChanged(employee)
+            result shouldBe failure(EmployeeNotChanged(employee))
             verify { publishEvent wasNot called }
         }
 
@@ -145,12 +146,14 @@ internal class UpdateEmployeeByIdFunctionTests {
         @Autowired private val updateEmployeeById: UpdateEmployeeByIdFunction
     ) {
 
+        private val change: (Employee) -> Employee = { it.copy(title = JobTitle("New Title")) }
+
         @Test
         fun `operation is retried up to 5 times in case of concurrent update exceptions`() {
             every { getEmployeeById(id) } returns employee
             every { updateEmployeeInDataStore(any()) } throws ConcurrentEmployeeUpdateException()
             assertThrows<ConcurrentEmployeeUpdateException> {
-                updateEmployeeById(id) { it.copy(title = JobTitle("New Title")) }
+                updateEmployeeById(id, change)
             }
             verify(exactly = 5) { getEmployeeById(id) }
         }
@@ -163,7 +166,7 @@ internal class UpdateEmployeeByIdFunctionTests {
                 .andThenThrows(ConcurrentEmployeeUpdateException())
                 .andThen(employee)
 
-            updateEmployeeById(id) { it.copy(title = JobTitle("New Title")) }
+            updateEmployeeById(id, change)
 
             verify(exactly = 3) { getEmployeeById(id) }
         }
