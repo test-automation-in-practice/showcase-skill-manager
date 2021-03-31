@@ -29,6 +29,7 @@ internal class SkillKnowledgeUpdatingEventHandler(
     private val log = logger {}
 
     // TODO: how to update more than one page? (ES eventual consistency)
+    // TODO: log update failures?
 
     @RabbitListener(queues = [SKILL_UPDATED_QUEUE])
     fun handle(event: SkillUpdatedEvent) {

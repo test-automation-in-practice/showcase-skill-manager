@@ -1,16 +1,14 @@
 package skillmanagement.domain.employees.usecases.skillknowledge.update
 
+import arrow.core.Either
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.SkillKnowledge
-import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSkillKnowledgeResult.EmployeeNotFound
-import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSkillKnowledgeResult.SkillKnowledgeNotChanged
-import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSkillKnowledgeResult.SkillKnowledgeNotFound
-import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateSkillKnowledgeResult.SuccessfullyUpdatedSkillKnowledge
+import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateFailure.EmployeeNotFound
+import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateFailure.SkillKnowledgeNotChanged
+import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateFailure.SkillKnowledgeNotFound
+import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.EmployeeNotChanged
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdated
 import java.util.UUID
 
 @BusinessFunction
@@ -22,7 +20,7 @@ class UpdateSkillKnowledgeByIdFunction internal constructor(
         employeeId: UUID,
         skillId: UUID,
         block: (SkillKnowledge) -> SkillKnowledge
-    ): UpdateSkillKnowledgeResult {
+    ): Either<UpdateFailure, Employee> {
         var knowledgeExists = false
         val updateResult = updateEmployeeById(employeeId) { employee ->
             val updatedSkills = employee.skills
@@ -37,13 +35,14 @@ class UpdateSkillKnowledgeByIdFunction internal constructor(
             employee.copy(skills = updatedSkills)
         }
 
-        return when (updateResult) {
-            is UpdateEmployeeByIdResult.EmployeeNotFound -> EmployeeNotFound
-            is EmployeeNotChanged -> when (knowledgeExists) {
-                true -> SkillKnowledgeNotChanged(updateResult.employee)
-                false -> SkillKnowledgeNotFound
+        return updateResult.mapLeft { failure ->
+            when (failure) {
+                is EmployeeUpdateFailure.EmployeeNotFound -> EmployeeNotFound
+                is EmployeeUpdateFailure.EmployeeNotChanged -> when (knowledgeExists) {
+                    true -> SkillKnowledgeNotChanged(failure.employee)
+                    false -> SkillKnowledgeNotFound
+                }
             }
-            is SuccessfullyUpdated -> SuccessfullyUpdatedSkillKnowledge(updateResult.employee)
         }
     }
 
@@ -58,9 +57,8 @@ class UpdateSkillKnowledgeByIdFunction internal constructor(
 
 }
 
-sealed class UpdateSkillKnowledgeResult {
-    object EmployeeNotFound : UpdateSkillKnowledgeResult()
-    object SkillKnowledgeNotFound : UpdateSkillKnowledgeResult()
-    data class SkillKnowledgeNotChanged(val employee: Employee) : UpdateSkillKnowledgeResult()
-    data class SuccessfullyUpdatedSkillKnowledge(val employee: Employee) : UpdateSkillKnowledgeResult()
+sealed class UpdateFailure {
+    object EmployeeNotFound : UpdateFailure()
+    object SkillKnowledgeNotFound : UpdateFailure()
+    data class SkillKnowledgeNotChanged(val employee: Employee) : UpdateFailure()
 }

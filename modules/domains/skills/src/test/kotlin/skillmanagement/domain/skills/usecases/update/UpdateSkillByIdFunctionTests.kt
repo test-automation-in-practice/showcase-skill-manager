@@ -17,14 +17,16 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.retry.annotation.EnableRetry
 import skillmanagement.common.events.PublishEventFunction
+import skillmanagement.common.failure
+import skillmanagement.common.success
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.SkillUpdatedEvent
 import skillmanagement.domain.skills.model.Tag
 import skillmanagement.domain.skills.usecases.read.GetSkillByIdFunction
-import skillmanagement.domain.skills.usecases.update.UpdateSkillByIdResult.SkillNotFound
-import skillmanagement.domain.skills.usecases.update.UpdateSkillByIdResult.SuccessfullyUpdated
+import skillmanagement.domain.skills.usecases.update.SkillUpdateFailure.SkillNotChanged
+import skillmanagement.domain.skills.usecases.update.SkillUpdateFailure.SkillNotFound
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.UnitTest
@@ -73,17 +75,29 @@ internal class UpdateSkillByIdFunctionTests {
 
             val result = updateSkillById(id, change)
 
-            result shouldBe SuccessfullyUpdated(expectedUpdatedSkill)
+            result shouldBe success(expectedUpdatedSkill)
             verify { publishEvent(SkillUpdatedEvent(expectedUpdatedSkill)) }
         }
 
         @Test
-        fun `updating a non-existing skill returns skill not found result`() {
+        fun `updating a non-existing skill returns skill not found failure`() {
             every { getSkillById(id) } returns null
 
             val result = updateSkillById(skill.id) { it.copy(label = SkillLabel("New Label")) }
 
-            result shouldBe SkillNotFound
+            result shouldBe failure(SkillNotFound)
+
+            verify { updateSkillInDataStore wasNot called }
+            verify { publishEvent wasNot called }
+        }
+
+        @Test
+        fun `not changing anything during the update returns skill not changed failure`() {
+            every { getSkillById(id) } returns skill
+
+            val result = updateSkillById(skill.id) { it }
+
+            result shouldBe failure(SkillNotChanged(skill))
 
             verify { updateSkillInDataStore wasNot called }
             verify { publishEvent wasNot called }
@@ -126,12 +140,14 @@ internal class UpdateSkillByIdFunctionTests {
         @Autowired private val updateSkillById: UpdateSkillByIdFunction
     ) {
 
+        private val change: (Skill) -> Skill = { it.copy(label = SkillLabel("new")) }
+
         @Test
         fun `operation is retried up to 5 times in case of concurrent update exceptions`() {
             every { getSkillById(id) } returns skill
             every { updateSkillInDataStore(any()) } throws ConcurrentSkillUpdateException()
             assertThrows<ConcurrentSkillUpdateException> {
-                updateSkillById(id) { it }
+                updateSkillById(id, change)
             }
             verify(exactly = 5) { getSkillById(id) }
         }
@@ -144,7 +160,7 @@ internal class UpdateSkillByIdFunctionTests {
                 .andThenThrows(ConcurrentSkillUpdateException())
                 .andThen(skill)
 
-            updateSkillById(id) { it }
+            updateSkillById(id, change)
 
             verify(exactly = 3) { getSkillById(id) }
         }

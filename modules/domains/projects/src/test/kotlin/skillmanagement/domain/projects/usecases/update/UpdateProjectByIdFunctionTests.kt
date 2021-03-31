@@ -17,13 +17,15 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.retry.annotation.EnableRetry
 import skillmanagement.common.events.PublishEventFunction
+import skillmanagement.common.failure
+import skillmanagement.common.success
 import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.model.ProjectDescription
 import skillmanagement.domain.projects.model.ProjectLabel
 import skillmanagement.domain.projects.model.ProjectUpdatedEvent
 import skillmanagement.domain.projects.usecases.read.GetProjectByIdFunction
-import skillmanagement.domain.projects.usecases.update.UpdateProjectByIdResult.ProjectNotFound
-import skillmanagement.domain.projects.usecases.update.UpdateProjectByIdResult.SuccessfullyUpdated
+import skillmanagement.domain.projects.usecases.update.ProjectUpdateFailure.ProjectNotChanged
+import skillmanagement.domain.projects.usecases.update.ProjectUpdateFailure.ProjectNotFound
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.UnitTest
@@ -71,17 +73,29 @@ internal class UpdateProjectByIdFunctionTests {
 
             val result = updateProjectById(id, change)
 
-            result shouldBe SuccessfullyUpdated(expectedUpdatedProject)
+            result shouldBe success(expectedUpdatedProject)
             verify { publishEvent(ProjectUpdatedEvent(expectedUpdatedProject)) }
         }
 
         @Test
-        fun `updating a non-existing project returns project not found result`() {
+        fun `updating a non-existing project returns project not found failure`() {
             every { getProjectById(id) } returns null
 
             val result = updateProjectById(project.id) { it.copy(label = ProjectLabel("New Label")) }
 
-            result shouldBe ProjectNotFound
+            result shouldBe failure(ProjectNotFound)
+
+            verify { updateProjectInDataStore wasNot called }
+            verify { publishEvent wasNot called }
+        }
+
+        @Test
+        fun `not changing anything during the update returns project not changed failure`() {
+            every { getProjectById(id) } returns project
+
+            val result = updateProjectById(project.id) { it }
+
+            result shouldBe failure(ProjectNotChanged(project))
 
             verify { updateProjectInDataStore wasNot called }
             verify { publishEvent wasNot called }
@@ -125,12 +139,14 @@ internal class UpdateProjectByIdFunctionTests {
         @Autowired private val updateProjectById: UpdateProjectByIdFunction
     ) {
 
+        private val change: (Project) -> Project = { it.copy(label = ProjectLabel("new")) }
+
         @Test
         fun `operation is retried up to 5 times in case of concurrent update exceptions`() {
             every { getProjectById(id) } returns project
             every { updateProjectInDataStore(any()) } throws ConcurrentProjectUpdateException()
             assertThrows<ConcurrentProjectUpdateException> {
-                updateProjectById(id) { it }
+                updateProjectById(id, change)
             }
             verify(exactly = 5) { getProjectById(id) }
         }
@@ -143,7 +159,7 @@ internal class UpdateProjectByIdFunctionTests {
                 .andThenThrows(ConcurrentProjectUpdateException())
                 .andThen(project)
 
-            updateProjectById(id) { it }
+            updateProjectById(id, change)
 
             verify(exactly = 3) { getProjectById(id) }
         }

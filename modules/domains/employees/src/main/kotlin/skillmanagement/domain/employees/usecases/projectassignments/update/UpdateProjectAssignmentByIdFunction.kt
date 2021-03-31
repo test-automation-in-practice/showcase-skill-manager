@@ -1,16 +1,14 @@
 package skillmanagement.domain.employees.usecases.projectassignments.update
 
+import arrow.core.Either
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.ProjectAssignment
-import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentResult.EmployeeNotFound
-import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentResult.ProjectAssignmentNotChanged
-import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentResult.ProjectAssignmentNotFound
-import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateProjectAssignmentResult.SuccessfullyUpdatedProjectAssignment
+import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateFailure.EmployeeNotFound
+import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateFailure.ProjectAssignmentNotChanged
+import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateFailure.ProjectAssignmentNotFound
+import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.EmployeeNotChanged
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdated
 import java.util.UUID
 
 @BusinessFunction
@@ -22,7 +20,7 @@ class UpdateProjectAssignmentByIdFunction internal constructor(
         employeeId: UUID,
         projectAssignmentId: UUID,
         block: (ProjectAssignment) -> ProjectAssignment
-    ): UpdateProjectAssignmentResult {
+    ): Either<UpdateFailure, Employee> {
         var assignmentExists = false
         val updateResult = updateEmployeeById(employeeId) { employee ->
             val updatedProjects = employee.projects
@@ -37,13 +35,14 @@ class UpdateProjectAssignmentByIdFunction internal constructor(
             employee.copy(projects = updatedProjects)
         }
 
-        return when (updateResult) {
-            is UpdateEmployeeByIdResult.EmployeeNotFound -> EmployeeNotFound
-            is EmployeeNotChanged -> when (assignmentExists) {
-                true -> ProjectAssignmentNotChanged(updateResult.employee)
-                false -> ProjectAssignmentNotFound
+        return updateResult.mapLeft { failure ->
+            when (failure) {
+                is EmployeeUpdateFailure.EmployeeNotFound -> EmployeeNotFound
+                is EmployeeUpdateFailure.EmployeeNotChanged -> when (assignmentExists) {
+                    true -> ProjectAssignmentNotChanged(failure.employee)
+                    false -> ProjectAssignmentNotFound
+                }
             }
-            is SuccessfullyUpdated -> SuccessfullyUpdatedProjectAssignment(updateResult.employee)
         }
     }
 
@@ -59,9 +58,8 @@ class UpdateProjectAssignmentByIdFunction internal constructor(
 
 }
 
-sealed class UpdateProjectAssignmentResult {
-    object EmployeeNotFound : UpdateProjectAssignmentResult()
-    object ProjectAssignmentNotFound : UpdateProjectAssignmentResult()
-    data class ProjectAssignmentNotChanged(val employee: Employee) : UpdateProjectAssignmentResult()
-    data class SuccessfullyUpdatedProjectAssignment(val employee: Employee) : UpdateProjectAssignmentResult()
+sealed class UpdateFailure {
+    object EmployeeNotFound : UpdateFailure()
+    object ProjectAssignmentNotFound : UpdateFailure()
+    data class ProjectAssignmentNotChanged(val employee: Employee) : UpdateFailure()
 }

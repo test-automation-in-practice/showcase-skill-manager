@@ -1,18 +1,17 @@
 package skillmanagement.domain.employees.usecases.projectassignments.create
 
+import arrow.core.Either
 import org.springframework.util.IdGenerator
+import skillmanagement.common.failure
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.gateways.GetProjectByIdAdapterFunction
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.ProjectAssignment
 import skillmanagement.domain.employees.model.ProjectContribution
-import skillmanagement.domain.employees.usecases.projectassignments.create.AssignProjectToEmployeeResult.EmployeeNotFound
-import skillmanagement.domain.employees.usecases.projectassignments.create.AssignProjectToEmployeeResult.ProjectNotFound
-import skillmanagement.domain.employees.usecases.projectassignments.create.AssignProjectToEmployeeResult.SuccessfullyCreatedProjectAssignment
+import skillmanagement.domain.employees.usecases.projectassignments.create.CreationFailure.EmployeeNotFound
+import skillmanagement.domain.employees.usecases.projectassignments.create.CreationFailure.ProjectNotFound
+import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.EmployeeNotChanged
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdated
 import java.time.LocalDate
 import java.util.UUID
 
@@ -29,8 +28,8 @@ class CreateProjectAssignmentForEmployeeFunction internal constructor(
         contribution: ProjectContribution,
         startDate: LocalDate,
         endDate: LocalDate?
-    ): AssignProjectToEmployeeResult {
-        val project = getProjectById(projectId) ?: return ProjectNotFound
+    ): Either<CreationFailure, Employee> {
+        val project = getProjectById(projectId) ?: return failure(ProjectNotFound)
         val updateResult = updateEmployeeById(employeeId) {
             val assignment = ProjectAssignment(
                 id = idGenerator.generateId(),
@@ -42,10 +41,11 @@ class CreateProjectAssignmentForEmployeeFunction internal constructor(
             it.addProjectAssignment(assignment)
         }
 
-        return when (updateResult) {
-            is UpdateEmployeeByIdResult.EmployeeNotFound -> EmployeeNotFound
-            is EmployeeNotChanged -> error("should not happen")
-            is SuccessfullyUpdated -> SuccessfullyCreatedProjectAssignment(updateResult.employee)
+        return updateResult.mapLeft { failure ->
+            when (failure) {
+                is EmployeeUpdateFailure.EmployeeNotFound -> EmployeeNotFound
+                is EmployeeUpdateFailure.EmployeeNotChanged -> error("should not happen")
+            }
         }
     }
 
@@ -54,8 +54,7 @@ class CreateProjectAssignmentForEmployeeFunction internal constructor(
 
 }
 
-sealed class AssignProjectToEmployeeResult {
-    object EmployeeNotFound : AssignProjectToEmployeeResult()
-    object ProjectNotFound : AssignProjectToEmployeeResult()
-    data class SuccessfullyCreatedProjectAssignment(val employee: Employee) : AssignProjectToEmployeeResult()
+sealed class CreationFailure {
+    object EmployeeNotFound : CreationFailure()
+    object ProjectNotFound : CreationFailure()
 }

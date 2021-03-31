@@ -1,17 +1,16 @@
 package skillmanagement.domain.employees.usecases.skillknowledge.set
 
+import arrow.core.Either
+import skillmanagement.common.failure
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.gateways.GetSkillByIdAdapterFunction
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.SkillKnowledge
 import skillmanagement.domain.employees.model.SkillLevel
-import skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnowledgeOfEmployeeResult.EmployeeNotFound
-import skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnowledgeOfEmployeeResult.SkillNotFound
-import skillmanagement.domain.employees.usecases.skillknowledge.set.SetSkillKnowledgeOfEmployeeResult.SuccessfullyAssigned
+import skillmanagement.domain.employees.usecases.skillknowledge.set.SettingFailure.EmployeeNotFound
+import skillmanagement.domain.employees.usecases.skillknowledge.set.SettingFailure.SkillNotFound
+import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.EmployeeNotChanged
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdResult.SuccessfullyUpdated
 import java.util.UUID
 
 @BusinessFunction
@@ -25,8 +24,8 @@ class SetSkillKnowledgeOfEmployeeFunction internal constructor(
         skillId: UUID,
         level: SkillLevel,
         secret: Boolean
-    ): SetSkillKnowledgeOfEmployeeResult {
-        val skill = getSkillById(skillId) ?: return SkillNotFound
+    ): Either<SettingFailure, Employee> {
+        val skill = getSkillById(skillId) ?: return failure(SkillNotFound)
         val updateResult = updateEmployeeById(employeeId) { employee ->
             val skillKnowledge = SkillKnowledge(
                 skill = skill,
@@ -36,10 +35,11 @@ class SetSkillKnowledgeOfEmployeeFunction internal constructor(
             employee.setSkillKnowledge(skillKnowledge)
         }
 
-        return when (updateResult) {
-            is UpdateEmployeeByIdResult.EmployeeNotFound -> EmployeeNotFound
-            is EmployeeNotChanged -> error("should not happen")
-            is SuccessfullyUpdated -> SuccessfullyAssigned(updateResult.employee)
+        return updateResult.mapLeft { failure ->
+            when (failure) {
+                is EmployeeUpdateFailure.EmployeeNotFound -> EmployeeNotFound
+                is EmployeeUpdateFailure.EmployeeNotChanged -> error("should not happen")
+            }
         }
     }
 
@@ -48,8 +48,7 @@ class SetSkillKnowledgeOfEmployeeFunction internal constructor(
 
 }
 
-sealed class SetSkillKnowledgeOfEmployeeResult {
-    object EmployeeNotFound : SetSkillKnowledgeOfEmployeeResult()
-    object SkillNotFound : SetSkillKnowledgeOfEmployeeResult()
-    data class SuccessfullyAssigned(val employee: Employee) : SetSkillKnowledgeOfEmployeeResult()
+sealed class SettingFailure {
+    object EmployeeNotFound : SettingFailure()
+    object SkillNotFound : SettingFailure()
 }

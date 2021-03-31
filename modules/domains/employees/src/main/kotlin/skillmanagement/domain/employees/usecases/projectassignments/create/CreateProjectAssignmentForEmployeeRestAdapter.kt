@@ -1,5 +1,6 @@
 package skillmanagement.domain.employees.usecases.projectassignments.create
 
+import arrow.core.getOrHandle
 import mu.KotlinLogging.logger
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.notFound
@@ -12,9 +13,8 @@ import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.domain.employees.model.EmployeeResource
 import skillmanagement.domain.employees.model.ProjectContribution
 import skillmanagement.domain.employees.model.toResource
-import skillmanagement.domain.employees.usecases.projectassignments.create.AssignProjectToEmployeeResult.EmployeeNotFound
-import skillmanagement.domain.employees.usecases.projectassignments.create.AssignProjectToEmployeeResult.ProjectNotFound
-import skillmanagement.domain.employees.usecases.projectassignments.create.AssignProjectToEmployeeResult.SuccessfullyCreatedProjectAssignment
+import skillmanagement.domain.employees.usecases.projectassignments.create.CreationFailure.EmployeeNotFound
+import skillmanagement.domain.employees.usecases.projectassignments.create.CreationFailure.ProjectNotFound
 import java.time.LocalDate
 import java.util.UUID
 
@@ -40,10 +40,13 @@ internal class CreateProjectAssignmentForEmployeeRestAdapter(
             endDate = request.endDate
         )
         log.info { "Result: $result" }
-        return when (result) {
-            EmployeeNotFound, ProjectNotFound -> notFound().build()
-            is SuccessfullyCreatedProjectAssignment -> ok(result.employee.toResource())
-        }
+
+        return result.map { employee -> ok(employee.toResource()) }
+            .getOrHandle { failure ->
+                when (failure) {
+                    EmployeeNotFound, ProjectNotFound -> notFound().build()
+                }
+            }
     }
 
     data class Request(

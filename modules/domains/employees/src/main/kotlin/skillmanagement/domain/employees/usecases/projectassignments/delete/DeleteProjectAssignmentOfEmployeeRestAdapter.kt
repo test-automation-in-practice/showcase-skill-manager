@@ -1,5 +1,6 @@
 package skillmanagement.domain.employees.usecases.projectassignments.delete
 
+import arrow.core.getOrHandle
 import mu.KotlinLogging.logger
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.noContent
@@ -10,9 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.domain.employees.model.EmployeeResource
 import skillmanagement.domain.employees.model.toResource
-import skillmanagement.domain.employees.usecases.projectassignments.delete.DeleteProjectAssignmentOfEmployeeResult.EmployeeNotFound
-import skillmanagement.domain.employees.usecases.projectassignments.delete.DeleteProjectAssignmentOfEmployeeResult.ProjectAssignmentNotFound
-import skillmanagement.domain.employees.usecases.projectassignments.delete.DeleteProjectAssignmentOfEmployeeResult.SuccessfullyDeletedProjectAssignment
+import skillmanagement.domain.employees.usecases.projectassignments.delete.DeletionFailure.EmployeeNotFound
+import skillmanagement.domain.employees.usecases.projectassignments.delete.DeletionFailure.ProjectAssignmentNotFound
 import java.util.UUID
 
 @RestAdapter
@@ -28,10 +28,13 @@ internal class DeleteProjectAssignmentOfEmployeeRestAdapter(
         log.info { "Deleting project assignment [$assignmentId] of employee [$employeeId]" }
         val result = deleteProjectAssignmentOfEmployee(employeeId, assignmentId)
         log.info { "Result: $result" }
-        return when (result) {
-            EmployeeNotFound, ProjectAssignmentNotFound -> noContent().build()
-            is SuccessfullyDeletedProjectAssignment -> ok(result.employee.toResource())
-        }
+
+        return result.map { employee -> ok(employee.toResource()) }
+            .getOrHandle { failure ->
+                when (failure) {
+                    EmployeeNotFound, ProjectAssignmentNotFound -> noContent().build()
+                }
+            }
     }
 
 }
