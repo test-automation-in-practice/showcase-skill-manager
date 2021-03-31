@@ -27,7 +27,7 @@ internal class DeleteEmployeeByIdFunctionTests {
     fun `given employee with ID does not exist when deleting by ID then the result will be EmployeeNotFound`() {
         every { getEmployeeById(employee_jane_doe.id) } returns null
 
-        deleteEmployeeById(employee_jane_doe.id) shouldBe DeleteEmployeeByIdResult.EmployeeNotFound
+        deleteEmployeeById(employee_jane_doe.id) shouldBe false
 
         verify { deleteEmployeeFromDataStore wasNot called }
         verify { publishEvent wasNot called }
@@ -37,7 +37,7 @@ internal class DeleteEmployeeByIdFunctionTests {
     fun `given employee with ID exists when deleting by ID then the result will be SuccessfullyDeleted`() {
         every { getEmployeeById(employee_jane_doe.id) } returns employee_jane_doe
 
-        deleteEmployeeById(employee_jane_doe.id) shouldBe DeleteEmployeeByIdResult.SuccessfullyDeleted
+        deleteEmployeeById(employee_jane_doe.id) shouldBe true
 
         verify { deleteEmployeeFromDataStore(employee_jane_doe.id) }
         verify { publishEvent(EmployeeDeletedEvent(employee_jane_doe)) }

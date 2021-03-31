@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.delete
-import skillmanagement.domain.employees.usecases.delete.DeleteEmployeeByIdResult.SuccessfullyDeleted
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.andDocument
 import skillmanagement.test.fixedClock
@@ -31,7 +30,7 @@ internal class DeleteEmployeeByIdRestAdapterTests(
 
     @Test
     fun `well formed request leads to correct response`() {
-        every { deleteEmployeeById(employeeId) } returns SuccessfullyDeleted
+        every { deleteEmployeeById(employeeId) } returns true
         mockMvc
             .delete("/api/employees/$employeeId")
             .andExpect {

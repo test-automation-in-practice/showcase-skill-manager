@@ -3,8 +3,6 @@ package skillmanagement.domain.skills.usecases.delete
 import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.skills.model.SkillDeletedEvent
-import skillmanagement.domain.skills.usecases.delete.DeleteSkillByIdResult.SkillNotFound
-import skillmanagement.domain.skills.usecases.delete.DeleteSkillByIdResult.SuccessfullyDeleted
 import skillmanagement.domain.skills.usecases.read.GetSkillByIdFunction
 import java.util.UUID
 
@@ -15,16 +13,11 @@ class DeleteSkillByIdFunction internal constructor(
     private val publishEvent: PublishEventFunction
 ) {
 
-    operator fun invoke(id: UUID): DeleteSkillByIdResult {
-        val skill = getSkillById(id) ?: return SkillNotFound
+    operator fun invoke(id: UUID): Boolean {
+        val skill = getSkillById(id) ?: return false
         deleteSkillFromDataStore(id)
         publishEvent(SkillDeletedEvent(skill))
-        return SuccessfullyDeleted
+        return true
     }
 
-}
-
-sealed class DeleteSkillByIdResult {
-    object SkillNotFound : DeleteSkillByIdResult()
-    object SuccessfullyDeleted : DeleteSkillByIdResult()
 }
