@@ -5,8 +5,6 @@ import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import skillmanagement.domain.projects.model.project_neo
-import skillmanagement.domain.projects.usecases.delete.DeleteProjectByIdResult.ProjectNotFound
-import skillmanagement.domain.projects.usecases.delete.DeleteProjectByIdResult.SuccessfullyDeleted
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.UnitTest
 
@@ -19,13 +17,13 @@ internal class DeleteProjectByIdGraphQLAdapterTests {
 
     @Test
     fun `translates and delegates deletion to business function - deleted`() {
-        every { deleteProjectById(project_neo.id) } returns SuccessfullyDeleted
+        every { deleteProjectById(project_neo.id) } returns true
         assertThat(tryToDeleteSkill()).isTrue()
     }
 
     @Test
     fun `translates and delegates deletion to business function - not found`() {
-        every { deleteProjectById(project_neo.id) } returns ProjectNotFound
+        every { deleteProjectById(project_neo.id) } returns false
         assertThat(tryToDeleteSkill()).isFalse()
     }
 

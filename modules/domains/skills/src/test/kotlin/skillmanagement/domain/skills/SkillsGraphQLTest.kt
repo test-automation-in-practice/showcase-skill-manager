@@ -23,12 +23,10 @@ import skillmanagement.domain.skills.model.skill_creation_data_kotlin
 import skillmanagement.domain.skills.model.skill_creation_data_python
 import skillmanagement.domain.skills.model.skill_java
 import skillmanagement.domain.skills.model.skill_kotlin
-import skillmanagement.domain.skills.model.skill_suggestion_kotlin
 import skillmanagement.domain.skills.model.skill_python
+import skillmanagement.domain.skills.model.skill_suggestion_kotlin
 import skillmanagement.domain.skills.usecases.create.CreateSkillFunction
 import skillmanagement.domain.skills.usecases.delete.DeleteSkillByIdFunction
-import skillmanagement.domain.skills.usecases.delete.DeleteSkillByIdResult.SkillNotFound
-import skillmanagement.domain.skills.usecases.delete.DeleteSkillByIdResult.SuccessfullyDeleted
 import skillmanagement.domain.skills.usecases.read.AllSkillsQuery
 import skillmanagement.domain.skills.usecases.read.GetSkillByIdFunction
 import skillmanagement.domain.skills.usecases.read.GetSkillsPageFunction
@@ -149,7 +147,7 @@ internal class SkillsGraphQLTest(
 
     @Test
     fun `delete skill by ID - deleted`(@Autowired deleteSkillById: DeleteSkillByIdFunction) {
-        every { deleteSkillById(skill_kotlin.id) } returns SuccessfullyDeleted
+        every { deleteSkillById(skill_kotlin.id) } returns true
         assertRequestResponse(
             request = "/graphql/deleteSkillById/kotlin.graphql",
             expectedResponseBody = "/graphql/deleteSkillById/deleted.json"
@@ -158,7 +156,7 @@ internal class SkillsGraphQLTest(
 
     @Test
     fun `delete skill by ID - not found`(@Autowired deleteSkillById: DeleteSkillByIdFunction) {
-        every { deleteSkillById(skill_kotlin.id) } returns SkillNotFound
+        every { deleteSkillById(skill_kotlin.id) } returns false
         assertRequestResponse(
             request = "/graphql/deleteSkillById/kotlin.graphql",
             expectedResponseBody = "/graphql/deleteSkillById/not-found.json"

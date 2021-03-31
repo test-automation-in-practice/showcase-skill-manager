@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Test
 import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.domain.projects.model.ProjectDeletedEvent
 import skillmanagement.domain.projects.model.project_neo
-import skillmanagement.domain.projects.usecases.delete.DeleteProjectByIdResult.ProjectNotFound
-import skillmanagement.domain.projects.usecases.delete.DeleteProjectByIdResult.SuccessfullyDeleted
 import skillmanagement.domain.projects.usecases.read.GetProjectByIdFunction
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.UnitTest
@@ -28,7 +26,7 @@ internal class DeleteProjectByIdFunctionTests {
     fun `given project with ID does not exist when deleting by ID then the result will be ProjectNotFound`() {
         every { getProjectById(project_neo.id) } returns null
 
-        deleteProjectById(project_neo.id) shouldBe ProjectNotFound
+        deleteProjectById(project_neo.id) shouldBe false
 
         verify { deleteProjectFromDataStore wasNot called }
         verify { publishEvent wasNot called }
@@ -38,7 +36,7 @@ internal class DeleteProjectByIdFunctionTests {
     fun `given project with ID exists when deleting by ID then the result will be SuccessfullyDeleted`() {
         every { getProjectById(project_neo.id) } returns project_neo
 
-        deleteProjectById(project_neo.id) shouldBe SuccessfullyDeleted
+        deleteProjectById(project_neo.id) shouldBe true
 
         verify { deleteProjectFromDataStore(project_neo.id) }
         verify { publishEvent(ProjectDeletedEvent(project_neo)) }

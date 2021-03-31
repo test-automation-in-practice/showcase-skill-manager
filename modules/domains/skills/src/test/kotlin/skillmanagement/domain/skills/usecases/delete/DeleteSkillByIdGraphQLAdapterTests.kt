@@ -5,8 +5,6 @@ import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import skillmanagement.domain.skills.model.skill_kotlin
-import skillmanagement.domain.skills.usecases.delete.DeleteSkillByIdResult.SkillNotFound
-import skillmanagement.domain.skills.usecases.delete.DeleteSkillByIdResult.SuccessfullyDeleted
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.UnitTest
 
@@ -19,13 +17,13 @@ internal class DeleteSkillByIdGraphQLAdapterTests {
 
     @Test
     fun `translates and delegates deletion to business function - deleted`() {
-        every { deleteSkillById(skill_kotlin.id) } returns SuccessfullyDeleted
+        every { deleteSkillById(skill_kotlin.id) } returns true
         assertThat(tryToDeleteSkill()).isTrue()
     }
 
     @Test
     fun `translates and delegates deletion to business function - not found`() {
-        every { deleteSkillById(skill_kotlin.id) } returns SkillNotFound
+        every { deleteSkillById(skill_kotlin.id) } returns false
         assertThat(tryToDeleteSkill()).isFalse()
     }
 

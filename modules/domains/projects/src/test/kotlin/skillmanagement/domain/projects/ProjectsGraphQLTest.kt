@@ -23,12 +23,10 @@ import skillmanagement.domain.projects.model.project_creation_data_morpheus
 import skillmanagement.domain.projects.model.project_creation_data_neo
 import skillmanagement.domain.projects.model.project_morpheus
 import skillmanagement.domain.projects.model.project_neo
-import skillmanagement.domain.projects.model.project_suggestion_neo
 import skillmanagement.domain.projects.model.project_orbis
+import skillmanagement.domain.projects.model.project_suggestion_neo
 import skillmanagement.domain.projects.usecases.create.CreateProjectFunction
 import skillmanagement.domain.projects.usecases.delete.DeleteProjectByIdFunction
-import skillmanagement.domain.projects.usecases.delete.DeleteProjectByIdResult.ProjectNotFound
-import skillmanagement.domain.projects.usecases.delete.DeleteProjectByIdResult.SuccessfullyDeleted
 import skillmanagement.domain.projects.usecases.read.AllProjectsQuery
 import skillmanagement.domain.projects.usecases.read.GetProjectByIdFunction
 import skillmanagement.domain.projects.usecases.read.GetProjectsPageFunction
@@ -149,7 +147,7 @@ internal class ProjectsGraphQLTest(
 
     @Test
     fun `delete project by ID - deleted`(@Autowired deleteProjectById: DeleteProjectByIdFunction) {
-        every { deleteProjectById(project_neo.id) } returns SuccessfullyDeleted
+        every { deleteProjectById(project_neo.id) } returns true
         assertRequestResponse(
             request = "/graphql/deleteProjectById/neo.graphql",
             expectedResponseBody = "/graphql/deleteProjectById/deleted.json"
@@ -158,7 +156,7 @@ internal class ProjectsGraphQLTest(
 
     @Test
     fun `delete project by ID - not found`(@Autowired deleteProjectById: DeleteProjectByIdFunction) {
-        every { deleteProjectById(project_neo.id) } returns ProjectNotFound
+        every { deleteProjectById(project_neo.id) } returns false
         assertRequestResponse(
             request = "/graphql/deleteProjectById/neo.graphql",
             expectedResponseBody = "/graphql/deleteProjectById/not-found.json"
