@@ -1,5 +1,4 @@
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
-import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
 
 plugins {
@@ -19,7 +18,7 @@ subprojects {
 
     tasks {
         asciidoctor {
-            dependsOn("integration-tests")
+            shouldRunAfter("test")
             baseDirFollowsSourceDir()
             options(
                 mapOf(
@@ -31,9 +30,10 @@ subprojects {
                 mapOf(
                     "snippets" to file("$buildDir/generated-snippets"),
                     "source-highlighter" to "coderay",
-                    "toc" to "left",
                     "toclevels" to "3",
-                    "sectlinks" to "true"
+                    "sectlinks" to "true",
+                    "data-uri" to "true",
+                    "nofooter" to "true"
                 )
             )
 

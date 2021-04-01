@@ -23,7 +23,7 @@ dependencies {
 
 tasks {
     asciidoctor {
-        dependsOn("test")
+        shouldRunAfter("test")
         dependsOn(":modules:domains:employees:asciidoctor")
         dependsOn(":modules:domains:projects:asciidoctor")
         dependsOn(":modules:domains:skills:asciidoctor")
@@ -39,9 +39,10 @@ tasks {
             mapOf(
                 "snippets" to file("$buildDir/generated-snippets"),
                 "source-highlighter" to "coderay",
-                "toc" to "left",
                 "toclevels" to "3",
-                "sectlinks" to "true"
+                "sectlinks" to "true",
+                "data-uri" to "true",
+                "nofooter" to "true"
             )
         )
     }

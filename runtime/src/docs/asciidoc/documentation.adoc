@@ -1,7 +1,8 @@
+:toc: left
+
 = SkillManager Runtime Documentation
 
-:data-uri:
-:nofooter:
+:sectnums:
 
 == Module Structure
 
