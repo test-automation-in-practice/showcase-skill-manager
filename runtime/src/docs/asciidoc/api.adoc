@@ -1,8 +1,5 @@
 = SkillManager API Documentation
 
-:data-uri:
-:nofooter:
-
 == API Root
 
 The `/api` root resource returns information about available API endpoints in the form of `application/hal+json` links:

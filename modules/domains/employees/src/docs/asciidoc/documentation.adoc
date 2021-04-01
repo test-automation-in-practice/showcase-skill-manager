@@ -1,7 +1,8 @@
+:toc: left
+
 = Employees Module Documentation
 
-:data-uri:
-:nofooter:
+:sectnums:
 
 == Data Consistency
 

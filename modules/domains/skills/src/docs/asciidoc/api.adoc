@@ -1,7 +1,8 @@
+:toc: left
+
 = Skills API Documentation
 
-:data-uri:
-:nofooter:
+:sectnums:
 
 == REST API
 

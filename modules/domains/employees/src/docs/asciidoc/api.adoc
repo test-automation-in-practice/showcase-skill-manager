@@ -1,7 +1,8 @@
+:toc: left
+
 = Employees API Documentation
 
-:data-uri:
-:nofooter:
+:sectnums:
 
 == REST API
 
