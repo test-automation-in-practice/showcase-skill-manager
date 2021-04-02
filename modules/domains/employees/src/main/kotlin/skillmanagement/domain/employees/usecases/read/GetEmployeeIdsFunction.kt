@@ -4,14 +4,14 @@ import skillmanagement.common.model.Page
 import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.Employee
-import java.util.UUID
+import skillmanagement.domain.employees.model.EmployeeId
 
 @BusinessFunction
 class GetEmployeeIdsFunction internal constructor(
-    private val searchIndex: SearchIndex<Employee>
+    private val searchIndex: SearchIndex<Employee, EmployeeId>
 ) {
 
-    operator fun invoke(query: EmployeesQuery): Page<UUID> =
+    operator fun invoke(query: EmployeesQuery): Page<EmployeeId> =
         when (query) {
             is EmployeesWithSkill -> searchIndex.query(query)
             is EmployeesWhoWorkedOnProject -> searchIndex.query(query)

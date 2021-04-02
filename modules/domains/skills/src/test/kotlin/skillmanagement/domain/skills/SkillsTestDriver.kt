@@ -4,6 +4,7 @@ import org.springframework.hateoas.PagedModel
 import skillmanagement.common.model.Suggestion
 import skillmanagement.domain.skills.model.SkillCreationData
 import skillmanagement.domain.skills.model.SkillDescription
+import skillmanagement.domain.skills.model.SkillId
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.SkillResource
 import skillmanagement.domain.skills.model.Tag
@@ -36,7 +37,7 @@ internal class SkillsTestDriver(
         }
     }
 
-    fun get(id: UUID): SkillResource? {
+    fun get(id: SkillId): SkillResource? {
         val response = get("/api/skills/$id")
         return when (response.code) {
             200 -> response.readBodyAs(SkillResource::class)
@@ -73,7 +74,7 @@ internal class SkillsTestDriver(
         }
     }
 
-    fun delete(id: UUID) {
+    fun delete(id: SkillId) {
         val response = delete("/api/skills/$id")
         if (response.code != 204) {
             error(unmappedCase(response))

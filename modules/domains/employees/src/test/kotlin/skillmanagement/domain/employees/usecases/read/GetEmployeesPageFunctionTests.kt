@@ -7,19 +7,21 @@ import org.junit.jupiter.api.Test
 import skillmanagement.common.model.pageOf
 import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.employee_jane_doe
 import skillmanagement.domain.employees.model.employee_john_doe
 import skillmanagement.domain.employees.model.employee_john_smith
+import skillmanagement.domain.employees.model.externalProjectId
+import skillmanagement.domain.employees.model.externalSkillId
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.UnitTest
-import skillmanagement.test.uuid
 
 @UnitTest
 @ResetMocksAfterEachTest
 internal class GetEmployeesPageFunctionTests {
 
     private val getEmployeesFromDataStore: GetEmployeesFromDataStoreFunction = mockk()
-    private val searchIndex: SearchIndex<Employee> = mockk()
+    private val searchIndex: SearchIndex<Employee, EmployeeId> = mockk()
     private val findEmployees = GetEmployeesPageFunction(getEmployeesFromDataStore, searchIndex)
 
     @Test
@@ -44,7 +46,7 @@ internal class GetEmployeesPageFunctionTests {
 
     @Test
     fun `EmployeesWhoWorkedOnProject gets IDs from search index and then corresponding employees from database`() {
-        val query = EmployeesWhoWorkedOnProject(uuid())
+        val query = EmployeesWhoWorkedOnProject(externalProjectId())
         val ids = listOf(employee_john_doe.id)
         every { searchIndex.query(query) } returns pageOf(ids)
         every { getEmployeesFromDataStore(ids) } returns employeeMap(employee_john_doe)
@@ -54,7 +56,7 @@ internal class GetEmployeesPageFunctionTests {
 
     @Test
     fun `EmployeesWithSkill gets IDs from search index and then corresponding employees from database`() {
-        val query = EmployeesWithSkill(uuid())
+        val query = EmployeesWithSkill(externalSkillId())
         val ids = listOf(employee_john_doe.id)
         every { searchIndex.query(query) } returns pageOf(ids)
         every { getEmployeesFromDataStore(ids) } returns employeeMap(employee_john_doe)

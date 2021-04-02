@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.delete
+import skillmanagement.domain.employees.model.employeeId
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.andDocument
 import skillmanagement.test.fixedClock
@@ -26,7 +27,7 @@ internal class DeleteEmployeeByIdRestAdapterTests(
     @Autowired val deleteEmployeeById: DeleteEmployeeByIdFunction
 ) {
 
-    private val employeeId = uuid("4f1ead02-b667-4f11-bf30-56dae2193be6")
+    private val employeeId = employeeId("4f1ead02-b667-4f11-bf30-56dae2193be6")
 
     @Test
     fun `well formed request leads to correct response`() {

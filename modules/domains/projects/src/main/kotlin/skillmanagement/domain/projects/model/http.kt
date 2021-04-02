@@ -9,11 +9,10 @@ import org.springframework.hateoas.server.mvc.BasicLinkBuilder
 import org.springframework.hateoas.server.mvc.BasicLinkBuilder.linkToCurrentMapping
 import skillmanagement.common.http.toMetaData
 import skillmanagement.common.model.Page
-import java.util.UUID
 
 @Relation(itemRelation = "project", collectionRelation = "projects")
 internal data class ProjectResource(
-    val id: UUID,
+    val id: ProjectId,
     val label: ProjectLabel,
     val description: ProjectDescription
 ) : RepresentationModel<ProjectResource>()
@@ -53,5 +52,5 @@ internal fun linkToProjectsSearch(pageIndex: Int, pageSize: Int): BasicLinkBuild
     return linkToCurrentMapping().slash("api/projects$queryPart")
 }
 
-internal fun linkToProject(id: UUID) =
+internal fun linkToProject(id: ProjectId) =
     linkToCurrentMapping().slash("api/projects/$id")

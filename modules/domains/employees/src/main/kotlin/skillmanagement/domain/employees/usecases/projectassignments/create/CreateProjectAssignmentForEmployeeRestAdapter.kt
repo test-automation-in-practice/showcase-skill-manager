@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.domain.employees.gateways.GetProjectByIdAdapterFunction
+import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.EmployeeResource
 import skillmanagement.domain.employees.model.ProjectContribution
 import skillmanagement.domain.employees.model.ProjectData
+import skillmanagement.domain.employees.model.ProjectId
 import skillmanagement.domain.employees.model.toResource
 import java.time.LocalDate
-import java.util.UUID
 
 @RestAdapter
 @RequestMapping("/api/employees/{employeeId}/projects")
@@ -29,7 +30,7 @@ internal class CreateProjectAssignmentForEmployeeRestAdapter(
 
     @PostMapping
     fun post(
-        @PathVariable employeeId: UUID,
+        @PathVariable employeeId: EmployeeId,
         @RequestBody request: Request
     ): ResponseEntity<EmployeeResource> {
         val projectId = request.projectId
@@ -43,7 +44,7 @@ internal class CreateProjectAssignmentForEmployeeRestAdapter(
         val data = request.toCreationData(project)
 
         return createProjectAssignmentForEmployee(employeeId, data)
-            .map { employee ->                ok(employee.toResource())            }
+            .map { employee -> ok(employee.toResource()) }
             .getOrHandle { failure ->
                 log.debug { "Employee update failed: $failure" }
                 notFound().build()
@@ -59,7 +60,7 @@ internal class CreateProjectAssignmentForEmployeeRestAdapter(
         )
 
     data class Request(
-        val projectId: UUID,
+        val projectId: ProjectId,
         val contribution: ProjectContribution,
         val startDate: LocalDate,
         val endDate: LocalDate?

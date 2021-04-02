@@ -4,15 +4,18 @@ import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.index.query.Operator.AND
 import org.elasticsearch.index.query.QueryBuilders.queryStringQuery
 import org.elasticsearch.index.query.QueryStringQueryBuilder
+import org.elasticsearch.search.SearchHit
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
 import skillmanagement.common.searchindices.AbstractSearchIndex
 import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectId
+import skillmanagement.domain.projects.model.projectId
 
 @Component
 internal class ProjectSearchIndex(
     override val client: RestHighLevelClient
-) : AbstractSearchIndex<Project>() {
+) : AbstractSearchIndex<Project, ProjectId>() {
 
     override val indexName = "projects"
     override val sortFieldName = "_sort"
@@ -28,10 +31,12 @@ internal class ProjectSearchIndex(
         )
 
     override fun id(instance: Project) = instance.id
+    override fun id(hit: SearchHit) = projectId(hit.id)
 
     override fun buildQuery(queryString: String): QueryStringQueryBuilder =
         queryStringQuery(queryString)
             .defaultField("label")
             .defaultOperator(AND)
+
 
 }

@@ -1,7 +1,7 @@
 package skillmanagement.domain.employees
 
 import com.tngtech.archunit.base.DescribedPredicate.alwaysTrue
-import com.tngtech.archunit.core.domain.JavaClass.Predicates.type
+import com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAPackage
 import com.tngtech.archunit.core.domain.JavaClasses
 import com.tngtech.archunit.core.importer.ClassFileImporter
 import com.tngtech.archunit.core.importer.ImportOption.DoNotIncludeTests
@@ -11,8 +11,6 @@ import com.tngtech.archunit.library.dependencies.SlicesRuleDefinition
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
-import skillmanagement.domain.employees.gateways.GetProjectByIdAdapterFunction
-import skillmanagement.domain.employees.gateways.GetSkillByIdAdapterFunction
 import skillmanagement.test.UnitTest
 
 @UnitTest
@@ -54,8 +52,7 @@ internal class DomainArchitectureTests {
     fun `access to other domains`() {
         val domains = "skillmanagement.domain"
         Architectures.layeredArchitecture()
-            .ignoreDependency(type(GetSkillByIdAdapterFunction::class.java), alwaysTrue())
-            .ignoreDependency(type(GetProjectByIdAdapterFunction::class.java), alwaysTrue())
+            .ignoreDependency(resideInAPackage("$basePackage.gateways"), alwaysTrue())
             .layer("employees").definedBy("$domains.employees..")
             .layer("projects").definedBy("$domains.projects..")
             .layer("skills").definedBy("$domains.skills..")

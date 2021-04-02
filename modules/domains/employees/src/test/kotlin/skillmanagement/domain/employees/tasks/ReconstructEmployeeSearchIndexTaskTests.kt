@@ -21,8 +21,8 @@ internal class ReconstructEmployeeSearchIndexTaskTests : AbstractReconstructSear
 
     private val getEmployeesFromDataStore: GetEmployeesFromDataStoreFunction = mockk()
 
-    override val searchIndex: SearchIndexAdmin<Employee> = mockk(relaxUnitFun = true)
-    override val cut = ReconstructEmployeeSearchIndexTask(searchIndex, getEmployeesFromDataStore)
+    override val searchIndexAdmin: SearchIndexAdmin<Employee> = mockk(relaxUnitFun = true)
+    override val cut = ReconstructEmployeeSearchIndexTask(searchIndexAdmin, getEmployeesFromDataStore)
 
     override val instance1 = employee_jane_doe
     override val instance2 = employee_john_doe

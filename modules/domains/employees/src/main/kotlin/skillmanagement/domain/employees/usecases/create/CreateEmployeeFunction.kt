@@ -6,6 +6,7 @@ import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.EmployeeAddedEvent
 import skillmanagement.domain.employees.model.EmployeeCreationData
+import skillmanagement.domain.employees.model.EmployeeId
 import java.time.Clock
 
 @BusinessFunction
@@ -25,7 +26,7 @@ class CreateEmployeeFunction internal constructor(
 
     private fun EmployeeCreationData.toEmployee() =
         Employee(
-            id = idGenerator.generateId(),
+            id = EmployeeId(idGenerator.generateId()),
             version = 1,
             firstName = firstName,
             lastName = lastName,

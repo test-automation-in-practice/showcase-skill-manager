@@ -23,5 +23,4 @@ java -jar runtime/build/libs/runtime.jar
 There are multiple application profiles available. Each will either add optional
 behaviour or change the behaviour of different aspects of the application:
 
-- `unsecured` - disables authentication requirements for all endpoints
-- `with-test-data` - will create a small test data set after application launch 
+- `unsecured` - disables authentication requirements for all endpoints 

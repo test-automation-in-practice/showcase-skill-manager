@@ -19,14 +19,14 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.testit.testutils.logrecorder.api.LogRecord
 import org.testit.testutils.logrecorder.junit5.RecordLoggers
 import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.SkillId
+import skillmanagement.domain.skills.model.skillId
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_python
 import skillmanagement.domain.skills.usecases.create.InsertSkillIntoDataStoreFunction
 import skillmanagement.domain.skills.usecases.delete.DeleteSkillFromDataStoreFunction
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.TechnologyIntegrationTest
-import skillmanagement.test.uuid
-import java.util.UUID
 
 @JdbcTest
 @AutoConfigureJson
@@ -51,7 +51,7 @@ internal class GetSkillsFromDataStoreFunctionTests(
 
         @Test
         fun `returns NULL if nothing found with given ID`() {
-            getSingleSkill(uuid()) shouldBe null
+            getSingleSkill(skillId()) shouldBe null
         }
 
         @Test
@@ -60,7 +60,7 @@ internal class GetSkillsFromDataStoreFunctionTests(
             getSingleSkill(skill_kotlin.id) shouldBe skill_kotlin
         }
 
-        private fun getSingleSkill(id: UUID) = getSkillsFromDataStore(id)
+        private fun getSingleSkill(id: SkillId) = getSkillsFromDataStore(id)
 
     }
 
@@ -74,20 +74,20 @@ internal class GetSkillsFromDataStoreFunctionTests(
 
         @Test
         fun `returns empty map if none of the Skills were found`() {
-            getMultipleSkills(uuid()) shouldBe emptyMap()
+            getMultipleSkills(skillId()) shouldBe emptyMap()
         }
 
         @Test
         fun `returns map with every found Skill`() {
             insert(skill_kotlin, skill_python)
 
-            val actualSkills = getMultipleSkills(skill_kotlin.id, uuid(), skill_python.id)
+            val actualSkills = getMultipleSkills(skill_kotlin.id, skillId(), skill_python.id)
             val expectedSkills = setOf(skill_kotlin, skill_python).map { it.id to it }.toMap()
 
             actualSkills shouldBe expectedSkills
         }
 
-        private fun getMultipleSkills(vararg ids: UUID) = getSkillsFromDataStore(ids.toList(), chunkSize = 2)
+        private fun getMultipleSkills(vararg ids: SkillId) = getSkillsFromDataStore(ids.toList(), chunkSize = 2)
 
     }
 
@@ -141,7 +141,7 @@ internal class GetSkillsFromDataStoreFunctionTests(
             assertThat(messages[1]).startsWith("Corrupted data: {}")
         }
 
-        private fun corruptData(skillId: UUID) {
+        private fun corruptData(skillId: SkillId) {
             jdbcTemplate.update("UPDATE skills SET data = '{}' WHERE id = :id", mapOf("id" to "$skillId"))
         }
 

@@ -7,7 +7,6 @@ import skillmanagement.test.AbstractJsonSerializationTests
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.UnitTest
 import skillmanagement.test.instant
-import skillmanagement.test.uuid
 
 internal class SkillChangeDataTests {
 
@@ -16,7 +15,7 @@ internal class SkillChangeDataTests {
     inner class SkillExtensionFunctionTests {
 
         private val skill = Skill(
-            id = uuid("3039df54-e86f-4973-9887-738510305e48"),
+            id = skillId("3039df54-e86f-4973-9887-738510305e48"),
             version = 42,
             label = SkillLabel("Changing Data"),
             description = SkillDescription("Much needed for these tests."),

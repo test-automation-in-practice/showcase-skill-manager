@@ -23,7 +23,7 @@ internal class ReconstructProjectSearchIndexTaskWebEndpoint(
 
 @Task
 internal class ReconstructProjectSearchIndexTask(
-    override val searchIndex: SearchIndexAdmin<Project>,
+    override val searchIndexAdmin: SearchIndexAdmin<Project>,
     private val getProjectsFromDataStore: GetProjectsFromDataStoreFunction
 ) : AbstractReconstructSearchIndexTask<Project>() {
 

@@ -2,12 +2,13 @@ package skillmanagement.domain.employees.usecases.projectassignments.create
 
 import org.springframework.util.IdGenerator
 import skillmanagement.common.stereotypes.BusinessFunction
+import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.ProjectAssignment
+import skillmanagement.domain.employees.model.ProjectAssignmentId
 import skillmanagement.domain.employees.model.ProjectContribution
 import skillmanagement.domain.employees.model.ProjectData
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
 import java.time.LocalDate
-import java.util.UUID
 
 @BusinessFunction
 class CreateProjectAssignmentForEmployeeFunction internal constructor(
@@ -15,14 +16,14 @@ class CreateProjectAssignmentForEmployeeFunction internal constructor(
     private val idGenerator: IdGenerator
 ) {
 
-    operator fun invoke(employeeId: UUID, data: ProjectAssignmentCreationData) =
+    operator fun invoke(employeeId: EmployeeId, data: ProjectAssignmentCreationData) =
         updateEmployeeById(employeeId) { employee ->
             employee.addOrUpdateProjectAssignment(projectAssignment(data))
         }
 
     private fun projectAssignment(data: ProjectAssignmentCreationData) =
         ProjectAssignment(
-            id = idGenerator.generateId(),
+            id = ProjectAssignmentId(idGenerator.generateId()),
             project = data.project,
             contribution = data.contribution,
             startDate = data.startDate,

@@ -3,13 +3,14 @@ package skillmanagement.domain.employees.usecases.projectassignments.update
 import arrow.core.Either
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.ProjectAssignment
+import skillmanagement.domain.employees.model.ProjectAssignmentId
 import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateFailure.EmployeeNotFound
 import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateFailure.ProjectAssignmentNotChanged
 import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateFailure.ProjectAssignmentNotFound
 import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
-import java.util.UUID
 
 @BusinessFunction
 class UpdateProjectAssignmentByIdFunction internal constructor(
@@ -19,8 +20,8 @@ class UpdateProjectAssignmentByIdFunction internal constructor(
     // TODO: extract update function to Employee
 
     operator fun invoke(
-        employeeId: UUID,
-        projectAssignmentId: UUID,
+        employeeId: EmployeeId,
+        projectAssignmentId: ProjectAssignmentId,
         block: (ProjectAssignment) -> ProjectAssignment
     ): Either<UpdateFailure, Employee> {
         var assignmentExists = false

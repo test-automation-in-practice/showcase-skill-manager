@@ -6,11 +6,11 @@ import skillmanagement.common.failure
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.common.success
 import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.EmployeeUpdatedEvent
 import skillmanagement.domain.employees.usecases.read.GetEmployeeByIdFunction
 import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure.EmployeeNotChanged
 import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure.EmployeeNotFound
-import java.util.UUID
 
 @BusinessFunction
 class UpdateEmployeeByIdFunction internal constructor(
@@ -20,7 +20,10 @@ class UpdateEmployeeByIdFunction internal constructor(
 ) {
 
     @RetryOnConcurrentEmployeeUpdate
-    operator fun invoke(employeeId: UUID, block: (Employee) -> Employee): Either<EmployeeUpdateFailure, Employee> {
+    operator fun invoke(
+        employeeId: EmployeeId,
+        block: (Employee) -> Employee
+    ): Either<EmployeeUpdateFailure, Employee> {
         val currentEmployee = getEmployeeById(employeeId) ?: return failure(EmployeeNotFound)
         val modifiedEmployee = block(currentEmployee)
 

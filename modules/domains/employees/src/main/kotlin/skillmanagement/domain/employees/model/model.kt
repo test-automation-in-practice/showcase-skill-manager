@@ -1,5 +1,6 @@
 package skillmanagement.domain.employees.model
 
+import skillmanagement.common.model.IdType
 import skillmanagement.common.model.IntType
 import skillmanagement.common.model.Name
 import skillmanagement.common.model.StringType
@@ -10,7 +11,7 @@ import java.time.YearMonth
 import java.util.UUID
 
 data class Employee(
-    val id: UUID,
+    val id: EmployeeId,
     val version: Int,
 
     val firstName: FirstName,
@@ -48,14 +49,15 @@ data class Employee(
     fun removeSkillKnowledge(shouldRemove: (SkillKnowledge) -> Boolean): Employee =
         copy(skills = skills.filter { !shouldRemove(it) })
 
-    fun updateProjectAssignmentByProjectId(projectId: UUID, block: (ProjectAssignment) -> ProjectAssignment): Employee =
+    fun updateProjectAssignment(projectId: ProjectId, block: (ProjectAssignment) -> ProjectAssignment): Employee =
         copy(projects = projects.map { if (it.project.id == projectId) block(it) else it })
 
-    fun updateSkillKnowledgeBySkillId(skillId: UUID, block: (SkillKnowledge) -> SkillKnowledge): Employee =
+    fun updateSkillKnowledge(skillId: SkillId, block: (SkillKnowledge) -> SkillKnowledge): Employee =
         copy(skills = skills.map { if (it.skill.id == skillId) block(it) else it })
 
 }
 
+class EmployeeId(value: UUID) : IdType(value)
 class FirstName(value: String) : Name(value)
 class LastName(value: String) : Name(value)
 class EmployeeDescription(value: String) : Text(value)
@@ -99,14 +101,15 @@ data class SkillKnowledge(
 )
 
 data class SkillData(
-    val id: UUID,
+    val id: SkillId,
     val label: String
 )
 
+class SkillId(value: UUID) : IdType(value)
 class SkillLevel(value: Int) : IntType(value, min = 1, max = 10)
 
 data class ProjectAssignment(
-    val id: UUID,
+    val id: ProjectAssignmentId,
     val project: ProjectData,
     val contribution: ProjectContribution,
     val startDate: LocalDate,
@@ -114,9 +117,17 @@ data class ProjectAssignment(
 )
 
 data class ProjectData(
-    val id: UUID,
+    val id: ProjectId,
     val label: String,
     val description: String
 )
 
+class ProjectAssignmentId(value: UUID) : IdType(value)
+class ProjectId(value: UUID) : IdType(value)
 class ProjectContribution(value: String) : Text(value)
+
+fun employeeId(value: String) = EmployeeId(UUID.fromString(value))
+fun projectAssignmentId(value: String) = ProjectAssignmentId(UUID.fromString(value))
+
+fun projectId(value: String) = ProjectId(UUID.fromString(value))
+fun skillId(value: String) = SkillId(UUID.fromString(value))

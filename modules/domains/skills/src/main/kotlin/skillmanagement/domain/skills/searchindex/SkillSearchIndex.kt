@@ -4,16 +4,19 @@ import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.index.query.Operator.AND
 import org.elasticsearch.index.query.QueryBuilders.queryStringQuery
 import org.elasticsearch.index.query.QueryStringQueryBuilder
+import org.elasticsearch.search.SearchHit
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
 import skillmanagement.common.searchindices.AbstractSearchIndex
 import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.SkillId
 import skillmanagement.domain.skills.model.Tag
+import skillmanagement.domain.skills.model.skillId
 
 @Component
 internal class SkillSearchIndex(
     override val client: RestHighLevelClient
-) : AbstractSearchIndex<Skill>() {
+) : AbstractSearchIndex<Skill, SkillId>() {
 
     override val indexName = "skills"
     override val sortFieldName = "_sort"
@@ -33,6 +36,7 @@ internal class SkillSearchIndex(
         }
 
     override fun id(instance: Skill) = instance.id
+    override fun id(hit: SearchHit) = skillId(hit.id)
 
     override fun buildQuery(queryString: String): QueryStringQueryBuilder =
         queryStringQuery(queryString)

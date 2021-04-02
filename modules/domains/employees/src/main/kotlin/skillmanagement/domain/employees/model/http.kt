@@ -10,14 +10,13 @@ import org.springframework.hateoas.server.mvc.BasicLinkBuilder.linkToCurrentMapp
 import skillmanagement.common.http.toMetaData
 import skillmanagement.common.model.Page
 import java.time.LocalDate
-import java.util.UUID
 
 private const val RESOURCE_BASE = "api/employees"
 
 @JsonInclude(NON_NULL)
 @Relation(itemRelation = "employee", collectionRelation = "employees")
 internal data class EmployeeResource(
-    val id: UUID,
+    val id: EmployeeId,
 
     val firstName: FirstName,
     val lastName: LastName,
@@ -70,7 +69,7 @@ internal fun Employee.toResource() = EmployeeResource(
     add(linkToEmployee(id).withRel("delete"))
 }
 
-internal fun SkillKnowledge.toResource(employeeId: UUID) = SkillKnowledgeResource(
+internal fun SkillKnowledge.toResource(employeeId: EmployeeId) = SkillKnowledgeResource(
     label = skill.label,
     level = level,
     secret = secret
@@ -80,7 +79,7 @@ internal fun SkillKnowledge.toResource(employeeId: UUID) = SkillKnowledgeResourc
     add(linkToSkill(skill.id).withRel("skill"))
 }
 
-internal fun ProjectAssignment.toResource(employeeId: UUID) = ProjectAssignmentResource(
+internal fun ProjectAssignment.toResource(employeeId: EmployeeId) = ProjectAssignmentResource(
     label = project.label,
     description = project.description,
     contribution = contribution,
@@ -118,17 +117,17 @@ internal fun linkToEmployeesSearch(pageIndex: Int, pageSize: Int): BasicLinkBuil
     return linkToCurrentMapping().slash(RESOURCE_BASE + queryPart)
 }
 
-internal fun linkToEmployee(id: UUID) =
+internal fun linkToEmployee(id: EmployeeId) =
     linkToCurrentMapping().slash("$RESOURCE_BASE/$id")
 
-internal fun linkToSkillKnowledge(employeeId: UUID, skillId: UUID) =
+internal fun linkToSkillKnowledge(employeeId: EmployeeId, skillId: SkillId) =
     linkToCurrentMapping().slash("$RESOURCE_BASE/$employeeId/skills/$skillId")
 
-internal fun linkToSkill(id: UUID) =
+internal fun linkToSkill(id: SkillId) =
     linkToCurrentMapping().slash("api/employees/$id")
 
-internal fun linkToProjectAssignment(employeeId: UUID, assignmentId: UUID) =
+internal fun linkToProjectAssignment(employeeId: EmployeeId, assignmentId: ProjectAssignmentId) =
     linkToCurrentMapping().slash("$RESOURCE_BASE/$employeeId/projects/$assignmentId")
 
-internal fun linkToProject(id: UUID) =
+internal fun linkToProject(id: ProjectId) =
     linkToCurrentMapping().slash("api/projects/$id")

@@ -12,6 +12,7 @@ import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillAddedEvent
 import skillmanagement.domain.skills.model.SkillDeletedEvent
+import skillmanagement.domain.skills.model.SkillId
 import skillmanagement.domain.skills.model.SkillUpdatedEvent
 
 private const val CONTEXT = "SkillSearchIndexUpdatingEventHandler"
@@ -22,7 +23,7 @@ private const val SKILL_DELETED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.SkillDeletedEven
 
 @EventHandler
 internal class SkillSearchIndexUpdatingEventHandler(
-    private val searchIndex: SearchIndex<Skill>
+    private val searchIndex: SearchIndex<Skill, SkillId>
 ) {
 
     private val log = logger {}

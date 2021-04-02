@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonValue
 import skillmanagement.common.validation.Validation
 import skillmanagement.common.validation.Validation.Companion.validate
 
+private val NO_REQUIREMENTS: Validation<*>.() -> Unit = {}
+
 /**
  * A _value type_ (a.k.a. _"domain primitive"_) wraps a given (primitive) value
  * and combines it with requirements that the _value_ has to meet.
@@ -16,13 +18,15 @@ import skillmanagement.common.validation.Validation.Companion.validate
  */
 open class ValueType<T : Any> protected constructor(
     @JsonValue protected val value: T,
-    requirements: Validation<T>.() -> Unit = {}
+    requirements: Validation<T>.() -> Unit = NO_REQUIREMENTS
 ) {
 
     protected open val label: String = javaClass.simpleName
 
     init {
-        validate(value, label, requirements)
+        if (requirements != NO_REQUIREMENTS) {
+            validate(value, label, requirements)
+        }
     }
 
     override fun toString() = value.toString()

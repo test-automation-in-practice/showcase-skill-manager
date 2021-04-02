@@ -14,13 +14,13 @@ import skillmanagement.common.http.patch.ApplyPatch
 import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillChangeData
+import skillmanagement.domain.skills.model.SkillId
 import skillmanagement.domain.skills.model.SkillResource
 import skillmanagement.domain.skills.model.merge
 import skillmanagement.domain.skills.model.toChangeData
 import skillmanagement.domain.skills.model.toResource
 import skillmanagement.domain.skills.usecases.update.SkillUpdateFailure.SkillNotChanged
 import skillmanagement.domain.skills.usecases.update.SkillUpdateFailure.SkillNotFound
-import java.util.UUID
 
 @RestAdapter
 @RequestMapping("/api/skills/{id}")
@@ -30,14 +30,14 @@ internal class UpdateSkillByIdRestAdapter(
 ) {
 
     @PutMapping
-    fun put(@PathVariable id: UUID, @RequestBody changeData: SkillChangeData): ResponseEntity<SkillResource> =
+    fun put(@PathVariable id: SkillId, @RequestBody changeData: SkillChangeData): ResponseEntity<SkillResource> =
         update(id) { skill -> skill.merge(changeData) }
 
     @PatchMapping(consumes = ["application/json-patch+json"])
-    fun patch(@PathVariable id: UUID, @RequestBody patch: JsonPatch): ResponseEntity<SkillResource> =
+    fun patch(@PathVariable id: SkillId, @RequestBody patch: JsonPatch): ResponseEntity<SkillResource> =
         update(id) { skill -> skill.merge(applyPatch(patch, skill.toChangeData())) }
 
-    private fun update(id: UUID, block: (Skill) -> Skill) = updateSkillById(id, block)
+    private fun update(id: SkillId, block: (Skill) -> Skill) = updateSkillById(id, block)
         .map { skill -> ok(skill.toResource()) }
         .getOrHandle { failure ->
             when (failure) {

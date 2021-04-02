@@ -16,7 +16,7 @@ internal class ProjectChangeDataTests {
     inner class ProjectExtensionFunctionTests {
 
         private val project = Project(
-            id = uuid("3039df54-e86f-4973-9887-738510305e48"),
+            id = projectId("3039df54-e86f-4973-9887-738510305e48"),
             version = 42,
             label = ProjectLabel("Changing Data"),
             description = ProjectDescription("Much needed for these tests."),

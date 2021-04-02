@@ -16,6 +16,7 @@ import skillmanagement.domain.employees.model.FirstName
 import skillmanagement.domain.employees.model.JobTitle
 import skillmanagement.domain.employees.model.LastName
 import skillmanagement.domain.employees.model.TelephoneNumber
+import skillmanagement.domain.employees.model.employeeId
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.UnitTest
 import skillmanagement.test.fixedClock
@@ -47,7 +48,7 @@ internal class CreateEmployeeFunctionTests {
             )
         )
         val expected = Employee(
-            id = uuid("9f3d85ac-1571-4404-af3a-6fda482a6c23"),
+            id = employeeId("9f3d85ac-1571-4404-af3a-6fda482a6c23"),
             version = 1,
             firstName = FirstName("Jane"),
             lastName = LastName("Doe"),

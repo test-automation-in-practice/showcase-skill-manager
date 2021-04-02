@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import skillmanagement.common.stereotypes.RestAdapter
-import java.util.UUID
+import skillmanagement.domain.projects.model.ProjectId
 
 @RestAdapter
 @RequestMapping("/api/projects/{id}")
@@ -16,7 +16,7 @@ internal class DeleteProjectByIdRestAdapter(
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun delete(@PathVariable id: UUID) {
+    fun delete(@PathVariable id: ProjectId) {
         deleteProjectById(id)
     }
 

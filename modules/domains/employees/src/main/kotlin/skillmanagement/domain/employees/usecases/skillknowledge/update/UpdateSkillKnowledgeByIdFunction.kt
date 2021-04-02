@@ -3,13 +3,14 @@ package skillmanagement.domain.employees.usecases.skillknowledge.update
 import arrow.core.Either
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeId
+import skillmanagement.domain.employees.model.SkillId
 import skillmanagement.domain.employees.model.SkillKnowledge
 import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateFailure.EmployeeNotFound
 import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateFailure.SkillKnowledgeNotChanged
 import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateFailure.SkillKnowledgeNotFound
 import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
-import java.util.UUID
 
 @BusinessFunction
 class UpdateSkillKnowledgeByIdFunction internal constructor(
@@ -19,8 +20,8 @@ class UpdateSkillKnowledgeByIdFunction internal constructor(
     // TODO: extract update function to Employee
 
     operator fun invoke(
-        employeeId: UUID,
-        skillId: UUID,
+        employeeId: EmployeeId,
+        skillId: SkillId,
         block: (SkillKnowledge) -> SkillKnowledge
     ): Either<UpdateFailure, Employee> {
         var knowledgeExists = false

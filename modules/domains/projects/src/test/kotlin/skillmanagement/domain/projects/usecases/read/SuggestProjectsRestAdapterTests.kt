@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.post
 import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectId
 import skillmanagement.domain.projects.model.project_suggestion_morpheus
 import skillmanagement.domain.projects.model.project_suggestion_neo
 import skillmanagement.test.ResetMocksAfterEachTest
@@ -29,7 +30,7 @@ import skillmanagement.test.strictJson
 @AutoConfigureRestDocs("build/generated-snippets/projects/suggest", uriPort = 80)
 internal class SuggestProjectsRestAdapterTests(
     @Autowired val mockMvc: MockMvc,
-    @Autowired val searchIndex: SearchIndex<Project>
+    @Autowired val searchIndex: SearchIndex<Project, ProjectId>
 ) {
 
     @Test
@@ -92,5 +93,5 @@ internal class SuggestProjectsRestAdapterTests(
 
 private class SuggestProjectsRestAdapterTestsConfiguration {
     @Bean
-    fun searchIndex(): SearchIndex<Project> = mockk(relaxUnitFun = true)
+    fun searchIndex(): SearchIndex<Project, ProjectId> = mockk(relaxUnitFun = true)
 }

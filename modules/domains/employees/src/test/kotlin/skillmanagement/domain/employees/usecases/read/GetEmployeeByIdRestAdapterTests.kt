@@ -11,12 +11,12 @@ import org.springframework.context.annotation.Import
 import org.springframework.hateoas.MediaTypes
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import skillmanagement.domain.employees.model.employeeId
 import skillmanagement.domain.employees.model.employee_jane_doe
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.andDocument
 import skillmanagement.test.fixedClock
 import skillmanagement.test.strictJson
-import skillmanagement.test.uuid
 import java.time.Clock
 
 @TechnologyIntegrationTest
@@ -30,7 +30,7 @@ internal class GetEmployeeByIdRestAdapterTests(
 
     @Test
     fun `responds with 204 No Content if Employee not found`() {
-        val id = uuid()
+        val id = employeeId()
         every { getEmployeeById(id) } returns null
 
         mockMvc

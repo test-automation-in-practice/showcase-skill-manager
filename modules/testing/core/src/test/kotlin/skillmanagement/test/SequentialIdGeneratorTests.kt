@@ -1,10 +1,9 @@
 package skillmanagement.test
 
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.util.NoSuchElementException
-import java.util.UUID
 
 @UnitTest
 internal class SequentialIdGeneratorTests {
@@ -22,9 +21,9 @@ internal class SequentialIdGeneratorTests {
             "bb75d8c2-de98-46c2-b1a7-c00a32438453",
             "6cdee3f7-8f9a-4b81-a1b8-06a5b2efcd2e"
         )
-        Assertions.assertThat(generator.generateId()).isEqualTo(UUID.fromString("6b51ac39-55b9-4a13-8b42-c71da567af16"))
-        Assertions.assertThat(generator.generateId()).isEqualTo(UUID.fromString("bb75d8c2-de98-46c2-b1a7-c00a32438453"))
-        Assertions.assertThat(generator.generateId()).isEqualTo(UUID.fromString("6cdee3f7-8f9a-4b81-a1b8-06a5b2efcd2e"))
+        assertThat(generator.generateId()).isEqualTo(uuid("6b51ac39-55b9-4a13-8b42-c71da567af16"))
+        assertThat(generator.generateId()).isEqualTo(uuid("bb75d8c2-de98-46c2-b1a7-c00a32438453"))
+        assertThat(generator.generateId()).isEqualTo(uuid("6cdee3f7-8f9a-4b81-a1b8-06a5b2efcd2e"))
         assertThrows<NoSuchElementException> { generator.generateId() }
     }
 

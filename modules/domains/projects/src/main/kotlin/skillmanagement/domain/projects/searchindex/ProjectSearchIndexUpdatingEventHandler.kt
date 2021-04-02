@@ -12,6 +12,7 @@ import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.model.ProjectAddedEvent
 import skillmanagement.domain.projects.model.ProjectDeletedEvent
+import skillmanagement.domain.projects.model.ProjectId
 import skillmanagement.domain.projects.model.ProjectUpdatedEvent
 
 private const val CONTEXT = "ProjectSearchIndexUpdatingEventHandler"
@@ -22,7 +23,7 @@ private const val PROJECT_DELETED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.ProjectDeleted
 
 @EventHandler
 internal class ProjectSearchIndexUpdatingEventHandler(
-    private val searchIndex: SearchIndex<Project>
+    private val searchIndex: SearchIndex<Project, ProjectId>
 ) {
 
     private val log = logger {}

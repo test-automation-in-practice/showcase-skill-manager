@@ -12,16 +12,17 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.http.patch.ApplyPatch
 import skillmanagement.common.stereotypes.RestAdapter
+import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.EmployeeResource
 import skillmanagement.domain.employees.model.ProjectAssignment
 import skillmanagement.domain.employees.model.ProjectAssignmentChangeData
+import skillmanagement.domain.employees.model.ProjectAssignmentId
 import skillmanagement.domain.employees.model.merge
 import skillmanagement.domain.employees.model.toChangeData
 import skillmanagement.domain.employees.model.toResource
 import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateFailure.EmployeeNotFound
 import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateFailure.ProjectAssignmentNotChanged
 import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateFailure.ProjectAssignmentNotFound
-import java.util.UUID
 
 @RestAdapter
 @RequestMapping("/api/employees/{employeeId}/projects/{assignmentId}")
@@ -32,23 +33,27 @@ internal class UpdateProjectAssignmentByIdRestAdapter(
 
     @PutMapping
     fun put(
-        @PathVariable employeeId: UUID,
-        @PathVariable assignmentId: UUID,
+        @PathVariable employeeId: EmployeeId,
+        @PathVariable assignmentId: ProjectAssignmentId,
         @RequestBody request: ProjectAssignmentChangeData
     ): ResponseEntity<EmployeeResource> =
-        update(employeeId, assignmentId) { it.merge(request) }
+        update(employeeId, assignmentId) { assignment ->
+            assignment.merge(request)
+        }
 
     @PatchMapping(consumes = ["application/json-patch+json"])
     fun patch(
-        @PathVariable employeeId: UUID,
-        @PathVariable assignmentId: UUID,
+        @PathVariable employeeId: EmployeeId,
+        @PathVariable assignmentId: ProjectAssignmentId,
         @RequestBody patch: JsonPatch
     ): ResponseEntity<EmployeeResource> =
-        update(employeeId, assignmentId) { it.merge(applyPatch(patch, it.toChangeData())) }
+        update(employeeId, assignmentId) { assignment ->
+            assignment.merge(applyPatch(patch, assignment.toChangeData()))
+        }
 
     private fun update(
-        employeeId: UUID,
-        assignmentId: UUID,
+        employeeId: EmployeeId,
+        assignmentId: ProjectAssignmentId,
         block: (ProjectAssignment) -> ProjectAssignment
     ): ResponseEntity<EmployeeResource> = updateProjectAssignmentById(employeeId, assignmentId, block)
         .map { employee -> ok(employee.toResource()) }

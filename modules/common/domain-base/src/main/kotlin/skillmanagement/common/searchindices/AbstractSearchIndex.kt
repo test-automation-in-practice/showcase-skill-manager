@@ -28,13 +28,13 @@ import org.elasticsearch.search.sort.SortBuilder
 import org.elasticsearch.search.sort.SortOrder.DESC
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.core.io.Resource
+import skillmanagement.common.model.IdType
 import skillmanagement.common.model.Page
 import skillmanagement.common.model.Pagination
 import skillmanagement.common.model.Suggestion
 import java.io.BufferedReader
-import java.util.UUID
 
-abstract class AbstractSearchIndex<T : Any> : SearchIndexAdmin<T>, InitializingBean {
+abstract class AbstractSearchIndex<T : Any, ID : IdType> : SearchIndex<T, ID>, SearchIndexAdmin<T>, InitializingBean {
 
     protected abstract val client: RestHighLevelClient
 
@@ -63,29 +63,29 @@ abstract class AbstractSearchIndex<T : Any> : SearchIndexAdmin<T>, InitializingB
     }
 
     protected abstract fun toSource(instance: T): Map<String, Any>
-    protected abstract fun id(instance: T): UUID
+    protected abstract fun id(instance: T): IdType
 
-    override fun deleteById(id: UUID) {
+    override fun deleteById(id: ID) {
         val request = DeleteRequest(indexName, id.toString())
             .setRefreshPolicy(refreshPolicy)
         client.delete(request, DEFAULT)
     }
 
-    override fun query(query: PagedStringQuery): Page<UUID> =
+    override fun query(query: PagedStringQuery): Page<ID> =
         queryForIds(
             query = buildQuery(query.queryString),
             pagination = query.pagination,
             sort = ScoreSortBuilder().order(DESC)
         )
 
-    override fun findAll(query: PagedFindAllQuery): Page<UUID> =
+    override fun findAll(query: PagedFindAllQuery): Page<ID> =
         queryForIds(
             query = MatchAllQueryBuilder(),
             pagination = query.pagination,
             sort = FieldSortBuilder(sortFieldName)
         )
 
-    private fun queryForIds(query: QueryBuilder, pagination: Pagination, sort: SortBuilder<*>): Page<UUID> {
+    private fun queryForIds(query: QueryBuilder, pagination: Pagination, sort: SortBuilder<*>): Page<ID> {
         val source = SearchSourceBuilder()
             .fetchSource(false)
             .query(query)
@@ -129,8 +129,7 @@ abstract class AbstractSearchIndex<T : Any> : SearchIndexAdmin<T>, InitializingB
             label = (hit.sourceAsMap[suggestFieldName] as? String) ?: ""
         )
 
-    private fun id(it: SearchHit) = UUID.fromString(it.id)
-
+    protected abstract fun id(hit: SearchHit): ID
     protected abstract fun buildQuery(queryString: String): QueryStringQueryBuilder
 
     override fun reset() {

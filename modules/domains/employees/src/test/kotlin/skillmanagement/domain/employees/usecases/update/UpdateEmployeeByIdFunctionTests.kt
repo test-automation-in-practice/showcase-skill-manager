@@ -26,6 +26,7 @@ import skillmanagement.domain.employees.model.FirstName
 import skillmanagement.domain.employees.model.JobTitle
 import skillmanagement.domain.employees.model.LastName
 import skillmanagement.domain.employees.model.TelephoneNumber
+import skillmanagement.domain.employees.model.employeeId
 import skillmanagement.domain.employees.usecases.read.GetEmployeeByIdFunction
 import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure.EmployeeNotChanged
 import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure.EmployeeNotFound
@@ -37,7 +38,7 @@ import skillmanagement.test.uuid
 
 internal class UpdateEmployeeByIdFunctionTests {
 
-    private val id = uuid()
+    private val id = employeeId()
     private val employee = Employee(
         id = id,
         version = 2,
@@ -111,7 +112,7 @@ internal class UpdateEmployeeByIdFunctionTests {
         @TestFactory
         fun `certain modifications are prohibited`(): List<DynamicTest> = listOf(
             prohibitedModificationTest("Changing the ID") {
-                it.copy(id = uuid())
+                it.copy(id = employeeId())
             },
             prohibitedModificationTest("Changing the Version") {
                 it.copy(version = 5)

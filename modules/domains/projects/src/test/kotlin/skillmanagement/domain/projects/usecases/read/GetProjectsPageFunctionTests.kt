@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 import skillmanagement.common.model.pageOf
 import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectId
 import skillmanagement.domain.projects.model.project_morpheus
 import skillmanagement.domain.projects.model.project_neo
 import skillmanagement.test.ResetMocksAfterEachTest
@@ -17,7 +18,7 @@ import skillmanagement.test.UnitTest
 internal class GetProjectsPageFunctionTests {
 
     private val getProjectsFromDataStore: GetProjectsFromDataStoreFunction = mockk()
-    private val searchIndex: SearchIndex<Project> = mockk()
+    private val searchIndex: SearchIndex<Project, ProjectId> = mockk()
     private val findProjects = GetProjectsPageFunction(getProjectsFromDataStore, searchIndex)
 
     @Test

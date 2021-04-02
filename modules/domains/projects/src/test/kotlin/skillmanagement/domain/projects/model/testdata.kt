@@ -8,7 +8,7 @@ import skillmanagement.test.uuid
 
 /** All possible properties are set (max example). */
 internal val project_neo = Project(
-    id = uuid("f804d83f-466c-4eab-a58f-4b25ca1778f3"),
+    id = projectId("f804d83f-466c-4eab-a58f-4b25ca1778f3"),
     version = 1,
     label = ProjectLabel("Neo"),
     description = ProjectDescription("The PlayStation 4 Pro."),
@@ -56,7 +56,7 @@ internal val project_suggestion_neo = project_neo.toSuggestion()
 
 /** Only required and some optional properties are set (medium example). */
 internal val project_orbis = Project(
-    id = uuid("dce233f1-7c20-4250-817e-6676485ddb6e"),
+    id = projectId("dce233f1-7c20-4250-817e-6676485ddb6e"),
     version = 1,
     label = ProjectLabel("Orbis"),
     description = ProjectDescription("The PlayStation 4."),
@@ -104,7 +104,7 @@ internal val project_suggestion_orbis = project_orbis.toSuggestion()
 
 /** Only required properties are set (min example). */
 internal val project_morpheus = Project(
-    id = uuid("d5370813-a4cb-42d5-9d28-ce624c718538"),
+    id = projectId("d5370813-a4cb-42d5-9d28-ce624c718538"),
     version = 1,
     label = ProjectLabel("Morpheus"),
     description = ProjectDescription("The PlayStation VR Headset."),
@@ -150,6 +150,8 @@ internal val project_suggestion_morpheus = project_morpheus.toSuggestion()
 
 // Functions
 
+fun projectId() = ProjectId(uuid())
+
 private fun Project.toResourceWithoutLinks() =
     ProjectResource(id = id, label = label, description = description)
 
@@ -169,7 +171,7 @@ internal fun project(
     description: String = "description",
     lastUpdate: String = "2020-08-13T12:34:56.789Z"
 ) = Project(
-    id = uuid(id),
+    id = projectId(id),
     version = version,
     label = ProjectLabel(label),
     description = ProjectDescription(description),

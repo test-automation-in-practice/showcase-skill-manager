@@ -11,12 +11,12 @@ import org.springframework.context.annotation.Import
 import org.springframework.hateoas.MediaTypes.HAL_JSON
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import skillmanagement.domain.skills.model.skillId
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.andDocument
 import skillmanagement.test.fixedClock
 import skillmanagement.test.strictJson
-import skillmanagement.test.uuid
 import java.time.Clock
 
 @TechnologyIntegrationTest
@@ -30,7 +30,7 @@ internal class GetSkillByIdRestAdapterTests(
 
     @Test
     fun `responds with 204 No Content if Skill not found`() {
-        val id = uuid()
+        val id = skillId()
         every { getSkillById(id) } returns null
 
         mockMvc

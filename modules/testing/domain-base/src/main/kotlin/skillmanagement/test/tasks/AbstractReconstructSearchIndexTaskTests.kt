@@ -3,7 +3,7 @@ package skillmanagement.test.tasks
 import io.mockk.confirmVerified
 import io.mockk.verify
 import io.mockk.verifyOrder
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.testit.testutils.logrecorder.api.LogRecord
 import skillmanagement.common.searchindices.AbstractReconstructSearchIndexTask
@@ -11,7 +11,7 @@ import skillmanagement.common.searchindices.SearchIndexAdmin
 
 abstract class AbstractReconstructSearchIndexTaskTests<T : Any> {
 
-    abstract val searchIndex: SearchIndexAdmin<T>
+    abstract val searchIndexAdmin: SearchIndexAdmin<T>
     abstract val cut: AbstractReconstructSearchIndexTask<T>
 
     abstract val instance1: T
@@ -28,9 +28,9 @@ abstract class AbstractReconstructSearchIndexTaskTests<T : Any> {
 
         cut.run()
 
-        verify(atLeast = 1) { searchIndex.toString() }
-        verify { searchIndex.reset() }
-        confirmVerified(searchIndex)
+        verify(atLeast = 1) { searchIndexAdmin.toString() }
+        verify { searchIndexAdmin.reset() }
+        confirmVerified(searchIndexAdmin)
     }
 
     @Test
@@ -39,14 +39,14 @@ abstract class AbstractReconstructSearchIndexTaskTests<T : Any> {
 
         cut.run()
 
-        verify(atLeast = 1) { searchIndex.toString() }
+        verify(atLeast = 1) { searchIndexAdmin.toString() }
         verifyOrder {
-            searchIndex.reset()
-            searchIndex.index(instance1)
-            searchIndex.index(instance2)
-            searchIndex.index(instance3)
+            searchIndexAdmin.reset()
+            searchIndexAdmin.index(instance1)
+            searchIndexAdmin.index(instance2)
+            searchIndexAdmin.index(instance3)
         }
-        confirmVerified(searchIndex)
+        confirmVerified(searchIndexAdmin)
     }
 
     abstract fun `task steps are logged`(log: LogRecord)
@@ -57,14 +57,14 @@ abstract class AbstractReconstructSearchIndexTaskTests<T : Any> {
         cut.run()
 
         with(log.messages) {
-            Assertions.assertThat(get(0)).isEqualTo("Reconstructing '$searchIndex':")
-            Assertions.assertThat(get(1)).isEqualTo("Resetting '$searchIndex':")
-            Assertions.assertThat(get(2)).containsSubsequence("Reset of '$searchIndex' finished. Took ", "ms.")
-            Assertions.assertThat(get(3)).isEqualTo("Repopulating '$searchIndex':")
-            Assertions.assertThat(get(4)).isEqualTo("Indexing [${expectedShortDescription(instance1)}]")
-            Assertions.assertThat(get(5)).isEqualTo("Indexing [${expectedShortDescription(instance2)}]")
-            Assertions.assertThat(get(6)).containsSubsequence("Repopulation of '$searchIndex' finished. Took ", "ms.")
-            Assertions.assertThat(get(7)).containsSubsequence("Reconstruction of '$searchIndex' finished. Took ", "ms.")
+            assertThat(get(0)).isEqualTo("Reconstructing '$searchIndexAdmin':")
+            assertThat(get(1)).isEqualTo("Resetting '$searchIndexAdmin':")
+            assertThat(get(2)).containsSubsequence("Reset of '$searchIndexAdmin' finished. Took ", "ms.")
+            assertThat(get(3)).isEqualTo("Repopulating '$searchIndexAdmin':")
+            assertThat(get(4)).isEqualTo("Indexing [${expectedShortDescription(instance1)}]")
+            assertThat(get(5)).isEqualTo("Indexing [${expectedShortDescription(instance2)}]")
+            assertThat(get(6)).containsSubsequence("Repopulation of '$searchIndexAdmin' finished. Took ", "ms.")
+            assertThat(get(7)).containsSubsequence("Reconstruction of '$searchIndexAdmin' finished. Took ", "ms.")
         }
     }
 

@@ -7,7 +7,6 @@ import skillmanagement.test.AbstractJsonSerializationTests
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.UnitTest
 import skillmanagement.test.stringOfLength
-import skillmanagement.test.uuid
 
 internal class EmployeeTests {
 
@@ -62,7 +61,7 @@ internal class EmployeeTests {
         @Test
         fun `does nothing for unknown project ID`() {
             var invoked = false
-            employee.updateProjectAssignmentByProjectId(uuid()) { invoked = true; it }
+            employee.updateProjectAssignment(externalProjectId()) { invoked = true; it }
             assertThat(invoked).isFalse()
         }
 
@@ -70,7 +69,7 @@ internal class EmployeeTests {
         fun `updates only relevant assignments`() {
             val newContribution = ProjectContribution(stringOfLength(5))
 
-            val updatedEmployee = employee.updateProjectAssignmentByProjectId(assignment2.project.id) { assignment ->
+            val updatedEmployee = employee.updateProjectAssignment(assignment2.project.id) { assignment ->
                 assignment.copy(contribution = newContribution)
             }
 
@@ -111,7 +110,7 @@ internal class EmployeeTests {
         @Test
         fun `does nothing for unknown skill ID`() {
             var invoked = false
-            employee.updateSkillKnowledgeBySkillId(uuid()) { invoked = true; it }
+            employee.updateSkillKnowledge(externalSkillId()) { invoked = true; it }
             assertThat(invoked).isFalse()
         }
 
@@ -119,7 +118,7 @@ internal class EmployeeTests {
         fun `updates only relevant knowledge`() {
             val newLevel = SkillLevel(1)
 
-            val updatedEmployee = employee.updateSkillKnowledgeBySkillId(knowledge2.skill.id) { knowledge ->
+            val updatedEmployee = employee.updateSkillKnowledge(knowledge2.skill.id) { knowledge ->
                 knowledge.copy(level = newLevel)
             }
 
