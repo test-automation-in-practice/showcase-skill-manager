@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 import skillmanagement.common.model.pageOf
 import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.SkillId
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_python
 import skillmanagement.test.ResetMocksAfterEachTest
@@ -17,7 +18,7 @@ import skillmanagement.test.UnitTest
 internal class GetSkillsPageFunctionTests {
 
     private val getSkillsFromDataStore: GetSkillsFromDataStoreFunction = mockk()
-    private val searchIndex: SearchIndex<Skill> = mockk()
+    private val searchIndex: SearchIndex<Skill, SkillId> = mockk()
     private val findSkills = GetSkillsPageFunction(getSkillsFromDataStore, searchIndex)
 
     @Test

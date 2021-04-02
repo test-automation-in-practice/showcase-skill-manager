@@ -11,10 +11,10 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.delete
+import skillmanagement.domain.skills.model.skillId
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.andDocument
 import skillmanagement.test.fixedClock
-import skillmanagement.test.uuid
 import java.time.Clock
 
 @TechnologyIntegrationTest
@@ -26,7 +26,7 @@ internal class DeleteSkillByIdRestAdapterTests(
     @Autowired val deleteSkillById: DeleteSkillByIdFunction
 ) {
 
-    private val skillId = uuid("14ae4e75-5cf6-4b30-9fc2-7037bd428584")
+    private val skillId = skillId("14ae4e75-5cf6-4b30-9fc2-7037bd428584")
 
     @Test
     fun `well formed request leads to correct response`() {

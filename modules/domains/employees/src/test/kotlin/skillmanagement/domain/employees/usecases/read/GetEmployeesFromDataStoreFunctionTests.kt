@@ -19,14 +19,14 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.testit.testutils.logrecorder.api.LogRecord
 import org.testit.testutils.logrecorder.junit5.RecordLoggers
 import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeId
+import skillmanagement.domain.employees.model.employeeId
 import skillmanagement.domain.employees.model.employee_jane_doe
 import skillmanagement.domain.employees.model.employee_john_smith
 import skillmanagement.domain.employees.usecases.create.InsertEmployeeIntoDataStoreFunction
 import skillmanagement.domain.employees.usecases.delete.DeleteEmployeeFromDataStoreFunction
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.TechnologyIntegrationTest
-import skillmanagement.test.uuid
-import java.util.UUID
 
 @JdbcTest
 @AutoConfigureJson
@@ -51,7 +51,7 @@ internal class GetEmployeesFromDataStoreFunctionTests(
 
         @Test
         fun `returns NULL if nothing found with given ID`() {
-            getSingleEmployee(uuid()) shouldBe null
+            getSingleEmployee(employeeId()) shouldBe null
         }
 
         @Test
@@ -60,7 +60,7 @@ internal class GetEmployeesFromDataStoreFunctionTests(
             getSingleEmployee(employee_jane_doe.id) shouldBe employee_jane_doe
         }
 
-        private fun getSingleEmployee(id: UUID) = getEmployeesFromDataStore(id)
+        private fun getSingleEmployee(id: EmployeeId) = getEmployeesFromDataStore(id)
 
     }
 
@@ -74,20 +74,20 @@ internal class GetEmployeesFromDataStoreFunctionTests(
 
         @Test
         fun `returns empty map if none of the Employees were found`() {
-            getMultipleEmployees(uuid()) shouldBe emptyMap()
+            getMultipleEmployees(employeeId()) shouldBe emptyMap()
         }
 
         @Test
         fun `returns map with every found Employee`() {
             insert(employee_jane_doe, employee_john_smith)
 
-            val actualEmployees = getMultipleEmployees(employee_jane_doe.id, uuid(), employee_john_smith.id)
+            val actualEmployees = getMultipleEmployees(employee_jane_doe.id, employeeId(), employee_john_smith.id)
             val expectedEmployees = setOf(employee_jane_doe, employee_john_smith).map { it.id to it }.toMap()
 
             actualEmployees shouldBe expectedEmployees
         }
 
-        private fun getMultipleEmployees(vararg ids: UUID) = getEmployeesFromDataStore(ids.toList(), chunkSize = 2)
+        private fun getMultipleEmployees(vararg ids: EmployeeId) = getEmployeesFromDataStore(ids.toList(), chunkSize = 2)
 
     }
 
@@ -141,7 +141,7 @@ internal class GetEmployeesFromDataStoreFunctionTests(
             assertThat(messages[1]).startsWith("Corrupted data: {}")
         }
 
-        private fun corruptData(employeeId: UUID) {
+        private fun corruptData(employeeId: EmployeeId) {
             jdbcTemplate.update("UPDATE employees SET data = '{}' WHERE id = :id", mapOf("id" to "$employeeId"))
         }
 

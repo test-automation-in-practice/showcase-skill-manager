@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.post
 import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.SkillId
 import skillmanagement.domain.skills.model.skill_suggestion_kotlin
 import skillmanagement.domain.skills.model.skill_suggestion_python
 import skillmanagement.test.ResetMocksAfterEachTest
@@ -29,7 +30,7 @@ import skillmanagement.test.strictJson
 @AutoConfigureRestDocs("build/generated-snippets/skills/suggest", uriPort = 80)
 internal class SuggestSkillsRestAdapterTests(
     @Autowired val mockMvc: MockMvc,
-    @Autowired val searchIndex: SearchIndex<Skill>
+    @Autowired val searchIndex: SearchIndex<Skill, SkillId>
 ) {
 
     @Test
@@ -92,5 +93,5 @@ internal class SuggestSkillsRestAdapterTests(
 
 private class SuggestSkillsRestAdapterTestsConfiguration {
     @Bean
-    fun searchIndex(): SearchIndex<Skill> = mockk(relaxUnitFun = true)
+    fun searchIndex(): SearchIndex<Skill, SkillId> = mockk(relaxUnitFun = true)
 }

@@ -1,5 +1,6 @@
 package skillmanagement.domain.skills.model
 
+import skillmanagement.common.model.IdType
 import skillmanagement.common.model.Label
 import skillmanagement.common.model.StringType
 import skillmanagement.common.model.Text
@@ -12,7 +13,7 @@ import java.util.UUID
 private val TAG_PATTERN = Regex("""[a-z]+([-_][a-z]+)*""")
 
 data class Skill(
-    val id: UUID,
+    val id: SkillId,
     val version: Int,
     val label: SkillLabel,
     val description: SkillDescription?,
@@ -20,6 +21,9 @@ data class Skill(
     val lastUpdate: Instant
 )
 
+class SkillId(value: UUID) : IdType(value)
 class SkillLabel(value: String) : Label(value, maxLength = 100)
 class SkillDescription(value: String) : Text(value)
 class Tag(value: String) : StringType(value, { hasMaxLength(50); matchesPattern(TAG_PATTERN) })
+
+fun skillId(value: String) = SkillId(UUID.fromString(value))

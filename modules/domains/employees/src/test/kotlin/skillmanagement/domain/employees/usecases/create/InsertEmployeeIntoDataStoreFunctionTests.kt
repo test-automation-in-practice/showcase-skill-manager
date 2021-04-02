@@ -11,11 +11,11 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import skillmanagement.domain.employees.model.employeeId
 import skillmanagement.domain.employees.model.employee_jane_doe
 import skillmanagement.domain.employees.model.employee_john_smith
 import skillmanagement.domain.employees.usecases.read.GetEmployeesFromDataStoreFunction
 import skillmanagement.test.TechnologyIntegrationTest
-import skillmanagement.test.uuid
 
 @JdbcTest
 @AutoConfigureJson
@@ -31,7 +31,7 @@ internal class InsertEmployeeIntoDataStoreFunctionTests(
 
     @Test
     fun `inserts complete employee data into data store`() {
-        val employee = employee_jane_doe.copy(id = uuid())
+        val employee = employee_jane_doe.copy(id = employeeId())
 
         getEmployee(employee.id) shouldBe null
         insertEmployeeIntoDataStore(employee)
@@ -40,7 +40,7 @@ internal class InsertEmployeeIntoDataStoreFunctionTests(
 
     @Test
     fun `fails when trying to insert employee with existing ID`() {
-        val id = uuid()
+        val id = employeeId()
 
         val employee1 = employee_jane_doe.copy(id = id)
         val employee2 = employee_john_smith.copy(id = id)

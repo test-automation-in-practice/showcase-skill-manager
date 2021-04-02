@@ -6,33 +6,33 @@ import kotlin.system.measureTimeMillis
 abstract class AbstractReconstructSearchIndexTask<T : Any> : Runnable {
 
     protected abstract val log: KLogger
-    protected abstract val searchIndex: SearchIndexAdmin<T>
+    protected abstract val searchIndexAdmin: SearchIndexAdmin<T>
 
     override fun run() {
-        log.info { "Reconstructing '$searchIndex':" }
+        log.info { "Reconstructing '$searchIndexAdmin':" }
         val resetDuration = resetIndex()
         val indexingDuration = repopulateIndex()
-        log.info { "Reconstruction of '$searchIndex' finished. Took ${resetDuration + indexingDuration}ms." }
+        log.info { "Reconstruction of '$searchIndexAdmin' finished. Took ${resetDuration + indexingDuration}ms." }
     }
 
     private fun resetIndex(): Long {
-        log.debug { "Resetting '$searchIndex':" }
+        log.debug { "Resetting '$searchIndexAdmin':" }
         val duration = measureTimeMillis {
-            searchIndex.reset()
+            searchIndexAdmin.reset()
         }
-        log.debug { "Reset of '$searchIndex' finished. Took ${duration}ms." }
+        log.debug { "Reset of '$searchIndexAdmin' finished. Took ${duration}ms." }
         return duration
     }
 
     private fun repopulateIndex(): Long {
-        log.debug { "Repopulating '$searchIndex':" }
+        log.debug { "Repopulating '$searchIndexAdmin':" }
         val duration = measureTimeMillis {
             executeForAllInstancesInDataStore { instance ->
                 log.debug { "Indexing [${shortDescription(instance)}]" }
-                searchIndex.index(instance)
+                searchIndexAdmin.index(instance)
             }
         }
-        log.debug { "Repopulation of '$searchIndex' finished. Took ${duration}ms." }
+        log.debug { "Repopulation of '$searchIndexAdmin' finished. Took ${duration}ms." }
         return duration
     }
 

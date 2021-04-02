@@ -21,8 +21,8 @@ internal class ReconstructProjectSearchIndexTaskTests : AbstractReconstructSearc
 
     private val getProjectsFromDataStore: GetProjectsFromDataStoreFunction = mockk()
 
-    override val searchIndex: SearchIndexAdmin<Project> = mockk(relaxUnitFun = true)
-    override val cut = ReconstructProjectSearchIndexTask(searchIndex, getProjectsFromDataStore)
+    override val searchIndexAdmin: SearchIndexAdmin<Project> = mockk(relaxUnitFun = true)
+    override val cut = ReconstructProjectSearchIndexTask(searchIndexAdmin, getProjectsFromDataStore)
 
     override val instance1 = project_neo
     override val instance2 = project_morpheus

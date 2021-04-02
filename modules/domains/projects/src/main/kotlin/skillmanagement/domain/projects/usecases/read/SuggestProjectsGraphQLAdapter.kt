@@ -6,10 +6,11 @@ import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.common.stereotypes.GraphQLAdapter
 import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectId
 
 @GraphQLAdapter
 internal class SuggestProjectsGraphQLAdapter(
-    private val searchIndex: SearchIndex<Project>
+    private val searchIndex: SearchIndex<Project, ProjectId>
 ) : GraphQLQueryResolver {
 
     fun suggestProjects(input: String, max: MaxSuggestions?): List<Suggestion> =

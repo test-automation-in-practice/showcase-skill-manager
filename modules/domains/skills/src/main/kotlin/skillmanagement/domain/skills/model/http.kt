@@ -10,11 +10,10 @@ import org.springframework.hateoas.server.mvc.BasicLinkBuilder.linkToCurrentMapp
 import skillmanagement.common.http.toMetaData
 import skillmanagement.common.model.Page
 import java.util.SortedSet
-import java.util.UUID
 
 @Relation(itemRelation = "skill", collectionRelation = "skills")
 internal data class SkillResource(
-    val id: UUID,
+    val id: SkillId,
     val label: SkillLabel,
     val description: SkillDescription?,
     val tags: SortedSet<Tag>
@@ -56,5 +55,5 @@ internal fun linkToSkillsSearch(pageIndex: Int, pageSize: Int): BasicLinkBuilder
     return linkToCurrentMapping().slash("api/skills$queryPart")
 }
 
-internal fun linkToSkill(id: UUID) =
+internal fun linkToSkill(id: SkillId) =
     linkToCurrentMapping().slash("api/skills/$id")

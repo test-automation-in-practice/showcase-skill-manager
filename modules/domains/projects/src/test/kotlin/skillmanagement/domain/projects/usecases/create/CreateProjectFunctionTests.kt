@@ -13,6 +13,7 @@ import skillmanagement.domain.projects.model.ProjectAddedEvent
 import skillmanagement.domain.projects.model.ProjectCreationData
 import skillmanagement.domain.projects.model.ProjectDescription
 import skillmanagement.domain.projects.model.ProjectLabel
+import skillmanagement.domain.projects.model.projectId
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.UnitTest
 import skillmanagement.test.fixedClock
@@ -41,7 +42,7 @@ internal class CreateProjectFunctionTests {
             )
         )
         val expected = Project(
-            id = uuid("9f3d85ac-1571-4404-af3a-6fda482a6c23"),
+            id = projectId("9f3d85ac-1571-4404-af3a-6fda482a6c23"),
             version = 1,
             label = ProjectLabel("Project #1"),
             description = ProjectDescription("Description #1"),

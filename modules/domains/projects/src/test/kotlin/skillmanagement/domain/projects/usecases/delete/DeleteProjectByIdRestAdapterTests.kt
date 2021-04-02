@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.delete
+import skillmanagement.domain.projects.model.projectId
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.andDocument
 import skillmanagement.test.fixedClock
@@ -26,7 +27,7 @@ internal class DeleteProjectByIdRestAdapterTests(
     @Autowired val deleteProjectById: DeleteProjectByIdFunction
 ) {
 
-    private val projectId = uuid("14ae4e75-5cf6-4b30-9fc2-7037bd428584")
+    private val projectId = projectId("14ae4e75-5cf6-4b30-9fc2-7037bd428584")
 
     @Test
     fun `well formed request leads to correct response`() {

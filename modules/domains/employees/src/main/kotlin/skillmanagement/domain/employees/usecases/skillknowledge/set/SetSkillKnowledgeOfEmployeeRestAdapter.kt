@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.domain.employees.gateways.GetSkillByIdAdapterFunction
+import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.EmployeeResource
+import skillmanagement.domain.employees.model.SkillId
 import skillmanagement.domain.employees.model.SkillData
 import skillmanagement.domain.employees.model.SkillLevel
 import skillmanagement.domain.employees.model.toResource
-import java.util.UUID
 
 @RestAdapter
 @RequestMapping("/api/employees/{employeeId}/skills")
@@ -28,7 +29,7 @@ internal class SetSkillKnowledgeOfEmployeeRestAdapter(
 
     @PostMapping
     fun post(
-        @PathVariable employeeId: UUID,
+        @PathVariable employeeId: EmployeeId,
         @RequestBody request: Request
     ): ResponseEntity<EmployeeResource> {
         val skillId = request.skillId
@@ -57,7 +58,7 @@ internal class SetSkillKnowledgeOfEmployeeRestAdapter(
         )
 
     data class Request(
-        val skillId: UUID,
+        val skillId: SkillId,
         val level: SkillLevel,
         val secret: Boolean = false
     )

@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import skillmanagement.domain.skills.model.skillId
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.usecases.create.InsertSkillIntoDataStoreFunction
 import skillmanagement.domain.skills.usecases.read.GetSkillsFromDataStoreFunction
 import skillmanagement.test.TechnologyIntegrationTest
-import skillmanagement.test.uuid
 
 @JdbcTest
 @AutoConfigureJson
@@ -31,7 +31,7 @@ internal class DeleteSkillFromDataStoreFunctionTests(
 
     @Test
     fun `does not fail if skill with id does not exist`() {
-        val id = uuid()
+        val id = skillId()
         getSkill(id) shouldBe null
         deleteSkillFromDataStore(id)
     }

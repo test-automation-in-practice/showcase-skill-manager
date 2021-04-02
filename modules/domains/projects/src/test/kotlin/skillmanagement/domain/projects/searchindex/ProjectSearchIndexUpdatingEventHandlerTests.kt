@@ -11,6 +11,7 @@ import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.model.ProjectAddedEvent
 import skillmanagement.domain.projects.model.ProjectDeletedEvent
+import skillmanagement.domain.projects.model.ProjectId
 import skillmanagement.domain.projects.model.ProjectUpdatedEvent
 import skillmanagement.domain.projects.model.project_morpheus
 import skillmanagement.domain.projects.model.project_neo
@@ -22,7 +23,7 @@ import skillmanagement.test.events.EventingSpringIntegrationTest
 @EventingSpringIntegrationTest
 @Import(ProjectSearchIndexUpdatingEventHandlerTestsConfiguration::class)
 internal class ProjectSearchIndexUpdatingEventHandlerTests(
-    @Autowired private val searchIndex: SearchIndex<Project>,
+    @Autowired private val searchIndex: SearchIndex<Project, ProjectId>,
     @Autowired private val publishEvent: PublishEventFunction
 ) {
 
@@ -52,5 +53,5 @@ internal class ProjectSearchIndexUpdatingEventHandlerTests(
 )
 private class ProjectSearchIndexUpdatingEventHandlerTestsConfiguration {
     @Bean
-    fun searchIndex(): SearchIndex<Project> = mockk(relaxed = true)
+    fun searchIndex(): SearchIndex<Project, ProjectId> = mockk(relaxed = true)
 }

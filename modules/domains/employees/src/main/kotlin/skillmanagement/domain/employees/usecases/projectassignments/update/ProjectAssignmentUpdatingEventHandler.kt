@@ -37,7 +37,7 @@ internal class ProjectAssignmentUpdatingEventHandler(
             .onEach { log.info { "Updating project assignments for project [${project.id}] of employee [${it}]" } }
             .forEach { employeeId ->
                 updateEmployeeById(employeeId) { employee ->
-                    employee.updateProjectAssignmentByProjectId(project.id) { assignment ->
+                    employee.updateProjectAssignment(project.id) { assignment ->
                         assignment.copy(project = project)
                     }
                 }

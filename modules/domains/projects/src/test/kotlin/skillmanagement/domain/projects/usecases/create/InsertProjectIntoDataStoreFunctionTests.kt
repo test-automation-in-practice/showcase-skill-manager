@@ -11,11 +11,11 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import skillmanagement.domain.projects.model.projectId
 import skillmanagement.domain.projects.model.project_morpheus
 import skillmanagement.domain.projects.model.project_neo
 import skillmanagement.domain.projects.usecases.read.GetProjectsFromDataStoreFunction
 import skillmanagement.test.TechnologyIntegrationTest
-import skillmanagement.test.uuid
 
 @JdbcTest
 @AutoConfigureJson
@@ -31,7 +31,7 @@ internal class InsertProjectIntoDataStoreFunctionTests(
 
     @Test
     fun `inserts complete project data into data store`() {
-        val project = project_neo.copy(id = uuid())
+        val project = project_neo.copy(id = projectId())
 
         getProject(project.id) shouldBe null
         insertProjectIntoDataStore(project)
@@ -40,7 +40,7 @@ internal class InsertProjectIntoDataStoreFunctionTests(
 
     @Test
     fun `fails when trying to insert project with existing ID`() {
-        val id = uuid()
+        val id = projectId()
 
         val project1 = project_neo.copy(id = id)
         val project2 = project_morpheus.copy(id = id)

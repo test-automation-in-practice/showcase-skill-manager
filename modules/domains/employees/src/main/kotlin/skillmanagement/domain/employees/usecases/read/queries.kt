@@ -3,19 +3,20 @@ package skillmanagement.domain.employees.usecases.read
 import skillmanagement.common.model.Pagination
 import skillmanagement.common.searchindices.PagedFindAllQuery
 import skillmanagement.common.searchindices.PagedStringQuery
-import java.util.UUID
+import skillmanagement.domain.employees.model.ProjectId
+import skillmanagement.domain.employees.model.SkillId
 
 sealed class EmployeesQuery
 
 data class EmployeesWithSkill(
-    val skillId: UUID,
+    val skillId: SkillId,
     override val pagination: Pagination = Pagination.DEFAULT
 ) : PagedStringQuery, EmployeesQuery() {
     override val queryString: String = "_skillIds:$skillId"
 }
 
 data class EmployeesWhoWorkedOnProject(
-    val projectId: UUID,
+    val projectId: ProjectId,
     override val pagination: Pagination = Pagination.DEFAULT
 ) : PagedStringQuery, EmployeesQuery() {
     override val queryString: String = "_projectIds:$projectId"

@@ -9,7 +9,7 @@ import java.util.Collections.emptySortedSet
 
 /** All possible properties are set (max example). */
 internal val skill_kotlin = Skill(
-    id = uuid("3f7985b9-f5f0-4662-bda9-1dcde01f5f3b"),
+    id = skillId("3f7985b9-f5f0-4662-bda9-1dcde01f5f3b"),
     version = 1,
     label = SkillLabel("Kotlin"),
     description = SkillDescription("The coolest programming language."),
@@ -62,7 +62,7 @@ internal val skill_suggestion_kotlin = skill_kotlin.toSuggestion()
 
 /** Only required and some optional properties are set (medium example). */
 internal val skill_java = Skill(
-    id = uuid("f8948935-dab6-4c33-80d0-9f66ae546a7c"),
+    id = skillId("f8948935-dab6-4c33-80d0-9f66ae546a7c"),
     version = 1,
     label = SkillLabel("Java"),
     description = null,
@@ -111,7 +111,7 @@ internal val skill_suggestion_java = skill_java.toSuggestion()
 
 /** Only required properties are set (min example). */
 internal val skill_python = Skill(
-    id = uuid("6935e550-d041-418a-9070-e37431069232"),
+    id = skillId("6935e550-d041-418a-9070-e37431069232"),
     version = 1,
     label = SkillLabel("Python"),
     description = null,
@@ -158,6 +158,8 @@ internal val skill_suggestion_python = skill_python.toSuggestion()
 
 // Functions
 
+fun skillId() = SkillId(uuid())
+
 private fun Skill.toResourceWithoutLinks() =
     SkillResource(id = id, label = label, description = description, tags = tags)
 
@@ -178,7 +180,7 @@ internal fun skill(
     tags: Collection<String> = emptyList(),
     lastUpdate: String = "2020-08-13T12:34:56.789Z"
 ) = Skill(
-    id = uuid(id),
+    id = skillId(id),
     version = version,
     label = SkillLabel(label),
     description = description?.let(::SkillDescription),

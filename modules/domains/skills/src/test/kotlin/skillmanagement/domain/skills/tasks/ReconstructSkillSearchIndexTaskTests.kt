@@ -21,8 +21,8 @@ internal class ReconstructSkillSearchIndexTaskTests : AbstractReconstructSearchI
 
     private val getSkillsFromDataStore: GetSkillsFromDataStoreFunction = mockk()
 
-    override val searchIndex: SearchIndexAdmin<Skill> = mockk(relaxUnitFun = true)
-    override val cut = ReconstructSkillSearchIndexTask(searchIndex, getSkillsFromDataStore)
+    override val searchIndexAdmin: SearchIndexAdmin<Skill> = mockk(relaxUnitFun = true)
+    override val cut = ReconstructSkillSearchIndexTask(searchIndexAdmin, getSkillsFromDataStore)
 
     override val instance1 = skill_kotlin
     override val instance2 = skill_java

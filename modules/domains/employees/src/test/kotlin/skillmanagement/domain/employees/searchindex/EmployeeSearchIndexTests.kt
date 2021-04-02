@@ -12,13 +12,13 @@ import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.PagedFindAllQuery
 import skillmanagement.common.searchindices.PagedStringQuery
 import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.employee
 import skillmanagement.domain.employees.model.employee_jane_doe
 import skillmanagement.domain.employees.model.employee_john_doe
 import skillmanagement.domain.employees.model.employee_john_smith
 import skillmanagement.domain.employees.model.toSuggestion
 import skillmanagement.test.searchindices.SearchIndexIntegrationTest
-import java.util.UUID
 
 @SearchIndexIntegrationTest
 internal class EmployeeSearchIndexTests(client: RestHighLevelClient) {
@@ -144,7 +144,7 @@ internal class EmployeeSearchIndexTests(client: RestHighLevelClient) {
             val employee4 = index(employee(firstName = "Jane", lastName = "Smith")).toSuggestion()
 
             assertThat(suggest("joh"))
-                .contains(employee3, employee3)
+                .contains(employee2, employee3)
                 .doesNotContain(employee1, employee4)
 
             assertThat(suggest("j", max = 2)).hasSize(2)
@@ -162,9 +162,9 @@ internal class EmployeeSearchIndexTests(client: RestHighLevelClient) {
     }
 
     private fun index(employee: Employee): Employee = employee.also { cut.index(it) }
-    private fun delete(vararg ids: UUID) = ids.forEach(cut::deleteById)
+    private fun delete(vararg ids: EmployeeId) = ids.forEach(cut::deleteById)
 
-    private fun assertIndexContainsOnly(vararg ids: UUID) {
+    private fun assertIndexContainsOnly(vararg ids: EmployeeId) {
         assertThat(findAll()).containsOnly(*ids)
     }
 

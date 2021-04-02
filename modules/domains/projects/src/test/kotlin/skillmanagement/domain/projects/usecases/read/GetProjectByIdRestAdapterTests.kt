@@ -11,12 +11,12 @@ import org.springframework.context.annotation.Import
 import org.springframework.hateoas.MediaTypes
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import skillmanagement.domain.projects.model.projectId
 import skillmanagement.domain.projects.model.project_neo
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.andDocument
 import skillmanagement.test.fixedClock
 import skillmanagement.test.strictJson
-import skillmanagement.test.uuid
 import java.time.Clock
 
 @TechnologyIntegrationTest
@@ -30,7 +30,7 @@ internal class GetProjectByIdRestAdapterTests(
 
     @Test
     fun `responds with 204 No Content if Project not found`() {
-        val id = uuid()
+        val id = projectId()
         every { getProjectById(id) } returns null
 
         mockMvc

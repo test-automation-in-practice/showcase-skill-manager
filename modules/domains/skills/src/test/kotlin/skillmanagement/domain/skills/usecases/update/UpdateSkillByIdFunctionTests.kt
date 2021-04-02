@@ -24,6 +24,7 @@ import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.SkillUpdatedEvent
 import skillmanagement.domain.skills.model.Tag
+import skillmanagement.domain.skills.model.skillId
 import skillmanagement.domain.skills.usecases.read.GetSkillByIdFunction
 import skillmanagement.domain.skills.usecases.update.SkillUpdateFailure.SkillNotChanged
 import skillmanagement.domain.skills.usecases.update.SkillUpdateFailure.SkillNotFound
@@ -31,11 +32,10 @@ import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.UnitTest
 import skillmanagement.test.instant
-import skillmanagement.test.uuid
 
 internal class UpdateSkillByIdFunctionTests {
 
-    private val id = uuid()
+    private val id = skillId()
     private val skill = Skill(
         id = id,
         version = 2,
@@ -106,7 +106,7 @@ internal class UpdateSkillByIdFunctionTests {
         @TestFactory
         fun `certain modifications are prohibited`(): List<DynamicTest> = listOf(
             prohibitedModificationTest("Changing the ID") {
-                it.copy(id = uuid())
+                it.copy(id = skillId())
             },
             prohibitedModificationTest("Changing the Version") {
                 it.copy(version = 5)

@@ -2,9 +2,10 @@ package skillmanagement.domain.employees.gateways
 
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.ProjectData
+import skillmanagement.domain.employees.model.ProjectId
 import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.usecases.read.GetProjectByIdFunction
-import java.util.UUID
+import skillmanagement.domain.projects.model.ProjectId as ExternalProjectId
 
 /**
  * This adapter function provides an abstraction for getting [ProjectData] from
@@ -19,6 +20,17 @@ import java.util.UUID
 internal class GetProjectByIdAdapterFunction(
     private val getProjectById: GetProjectByIdFunction
 ) {
-    operator fun invoke(id: UUID): ProjectData? = getProjectById(id)?.toData()
-    private fun Project.toData() = ProjectData(id = id, label = label.toString(), description = description.toString())
+
+    operator fun invoke(id: ProjectId): ProjectData? =
+        getProjectById(projectId(id))?.toData()
+
+    private fun Project.toData() = ProjectData(
+        id = projectId(id),
+        label = label.toString(),
+        description = description.toString()
+    )
+
 }
+
+internal fun projectId(id: ProjectId) = ExternalProjectId(id.toUUID())
+internal fun projectId(id: ExternalProjectId) = ProjectId(id.toUUID())

@@ -6,11 +6,11 @@ import skillmanagement.common.failure
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.common.success
 import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectId
 import skillmanagement.domain.projects.model.ProjectUpdatedEvent
 import skillmanagement.domain.projects.usecases.read.GetProjectByIdFunction
 import skillmanagement.domain.projects.usecases.update.ProjectUpdateFailure.ProjectNotChanged
 import skillmanagement.domain.projects.usecases.update.ProjectUpdateFailure.ProjectNotFound
-import java.util.UUID
 
 @BusinessFunction
 class UpdateProjectByIdFunction internal constructor(
@@ -20,7 +20,7 @@ class UpdateProjectByIdFunction internal constructor(
 ) {
 
     @RetryOnConcurrentProjectUpdate
-    operator fun invoke(projectId: UUID, block: (Project) -> Project): Either<ProjectUpdateFailure, Project> {
+    operator fun invoke(projectId: ProjectId, block: (Project) -> Project): Either<ProjectUpdateFailure, Project> {
         val currentProject = getProjectById(projectId) ?: return failure(ProjectNotFound)
         val modifiedProject = block(currentProject)
 

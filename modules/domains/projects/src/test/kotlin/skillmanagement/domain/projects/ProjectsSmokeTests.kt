@@ -25,8 +25,8 @@ private const val ACTUATOR = 100
 @SpringBootTestWithDockerizedDependencies
 @TestMethodOrder(OrderAnnotation::class)
 internal class ProjectsSmokeTests(
-    @Autowired val searchIndex: SearchIndexAdmin<Project>,
-    @LocalServerPort val port: Int
+    @Autowired private val searchIndexAdmin: SearchIndexAdmin<Project>,
+    @LocalServerPort port: Int
 ) {
 
     val projects = ProjectsTestDriver(port = port)
@@ -127,7 +127,7 @@ internal class ProjectsSmokeTests(
     }
 
     private fun waitUntilSearchIndexIsRefreshed() {
-        searchIndex.refresh()
+        searchIndexAdmin.refresh()
         sleep(2_000)
     }
 

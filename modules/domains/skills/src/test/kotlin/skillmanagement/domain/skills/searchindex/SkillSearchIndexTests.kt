@@ -15,13 +15,13 @@ import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.PagedFindAllQuery
 import skillmanagement.common.searchindices.PagedStringQuery
 import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.SkillId
 import skillmanagement.domain.skills.model.skill
 import skillmanagement.domain.skills.model.skill_java
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_python
 import skillmanagement.domain.skills.model.toSuggestion
 import skillmanagement.test.searchindices.SearchIndexIntegrationTest
-import java.util.UUID
 
 @SearchIndexIntegrationTest
 internal class SkillSearchIndexTests(client: RestHighLevelClient) {
@@ -188,9 +188,9 @@ internal class SkillSearchIndexTests(client: RestHighLevelClient) {
     }
 
     private fun index(skill: Skill): Skill = skill.also { cut.index(it) }
-    private fun delete(vararg ids: UUID) = ids.forEach(cut::deleteById)
+    private fun delete(vararg ids: SkillId) = ids.forEach(cut::deleteById)
 
-    private fun assertIndexContainsOnly(vararg ids: UUID) {
+    private fun assertIndexContainsOnly(vararg ids: SkillId) {
         assertThat(findAll()).containsOnly(*ids)
     }
 

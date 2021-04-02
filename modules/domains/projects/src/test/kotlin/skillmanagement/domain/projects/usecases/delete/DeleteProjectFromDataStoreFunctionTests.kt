@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import skillmanagement.domain.projects.model.projectId
 import skillmanagement.domain.projects.model.project_neo
 import skillmanagement.domain.projects.usecases.create.InsertProjectIntoDataStoreFunction
 import skillmanagement.domain.projects.usecases.read.GetProjectsFromDataStoreFunction
 import skillmanagement.test.TechnologyIntegrationTest
-import skillmanagement.test.uuid
 
 @JdbcTest
 @AutoConfigureJson
@@ -31,7 +31,7 @@ internal class DeleteProjectFromDataStoreFunctionTests(
 
     @Test
     fun `does not fail if project with id does not exist`() {
-        val id = uuid()
+        val id = projectId()
         getProject(id) shouldBe null
         deleteProjectFromDataStore(id)
     }

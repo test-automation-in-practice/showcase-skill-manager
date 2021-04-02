@@ -9,7 +9,7 @@ import skillmanagement.test.yearMonth
 // Skill Knowledge
 
 internal val skill_kotlin = SkillData(
-    id = uuid("3f7985b9-f5f0-4662-bda9-1dcde01f5f3b"),
+    id = skillId("3f7985b9-f5f0-4662-bda9-1dcde01f5f3b"),
     label = "Kotlin"
 )
 internal val skill_knowledge_kotlin = SkillKnowledge(
@@ -19,7 +19,7 @@ internal val skill_knowledge_kotlin = SkillKnowledge(
 )
 
 internal val skill_java = SkillData(
-    id = uuid("f8948935-dab6-4c33-80d0-9f66ae546a7c"),
+    id = skillId("f8948935-dab6-4c33-80d0-9f66ae546a7c"),
     label = "Java"
 )
 internal val skill_knowledge_java = SkillKnowledge(
@@ -29,7 +29,7 @@ internal val skill_knowledge_java = SkillKnowledge(
 )
 
 internal val skill_python = SkillData(
-    id = uuid("6935e550-d041-418a-9070-e37431069232"),
+    id = skillId("6935e550-d041-418a-9070-e37431069232"),
     label = "Python"
 )
 internal val skill_knowledge_python = SkillKnowledge(
@@ -41,12 +41,12 @@ internal val skill_knowledge_python = SkillKnowledge(
 // Project Assignments
 
 internal val project_neo = ProjectData(
-    id = uuid("f804d83f-466c-4eab-a58f-4b25ca1778f3"),
+    id = projectId("f804d83f-466c-4eab-a58f-4b25ca1778f3"),
     label = "Neo",
     description = "The PlayStation 4 Pro."
 )
 internal val project_assignment_neo = ProjectAssignment(
-    id = uuid("c35af600-4457-4a99-a40d-9570f339d284"),
+    id = projectAssignmentId("c35af600-4457-4a99-a40d-9570f339d284"),
     project = project_neo,
     contribution = ProjectContribution("Lorem ipsum dolor sit amet, consectetur adipiscing elit ..."),
     startDate = localDate("2018-01-01"),
@@ -54,12 +54,12 @@ internal val project_assignment_neo = ProjectAssignment(
 )
 
 internal val project_orbis = ProjectData(
-    id = uuid("dce233f1-7c20-4250-817e-6676485ddb6e"),
+    id = projectId("dce233f1-7c20-4250-817e-6676485ddb6e"),
     label = "Orbis",
     description = "The PlayStation 4."
 )
 internal val project_assignment_orbis = ProjectAssignment(
-    id = uuid("b825f016-aa79-4eb8-a896-ae3627efdab7"),
+    id = projectAssignmentId("b825f016-aa79-4eb8-a896-ae3627efdab7"),
     project = project_orbis,
     contribution = ProjectContribution("... sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."),
     startDate = localDate("2009-03-16"),
@@ -67,12 +67,12 @@ internal val project_assignment_orbis = ProjectAssignment(
 )
 
 internal val project_morpheus = ProjectData(
-    id = uuid("d5370813-a4cb-42d5-9d28-ce624c718538"),
+    id = projectId("d5370813-a4cb-42d5-9d28-ce624c718538"),
     label = "Morpheus",
     description = "The PlayStation VR Headset."
 )
 internal val project_assignment_morpheus = ProjectAssignment(
-    id = uuid("bb125fd7-29bc-4661-bf4f-25d7f239801e"),
+    id = projectAssignmentId("bb125fd7-29bc-4661-bf4f-25d7f239801e"),
     project = project_morpheus,
     contribution = ProjectContribution("Ut enim ad minim veniam ..."),
     startDate = localDate("2019-02-01"),
@@ -83,7 +83,7 @@ internal val project_assignment_morpheus = ProjectAssignment(
 
 /** All possible properties are set (max example). */
 internal val employee_jane_doe = Employee(
-    id = uuid("9e1ff73e-0f66-4b86-8548-040d4016bfc9"),
+    id = employeeId("9e1ff73e-0f66-4b86-8548-040d4016bfc9"),
     version = 1,
     firstName = FirstName("Jane"),
     lastName = LastName("Doe"),
@@ -383,7 +383,7 @@ internal val employee_suggestion_jane_doe = employee_jane_doe.toSuggestion()
 
 /** Only required and some optional properties are set (medium example). */
 internal val employee_john_doe = Employee(
-    id = uuid("0370f159-2d3b-4e40-9438-10ff34dd62c5"),
+    id = employeeId("0370f159-2d3b-4e40-9438-10ff34dd62c5"),
     version = 1,
     firstName = FirstName("John"),
     lastName = LastName("Doe"),
@@ -558,7 +558,7 @@ internal val employee_suggestion_john_doe = employee_john_doe.toSuggestion()
  *
  */
 internal val employee_john_smith = Employee(
-    id = uuid("53b5f462-0c39-4e2a-83bf-aa407cf309be"),
+    id = employeeId("53b5f462-0c39-4e2a-83bf-aa407cf309be"),
     version = 1,
     firstName = FirstName("John"),
     lastName = LastName("Smith"),
@@ -638,6 +638,11 @@ internal val employee_suggestion_john_smith = employee_john_smith.toSuggestion()
 
 // Functions
 
+fun employeeId() = EmployeeId(uuid())
+fun projectAssignmentId() = ProjectAssignmentId(uuid())
+fun externalProjectId() = ProjectId(uuid())
+fun externalSkillId() = SkillId(uuid())
+
 private fun Employee.toResourceWithoutLinks() =
     EmployeeResource(
         id = id,
@@ -697,7 +702,7 @@ internal fun employee(
     telephone: String = "+49 123 456789",
     lastUpdate: String = "2021-03-26T12:34:56.789Z"
 ) = Employee(
-    id = uuid(id),
+    id = employeeId(id),
     version = version,
     firstName = FirstName(firstName),
     lastName = LastName(lastName),

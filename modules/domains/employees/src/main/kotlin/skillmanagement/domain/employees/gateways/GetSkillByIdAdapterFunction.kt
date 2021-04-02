@@ -2,9 +2,10 @@ package skillmanagement.domain.employees.gateways
 
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.SkillData
+import skillmanagement.domain.employees.model.SkillId
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.usecases.read.GetSkillByIdFunction
-import java.util.UUID
+import skillmanagement.domain.skills.model.SkillId as ExternalSkillId
 
 /**
  * This adapter function provides an abstraction for getting [SkillData] from
@@ -19,6 +20,16 @@ import java.util.UUID
 internal class GetSkillByIdAdapterFunction(
     private val getSkillById: GetSkillByIdFunction
 ) {
-    operator fun invoke(id: UUID): SkillData? = getSkillById(id)?.toData()
-    private fun Skill.toData() = SkillData(id = id, label = label.toString())
+
+    operator fun invoke(id: SkillId): SkillData? =
+        getSkillById(skillId(id))?.toData()
+
+    private fun Skill.toData() = SkillData(
+        id = skillId(id),
+        label = label.toString()
+    )
+
 }
+
+internal fun skillId(id: SkillId) = ExternalSkillId(id.toUUID())
+internal fun skillId(id: ExternalSkillId) = SkillId(id.toUUID())

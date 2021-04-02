@@ -4,12 +4,12 @@ import org.springframework.hateoas.PagedModel
 import skillmanagement.common.model.Suggestion
 import skillmanagement.domain.projects.model.ProjectCreationData
 import skillmanagement.domain.projects.model.ProjectDescription
+import skillmanagement.domain.projects.model.ProjectId
 import skillmanagement.domain.projects.model.ProjectLabel
 import skillmanagement.domain.projects.model.ProjectResource
 import skillmanagement.domain.projects.usecases.read.SearchProjectsRestAdapter
 import skillmanagement.domain.projects.usecases.read.SuggestProjectsRestAdapter
 import skillmanagement.test.AbstractHttpTestDriver
-import java.util.UUID
 
 internal class ProjectsTestDriver(
     host: String = "localhost",
@@ -32,7 +32,7 @@ internal class ProjectsTestDriver(
         }
     }
 
-    fun get(id: UUID): ProjectResource? {
+    fun get(id: ProjectId): ProjectResource? {
         val response = get("/api/projects/$id")
         return when (response.code) {
             200 -> response.readBodyAs(ProjectResource::class)
@@ -69,7 +69,7 @@ internal class ProjectsTestDriver(
         }
     }
 
-    fun delete(id: UUID) {
+    fun delete(id: ProjectId) {
         val response = delete("/api/projects/$id")
         if (response.code != 204) {
             error(unmappedCase(response))

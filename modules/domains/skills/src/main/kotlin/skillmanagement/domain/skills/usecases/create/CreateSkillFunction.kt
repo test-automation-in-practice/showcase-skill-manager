@@ -6,6 +6,7 @@ import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillAddedEvent
 import skillmanagement.domain.skills.model.SkillCreationData
+import skillmanagement.domain.skills.model.SkillId
 import java.time.Clock
 
 @BusinessFunction
@@ -25,7 +26,7 @@ class CreateSkillFunction internal constructor(
 
     private fun SkillCreationData.toSkill() =
         Skill(
-            id = idGenerator.generateId(),
+            id = SkillId(idGenerator.generateId()),
             version = 1,
             label = label,
             description = description,

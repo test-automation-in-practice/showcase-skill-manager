@@ -6,6 +6,7 @@ import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.model.ProjectAddedEvent
 import skillmanagement.domain.projects.model.ProjectCreationData
+import skillmanagement.domain.projects.model.ProjectId
 import java.time.Clock
 
 @BusinessFunction
@@ -24,7 +25,7 @@ class CreateProjectFunction internal constructor(
     }
 
     private fun ProjectCreationData.toProject() = Project(
-        id = idGenerator.generateId(),
+        id = ProjectId(idGenerator.generateId()),
         version = 1,
         label = label,
         description = description,

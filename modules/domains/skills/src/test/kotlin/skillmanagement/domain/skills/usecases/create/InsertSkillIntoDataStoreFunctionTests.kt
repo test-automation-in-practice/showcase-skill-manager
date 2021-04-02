@@ -11,11 +11,11 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import skillmanagement.domain.skills.model.skillId
 import skillmanagement.domain.skills.model.skill_java
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.usecases.read.GetSkillsFromDataStoreFunction
 import skillmanagement.test.TechnologyIntegrationTest
-import skillmanagement.test.uuid
 
 @JdbcTest
 @AutoConfigureJson
@@ -31,7 +31,7 @@ internal class InsertSkillIntoDataStoreFunctionTests(
 
     @Test
     fun `inserts complete skill data into data store`() {
-        val skill = skill_kotlin.copy(id = uuid())
+        val skill = skill_kotlin.copy(id = skillId())
 
         getSkill(skill.id) shouldBe null
         insertSkillIntoDataStore(skill)
@@ -40,7 +40,7 @@ internal class InsertSkillIntoDataStoreFunctionTests(
 
     @Test
     fun `fails when trying to insert skill with existing ID`() {
-        val id = uuid()
+        val id = skillId()
 
         val skill1 = skill_kotlin.copy(id = id)
         val skill2 = skill_java.copy(id = id)

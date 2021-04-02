@@ -11,6 +11,7 @@ import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillAddedEvent
 import skillmanagement.domain.skills.model.SkillDeletedEvent
+import skillmanagement.domain.skills.model.SkillId
 import skillmanagement.domain.skills.model.SkillUpdatedEvent
 import skillmanagement.domain.skills.model.skill_java
 import skillmanagement.domain.skills.model.skill_kotlin
@@ -22,7 +23,7 @@ import skillmanagement.test.events.EventingSpringIntegrationTest
 @EventingSpringIntegrationTest
 @Import(SkillSearchIndexUpdatingEventHandlerTestsConfiguration::class)
 internal class SkillSearchIndexUpdatingEventHandlerTests(
-    @Autowired private val searchIndex: SearchIndex<Skill>,
+    @Autowired private val searchIndex: SearchIndex<Skill, SkillId>,
     @Autowired private val publishEvent: PublishEventFunction
 ) {
 
@@ -52,5 +53,5 @@ internal class SkillSearchIndexUpdatingEventHandlerTests(
 )
 private class SkillSearchIndexUpdatingEventHandlerTestsConfiguration {
     @Bean
-    fun searchIndex(): SearchIndex<Skill> = mockk(relaxed = true)
+    fun searchIndex(): SearchIndex<Skill, SkillId> = mockk(relaxed = true)
 }

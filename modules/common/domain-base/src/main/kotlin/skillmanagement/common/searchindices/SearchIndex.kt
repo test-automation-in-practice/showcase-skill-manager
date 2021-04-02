@@ -1,8 +1,8 @@
 package skillmanagement.common.searchindices
 
+import skillmanagement.common.model.IdType
 import skillmanagement.common.model.Page
 import skillmanagement.common.model.Suggestion
-import java.util.UUID
 
 /**
  * Search indices are used to store search related data about entities and make
@@ -17,7 +17,7 @@ import java.util.UUID
  * original data source needs to be queried with the IDs returned by the search
  * index.
  */
-interface SearchIndex<T : Any> {
+interface SearchIndex<T : Any, ID : IdType> {
 
     /**
      * Create or update an index document for the given [T] instance in the
@@ -34,10 +34,10 @@ interface SearchIndex<T : Any> {
      * Depending on how the [SearchIndex] is configured the change will not
      * take effect until the regular refresh cycle was executed.
      */
-    fun deleteById(id: UUID)
+    fun deleteById(id: ID)
 
-    fun query(query: PagedStringQuery): Page<UUID>
-    fun findAll(query: PagedFindAllQuery): Page<UUID>
+    fun query(query: PagedStringQuery): Page<ID>
+    fun findAll(query: PagedFindAllQuery): Page<ID>
     fun suggest(input: String, max: MaxSuggestions = MaxSuggestions.DEFAULT): List<Suggestion>
 
 }

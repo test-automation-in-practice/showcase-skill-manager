@@ -23,6 +23,7 @@ import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.model.ProjectDescription
 import skillmanagement.domain.projects.model.ProjectLabel
 import skillmanagement.domain.projects.model.ProjectUpdatedEvent
+import skillmanagement.domain.projects.model.projectId
 import skillmanagement.domain.projects.usecases.read.GetProjectByIdFunction
 import skillmanagement.domain.projects.usecases.update.ProjectUpdateFailure.ProjectNotChanged
 import skillmanagement.domain.projects.usecases.update.ProjectUpdateFailure.ProjectNotFound
@@ -30,11 +31,10 @@ import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.UnitTest
 import skillmanagement.test.instant
-import skillmanagement.test.uuid
 
 internal class UpdateProjectByIdFunctionTests {
 
-    private val id = uuid()
+    private val id = projectId()
     private val project = Project(
         id = id,
         version = 2,
@@ -104,7 +104,7 @@ internal class UpdateProjectByIdFunctionTests {
         @TestFactory
         fun `certain modifications are prohibited`(): List<DynamicTest> = listOf(
             prohibitedModificationTest("Changing the ID") {
-                it.copy(id = uuid())
+                it.copy(id = projectId())
             },
             prohibitedModificationTest("Changing the Version") {
                 it.copy(version = 5)

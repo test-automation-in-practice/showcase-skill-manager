@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import skillmanagement.domain.employees.model.employeeId
 import skillmanagement.domain.employees.model.employee_jane_doe
 import skillmanagement.domain.employees.usecases.create.InsertEmployeeIntoDataStoreFunction
 import skillmanagement.domain.employees.usecases.read.GetEmployeesFromDataStoreFunction
 import skillmanagement.test.TechnologyIntegrationTest
-import skillmanagement.test.uuid
 
 @JdbcTest
 @AutoConfigureJson
@@ -31,7 +31,7 @@ internal class DeleteEmployeeFromDataStoreFunctionTests(
 
     @Test
     fun `does not fail if employee with id does not exist`() {
-        val id = uuid()
+        val id = employeeId()
         getEmployee(id) shouldBe null
         deleteEmployeeFromDataStore(id)
     }

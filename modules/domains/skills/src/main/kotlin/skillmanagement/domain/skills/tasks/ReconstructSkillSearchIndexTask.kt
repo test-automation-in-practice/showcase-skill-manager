@@ -23,7 +23,7 @@ internal class ReconstructSkillSearchIndexTaskWebEndpoint(
 
 @Task
 internal class ReconstructSkillSearchIndexTask(
-    override val searchIndex: SearchIndexAdmin<Skill>,
+    override val searchIndexAdmin: SearchIndexAdmin<Skill>,
     private val getSkillsFromDataStore: GetSkillsFromDataStoreFunction
 ) : AbstractReconstructSearchIndexTask<Skill>() {
 

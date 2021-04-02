@@ -23,7 +23,7 @@ internal class ReconstructEmployeeSearchIndexTaskWebEndpoint(
 
 @Task
 internal class ReconstructEmployeeSearchIndexTask(
-    override val searchIndex: SearchIndexAdmin<Employee>,
+    override val searchIndexAdmin: SearchIndexAdmin<Employee>,
     private val getEmployeeFromDataStore: GetEmployeesFromDataStoreFunction
 ) : AbstractReconstructSearchIndexTask<Employee>() {
 

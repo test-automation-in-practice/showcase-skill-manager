@@ -11,6 +11,7 @@ import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.EmployeeAddedEvent
 import skillmanagement.domain.employees.model.EmployeeDeletedEvent
+import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.EmployeeUpdatedEvent
 import skillmanagement.domain.employees.model.employee_jane_doe
 import skillmanagement.domain.employees.model.employee_john_doe
@@ -22,7 +23,7 @@ import skillmanagement.test.events.EventingSpringIntegrationTest
 @EventingSpringIntegrationTest
 @Import(EmployeeSearchIndexUpdatingEventHandlerTestsConfiguration::class)
 internal class EmployeeSearchIndexUpdatingEventHandlerTests(
-    @Autowired private val searchIndex: SearchIndex<Employee>,
+    @Autowired private val searchIndex: SearchIndex<Employee, EmployeeId>,
     @Autowired private val publishEvent: PublishEventFunction
 ) {
 
@@ -52,5 +53,5 @@ internal class EmployeeSearchIndexUpdatingEventHandlerTests(
 )
 private class EmployeeSearchIndexUpdatingEventHandlerTestsConfiguration {
     @Bean
-    fun searchIndex(): SearchIndex<Employee> = mockk(relaxed = true)
+    fun searchIndex(): SearchIndex<Employee, EmployeeId> = mockk(relaxed = true)
 }

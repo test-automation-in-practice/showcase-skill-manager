@@ -37,7 +37,7 @@ internal class SkillKnowledgeUpdatingEventHandler(
             .onEach { log.info { "Updating knowledge of skill [${skill.id}] of employee [${it}]" } }
             .forEach { employeeId ->
                 updateEmployeeById(employeeId) { employee ->
-                    employee.updateSkillKnowledgeBySkillId(skill.id) { knowledge -> knowledge.copy(skill = skill) }
+                    employee.updateSkillKnowledge(skill.id) { knowledge -> knowledge.copy(skill = skill) }
                 }
             }
     }

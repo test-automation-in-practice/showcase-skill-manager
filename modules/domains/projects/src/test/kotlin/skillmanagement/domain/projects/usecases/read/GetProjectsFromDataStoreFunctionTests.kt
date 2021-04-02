@@ -19,14 +19,14 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.testit.testutils.logrecorder.api.LogRecord
 import org.testit.testutils.logrecorder.junit5.RecordLoggers
 import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectId
+import skillmanagement.domain.projects.model.projectId
 import skillmanagement.domain.projects.model.project_neo
 import skillmanagement.domain.projects.model.project_orbis
 import skillmanagement.domain.projects.usecases.create.InsertProjectIntoDataStoreFunction
 import skillmanagement.domain.projects.usecases.delete.DeleteProjectFromDataStoreFunction
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.TechnologyIntegrationTest
-import skillmanagement.test.uuid
-import java.util.UUID
 
 @JdbcTest
 @AutoConfigureJson
@@ -51,7 +51,7 @@ internal class GetProjectsFromDataStoreFunctionTests(
 
         @Test
         fun `returns NULL if nothing found with given ID`() {
-            getSingleProject(uuid()) shouldBe null
+            getSingleProject(projectId()) shouldBe null
         }
 
         @Test
@@ -60,7 +60,7 @@ internal class GetProjectsFromDataStoreFunctionTests(
             getSingleProject(project_neo.id) shouldBe project_neo
         }
 
-        private fun getSingleProject(id: UUID) = getProjectsFromDataStore(id)
+        private fun getSingleProject(id: ProjectId) = getProjectsFromDataStore(id)
 
     }
 
@@ -74,20 +74,20 @@ internal class GetProjectsFromDataStoreFunctionTests(
 
         @Test
         fun `returns empty map if none of the Projects were found`() {
-            getMultipleProjects(uuid()) shouldBe emptyMap()
+            getMultipleProjects(projectId()) shouldBe emptyMap()
         }
 
         @Test
         fun `returns map with every found Project`() {
             insert(project_neo, project_orbis)
 
-            val actualProjects = getMultipleProjects(project_neo.id, uuid(), project_orbis.id)
+            val actualProjects = getMultipleProjects(project_neo.id, projectId(), project_orbis.id)
             val expectedProjects = setOf(project_neo, project_orbis).map { it.id to it }.toMap()
 
             actualProjects shouldBe expectedProjects
         }
 
-        private fun getMultipleProjects(vararg ids: UUID) = getProjectsFromDataStore(ids.toList(), chunkSize = 2)
+        private fun getMultipleProjects(vararg ids: ProjectId) = getProjectsFromDataStore(ids.toList(), chunkSize = 2)
 
     }
 
@@ -141,7 +141,7 @@ internal class GetProjectsFromDataStoreFunctionTests(
             assertThat(messages[1]).startsWith("Corrupted data: {}")
         }
 
-        private fun corruptData(projectId: UUID) {
+        private fun corruptData(projectId: ProjectId) {
             jdbcTemplate.update("UPDATE projects SET data = '{}' WHERE id = :id", mapOf("id" to "$projectId"))
         }
 
