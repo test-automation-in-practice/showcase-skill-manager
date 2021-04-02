@@ -10,16 +10,17 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.stereotypes.RestAdapter
+import skillmanagement.domain.employees.gateways.GetSkillByIdAdapterFunction
 import skillmanagement.domain.employees.model.EmployeeResource
+import skillmanagement.domain.employees.model.SkillData
 import skillmanagement.domain.employees.model.SkillLevel
 import skillmanagement.domain.employees.model.toResource
-import skillmanagement.domain.employees.usecases.skillknowledge.set.SettingFailure.EmployeeNotFound
-import skillmanagement.domain.employees.usecases.skillknowledge.set.SettingFailure.SkillNotFound
 import java.util.UUID
 
 @RestAdapter
 @RequestMapping("/api/employees/{employeeId}/skills")
 internal class SetSkillKnowledgeOfEmployeeRestAdapter(
+    private val getSkillById: GetSkillByIdAdapterFunction,
     private val setSkillKnowledgeOfEmployee: SetSkillKnowledgeOfEmployeeFunction
 ) {
 
@@ -30,22 +31,30 @@ internal class SetSkillKnowledgeOfEmployeeRestAdapter(
         @PathVariable employeeId: UUID,
         @RequestBody request: Request
     ): ResponseEntity<EmployeeResource> {
-        log.info { "Setting knowledge for skill [${request.skillId}] of employee [$employeeId]" }
-        val result = setSkillKnowledgeOfEmployee(
-            employeeId = employeeId,
-            skillId = request.skillId,
-            level = request.level,
-            secret = request.secret
-        )
-        log.info { "Result: $result" }
+        val skillId = request.skillId
+        log.info { "Setting knowledge for skill [$skillId] of employee [$employeeId]" }
 
-        return result.map { employee -> ok(employee.toResource()) }
+        val skill = getSkillById(skillId)
+        if (skill == null) {
+            log.debug { "Skill [$skillId] not found!" }
+            return notFound().build()
+        }
+        val data = request.toSetData(skill)
+
+        return setSkillKnowledgeOfEmployee(employeeId, data)
+            .map { employee -> ok(employee.toResource()) }
             .getOrHandle { failure ->
-                when (failure) {
-                    EmployeeNotFound, SkillNotFound -> notFound().build()
-                }
+                log.debug { "Employee update failed: $failure" }
+                notFound().build()
             }
     }
+
+    private fun Request.toSetData(skill: SkillData) =
+        SkillKnowledgeSetData(
+            skill = skill,
+            level = level,
+            secret = secret
+        )
 
     data class Request(
         val skillId: UUID,

@@ -10,8 +10,6 @@ import skillmanagement.common.events.eventBinding
 import skillmanagement.common.model.PageSize
 import skillmanagement.common.model.Pagination
 import skillmanagement.common.stereotypes.EventHandler
-import skillmanagement.domain.employees.model.Employee
-import skillmanagement.domain.employees.model.ProjectData
 import skillmanagement.domain.employees.model.ProjectUpdatedEvent
 import skillmanagement.domain.employees.usecases.read.EmployeesWhoWorkedOnProject
 import skillmanagement.domain.employees.usecases.read.GetEmployeeIdsFunction
@@ -34,21 +32,17 @@ internal class ProjectAssignmentUpdatingEventHandler(
     @RabbitListener(queues = [PROJECT_UPDATED_QUEUE])
     fun handle(event: ProjectUpdatedEvent) {
         log.debug { "Handling $event" }
-        val projectId = event.project.id
-        getEmployeeIds(EmployeesWhoWorkedOnProject(projectId, Pagination(size = PageSize.MAX)))
-            .onEach { log.info { "Updating project assignments for project [$projectId] of employee [${it}]" } }
+        val project = event.project
+        getEmployeeIds(EmployeesWhoWorkedOnProject(project.id, Pagination(size = PageSize.MAX)))
+            .onEach { log.info { "Updating project assignments for project [${project.id}] of employee [${it}]" } }
             .forEach { employeeId ->
-                updateEmployeeById(employeeId) { it.updateProjectAssignmentsOfProject(event.project) }
+                updateEmployeeById(employeeId) { employee ->
+                    employee.updateProjectAssignmentByProjectId(project.id) { assignment ->
+                        assignment.copy(project = project)
+                    }
+                }
             }
     }
-
-    private fun Employee.updateProjectAssignmentsOfProject(project: ProjectData): Employee =
-        copy(projects = projects.map {
-            when (it.project.id) {
-                project.id -> it.copy(project = project)
-                else -> it
-            }
-        })
 
 }
 

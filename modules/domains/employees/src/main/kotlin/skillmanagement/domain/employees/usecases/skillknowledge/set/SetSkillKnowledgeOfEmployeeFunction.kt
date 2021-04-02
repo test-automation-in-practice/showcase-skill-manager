@@ -1,15 +1,10 @@
 package skillmanagement.domain.employees.usecases.skillknowledge.set
 
-import arrow.core.Either
-import skillmanagement.common.failure
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.gateways.GetSkillByIdAdapterFunction
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.SkillData
 import skillmanagement.domain.employees.model.SkillKnowledge
 import skillmanagement.domain.employees.model.SkillLevel
-import skillmanagement.domain.employees.usecases.skillknowledge.set.SettingFailure.EmployeeNotFound
-import skillmanagement.domain.employees.usecases.skillknowledge.set.SettingFailure.SkillNotFound
-import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
 import java.util.UUID
 
@@ -19,36 +14,22 @@ class SetSkillKnowledgeOfEmployeeFunction internal constructor(
     private val updateEmployeeById: UpdateEmployeeByIdFunction
 ) {
 
-    operator fun invoke(
-        employeeId: UUID,
-        skillId: UUID,
-        level: SkillLevel,
-        secret: Boolean
-    ): Either<SettingFailure, Employee> {
-        val skill = getSkillById(skillId) ?: return failure(SkillNotFound)
-        val updateResult = updateEmployeeById(employeeId) { employee ->
-            val skillKnowledge = SkillKnowledge(
-                skill = skill,
-                level = level,
-                secret = secret
-            )
-            employee.setSkillKnowledge(skillKnowledge)
+    operator fun invoke(employeeId: UUID, data: SkillKnowledgeSetData) =
+        updateEmployeeById(employeeId) { employee ->
+            employee.addOrUpdateSkillKnowledge(skillKnowledge(data))
         }
 
-        return updateResult.mapLeft { failure ->
-            when (failure) {
-                is EmployeeUpdateFailure.EmployeeNotFound -> EmployeeNotFound
-                is EmployeeUpdateFailure.EmployeeNotChanged -> error("should not happen")
-            }
-        }
-    }
-
-    private fun Employee.setSkillKnowledge(skillKnowledge: SkillKnowledge): Employee =
-        copy(skills = skills.filter { it.skill.id != skillKnowledge.skill.id } + skillKnowledge)
+    private fun skillKnowledge(data: SkillKnowledgeSetData) =
+        SkillKnowledge(
+            skill = data.skill,
+            level = data.level,
+            secret = data.secret
+        )
 
 }
 
-sealed class SettingFailure {
-    object EmployeeNotFound : SettingFailure()
-    object SkillNotFound : SettingFailure()
-}
+data class SkillKnowledgeSetData(
+    val skill: SkillData,
+    val level: SkillLevel,
+    val secret: Boolean
+)

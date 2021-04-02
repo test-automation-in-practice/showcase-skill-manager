@@ -36,7 +36,9 @@ internal class SkillKnowledgeDeletingEventHandler(
         getEmployeeIds(EmployeesWithSkill(skillId, Pagination(size = PageSize.MAX)))
             .onEach { log.info { "Removing knowledge of skill [$skillId] from employee [${it}]" } }
             .forEach { employeeId ->
-                updateEmployeeById(employeeId) { it.removeSkillKnowledgeBySkillId(skillId) }
+                updateEmployeeById(employeeId) { employee ->
+                    employee.removeSkillKnowledge { it.skill.id == skillId }
+                }
             }
     }
 

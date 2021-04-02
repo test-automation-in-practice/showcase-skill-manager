@@ -10,17 +10,18 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.stereotypes.RestAdapter
+import skillmanagement.domain.employees.gateways.GetProjectByIdAdapterFunction
 import skillmanagement.domain.employees.model.EmployeeResource
 import skillmanagement.domain.employees.model.ProjectContribution
+import skillmanagement.domain.employees.model.ProjectData
 import skillmanagement.domain.employees.model.toResource
-import skillmanagement.domain.employees.usecases.projectassignments.create.CreationFailure.EmployeeNotFound
-import skillmanagement.domain.employees.usecases.projectassignments.create.CreationFailure.ProjectNotFound
 import java.time.LocalDate
 import java.util.UUID
 
 @RestAdapter
 @RequestMapping("/api/employees/{employeeId}/projects")
 internal class CreateProjectAssignmentForEmployeeRestAdapter(
+    private val getProjectById: GetProjectByIdAdapterFunction,
     private val createProjectAssignmentForEmployee: CreateProjectAssignmentForEmployeeFunction
 ) {
 
@@ -31,23 +32,31 @@ internal class CreateProjectAssignmentForEmployeeRestAdapter(
         @PathVariable employeeId: UUID,
         @RequestBody request: Request
     ): ResponseEntity<EmployeeResource> {
-        log.info { "Assigning project [${request.projectId}] of employee [$employeeId]" }
-        val result = createProjectAssignmentForEmployee(
-            employeeId = employeeId,
-            projectId = request.projectId,
-            contribution = request.contribution,
-            startDate = request.startDate,
-            endDate = request.endDate
-        )
-        log.info { "Result: $result" }
+        val projectId = request.projectId
+        log.info { "Creating assignment for project [$projectId] by employee [$employeeId]" }
 
-        return result.map { employee -> ok(employee.toResource()) }
+        val project = getProjectById(projectId)
+        if (project == null) {
+            log.debug { "Project [$projectId] not found!" }
+            return notFound().build()
+        }
+        val data = request.toCreationData(project)
+
+        return createProjectAssignmentForEmployee(employeeId, data)
+            .map { employee ->                ok(employee.toResource())            }
             .getOrHandle { failure ->
-                when (failure) {
-                    EmployeeNotFound, ProjectNotFound -> notFound().build()
-                }
+                log.debug { "Employee update failed: $failure" }
+                notFound().build()
             }
     }
+
+    private fun Request.toCreationData(project: ProjectData) =
+        ProjectAssignmentCreationData(
+            project = project,
+            contribution = contribution,
+            startDate = startDate,
+            endDate = endDate
+        )
 
     data class Request(
         val projectId: UUID,
