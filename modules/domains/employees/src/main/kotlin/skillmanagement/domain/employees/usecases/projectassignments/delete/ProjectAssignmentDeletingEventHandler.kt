@@ -10,12 +10,10 @@ import skillmanagement.common.events.eventBinding
 import skillmanagement.common.model.PageSize
 import skillmanagement.common.model.Pagination
 import skillmanagement.common.stereotypes.EventHandler
-import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.ProjectDeletedEvent
 import skillmanagement.domain.employees.usecases.read.EmployeesWhoWorkedOnProject
 import skillmanagement.domain.employees.usecases.read.GetEmployeeIdsFunction
 import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
-import java.util.UUID
 
 private const val CONTEXT = "ProjectAssignmentDeletingEventHandler"
 private const val PROJECT_DELETED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.ProjectDeletedEvent"
@@ -38,12 +36,11 @@ internal class ProjectAssignmentDeletingEventHandler(
         getEmployeeIds(EmployeesWhoWorkedOnProject(projectId, Pagination(size = PageSize.MAX)))
             .onEach { log.info { "Removing projects assignments of project [$projectId] from employee [${it}]" } }
             .forEach { employeeId ->
-                updateEmployeeById(employeeId) { it.removeProjectAssignmentsByProjectId(projectId) }
+                updateEmployeeById(employeeId) { employee ->
+                    employee.removeProjectAssignment { it.project.id == projectId }
+                }
             }
     }
-
-    private fun Employee.removeProjectAssignmentsByProjectId(projectId: UUID): Employee =
-        copy(projects = projects.filter { it.project.id != projectId })
 
 }
 

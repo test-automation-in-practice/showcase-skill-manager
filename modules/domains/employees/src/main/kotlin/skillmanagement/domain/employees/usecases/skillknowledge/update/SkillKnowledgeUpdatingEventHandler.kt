@@ -10,8 +10,6 @@ import skillmanagement.common.events.eventBinding
 import skillmanagement.common.model.PageSize
 import skillmanagement.common.model.Pagination
 import skillmanagement.common.stereotypes.EventHandler
-import skillmanagement.domain.employees.model.Employee
-import skillmanagement.domain.employees.model.SkillData
 import skillmanagement.domain.employees.model.SkillUpdatedEvent
 import skillmanagement.domain.employees.usecases.read.EmployeesWithSkill
 import skillmanagement.domain.employees.usecases.read.GetEmployeeIdsFunction
@@ -34,21 +32,15 @@ internal class SkillKnowledgeUpdatingEventHandler(
     @RabbitListener(queues = [SKILL_UPDATED_QUEUE])
     fun handle(event: SkillUpdatedEvent) {
         log.debug { "Handling $event" }
-        val skillId = event.skill.id
-        getEmployeeIds(EmployeesWithSkill(skillId, Pagination(size = PageSize.MAX)))
-            .onEach { log.info { "Updating knowledge of skill [$skillId] of employee [${it}]" } }
+        val skill = event.skill
+        getEmployeeIds(EmployeesWithSkill(skill.id, Pagination(size = PageSize.MAX)))
+            .onEach { log.info { "Updating knowledge of skill [${skill.id}] of employee [${it}]" } }
             .forEach { employeeId ->
-                updateEmployeeById(employeeId) { it.updateSkillKnowledgeOfSkill(event.skill) }
+                updateEmployeeById(employeeId) { employee ->
+                    employee.updateSkillKnowledgeBySkillId(skill.id) { knowledge -> knowledge.copy(skill = skill) }
+                }
             }
     }
-
-    private fun Employee.updateSkillKnowledgeOfSkill(skill: SkillData): Employee =
-        copy(skills = skills.map {
-            when (it.skill.id) {
-                skill.id -> it.copy(skill = skill)
-                else -> it
-            }
-        })
 
 }
 

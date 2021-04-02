@@ -16,6 +16,8 @@ class UpdateSkillKnowledgeByIdFunction internal constructor(
     private val updateEmployeeById: UpdateEmployeeByIdFunction
 ) {
 
+    // TODO: extract update function to Employee
+
     operator fun invoke(
         employeeId: UUID,
         skillId: UUID,

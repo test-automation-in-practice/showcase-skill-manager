@@ -3,7 +3,7 @@ package skillmanagement.domain.employees.usecases.skillknowledge.delete
 import arrow.core.getOrHandle
 import mu.KotlinLogging.logger
 import org.springframework.http.ResponseEntity
-import org.springframework.http.ResponseEntity.noContent
+import org.springframework.http.ResponseEntity.notFound
 import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.domain.employees.model.EmployeeResource
 import skillmanagement.domain.employees.model.toResource
-import skillmanagement.domain.employees.usecases.skillknowledge.delete.DeletionFailure.EmployeeNotFound
-import skillmanagement.domain.employees.usecases.skillknowledge.delete.DeletionFailure.SkillKnowledgeNotFound
+import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure.EmployeeNotChanged
+import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure.EmployeeNotFound
 import java.util.UUID
 
 @RestAdapter
@@ -26,13 +26,13 @@ internal class DeleteSkillKnowledgeOfEmployeeRestAdapter(
     @DeleteMapping
     fun delete(@PathVariable employeeId: UUID, @PathVariable skillId: UUID): ResponseEntity<EmployeeResource> {
         log.info { "Deleting knowledge of skill [$skillId] of employee [$employeeId]" }
-        val result = deleteSkillKnowledgeOfEmployee(employeeId, skillId)
-        log.info { "Result: $result" }
-
-        return result.map { employee -> ok(employee.toResource()) }
+        return deleteSkillKnowledgeOfEmployee(employeeId, skillId)
+            .map { employee -> ok(employee.toResource()) }
             .getOrHandle { failure ->
+                log.debug { "Employee update failed: $failure" }
                 when (failure) {
-                    EmployeeNotFound, SkillKnowledgeNotFound -> noContent().build()
+                    is EmployeeNotFound -> notFound().build()
+                    is EmployeeNotChanged -> ok(failure.employee.toResource())
                 }
             }
     }
