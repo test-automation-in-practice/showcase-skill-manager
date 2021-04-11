@@ -6,13 +6,12 @@ import skillmanagement.domain.skills.model.SkillCreationData
 import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillId
 import skillmanagement.domain.skills.model.SkillLabel
-import skillmanagement.domain.skills.model.SkillResource
+import skillmanagement.domain.skills.model.SkillRepresentation
 import skillmanagement.domain.skills.model.Tag
 import skillmanagement.domain.skills.usecases.read.SearchSkillsRestAdapter
 import skillmanagement.domain.skills.usecases.read.SuggestSkillsRestAdapter
 import skillmanagement.test.AbstractHttpTestDriver
 import java.util.Collections.emptySortedSet
-import java.util.UUID
 
 internal class SkillsTestDriver(
     host: String = "localhost",
@@ -23,7 +22,7 @@ internal class SkillsTestDriver(
         label: String = "Dummy Skill",
         description: String? = null,
         tags: Set<String> = emptySortedSet()
-    ): SkillResource {
+    ): SkillRepresentation {
         val response = post("/api/skills") {
             SkillCreationData(
                 label = SkillLabel(label),
@@ -32,21 +31,21 @@ internal class SkillsTestDriver(
             )
         }
         return when (response.code) {
-            201 -> response.readBodyAs(SkillResource::class)
+            201 -> response.readBodyAs(SkillRepresentation::class)
             else -> error(unmappedCase(response))
         }
     }
 
-    fun get(id: SkillId): SkillResource? {
+    fun get(id: SkillId): SkillRepresentation? {
         val response = get("/api/skills/$id")
         return when (response.code) {
-            200 -> response.readBodyAs(SkillResource::class)
+            200 -> response.readBodyAs(SkillRepresentation::class)
             204 -> null
             else -> error(unmappedCase(response))
         }
     }
 
-    fun getAll(page: Int = 0, size: Int = 100): PagedModel<SkillResource> {
+    fun getAll(page: Int = 0, size: Int = 100): PagedModel<SkillRepresentation> {
         val response = get("/api/skills?page=$page&size=$size")
         return when (response.code) {
             200 -> response.readBodyAs(SkillsPageModel::class)
@@ -54,7 +53,7 @@ internal class SkillsTestDriver(
         }
     }
 
-    fun search(query: String, page: Int = 0, size: Int = 100): PagedModel<SkillResource> {
+    fun search(query: String, page: Int = 0, size: Int = 100): PagedModel<SkillRepresentation> {
         val response = post("/api/skills/_search?page=$page&size=$size") {
             SearchSkillsRestAdapter.Request(query)
         }
@@ -88,7 +87,7 @@ internal class SkillsTestDriver(
         }
     }
 
-    private class SkillsPageModel : PagedModel<SkillResource>()
+    private class SkillsPageModel : PagedModel<SkillRepresentation>()
     private class SkillSuggestions : ArrayList<Suggestion>()
 
 }

@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.put
 import skillmanagement.common.failure
 import skillmanagement.common.http.patch.ApplyPatch
 import skillmanagement.common.success
-import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.model.skill_change_data_python_json
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_python
@@ -40,10 +39,7 @@ internal class UpdateSkillByIdRestAdapterTests(
 
     @Test
     fun `PUT - when updating a complete skill it's updated state is returned`() {
-        every { updateSkillById(skill_kotlin.id, any()) } answers {
-            val block: (SkillEntity) -> (SkillEntity) = secondArg()
-            success(block(skill_kotlin))
-        }
+        every { updateSkillById(skill_kotlin.id, any()) } answers { success(skill_kotlin.update(secondArg())) }
 
         mockMvc
             .put("/api/skills/${skill_kotlin.id}") {
@@ -130,10 +126,7 @@ internal class UpdateSkillByIdRestAdapterTests(
 
     @Test
     fun `PATCH - JSON Patch can be used to update properties of a skill - label`() {
-        every { updateSkillById(skill_kotlin.id, any()) } answers {
-            val block: (SkillEntity) -> (SkillEntity) = secondArg()
-            success(block(skill_kotlin))
-        }
+        every { updateSkillById(skill_kotlin.id, any()) } answers { success(skill_kotlin.update(secondArg())) }
 
         mockMvc
             .patch("/api/skills/${skill_kotlin.id}") {

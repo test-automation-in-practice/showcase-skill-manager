@@ -30,6 +30,6 @@ internal class ReconstructSkillSearchIndexTask(
     override val log = logger {}
 
     override fun executeForAllInstancesInDataStore(callback: (SkillEntity) -> Unit) = getSkillsFromDataStore(callback)
-    override fun shortDescription(instance: SkillEntity) = "${instance.id} - ${instance.label}"
+    override fun shortDescription(instance: SkillEntity) = with(instance) { "$id - ${data.label}" }
 
 }

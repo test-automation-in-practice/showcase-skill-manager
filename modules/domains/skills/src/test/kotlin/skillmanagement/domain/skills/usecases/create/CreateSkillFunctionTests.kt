@@ -8,10 +8,11 @@ import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.springframework.util.IdGenerator
 import skillmanagement.common.events.PublishEventFunction
-import skillmanagement.domain.skills.model.SkillEntity
+import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillAddedEvent
 import skillmanagement.domain.skills.model.SkillCreationData
 import skillmanagement.domain.skills.model.SkillDescription
+import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.Tag
 import skillmanagement.domain.skills.model.skillId
@@ -45,9 +46,11 @@ internal class CreateSkillFunctionTests {
         val expected = SkillEntity(
             id = skillId("312f3bfc-c9b0-4b4c-9cc4-33242cdfc39e"),
             version = 1,
-            label = SkillLabel("Skill #1"),
-            description = null,
-            tags = emptySortedSet(),
+            data = Skill(
+                label = SkillLabel("Skill #1"),
+                description = null,
+                tags = emptySortedSet()
+            ),
             lastUpdate = Instant.parse("2020-07-14T12:34:56.789Z")
         )
         actual shouldBe expected
@@ -73,9 +76,11 @@ internal class CreateSkillFunctionTests {
         val expected = SkillEntity(
             id = skillId("da8748e1-405b-456c-92d4-26fdad09a0c9"),
             version = 1,
-            label = SkillLabel("Skill #2"),
-            description = SkillDescription("description"),
-            tags = sortedSetOf(Tag("foo-bar")),
+            data = Skill(
+                label = SkillLabel("Skill #2"),
+                description = SkillDescription("description"),
+                tags = sortedSetOf(Tag("foo-bar"))
+            ),
             lastUpdate = Instant.parse("2020-07-14T12:34:56.789Z")
         )
         actual shouldBe expected

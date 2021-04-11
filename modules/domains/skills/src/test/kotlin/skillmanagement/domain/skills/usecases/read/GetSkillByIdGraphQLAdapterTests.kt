@@ -5,6 +5,7 @@ import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import skillmanagement.domain.skills.model.skill_kotlin
+import skillmanagement.domain.skills.model.skill_representation_kotlin
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.UnitTest
 
@@ -18,7 +19,7 @@ internal class GetSkillByIdGraphQLAdapterTests {
     @Test
     fun `translates and delegates retrieval to business function - found`() {
         every { getSkillById(skill_kotlin.id) } returns skill_kotlin
-        assertThat(tryToGetSkill()).isEqualTo(skill_kotlin)
+        assertThat(tryToGetSkill()).isEqualTo(skill_representation_kotlin)
     }
 
     @Test

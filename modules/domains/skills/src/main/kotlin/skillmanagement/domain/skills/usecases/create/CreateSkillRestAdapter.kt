@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest
 import skillmanagement.common.stereotypes.RestAdapter
-import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.model.SkillCreationData
-import skillmanagement.domain.skills.model.SkillResource
+import skillmanagement.domain.skills.model.SkillEntity
+import skillmanagement.domain.skills.model.SkillRepresentation
 import skillmanagement.domain.skills.model.toResource
 
 /**
@@ -22,7 +22,7 @@ internal class CreateSkillRestAdapter(
 ) {
 
     @PostMapping
-    fun post(@RequestBody request: SkillCreationData): ResponseEntity<SkillResource> {
+    fun post(@RequestBody request: SkillCreationData): ResponseEntity<SkillRepresentation> {
         val skill = createSkill(request)
         val location = locationOf(skill)
         val resource = skill.toResource()

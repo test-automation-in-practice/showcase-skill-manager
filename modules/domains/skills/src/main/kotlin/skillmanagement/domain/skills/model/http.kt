@@ -12,24 +12,30 @@ import skillmanagement.common.model.Page
 import java.util.SortedSet
 
 @Relation(itemRelation = "skill", collectionRelation = "skills")
-internal data class SkillResource(
+internal data class SkillRepresentation(
     val id: SkillId,
     val label: SkillLabel,
     val description: SkillDescription?,
     val tags: SortedSet<Tag>
-) : RepresentationModel<SkillResource>()
+) : RepresentationModel<SkillRepresentation>()
 
-internal fun SkillEntity.toResource() = SkillResource(
-    id = id,
-    label = label,
-    description = description,
-    tags = tags
-).apply {
-    add(linkToSkill(id).withSelfRel())
-    add(linkToSkill(id).withRel("delete"))
-}
+internal fun SkillEntity.toRepresentation() =
+    SkillRepresentation(
+        id = id,
+        label = data.label,
+        description = data.description,
+        tags = data.tags
+    )
 
-internal fun Page<SkillEntity>.toResource(): PagedModel<SkillResource> =
+internal fun SkillEntity.toResource() = toRepresentation()
+    .apply {
+        add(linkToSkill(id).withSelfRel())
+        add(linkToSkill(id).withRel("delete"))
+    }
+
+internal fun Page<SkillEntity>.toRepresentations() = withOtherContent(content.map(SkillEntity::toRepresentation))
+
+internal fun Page<SkillEntity>.toResource(): PagedModel<SkillRepresentation> =
     PagedModel.of(content.map(SkillEntity::toResource), toMetaData())
         .apply {
             add(linkToSkills(pageIndex, pageSize).withSelfRel())
@@ -42,7 +48,7 @@ internal fun linkToSkills(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
     return linkToCurrentMapping().slash("api/skills$queryPart")
 }
 
-internal fun Page<SkillEntity>.toSearchResource(): PagedModel<SkillResource> =
+internal fun Page<SkillEntity>.toSearchResource(): PagedModel<SkillRepresentation> =
     PagedModel.of(content.map(SkillEntity::toResource), toMetaData())
         .apply {
             add(linkToSkillsSearch(pageIndex, pageSize).withSelfRel())
