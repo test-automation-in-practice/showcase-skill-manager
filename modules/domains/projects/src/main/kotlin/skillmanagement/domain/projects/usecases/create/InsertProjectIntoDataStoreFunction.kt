@@ -3,7 +3,7 @@ package skillmanagement.domain.projects.usecases.create
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import skillmanagement.common.stereotypes.TechnicalFunction
-import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectEntity
 
 @TechnicalFunction
 internal class InsertProjectIntoDataStoreFunction(
@@ -13,7 +13,7 @@ internal class InsertProjectIntoDataStoreFunction(
 
     private val statement = "INSERT INTO projects (id, version, data) VALUES (:id, :version, :data)"
 
-    operator fun invoke(project: Project) {
+    operator fun invoke(project: ProjectEntity) {
         val parameters = mapOf(
             "id" to project.id.toString(),
             "version" to project.version,

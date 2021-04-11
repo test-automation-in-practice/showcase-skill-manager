@@ -3,7 +3,7 @@ package skillmanagement.domain.projects.usecases.create
 import org.springframework.util.IdGenerator
 import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.stereotypes.BusinessFunction
-import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectAddedEvent
 import skillmanagement.domain.projects.model.ProjectCreationData
 import skillmanagement.domain.projects.model.ProjectId
@@ -17,14 +17,14 @@ class CreateProjectFunction internal constructor(
     private val clock: Clock
 ) {
 
-    operator fun invoke(data: ProjectCreationData): Project {
+    operator fun invoke(data: ProjectCreationData): ProjectEntity {
         val project = data.toProject()
         insertProjectIntoDataStore(project)
         publishEvent(ProjectAddedEvent(project))
         return project
     }
 
-    private fun ProjectCreationData.toProject() = Project(
+    private fun ProjectCreationData.toProject() = ProjectEntity(
         id = ProjectId(idGenerator.generateId()),
         version = 1,
         label = label,

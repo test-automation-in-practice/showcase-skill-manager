@@ -6,7 +6,7 @@ import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import skillmanagement.common.model.pageOf
 import skillmanagement.common.searchindices.SearchIndex
-import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectId
 import skillmanagement.domain.projects.model.project_morpheus
 import skillmanagement.domain.projects.model.project_neo
@@ -18,7 +18,7 @@ import skillmanagement.test.UnitTest
 internal class GetProjectsPageFunctionTests {
 
     private val getProjectsFromDataStore: GetProjectsFromDataStoreFunction = mockk()
-    private val searchIndex: SearchIndex<Project, ProjectId> = mockk()
+    private val searchIndex: SearchIndex<ProjectEntity, ProjectId> = mockk()
     private val findProjects = GetProjectsPageFunction(getProjectsFromDataStore, searchIndex)
 
     @Test
@@ -41,6 +41,6 @@ internal class GetProjectsPageFunctionTests {
         findProjects(query) shouldBe pageOf(listOf(project_neo))
     }
 
-    private fun projectMap(vararg projects: Project) = projects.map { it.id to it }.toMap()
+    private fun projectMap(vararg projects: ProjectEntity) = projects.map { it.id to it }.toMap()
 
 }

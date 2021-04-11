@@ -17,7 +17,7 @@ internal data class ProjectResource(
     val description: ProjectDescription
 ) : RepresentationModel<ProjectResource>()
 
-internal fun Project.toResource() = ProjectResource(
+internal fun ProjectEntity.toResource() = ProjectResource(
     id = id,
     label = label,
     description = description
@@ -26,8 +26,8 @@ internal fun Project.toResource() = ProjectResource(
     add(linkToProject(id).withRel("delete"))
 }
 
-internal fun Page<Project>.toResource(): PagedModel<ProjectResource> =
-    PagedModel.of(content.map(Project::toResource), toMetaData())
+internal fun Page<ProjectEntity>.toResource(): PagedModel<ProjectResource> =
+    PagedModel.of(content.map(ProjectEntity::toResource), toMetaData())
         .apply {
             add(linkToProjects(pageIndex, pageSize).withSelfRel())
             if (hasPrevious()) add(linkToProjects(pageIndex - 1, pageSize).withRel("previousPage"))
@@ -39,8 +39,8 @@ internal fun linkToProjects(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
     return linkToCurrentMapping().slash("api/projects$queryPart")
 }
 
-internal fun Page<Project>.toSearchResource(): PagedModel<ProjectResource> =
-    PagedModel.of(content.map(Project::toResource), toMetaData())
+internal fun Page<ProjectEntity>.toSearchResource(): PagedModel<ProjectResource> =
+    PagedModel.of(content.map(ProjectEntity::toResource), toMetaData())
         .apply {
             add(linkToProjectsSearch(pageIndex, pageSize).withSelfRel())
             if (hasPrevious()) add(linkToProjectsSearch(pageIndex - 1, pageSize).withRel("previousPage"))

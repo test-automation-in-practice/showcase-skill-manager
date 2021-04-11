@@ -8,7 +8,7 @@ import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.springframework.util.IdGenerator
 import skillmanagement.common.events.PublishEventFunction
-import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectAddedEvent
 import skillmanagement.domain.projects.model.ProjectCreationData
 import skillmanagement.domain.projects.model.ProjectDescription
@@ -41,7 +41,7 @@ internal class CreateProjectFunctionTests {
                 description = ProjectDescription("Description #1")
             )
         )
-        val expected = Project(
+        val expected = ProjectEntity(
             id = projectId("9f3d85ac-1571-4404-af3a-6fda482a6c23"),
             version = 1,
             label = ProjectLabel("Project #1"),

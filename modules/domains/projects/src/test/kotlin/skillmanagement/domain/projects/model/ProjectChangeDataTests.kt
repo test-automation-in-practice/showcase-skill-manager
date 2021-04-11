@@ -7,7 +7,6 @@ import skillmanagement.test.AbstractJsonSerializationTests
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.UnitTest
 import skillmanagement.test.instant
-import skillmanagement.test.uuid
 
 internal class ProjectChangeDataTests {
 
@@ -15,7 +14,7 @@ internal class ProjectChangeDataTests {
     @UnitTest
     inner class ProjectExtensionFunctionTests {
 
-        private val project = Project(
+        private val project = ProjectEntity(
             id = projectId("3039df54-e86f-4973-9887-738510305e48"),
             version = 42,
             label = ProjectLabel("Changing Data"),

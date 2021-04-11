@@ -18,7 +18,7 @@ import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.testit.testutils.logrecorder.api.LogRecord
 import org.testit.testutils.logrecorder.junit5.RecordLoggers
-import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectId
 import skillmanagement.domain.projects.model.projectId
 import skillmanagement.domain.projects.model.project_neo
@@ -95,7 +95,7 @@ internal class GetProjectsFromDataStoreFunctionTests(
     @ResetMocksAfterEachTest
     inner class AllWithCallback {
 
-        private val callback: (Project) -> Unit = mockk(relaxed = true)
+        private val callback: (ProjectEntity) -> Unit = mockk(relaxed = true)
 
         @Test
         fun `callback is never invoked if there are no projects`() {
@@ -147,6 +147,6 @@ internal class GetProjectsFromDataStoreFunctionTests(
 
     }
 
-    private fun insert(vararg projects: Project) = projects.forEach { insertProjectIntoDataStore(it) }
+    private fun insert(vararg projects: ProjectEntity) = projects.forEach { insertProjectIntoDataStore(it) }
 
 }

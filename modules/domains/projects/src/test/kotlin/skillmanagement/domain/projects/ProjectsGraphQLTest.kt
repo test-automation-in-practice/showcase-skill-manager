@@ -18,7 +18,7 @@ import skillmanagement.common.model.PageSize
 import skillmanagement.common.model.Pagination
 import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.SearchIndex
-import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectId
 import skillmanagement.domain.projects.model.project_creation_data_morpheus
 import skillmanagement.domain.projects.model.project_creation_data_neo
@@ -129,7 +129,7 @@ internal class ProjectsGraphQLTest(
     }
 
     @Test
-    fun `suggest projects - found`(@Autowired searchIndex: SearchIndex<Project, ProjectId>) {
+    fun `suggest projects - found`(@Autowired searchIndex: SearchIndex<ProjectEntity, ProjectId>) {
         every { searchIndex.suggest("ne", MaxSuggestions(10)) } returns listOf(project_suggestion_neo)
         assertRequestResponse(
             request = "/graphql/suggestProjects/request.graphql",
@@ -138,7 +138,7 @@ internal class ProjectsGraphQLTest(
     }
 
     @Test
-    fun `suggest projects - empty`(@Autowired searchIndex: SearchIndex<Project, ProjectId>) {
+    fun `suggest projects - empty`(@Autowired searchIndex: SearchIndex<ProjectEntity, ProjectId>) {
         every { searchIndex.suggest("ne", MaxSuggestions(10)) } returns emptyList()
         assertRequestResponse(
             request = "/graphql/suggestProjects/request.graphql",
@@ -189,6 +189,6 @@ private class TestConfiguration {
     fun getProjectsFunction(): GetProjectsPageFunction = mockk()
 
     @Bean
-    fun searchIndex(): SearchIndex<Project, ProjectId> = mockk()
+    fun searchIndex(): SearchIndex<ProjectEntity, ProjectId> = mockk()
 
 }

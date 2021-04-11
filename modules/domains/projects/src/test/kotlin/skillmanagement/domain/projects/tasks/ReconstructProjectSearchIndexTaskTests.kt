@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 import org.testit.testutils.logrecorder.api.LogRecord
 import org.testit.testutils.logrecorder.junit5.RecordLoggers
 import skillmanagement.common.searchindices.SearchIndexAdmin
-import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.project_morpheus
 import skillmanagement.domain.projects.model.project_neo
 import skillmanagement.domain.projects.model.project_orbis
@@ -17,11 +17,11 @@ import skillmanagement.test.tasks.AbstractReconstructSearchIndexTaskTests
 
 @UnitTest
 @ResetMocksAfterEachTest
-internal class ReconstructProjectSearchIndexTaskTests : AbstractReconstructSearchIndexTaskTests<Project>() {
+internal class ReconstructProjectSearchIndexTaskTests : AbstractReconstructSearchIndexTaskTests<ProjectEntity>() {
 
     private val getProjectsFromDataStore: GetProjectsFromDataStoreFunction = mockk()
 
-    override val searchIndexAdmin: SearchIndexAdmin<Project> = mockk(relaxUnitFun = true)
+    override val searchIndexAdmin: SearchIndexAdmin<ProjectEntity> = mockk(relaxUnitFun = true)
     override val cut = ReconstructProjectSearchIndexTask(searchIndexAdmin, getProjectsFromDataStore)
 
     override val instance1 = project_neo
@@ -34,12 +34,12 @@ internal class ReconstructProjectSearchIndexTaskTests : AbstractReconstructSearc
 
     override fun stubDataStoreToBeEmpty() = stubDataStoreToContain(emptyList())
 
-    override fun stubDataStoreToContain(instances: Collection<Project>) {
-        every { getProjectsFromDataStore(any<(Project) -> Unit>()) } answers {
-            instances.forEach { firstArg<(Project) -> Unit>()(it) }
+    override fun stubDataStoreToContain(instances: Collection<ProjectEntity>) {
+        every { getProjectsFromDataStore(any<(ProjectEntity) -> Unit>()) } answers {
+            instances.forEach { firstArg<(ProjectEntity) -> Unit>()(it) }
         }
     }
 
-    override fun expectedShortDescription(instance: Project) = "${instance.id} - ${instance.label}"
+    override fun expectedShortDescription(instance: ProjectEntity) = "${instance.id} - ${instance.label}"
 
 }

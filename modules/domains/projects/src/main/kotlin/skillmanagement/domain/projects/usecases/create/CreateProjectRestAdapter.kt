@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest
 import skillmanagement.common.stereotypes.RestAdapter
-import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectCreationData
 import skillmanagement.domain.projects.model.ProjectResource
 import skillmanagement.domain.projects.model.toResource
@@ -29,6 +29,6 @@ internal class CreateProjectRestAdapter(
         return created(location).body(resource)
     }
 
-    private fun locationOf(project: Project) = fromCurrentRequest().path("/${project.id}").build().toUri()
+    private fun locationOf(project: ProjectEntity) = fromCurrentRequest().path("/${project.id}").build().toUri()
 
 }

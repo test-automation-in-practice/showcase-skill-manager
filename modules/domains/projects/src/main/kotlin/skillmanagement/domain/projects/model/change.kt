@@ -7,8 +7,8 @@ internal data class ProjectChangeData(
     val description: ProjectDescription
 )
 
-internal fun Project.toChangeData(): ProjectChangeData =
+internal fun ProjectEntity.toChangeData(): ProjectChangeData =
     ProjectChangeData(label = label, description = description)
 
-internal fun Project.merge(changes: ProjectChangeData): Project =
+internal fun ProjectEntity.merge(changes: ProjectChangeData): ProjectEntity =
     copy(label = changes.label, description = changes.description)

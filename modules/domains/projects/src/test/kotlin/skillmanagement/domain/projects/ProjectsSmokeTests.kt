@@ -11,7 +11,7 @@ import org.junit.jupiter.api.TestMethodOrder
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.web.server.LocalServerPort
 import skillmanagement.common.searchindices.SearchIndexAdmin
-import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.test.SmokeTest
 import skillmanagement.test.e2e.SpringBootTestWithDockerizedDependencies
 import java.lang.Thread.sleep
@@ -25,7 +25,7 @@ private const val ACTUATOR = 100
 @SpringBootTestWithDockerizedDependencies
 @TestMethodOrder(OrderAnnotation::class)
 internal class ProjectsSmokeTests(
-    @Autowired private val searchIndexAdmin: SearchIndexAdmin<Project>,
+    @Autowired private val searchIndexAdmin: SearchIndexAdmin<ProjectEntity>,
     @LocalServerPort port: Int
 ) {
 

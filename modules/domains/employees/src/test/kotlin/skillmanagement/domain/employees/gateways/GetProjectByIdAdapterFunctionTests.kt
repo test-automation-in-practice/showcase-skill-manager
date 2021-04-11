@@ -6,7 +6,7 @@ import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import skillmanagement.domain.employees.model.externalProjectId
 import skillmanagement.domain.employees.model.project_neo
-import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectDescription
 import skillmanagement.domain.projects.model.ProjectLabel
 import skillmanagement.domain.projects.model.projectId
@@ -24,7 +24,7 @@ internal class GetProjectByIdAdapterFunctionTests {
 
     @Test
     fun `delegates to function of other module and converts the result`() {
-        val project = Project(
+        val project = ProjectEntity(
             id = projectId("f804d83f-466c-4eab-a58f-4b25ca1778f3"),
             version = 1,
             label = ProjectLabel("Neo"),

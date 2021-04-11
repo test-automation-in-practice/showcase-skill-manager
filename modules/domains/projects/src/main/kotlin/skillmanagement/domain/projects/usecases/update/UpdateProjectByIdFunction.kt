@@ -5,7 +5,7 @@ import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.failure
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.common.success
-import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectId
 import skillmanagement.domain.projects.model.ProjectUpdatedEvent
 import skillmanagement.domain.projects.usecases.read.GetProjectByIdFunction
@@ -20,7 +20,10 @@ class UpdateProjectByIdFunction internal constructor(
 ) {
 
     @RetryOnConcurrentProjectUpdate
-    operator fun invoke(projectId: ProjectId, block: (Project) -> Project): Either<ProjectUpdateFailure, Project> {
+    operator fun invoke(
+        projectId: ProjectId,
+        block: (ProjectEntity) -> ProjectEntity
+    ): Either<ProjectUpdateFailure, ProjectEntity> {
         val currentProject = getProjectById(projectId) ?: return failure(ProjectNotFound)
         val modifiedProject = block(currentProject)
 
@@ -32,7 +35,7 @@ class UpdateProjectByIdFunction internal constructor(
         return success(updatedProject)
     }
 
-    private fun assertNoInvalidModifications(currentProject: Project, modifiedProject: Project) {
+    private fun assertNoInvalidModifications(currentProject: ProjectEntity, modifiedProject: ProjectEntity) {
         check(currentProject.id == modifiedProject.id) { "ID must not be changed!" }
         check(currentProject.version == modifiedProject.version) { "Version must not be changed!" }
         check(currentProject.lastUpdate == modifiedProject.lastUpdate) { "Last update must not be changed!" }
@@ -42,5 +45,5 @@ class UpdateProjectByIdFunction internal constructor(
 
 sealed class ProjectUpdateFailure {
     object ProjectNotFound : ProjectUpdateFailure()
-    data class ProjectNotChanged(val project: Project) : ProjectUpdateFailure()
+    data class ProjectNotChanged(val project: ProjectEntity) : ProjectUpdateFailure()
 }

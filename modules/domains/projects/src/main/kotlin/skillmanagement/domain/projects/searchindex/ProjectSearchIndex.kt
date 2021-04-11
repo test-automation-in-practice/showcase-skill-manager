@@ -8,14 +8,14 @@ import org.elasticsearch.search.SearchHit
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
 import skillmanagement.common.searchindices.AbstractSearchIndex
-import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectId
 import skillmanagement.domain.projects.model.projectId
 
 @Component
 internal class ProjectSearchIndex(
     override val client: RestHighLevelClient
-) : AbstractSearchIndex<Project, ProjectId>() {
+) : AbstractSearchIndex<ProjectEntity, ProjectId>() {
 
     override val indexName = "projects"
     override val sortFieldName = "_sort"
@@ -23,7 +23,7 @@ internal class ProjectSearchIndex(
 
     override val mappingResource = ClassPathResource("/indices/projects-mapping.json")
 
-    override fun toSource(instance: Project) =
+    override fun toSource(instance: ProjectEntity) =
         mapOf(
             "label" to instance.label.toString(),
             "description" to instance.description.toString(),

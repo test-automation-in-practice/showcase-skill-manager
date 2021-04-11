@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.searchindices.SearchIndex
-import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectAddedEvent
 import skillmanagement.domain.projects.model.ProjectDeletedEvent
 import skillmanagement.domain.projects.model.ProjectId
@@ -23,7 +23,7 @@ import skillmanagement.test.events.EventingSpringIntegrationTest
 @EventingSpringIntegrationTest
 @Import(ProjectSearchIndexUpdatingEventHandlerTestsConfiguration::class)
 internal class ProjectSearchIndexUpdatingEventHandlerTests(
-    @Autowired private val searchIndex: SearchIndex<Project, ProjectId>,
+    @Autowired private val searchIndex: SearchIndex<ProjectEntity, ProjectId>,
     @Autowired private val publishEvent: PublishEventFunction
 ) {
 
@@ -53,5 +53,5 @@ internal class ProjectSearchIndexUpdatingEventHandlerTests(
 )
 private class ProjectSearchIndexUpdatingEventHandlerTestsConfiguration {
     @Bean
-    fun searchIndex(): SearchIndex<Project, ProjectId> = mockk(relaxed = true)
+    fun searchIndex(): SearchIndex<ProjectEntity, ProjectId> = mockk(relaxed = true)
 }

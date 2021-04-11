@@ -19,7 +19,7 @@ import org.springframework.retry.annotation.EnableRetry
 import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.failure
 import skillmanagement.common.success
-import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectDescription
 import skillmanagement.domain.projects.model.ProjectLabel
 import skillmanagement.domain.projects.model.ProjectUpdatedEvent
@@ -35,7 +35,7 @@ import skillmanagement.test.instant
 internal class UpdateProjectByIdFunctionTests {
 
     private val id = projectId()
-    private val project = Project(
+    private val project = ProjectEntity(
         id = id,
         version = 2,
         label = ProjectLabel("Old Label"),
@@ -57,7 +57,7 @@ internal class UpdateProjectByIdFunctionTests {
 
         @Test
         fun `updating an existing project stores it in the data store and publishes an event`() {
-            val change: (Project) -> (Project) = {
+            val change: (ProjectEntity) -> (ProjectEntity) = {
                 it.copy(
                     label = ProjectLabel("New Label"),
                     description = ProjectDescription("New Description")
@@ -114,7 +114,7 @@ internal class UpdateProjectByIdFunctionTests {
             }
         )
 
-        private fun prohibitedModificationTest(name: String, operation: (Project) -> (Project)) =
+        private fun prohibitedModificationTest(name: String, operation: (ProjectEntity) -> (ProjectEntity)) =
             dynamicTest(name) {
                 every { getProjectById(id) } returns project
                 assertThrows<IllegalStateException> {
@@ -124,7 +124,7 @@ internal class UpdateProjectByIdFunctionTests {
                 verify { publishEvent wasNot called }
             }
 
-        private fun simulateUpdate(it: Project) =
+        private fun simulateUpdate(it: ProjectEntity) =
             it.copy(version = it.version + 1, lastUpdate = it.lastUpdate.plusSeconds(10))
 
     }
@@ -139,7 +139,7 @@ internal class UpdateProjectByIdFunctionTests {
         @Autowired private val updateProjectById: UpdateProjectByIdFunction
     ) {
 
-        private val change: (Project) -> Project = { it.copy(label = ProjectLabel("new")) }
+        private val change: (ProjectEntity) -> ProjectEntity = { it.copy(label = ProjectLabel("new")) }
 
         @Test
         fun `operation is retried up to 5 times in case of concurrent update exceptions`() {

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.http.patch.ApplyPatch
 import skillmanagement.common.stereotypes.RestAdapter
-import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectChangeData
 import skillmanagement.domain.projects.model.ProjectId
 import skillmanagement.domain.projects.model.ProjectResource
@@ -37,7 +37,7 @@ internal class UpdateProjectByIdRestAdapter(
     fun patch(@PathVariable id: ProjectId, @RequestBody patch: JsonPatch): ResponseEntity<ProjectResource> =
         update(id) { project -> project.merge(applyPatch(patch, project.toChangeData())) }
 
-    private fun update(id: ProjectId, block: (Project) -> Project) = updateProjectById(id, block)
+    private fun update(id: ProjectId, block: (ProjectEntity) -> ProjectEntity) = updateProjectById(id, block)
         .map { project -> ok(project.toResource()) }
         .getOrHandle { failure ->
             when (failure) {
