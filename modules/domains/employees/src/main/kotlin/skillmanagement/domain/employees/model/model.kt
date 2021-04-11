@@ -1,5 +1,6 @@
 package skillmanagement.domain.employees.model
 
+import skillmanagement.common.model.Entity
 import skillmanagement.common.model.IdType
 import skillmanagement.common.model.IntType
 import skillmanagement.common.model.Name
@@ -11,8 +12,8 @@ import java.time.YearMonth
 import java.util.UUID
 
 data class Employee(
-    val id: EmployeeId,
-    val version: Int,
+    override val id: EmployeeId,
+    override val version: Int,
 
     val firstName: FirstName,
     val lastName: LastName,
@@ -30,8 +31,8 @@ data class Employee(
     val skills: List<SkillKnowledge> = emptyList(),
     val projects: List<ProjectAssignment> = emptyList(),
 
-    val lastUpdate: Instant
-) {
+    override val lastUpdate: Instant
+) : Entity<EmployeeId> {
 
     fun compositeName() = "$firstName $lastName"
 
