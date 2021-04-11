@@ -28,13 +28,15 @@ import org.elasticsearch.search.sort.SortBuilder
 import org.elasticsearch.search.sort.SortOrder.DESC
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.core.io.Resource
+import skillmanagement.common.model.Entity
 import skillmanagement.common.model.IdType
 import skillmanagement.common.model.Page
 import skillmanagement.common.model.Pagination
 import skillmanagement.common.model.Suggestion
 import java.io.BufferedReader
 
-abstract class AbstractSearchIndex<T : Any, ID : IdType> : SearchIndex<T, ID>, SearchIndexAdmin<T>, InitializingBean {
+abstract class AbstractSearchIndex<T : Entity<ID>, ID : IdType> :
+    SearchIndex<T, ID>, SearchIndexAdmin<T>, InitializingBean {
 
     protected abstract val client: RestHighLevelClient
 
@@ -56,14 +58,13 @@ abstract class AbstractSearchIndex<T : Any, ID : IdType> : SearchIndex<T, ID>, S
     override fun index(instance: T) {
         val request = IndexRequest(indexName)
             .setRefreshPolicy(refreshPolicy)
-            .id(id(instance).toString())
+            .id(instance.id.toString())
             .source(toSource(instance), JSON)
             .opType(INDEX)
         client.index(request, DEFAULT)
     }
 
     protected abstract fun toSource(instance: T): Map<String, Any>
-    protected abstract fun id(instance: T): IdType
 
     override fun deleteById(id: ID) {
         val request = DeleteRequest(indexName, id.toString())

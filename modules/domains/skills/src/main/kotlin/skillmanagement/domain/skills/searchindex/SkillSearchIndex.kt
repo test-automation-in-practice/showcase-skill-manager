@@ -35,7 +35,6 @@ internal class SkillSearchIndex(
             }
         }
 
-    override fun id(instance: Skill) = instance.id
     override fun id(hit: SearchHit) = skillId(hit.id)
 
     override fun buildQuery(queryString: String): QueryStringQueryBuilder =

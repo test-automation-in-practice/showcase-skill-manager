@@ -39,7 +39,6 @@ internal class EmployeeSearchIndex(
             )
         }
 
-    override fun id(instance: Employee) = instance.id
     override fun id(hit: SearchHit) = employeeId(hit.id)
 
     override fun buildQuery(queryString: String): QueryStringQueryBuilder =

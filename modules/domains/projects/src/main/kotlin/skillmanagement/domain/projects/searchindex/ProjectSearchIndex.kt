@@ -30,7 +30,6 @@ internal class ProjectSearchIndex(
             "_sort" to instance.label.toString()
         )
 
-    override fun id(instance: Project) = instance.id
     override fun id(hit: SearchHit) = projectId(hit.id)
 
     override fun buildQuery(queryString: String): QueryStringQueryBuilder =

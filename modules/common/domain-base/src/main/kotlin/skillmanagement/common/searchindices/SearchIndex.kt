@@ -1,5 +1,6 @@
 package skillmanagement.common.searchindices
 
+import skillmanagement.common.model.Entity
 import skillmanagement.common.model.IdType
 import skillmanagement.common.model.Page
 import skillmanagement.common.model.Suggestion
@@ -17,7 +18,7 @@ import skillmanagement.common.model.Suggestion
  * original data source needs to be queried with the IDs returned by the search
  * index.
  */
-interface SearchIndex<T : Any, ID : IdType> {
+interface SearchIndex<T : Entity<ID>, ID : IdType> {
 
     /**
      * Create or update an index document for the given [T] instance in the
