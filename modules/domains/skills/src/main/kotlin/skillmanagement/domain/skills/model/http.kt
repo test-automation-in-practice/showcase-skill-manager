@@ -19,7 +19,7 @@ internal data class SkillResource(
     val tags: SortedSet<Tag>
 ) : RepresentationModel<SkillResource>()
 
-internal fun Skill.toResource() = SkillResource(
+internal fun SkillEntity.toResource() = SkillResource(
     id = id,
     label = label,
     description = description,
@@ -29,8 +29,8 @@ internal fun Skill.toResource() = SkillResource(
     add(linkToSkill(id).withRel("delete"))
 }
 
-internal fun Page<Skill>.toResource(): PagedModel<SkillResource> =
-    PagedModel.of(content.map(Skill::toResource), toMetaData())
+internal fun Page<SkillEntity>.toResource(): PagedModel<SkillResource> =
+    PagedModel.of(content.map(SkillEntity::toResource), toMetaData())
         .apply {
             add(linkToSkills(pageIndex, pageSize).withSelfRel())
             if (hasPrevious()) add(linkToSkills(pageIndex - 1, pageSize).withRel("previousPage"))
@@ -42,8 +42,8 @@ internal fun linkToSkills(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
     return linkToCurrentMapping().slash("api/skills$queryPart")
 }
 
-internal fun Page<Skill>.toSearchResource(): PagedModel<SkillResource> =
-    PagedModel.of(content.map(Skill::toResource), toMetaData())
+internal fun Page<SkillEntity>.toSearchResource(): PagedModel<SkillResource> =
+    PagedModel.of(content.map(SkillEntity::toResource), toMetaData())
         .apply {
             add(linkToSkillsSearch(pageIndex, pageSize).withSelfRel())
             if (hasPrevious()) add(linkToSkillsSearch(pageIndex - 1, pageSize).withRel("previousPage"))

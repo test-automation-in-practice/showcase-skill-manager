@@ -18,7 +18,7 @@ import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.testit.testutils.logrecorder.api.LogRecord
 import org.testit.testutils.logrecorder.junit5.RecordLoggers
-import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.model.SkillId
 import skillmanagement.domain.skills.model.skillId
 import skillmanagement.domain.skills.model.skill_kotlin
@@ -95,7 +95,7 @@ internal class GetSkillsFromDataStoreFunctionTests(
     @ResetMocksAfterEachTest
     inner class AllWithCallback {
 
-        private val callback: (Skill) -> Unit = mockk(relaxed = true)
+        private val callback: (SkillEntity) -> Unit = mockk(relaxed = true)
 
         @Test
         fun `callback is never invoked if there are no skills`() {
@@ -147,6 +147,6 @@ internal class GetSkillsFromDataStoreFunctionTests(
 
     }
 
-    private fun insert(vararg skills: Skill) = skills.forEach { insertSkillIntoDataStore(it) }
+    private fun insert(vararg skills: SkillEntity) = skills.forEach { insertSkillIntoDataStore(it) }
 
 }

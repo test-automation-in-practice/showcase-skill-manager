@@ -3,7 +3,7 @@ package skillmanagement.domain.employees.gateways
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.SkillData
 import skillmanagement.domain.employees.model.SkillId
-import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.usecases.read.GetSkillByIdFunction
 import skillmanagement.domain.skills.model.SkillId as ExternalSkillId
 
@@ -24,7 +24,7 @@ internal class GetSkillByIdAdapterFunction(
     operator fun invoke(id: SkillId): SkillData? =
         getSkillById(skillId(id))?.toData()
 
-    private fun Skill.toData() = SkillData(
+    private fun SkillEntity.toData() = SkillData(
         id = skillId(id),
         label = label.toString()
     )

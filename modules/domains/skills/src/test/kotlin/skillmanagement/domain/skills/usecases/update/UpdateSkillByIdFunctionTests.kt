@@ -19,7 +19,7 @@ import org.springframework.retry.annotation.EnableRetry
 import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.failure
 import skillmanagement.common.success
-import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.SkillUpdatedEvent
@@ -36,7 +36,7 @@ import skillmanagement.test.instant
 internal class UpdateSkillByIdFunctionTests {
 
     private val id = skillId()
-    private val skill = Skill(
+    private val skill = SkillEntity(
         id = id,
         version = 2,
         label = SkillLabel("Old Label"),
@@ -58,7 +58,7 @@ internal class UpdateSkillByIdFunctionTests {
 
         @Test
         fun `updating an existing skill stores it in the data store and publishes an event`() {
-            val change: (Skill) -> (Skill) = {
+            val change: (SkillEntity) -> (SkillEntity) = {
                 it.copy(
                     label = SkillLabel("New Label"),
                     description = SkillDescription("New Description"),
@@ -116,7 +116,7 @@ internal class UpdateSkillByIdFunctionTests {
             }
         )
 
-        private fun prohibitedModificationTest(name: String, operation: (Skill) -> (Skill)) = dynamicTest(name) {
+        private fun prohibitedModificationTest(name: String, operation: (SkillEntity) -> (SkillEntity)) = dynamicTest(name) {
             every { getSkillById(id) } returns skill
             assertThrows<IllegalStateException> {
                 updateSkillById(id, operation)
@@ -125,7 +125,7 @@ internal class UpdateSkillByIdFunctionTests {
             verify { publishEvent wasNot called }
         }
 
-        private fun simulateUpdate(it: Skill) =
+        private fun simulateUpdate(it: SkillEntity) =
             it.copy(version = it.version + 1, lastUpdate = it.lastUpdate.plusSeconds(10))
 
     }
@@ -140,7 +140,7 @@ internal class UpdateSkillByIdFunctionTests {
         @Autowired private val updateSkillById: UpdateSkillByIdFunction
     ) {
 
-        private val change: (Skill) -> Skill = { it.copy(label = SkillLabel("new")) }
+        private val change: (SkillEntity) -> SkillEntity = { it.copy(label = SkillLabel("new")) }
 
         @Test
         fun `operation is retried up to 5 times in case of concurrent update exceptions`() {

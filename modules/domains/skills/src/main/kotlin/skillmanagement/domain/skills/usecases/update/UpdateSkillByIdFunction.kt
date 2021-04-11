@@ -5,7 +5,7 @@ import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.failure
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.common.success
-import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.model.SkillId
 import skillmanagement.domain.skills.model.SkillUpdatedEvent
 import skillmanagement.domain.skills.usecases.read.GetSkillByIdFunction
@@ -20,7 +20,10 @@ class UpdateSkillByIdFunction internal constructor(
 ) {
 
     @RetryOnConcurrentSkillUpdate
-    operator fun invoke(skillId: SkillId, block: (Skill) -> Skill): Either<SkillUpdateFailure, Skill> {
+    operator fun invoke(
+        skillId: SkillId,
+        block: (SkillEntity) -> SkillEntity
+    ): Either<SkillUpdateFailure, SkillEntity> {
         val currentSkill = getSkillById(skillId) ?: return failure(SkillNotFound)
         val modifiedSkill = block(currentSkill)
 
@@ -32,7 +35,7 @@ class UpdateSkillByIdFunction internal constructor(
         return success(updatedSkill)
     }
 
-    private fun assertNoInvalidModifications(currentSkill: Skill, modifiedSkill: Skill) {
+    private fun assertNoInvalidModifications(currentSkill: SkillEntity, modifiedSkill: SkillEntity) {
         check(currentSkill.id == modifiedSkill.id) { "ID must not be changed!" }
         check(currentSkill.version == modifiedSkill.version) { "Version must not be changed!" }
         check(currentSkill.lastUpdate == modifiedSkill.lastUpdate) { "Last update must not be changed!" }
@@ -42,5 +45,5 @@ class UpdateSkillByIdFunction internal constructor(
 
 sealed class SkillUpdateFailure {
     object SkillNotFound : SkillUpdateFailure()
-    data class SkillNotChanged(val skill: Skill) : SkillUpdateFailure()
+    data class SkillNotChanged(val skill: SkillEntity) : SkillUpdateFailure()
 }

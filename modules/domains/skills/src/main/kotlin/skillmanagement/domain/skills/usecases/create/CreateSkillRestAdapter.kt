@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest
 import skillmanagement.common.stereotypes.RestAdapter
-import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.model.SkillCreationData
 import skillmanagement.domain.skills.model.SkillResource
 import skillmanagement.domain.skills.model.toResource
@@ -29,6 +29,6 @@ internal class CreateSkillRestAdapter(
         return created(location).body(resource)
     }
 
-    private fun locationOf(skill: Skill) = fromCurrentRequest().path("/${skill.id}").build().toUri()
+    private fun locationOf(skill: SkillEntity) = fromCurrentRequest().path("/${skill.id}").build().toUri()
 
 }

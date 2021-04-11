@@ -3,7 +3,7 @@ package skillmanagement.domain.skills.usecases.update
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import skillmanagement.common.stereotypes.TechnicalFunction
-import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.SkillEntity
 import java.time.Clock
 
 @TechnicalFunction
@@ -20,21 +20,21 @@ internal class UpdateSkillInDataStoreFunction(
         """
 
     /**
-     * Updates the given [Skill] in the data store.
+     * Updates the given [SkillEntity] in the data store.
      *
-     * This also updates the [Skill.version] and [Skill.lastUpdate]
-     * properties. Always use the returned [Skill] instance for subsequent
+     * This also updates the [SkillEntity.version] and [SkillEntity.lastUpdate]
+     * properties. Always use the returned [SkillEntity] instance for subsequent
      * operation!
      *
      * @throws ConcurrentSkillUpdateException in case there was a concurrent
      * update to this skill's data while the invoking operation was working.
      */
-    operator fun invoke(skill: Skill): Skill = doUpdateSkill(
+    operator fun invoke(skill: SkillEntity): SkillEntity = doUpdateSkill(
         skill = skill.copy(version = skill.version + 1, lastUpdate = clock.instant()),
         expectedVersion = skill.version
     )
 
-    private fun doUpdateSkill(skill: Skill, expectedVersion: Int): Skill {
+    private fun doUpdateSkill(skill: SkillEntity, expectedVersion: Int): SkillEntity {
         val parameters = mapOf(
             "id" to skill.id.toString(),
             "version" to skill.version,

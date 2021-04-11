@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.http.patch.ApplyPatch
 import skillmanagement.common.stereotypes.RestAdapter
-import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.model.SkillChangeData
 import skillmanagement.domain.skills.model.SkillId
 import skillmanagement.domain.skills.model.SkillResource
@@ -37,7 +37,7 @@ internal class UpdateSkillByIdRestAdapter(
     fun patch(@PathVariable id: SkillId, @RequestBody patch: JsonPatch): ResponseEntity<SkillResource> =
         update(id) { skill -> skill.merge(applyPatch(patch, skill.toChangeData())) }
 
-    private fun update(id: SkillId, block: (Skill) -> Skill) = updateSkillById(id, block)
+    private fun update(id: SkillId, block: (SkillEntity) -> SkillEntity) = updateSkillById(id, block)
         .map { skill -> ok(skill.toResource()) }
         .getOrHandle { failure ->
             when (failure) {

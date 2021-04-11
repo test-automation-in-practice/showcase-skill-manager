@@ -13,7 +13,7 @@ import java.util.UUID
 
 private val TAG_PATTERN = Regex("""[a-z]+([-_][a-z]+)*""")
 
-data class Skill(
+data class SkillEntity(
     override val id: SkillId,
     override val version: Int,
     val label: SkillLabel,

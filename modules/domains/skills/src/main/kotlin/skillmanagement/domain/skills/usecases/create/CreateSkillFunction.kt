@@ -3,7 +3,7 @@ package skillmanagement.domain.skills.usecases.create
 import org.springframework.util.IdGenerator
 import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.stereotypes.BusinessFunction
-import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.model.SkillAddedEvent
 import skillmanagement.domain.skills.model.SkillCreationData
 import skillmanagement.domain.skills.model.SkillId
@@ -17,7 +17,7 @@ class CreateSkillFunction internal constructor(
     private val clock: Clock
 ) {
 
-    operator fun invoke(data: SkillCreationData): Skill {
+    operator fun invoke(data: SkillCreationData): SkillEntity {
         val skill = data.toSkill()
         insertSkillIntoDataStore(skill)
         publishEvent(SkillAddedEvent(skill))
@@ -25,7 +25,7 @@ class CreateSkillFunction internal constructor(
     }
 
     private fun SkillCreationData.toSkill() =
-        Skill(
+        SkillEntity(
             id = SkillId(idGenerator.generateId()),
             version = 1,
             label = label,

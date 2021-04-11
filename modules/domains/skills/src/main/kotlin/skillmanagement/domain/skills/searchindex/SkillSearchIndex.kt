@@ -8,7 +8,7 @@ import org.elasticsearch.search.SearchHit
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
 import skillmanagement.common.searchindices.AbstractSearchIndex
-import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.model.SkillId
 import skillmanagement.domain.skills.model.Tag
 import skillmanagement.domain.skills.model.skillId
@@ -16,7 +16,7 @@ import skillmanagement.domain.skills.model.skillId
 @Component
 internal class SkillSearchIndex(
     override val client: RestHighLevelClient
-) : AbstractSearchIndex<Skill, SkillId>() {
+) : AbstractSearchIndex<SkillEntity, SkillId>() {
 
     override val indexName = "skills"
     override val sortFieldName = "_sort"
@@ -24,7 +24,7 @@ internal class SkillSearchIndex(
 
     override val mappingResource = ClassPathResource("/indices/skills-mapping.json")
 
-    override fun toSource(instance: Skill) =
+    override fun toSource(instance: SkillEntity) =
         mutableMapOf(
             "label" to instance.label.toString(),
             "tags" to instance.tags.map(Tag::toString),
