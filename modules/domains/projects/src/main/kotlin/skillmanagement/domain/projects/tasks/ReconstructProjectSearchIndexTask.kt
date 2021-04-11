@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 import skillmanagement.common.searchindices.AbstractReconstructSearchIndexTask
 import skillmanagement.common.searchindices.SearchIndexAdmin
 import skillmanagement.common.stereotypes.Task
-import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.usecases.read.GetProjectsFromDataStoreFunction
 
 @Component
@@ -23,13 +23,14 @@ internal class ReconstructProjectSearchIndexTaskWebEndpoint(
 
 @Task
 internal class ReconstructProjectSearchIndexTask(
-    override val searchIndexAdmin: SearchIndexAdmin<Project>,
+    override val searchIndexAdmin: SearchIndexAdmin<ProjectEntity>,
     private val getProjectsFromDataStore: GetProjectsFromDataStoreFunction
-) : AbstractReconstructSearchIndexTask<Project>() {
+) : AbstractReconstructSearchIndexTask<ProjectEntity>() {
 
     override val log = logger {}
 
-    override fun executeForAllInstancesInDataStore(callback: (Project) -> Unit) = getProjectsFromDataStore(callback)
-    override fun shortDescription(instance: Project) = "${instance.id} - ${instance.label}"
+    override fun executeForAllInstancesInDataStore(callback: (ProjectEntity) -> Unit) =
+        getProjectsFromDataStore(callback)
+    override fun shortDescription(instance: ProjectEntity) = "${instance.id} - ${instance.label}"
 
 }

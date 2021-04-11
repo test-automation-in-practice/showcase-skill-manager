@@ -11,7 +11,7 @@ import skillmanagement.common.model.Pagination
 import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.PagedFindAllQuery
 import skillmanagement.common.searchindices.PagedStringQuery
-import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectId
 import skillmanagement.domain.projects.model.project
 import skillmanagement.domain.projects.model.project_morpheus
@@ -157,7 +157,7 @@ internal class ProjectSearchIndexTests(client: RestHighLevelClient) {
 
     }
 
-    private fun index(project: Project): Project = project.also { cut.index(it) }
+    private fun index(project: ProjectEntity): ProjectEntity = project.also { cut.index(it) }
     private fun delete(vararg ids: ProjectId) = ids.forEach(cut::deleteById)
 
     private fun assertIndexContainsOnly(vararg ids: ProjectId) {

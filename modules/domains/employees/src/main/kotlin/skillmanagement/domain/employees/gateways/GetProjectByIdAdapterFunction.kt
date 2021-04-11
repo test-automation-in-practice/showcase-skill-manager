@@ -3,7 +3,7 @@ package skillmanagement.domain.employees.gateways
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.ProjectData
 import skillmanagement.domain.employees.model.ProjectId
-import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.usecases.read.GetProjectByIdFunction
 import skillmanagement.domain.projects.model.ProjectId as ExternalProjectId
 
@@ -24,7 +24,7 @@ internal class GetProjectByIdAdapterFunction(
     operator fun invoke(id: ProjectId): ProjectData? =
         getProjectById(projectId(id))?.toData()
 
-    private fun Project.toData() = ProjectData(
+    private fun ProjectEntity.toData() = ProjectData(
         id = projectId(id),
         label = label.toString(),
         description = description.toString()

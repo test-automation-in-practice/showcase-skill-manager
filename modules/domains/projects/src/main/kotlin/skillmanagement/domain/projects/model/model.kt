@@ -7,7 +7,7 @@ import skillmanagement.common.model.Text
 import java.time.Instant
 import java.util.UUID
 
-data class Project(
+data class ProjectEntity(
     override val id: ProjectId,
     override val version: Int,
     val label: ProjectLabel,

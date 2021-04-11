@@ -4,11 +4,11 @@ import org.junit.jupiter.api.Nested
 import skillmanagement.test.AbstractJsonSerializationTests
 import skillmanagement.test.TechnologyIntegrationTest
 
-internal class ProjectTests {
+internal class ProjectEntityTests {
 
     @Nested
     @TechnologyIntegrationTest
-    inner class JsonSerializationTests : AbstractJsonSerializationTests<Project>() {
+    inner class JsonSerializationTests : AbstractJsonSerializationTests<ProjectEntity>() {
         override val serializationExamples = listOf(
             project_neo to project_neo_json,
             project_morpheus to project_morpheus_json,

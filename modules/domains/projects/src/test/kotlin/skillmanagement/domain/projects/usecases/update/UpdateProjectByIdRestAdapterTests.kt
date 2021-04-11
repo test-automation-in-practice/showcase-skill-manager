@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.put
 import skillmanagement.common.failure
 import skillmanagement.common.http.patch.ApplyPatch
 import skillmanagement.common.success
-import skillmanagement.domain.projects.model.Project
+import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.project_change_data_morpheus_json
 import skillmanagement.domain.projects.model.project_morpheus
 import skillmanagement.domain.projects.model.project_neo
@@ -43,7 +43,7 @@ internal class UpdateProjectByIdRestAdapterTests(
     @Test
     fun `PUT - when updating a complete project it's updated state is returned`() {
         every { updateProjectById(project.id, any()) } answers {
-            val block: (Project) -> (Project) = secondArg()
+            val block: (ProjectEntity) -> (ProjectEntity) = secondArg()
             success(block(project))
         }
 
@@ -132,7 +132,7 @@ internal class UpdateProjectByIdRestAdapterTests(
     @Test
     fun `PATCH - JSON Patch can be used to update properties of a project - label`() {
         every { updateProjectById(project.id, any()) } answers {
-            val block: (Project) -> (Project) = secondArg()
+            val block: (ProjectEntity) -> (ProjectEntity) = secondArg()
             success(block(project))
         }
 
