@@ -20,7 +20,7 @@ import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.failure
 import skillmanagement.common.success
 import skillmanagement.domain.employees.model.EmailAddress
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeUpdatedEvent
 import skillmanagement.domain.employees.model.FirstName
 import skillmanagement.domain.employees.model.JobTitle
@@ -34,12 +34,11 @@ import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.UnitTest
 import skillmanagement.test.instant
-import skillmanagement.test.uuid
 
 internal class UpdateEmployeeByIdFunctionTests {
 
     private val id = employeeId()
-    private val employee = Employee(
+    private val employee = EmployeeEntity(
         id = id,
         version = 2,
         firstName = FirstName("Old-First-Name"),
@@ -64,7 +63,7 @@ internal class UpdateEmployeeByIdFunctionTests {
 
         @Test
         fun `updating an existing employee stores it in the data store and publishes an event`() {
-            val change: (Employee) -> (Employee) = {
+            val change: (EmployeeEntity) -> (EmployeeEntity) = {
                 it.copy(
                     firstName = FirstName("New-First-Name"),
                     lastName = LastName("New-Last-Name"),
@@ -122,7 +121,7 @@ internal class UpdateEmployeeByIdFunctionTests {
             }
         )
 
-        private fun prohibitedModificationTest(name: String, operation: (Employee) -> (Employee)) =
+        private fun prohibitedModificationTest(name: String, operation: (EmployeeEntity) -> (EmployeeEntity)) =
             dynamicTest(name) {
                 every { getEmployeeById(id) } returns employee
                 assertThrows<IllegalStateException> {
@@ -132,7 +131,7 @@ internal class UpdateEmployeeByIdFunctionTests {
                 verify { publishEvent wasNot called }
             }
 
-        private fun simulateUpdate(it: Employee) =
+        private fun simulateUpdate(it: EmployeeEntity) =
             it.copy(version = it.version + 1, lastUpdate = it.lastUpdate.plusSeconds(10))
 
     }
@@ -147,7 +146,7 @@ internal class UpdateEmployeeByIdFunctionTests {
         @Autowired private val updateEmployeeById: UpdateEmployeeByIdFunction
     ) {
 
-        private val change: (Employee) -> Employee = { it.copy(title = JobTitle("New Title")) }
+        private val change: (EmployeeEntity) -> EmployeeEntity = { it.copy(title = JobTitle("New Title")) }
 
         @Test
         fun `operation is retried up to 5 times in case of concurrent update exceptions`() {

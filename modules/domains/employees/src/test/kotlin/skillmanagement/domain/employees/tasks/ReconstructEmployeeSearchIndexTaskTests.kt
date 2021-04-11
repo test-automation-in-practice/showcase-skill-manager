@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 import org.testit.testutils.logrecorder.api.LogRecord
 import org.testit.testutils.logrecorder.junit5.RecordLoggers
 import skillmanagement.common.searchindices.SearchIndexAdmin
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.employee_jane_doe
 import skillmanagement.domain.employees.model.employee_john_doe
 import skillmanagement.domain.employees.model.employee_john_smith
@@ -17,11 +17,11 @@ import skillmanagement.test.tasks.AbstractReconstructSearchIndexTaskTests
 
 @UnitTest
 @ResetMocksAfterEachTest
-internal class ReconstructEmployeeSearchIndexTaskTests : AbstractReconstructSearchIndexTaskTests<Employee>() {
+internal class ReconstructEmployeeSearchIndexTaskTests : AbstractReconstructSearchIndexTaskTests<EmployeeEntity>() {
 
     private val getEmployeesFromDataStore: GetEmployeesFromDataStoreFunction = mockk()
 
-    override val searchIndexAdmin: SearchIndexAdmin<Employee> = mockk(relaxUnitFun = true)
+    override val searchIndexAdmin: SearchIndexAdmin<EmployeeEntity> = mockk(relaxUnitFun = true)
     override val cut = ReconstructEmployeeSearchIndexTask(searchIndexAdmin, getEmployeesFromDataStore)
 
     override val instance1 = employee_jane_doe
@@ -34,12 +34,12 @@ internal class ReconstructEmployeeSearchIndexTaskTests : AbstractReconstructSear
 
     override fun stubDataStoreToBeEmpty() = stubDataStoreToContain(emptyList())
 
-    override fun stubDataStoreToContain(instances: Collection<Employee>) {
-        every { getEmployeesFromDataStore(any<(Employee) -> Unit>()) } answers {
-            instances.forEach { firstArg<(Employee) -> Unit>()(it) }
+    override fun stubDataStoreToContain(instances: Collection<EmployeeEntity>) {
+        every { getEmployeesFromDataStore(any<(EmployeeEntity) -> Unit>()) } answers {
+            instances.forEach { firstArg<(EmployeeEntity) -> Unit>()(it) }
         }
     }
 
-    override fun expectedShortDescription(instance: Employee) = "${instance.id} - ${instance.compositeName()}"
+    override fun expectedShortDescription(instance: EmployeeEntity) = "${instance.id} - ${instance.compositeName()}"
 
 }

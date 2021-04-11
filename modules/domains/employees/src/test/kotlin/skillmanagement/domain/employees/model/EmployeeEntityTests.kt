@@ -8,13 +8,13 @@ import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.UnitTest
 import skillmanagement.test.stringOfLength
 
-internal class EmployeeTests {
+internal class EmployeeEntityTests {
 
     // TODO addOrUpdateXXX tests
 
     @Nested
     @TechnologyIntegrationTest
-    inner class JsonSerializationTests : AbstractJsonSerializationTests<Employee>() {
+    inner class JsonSerializationTests : AbstractJsonSerializationTests<EmployeeEntity>() {
         override val serializationExamples = listOf(
             employee_jane_doe to employee_jane_doe_json,
             employee_john_doe to employee_john_doe_json,

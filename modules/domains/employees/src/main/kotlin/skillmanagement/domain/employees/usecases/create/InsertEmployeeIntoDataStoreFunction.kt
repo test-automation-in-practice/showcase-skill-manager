@@ -3,7 +3,7 @@ package skillmanagement.domain.employees.usecases.create
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import skillmanagement.common.stereotypes.TechnicalFunction
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 
 @TechnicalFunction
 internal class InsertEmployeeIntoDataStoreFunction(
@@ -16,7 +16,7 @@ internal class InsertEmployeeIntoDataStoreFunction(
         VALUES (:id, :version, :data)
         """
 
-    operator fun invoke(employee: Employee) {
+    operator fun invoke(employee: EmployeeEntity) {
         val parameters = mapOf(
             "id" to employee.id.toString(),
             "version" to employee.version,

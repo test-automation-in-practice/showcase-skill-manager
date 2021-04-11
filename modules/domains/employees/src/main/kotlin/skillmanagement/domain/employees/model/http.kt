@@ -49,7 +49,7 @@ internal data class ProjectAssignmentResource(
     val endDate: LocalDate?
 ) : RepresentationModel<SkillKnowledgeResource>()
 
-internal fun Employee.toResource() = EmployeeResource(
+internal fun EmployeeEntity.toResource() = EmployeeResource(
     id = id,
     firstName = firstName,
     lastName = lastName,
@@ -91,8 +91,8 @@ internal fun ProjectAssignment.toResource(employeeId: EmployeeId) = ProjectAssig
     add(linkToProject(project.id).withRel("project"))
 }
 
-internal fun Page<Employee>.toResource(): PagedModel<EmployeeResource> =
-    PagedModel.of(content.map(Employee::toResource), toMetaData())
+internal fun Page<EmployeeEntity>.toResource(): PagedModel<EmployeeResource> =
+    PagedModel.of(content.map(EmployeeEntity::toResource), toMetaData())
         .apply {
             add(linkToEmployees(pageIndex, pageSize).withSelfRel())
             if (hasPrevious()) add(linkToEmployees(pageIndex - 1, pageSize).withRel("previousPage"))
@@ -104,8 +104,8 @@ internal fun linkToEmployees(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
     return linkToCurrentMapping().slash(RESOURCE_BASE + queryPart)
 }
 
-internal fun Page<Employee>.toSearchResource(): PagedModel<EmployeeResource> =
-    PagedModel.of(content.map(Employee::toResource), toMetaData())
+internal fun Page<EmployeeEntity>.toSearchResource(): PagedModel<EmployeeResource> =
+    PagedModel.of(content.map(EmployeeEntity::toResource), toMetaData())
         .apply {
             add(linkToEmployeesSearch(pageIndex, pageSize).withSelfRel())
             if (hasPrevious()) add(linkToEmployeesSearch(pageIndex - 1, pageSize).withRel("previousPage"))

@@ -8,7 +8,7 @@ import skillmanagement.common.model.Page
 import skillmanagement.common.model.PageIndex
 import skillmanagement.common.model.PageSize
 import skillmanagement.common.model.Pagination
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.UnitTest
 
@@ -21,14 +21,14 @@ internal class GetEmployeesPageGraphQLAdapterTests {
 
     @Test
     fun `translates and delegates retrieval to business function`() {
-        val page: Page<Employee> = mockk()
+        val page: Page<EmployeeEntity> = mockk()
         every { getEmployeesPage(AllEmployeesQuery(Pagination(PageIndex(3), PageSize(42)))) } returns page
         assertThat(tryToGetEmployeesPage(index = 3, size = 42)).isEqualTo(page)
     }
 
     @Test
     fun `default values are used when necessary`() {
-        val page: Page<Employee> = mockk()
+        val page: Page<EmployeeEntity> = mockk()
         every { getEmployeesPage(AllEmployeesQuery(Pagination.DEFAULT)) } returns page
         assertThat(tryToGetEmployeesPage()).isEqualTo(page)
     }

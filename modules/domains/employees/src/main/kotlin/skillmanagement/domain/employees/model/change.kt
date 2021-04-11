@@ -28,7 +28,7 @@ internal data class SkillKnowledgeChangeData(
     val secret: Boolean
 )
 
-internal fun Employee.toChangeData(): EmployeeChangeData =
+internal fun EmployeeEntity.toChangeData(): EmployeeChangeData =
     EmployeeChangeData(
         firstName = firstName,
         lastName = lastName,
@@ -43,7 +43,7 @@ internal fun Employee.toChangeData(): EmployeeChangeData =
         jobHistory = jobHistory
     )
 
-internal fun Employee.merge(changes: EmployeeChangeData): Employee =
+internal fun EmployeeEntity.merge(changes: EmployeeChangeData): EmployeeEntity =
     copy(
         firstName = changes.firstName,
         lastName = changes.lastName,

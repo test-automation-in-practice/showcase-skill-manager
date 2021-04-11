@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.util.IdGenerator
 import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.domain.employees.model.EmailAddress
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeAddedEvent
 import skillmanagement.domain.employees.model.EmployeeCreationData
 import skillmanagement.domain.employees.model.FirstName
@@ -47,7 +47,7 @@ internal class CreateEmployeeFunctionTests {
                 telephone = TelephoneNumber("+49 123 456789")
             )
         )
-        val expected = Employee(
+        val expected = EmployeeEntity(
             id = employeeId("9f3d85ac-1571-4404-af3a-6fda482a6c23"),
             version = 1,
             firstName = FirstName("Jane"),

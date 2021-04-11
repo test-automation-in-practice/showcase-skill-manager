@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Import
 import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.searchindices.SearchIndex
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeAddedEvent
 import skillmanagement.domain.employees.model.EmployeeDeletedEvent
 import skillmanagement.domain.employees.model.EmployeeId
@@ -23,7 +23,7 @@ import skillmanagement.test.events.EventingSpringIntegrationTest
 @EventingSpringIntegrationTest
 @Import(EmployeeSearchIndexUpdatingEventHandlerTestsConfiguration::class)
 internal class EmployeeSearchIndexUpdatingEventHandlerTests(
-    @Autowired private val searchIndex: SearchIndex<Employee, EmployeeId>,
+    @Autowired private val searchIndex: SearchIndex<EmployeeEntity, EmployeeId>,
     @Autowired private val publishEvent: PublishEventFunction
 ) {
 
@@ -53,5 +53,5 @@ internal class EmployeeSearchIndexUpdatingEventHandlerTests(
 )
 private class EmployeeSearchIndexUpdatingEventHandlerTestsConfiguration {
     @Bean
-    fun searchIndex(): SearchIndex<Employee, EmployeeId> = mockk(relaxed = true)
+    fun searchIndex(): SearchIndex<EmployeeEntity, EmployeeId> = mockk(relaxed = true)
 }

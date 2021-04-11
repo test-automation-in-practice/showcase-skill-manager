@@ -6,7 +6,7 @@ import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import skillmanagement.common.model.Page
 import skillmanagement.common.searchindices.SearchIndex
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.externalProjectId
 import skillmanagement.domain.employees.model.externalSkillId
@@ -17,7 +17,7 @@ import skillmanagement.test.UnitTest
 @ResetMocksAfterEachTest
 internal class GetEmployeeIdsFunctionTests {
 
-    private val searchIndex: SearchIndex<Employee, EmployeeId> = mockk()
+    private val searchIndex: SearchIndex<EmployeeEntity, EmployeeId> = mockk()
     private val findEmployees = GetEmployeeIdsFunction(searchIndex)
 
     @Test

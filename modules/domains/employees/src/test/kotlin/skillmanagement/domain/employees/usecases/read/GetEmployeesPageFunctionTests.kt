@@ -6,7 +6,7 @@ import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import skillmanagement.common.model.pageOf
 import skillmanagement.common.searchindices.SearchIndex
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.employee_jane_doe
 import skillmanagement.domain.employees.model.employee_john_doe
@@ -21,7 +21,7 @@ import skillmanagement.test.UnitTest
 internal class GetEmployeesPageFunctionTests {
 
     private val getEmployeesFromDataStore: GetEmployeesFromDataStoreFunction = mockk()
-    private val searchIndex: SearchIndex<Employee, EmployeeId> = mockk()
+    private val searchIndex: SearchIndex<EmployeeEntity, EmployeeId> = mockk()
     private val findEmployees = GetEmployeesPageFunction(getEmployeesFromDataStore, searchIndex)
 
     @Test
@@ -64,6 +64,6 @@ internal class GetEmployeesPageFunctionTests {
         findEmployees(query) shouldBe pageOf(listOf(employee_john_doe))
     }
 
-    private fun employeeMap(vararg employees: Employee) = employees.map { it.id to it }.toMap()
+    private fun employeeMap(vararg employees: EmployeeEntity) = employees.map { it.id to it }.toMap()
 
 }

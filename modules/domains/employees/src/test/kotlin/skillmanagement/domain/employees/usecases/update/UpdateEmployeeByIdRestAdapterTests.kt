@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.put
 import skillmanagement.common.failure
 import skillmanagement.common.http.patch.ApplyPatch
 import skillmanagement.common.success
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.employee_change_data_jane_doe_json
 import skillmanagement.domain.employees.model.employee_change_data_john_smith_json
 import skillmanagement.domain.employees.model.employee_john_smith
@@ -41,7 +41,7 @@ internal class UpdateEmployeeByIdRestAdapterTests(
     @Test
     fun `PUT - when updating a complete employee it's updated state is returned`() {
         every { updateEmployeeById(employee_john_smith.id, any()) } answers {
-            val block: (Employee) -> (Employee) = secondArg()
+            val block: (EmployeeEntity) -> (EmployeeEntity) = secondArg()
             success(block(employee_john_smith))
         }
 
@@ -184,7 +184,7 @@ internal class UpdateEmployeeByIdRestAdapterTests(
     @Test
     fun `PATCH - JSON Patch can be used to update properties of a employee - label`() {
         every { updateEmployeeById(employee_john_smith.id, any()) } answers {
-            val block: (Employee) -> (Employee) = secondArg()
+            val block: (EmployeeEntity) -> (EmployeeEntity) = secondArg()
             success(block(employee_john_smith))
         }
 

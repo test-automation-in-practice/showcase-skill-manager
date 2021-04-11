@@ -11,7 +11,7 @@ import skillmanagement.common.model.Pagination
 import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.PagedFindAllQuery
 import skillmanagement.common.searchindices.PagedStringQuery
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.employee
 import skillmanagement.domain.employees.model.employee_jane_doe
@@ -161,7 +161,7 @@ internal class EmployeeSearchIndexTests(client: RestHighLevelClient) {
 
     }
 
-    private fun index(employee: Employee): Employee = employee.also { cut.index(it) }
+    private fun index(employee: EmployeeEntity): EmployeeEntity = employee.also { cut.index(it) }
     private fun delete(vararg ids: EmployeeId) = ids.forEach(cut::deleteById)
 
     private fun assertIndexContainsOnly(vararg ids: EmployeeId) {

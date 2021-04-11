@@ -3,7 +3,7 @@ package skillmanagement.domain.employees.usecases.update
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import skillmanagement.common.stereotypes.TechnicalFunction
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import java.time.Clock
 
 @TechnicalFunction
@@ -20,21 +20,21 @@ internal class UpdateEmployeeInDataStoreFunction(
         """
 
     /**
-     * Updates the given [Employee] in the data store.
+     * Updates the given [EmployeeEntity] in the data store.
      *
-     * This also updates the [Employee.version] and [Employee.lastUpdate]
-     * properties. Always use the returned [Employee] instance for subsequent
+     * This also updates the [EmployeeEntity.version] and [EmployeeEntity.lastUpdate]
+     * properties. Always use the returned [EmployeeEntity] instance for subsequent
      * operation!
      *
      * @throws ConcurrentEmployeeUpdateException in case there was a concurrent
      * update to this employee's data while the invoking operation was working.
      */
-    operator fun invoke(employee: Employee): Employee = doUpdateEmployee(
+    operator fun invoke(employee: EmployeeEntity): EmployeeEntity = doUpdateEmployee(
         employee = employee.copy(version = employee.version + 1, lastUpdate = clock.instant()),
         expectedVersion = employee.version
     )
 
-    private fun doUpdateEmployee(employee: Employee, expectedVersion: Int): Employee {
+    private fun doUpdateEmployee(employee: EmployeeEntity, expectedVersion: Int): EmployeeEntity {
         val parameters = mapOf(
             "id" to employee.id.toString(),
             "version" to employee.version,
