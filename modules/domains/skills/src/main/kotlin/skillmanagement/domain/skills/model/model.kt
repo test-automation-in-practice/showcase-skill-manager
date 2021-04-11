@@ -1,5 +1,6 @@
 package skillmanagement.domain.skills.model
 
+import skillmanagement.common.model.Entity
 import skillmanagement.common.model.IdType
 import skillmanagement.common.model.Label
 import skillmanagement.common.model.StringType
@@ -13,13 +14,13 @@ import java.util.UUID
 private val TAG_PATTERN = Regex("""[a-z]+([-_][a-z]+)*""")
 
 data class Skill(
-    val id: SkillId,
-    val version: Int,
+    override val id: SkillId,
+    override val version: Int,
     val label: SkillLabel,
     val description: SkillDescription?,
     val tags: SortedSet<Tag>,
-    val lastUpdate: Instant
-)
+    override val lastUpdate: Instant
+) : Entity<SkillId>
 
 class SkillId(value: UUID) : IdType(value)
 class SkillLabel(value: String) : Label(value, maxLength = 100)
