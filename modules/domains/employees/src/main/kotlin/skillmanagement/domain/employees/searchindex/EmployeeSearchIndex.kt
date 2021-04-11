@@ -8,14 +8,14 @@ import org.elasticsearch.search.SearchHit
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
 import skillmanagement.common.searchindices.AbstractSearchIndex
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.employeeId
 
 @Component
 internal class EmployeeSearchIndex(
     override val client: RestHighLevelClient
-) : AbstractSearchIndex<Employee, EmployeeId>() {
+) : AbstractSearchIndex<EmployeeEntity, EmployeeId>() {
 
     override val indexName = "employees"
     override val sortFieldName = "_sort"
@@ -23,7 +23,7 @@ internal class EmployeeSearchIndex(
 
     override val mappingResource = ClassPathResource("/indices/employees-mapping.json")
 
-    override fun toSource(instance: Employee) =
+    override fun toSource(instance: EmployeeEntity) =
         with(instance) {
             mapOf(
                 "name" to compositeName(),

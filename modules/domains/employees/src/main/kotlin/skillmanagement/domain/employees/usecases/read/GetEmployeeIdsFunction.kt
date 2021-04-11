@@ -3,12 +3,12 @@ package skillmanagement.domain.employees.usecases.read
 import skillmanagement.common.model.Page
 import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.common.stereotypes.BusinessFunction
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeId
 
 @BusinessFunction
 class GetEmployeeIdsFunction internal constructor(
-    private val searchIndex: SearchIndex<Employee, EmployeeId>
+    private val searchIndex: SearchIndex<EmployeeEntity, EmployeeId>
 ) {
 
     operator fun invoke(query: EmployeesQuery): Page<EmployeeId> =

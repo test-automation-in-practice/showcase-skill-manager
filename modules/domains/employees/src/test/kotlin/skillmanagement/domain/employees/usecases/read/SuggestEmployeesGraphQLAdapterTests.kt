@@ -8,7 +8,7 @@ import skillmanagement.common.model.Page
 import skillmanagement.common.model.Suggestion
 import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.SearchIndex
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.UnitTest
@@ -17,7 +17,7 @@ import skillmanagement.test.UnitTest
 @ResetMocksAfterEachTest
 internal class SuggestEmployeesGraphQLAdapterTests {
 
-    private val searchIndex: SearchIndex<Employee, EmployeeId> = mockk()
+    private val searchIndex: SearchIndex<EmployeeEntity, EmployeeId> = mockk()
     private val cut = SuggestEmployeesGraphQLAdapter(searchIndex)
 
     @Test

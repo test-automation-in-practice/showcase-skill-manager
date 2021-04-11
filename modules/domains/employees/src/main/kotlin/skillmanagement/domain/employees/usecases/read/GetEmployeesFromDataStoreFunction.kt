@@ -7,7 +7,7 @@ import mu.KotlinLogging
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import skillmanagement.common.stereotypes.TechnicalFunction
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.employeeId
 import java.sql.ResultSet
@@ -24,10 +24,10 @@ internal class GetEmployeesFromDataStoreFunction(
 
     private val rowMapper = EmployeeRowMapper(objectMapper)
 
-    operator fun invoke(id: EmployeeId): Employee? =
+    operator fun invoke(id: EmployeeId): EmployeeEntity? =
         jdbcTemplate.query(singleIdQuery, mapOf("id" to "$id"), rowMapper).singleOrNull()
 
-    operator fun invoke(ids: Collection<EmployeeId>, chunkSize: Int = 1_000): Map<EmployeeId, Employee> =
+    operator fun invoke(ids: Collection<EmployeeId>, chunkSize: Int = 1_000): Map<EmployeeId, EmployeeEntity> =
         ids.asSequence()
             .map(EmployeeId::toString)
             .chunked(chunkSize)
@@ -36,20 +36,20 @@ internal class GetEmployeesFromDataStoreFunction(
             .map { it.id to it }
             .toMap()
 
-    operator fun invoke(callback: (Employee) -> Unit) {
+    operator fun invoke(callback: (EmployeeEntity) -> Unit) {
         jdbcTemplate.query(allQuery) { rs -> rowMapper.mapRow(rs, -1)?.also(callback) }
     }
 
 }
 
-internal class EmployeeRowMapper(private val objectMapper: ObjectMapper) : RowMapper<Employee?> {
+internal class EmployeeRowMapper(private val objectMapper: ObjectMapper) : RowMapper<EmployeeEntity?> {
 
     private val log = KotlinLogging.logger {}
 
-    override fun mapRow(rs: ResultSet, rowNum: Int): Employee? = tryToDeserialize(rs.data, rs.id)
+    override fun mapRow(rs: ResultSet, rowNum: Int): EmployeeEntity? = tryToDeserialize(rs.data, rs.id)
 
-    private fun tryToDeserialize(data: String, id: EmployeeId): Employee? = try {
-        objectMapper.readValue<Employee>(data)
+    private fun tryToDeserialize(data: String, id: EmployeeId): EmployeeEntity? = try {
+        objectMapper.readValue<EmployeeEntity>(data)
     } catch (e: JsonProcessingException) {
         log.error(e) { "Could not read data of employee [$id]: ${e.message}" }
         log.debug { "Corrupted data: $data" }

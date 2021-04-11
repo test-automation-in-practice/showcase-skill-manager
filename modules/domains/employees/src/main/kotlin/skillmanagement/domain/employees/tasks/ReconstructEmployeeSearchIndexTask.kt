@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 import skillmanagement.common.searchindices.AbstractReconstructSearchIndexTask
 import skillmanagement.common.searchindices.SearchIndexAdmin
 import skillmanagement.common.stereotypes.Task
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.usecases.read.GetEmployeesFromDataStoreFunction
 
 @Component
@@ -23,13 +23,16 @@ internal class ReconstructEmployeeSearchIndexTaskWebEndpoint(
 
 @Task
 internal class ReconstructEmployeeSearchIndexTask(
-    override val searchIndexAdmin: SearchIndexAdmin<Employee>,
+    override val searchIndexAdmin: SearchIndexAdmin<EmployeeEntity>,
     private val getEmployeeFromDataStore: GetEmployeesFromDataStoreFunction
-) : AbstractReconstructSearchIndexTask<Employee>() {
+) : AbstractReconstructSearchIndexTask<EmployeeEntity>() {
 
     override val log = logger {}
 
-    override fun executeForAllInstancesInDataStore(callback: (Employee) -> Unit) = getEmployeeFromDataStore(callback)
-    override fun shortDescription(instance: Employee) = "${instance.id} - ${instance.firstName} ${instance.lastName}"
+    override fun executeForAllInstancesInDataStore(callback: (EmployeeEntity) -> Unit) =
+        getEmployeeFromDataStore(callback)
+
+    override fun shortDescription(instance: EmployeeEntity) =
+        "${instance.id} - ${instance.firstName} ${instance.lastName}"
 
 }

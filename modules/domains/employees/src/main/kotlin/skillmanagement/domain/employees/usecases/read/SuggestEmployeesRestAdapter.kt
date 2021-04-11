@@ -8,13 +8,13 @@ import skillmanagement.common.model.Suggestion
 import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.common.stereotypes.RestAdapter
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeId
 
 @RestAdapter
 @RequestMapping("/api/employees/_suggest")
 internal class SuggestEmployeesRestAdapter(
-    private val searchIndex: SearchIndex<Employee, EmployeeId>
+    private val searchIndex: SearchIndex<EmployeeEntity, EmployeeId>
 ) {
 
     @PostMapping

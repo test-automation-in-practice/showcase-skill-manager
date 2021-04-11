@@ -2,7 +2,7 @@ package skillmanagement.domain.employees.usecases.skillknowledge.update
 
 import arrow.core.Either
 import skillmanagement.common.stereotypes.BusinessFunction
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.SkillId
 import skillmanagement.domain.employees.model.SkillKnowledge
@@ -23,7 +23,7 @@ class UpdateSkillKnowledgeByIdFunction internal constructor(
         employeeId: EmployeeId,
         skillId: SkillId,
         block: (SkillKnowledge) -> SkillKnowledge
-    ): Either<UpdateFailure, Employee> {
+    ): Either<UpdateFailure, EmployeeEntity> {
         var knowledgeExists = false
         val updateResult = updateEmployeeById(employeeId) { employee ->
             val updatedSkills = employee.skills
@@ -63,5 +63,5 @@ class UpdateSkillKnowledgeByIdFunction internal constructor(
 sealed class UpdateFailure {
     object EmployeeNotFound : UpdateFailure()
     object SkillKnowledgeNotFound : UpdateFailure()
-    data class SkillKnowledgeNotChanged(val employee: Employee) : UpdateFailure()
+    data class SkillKnowledgeNotChanged(val employee: EmployeeEntity) : UpdateFailure()
 }

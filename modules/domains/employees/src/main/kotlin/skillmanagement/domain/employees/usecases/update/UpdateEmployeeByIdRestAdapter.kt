@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.http.patch.ApplyPatch
 import skillmanagement.common.stereotypes.RestAdapter
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeChangeData
 import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.EmployeeResource
@@ -37,7 +37,7 @@ internal class UpdateEmployeeByIdRestAdapter(
     fun patch(@PathVariable id: EmployeeId, @RequestBody patch: JsonPatch): ResponseEntity<EmployeeResource> =
         update(id) { employee -> employee.merge(applyPatch(patch, employee.toChangeData())) }
 
-    private fun update(id: EmployeeId, block: (Employee) -> Employee) = updateEmployeeById(id, block)
+    private fun update(id: EmployeeId, block: (EmployeeEntity) -> EmployeeEntity) = updateEmployeeById(id, block)
         .map { employee -> ok(employee.toResource()) }
         .getOrHandle { failure ->
             when (failure) {

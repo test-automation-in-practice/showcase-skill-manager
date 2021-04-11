@@ -9,7 +9,7 @@ import skillmanagement.common.events.durableQueue
 import skillmanagement.common.events.eventBinding
 import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.common.stereotypes.EventHandler
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeAddedEvent
 import skillmanagement.domain.employees.model.EmployeeDeletedEvent
 import skillmanagement.domain.employees.model.EmployeeId
@@ -23,7 +23,7 @@ private const val EMPLOYEE_DELETED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.EmployeeDelet
 
 @EventHandler
 internal class EmployeeSearchIndexUpdatingEventHandler(
-    private val searchIndex: SearchIndex<Employee, EmployeeId>
+    private val searchIndex: SearchIndex<EmployeeEntity, EmployeeId>
 ) {
 
     private val log = logger {}

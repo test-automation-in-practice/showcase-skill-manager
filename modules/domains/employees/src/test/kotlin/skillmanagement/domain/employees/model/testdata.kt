@@ -82,7 +82,7 @@ internal val project_assignment_morpheus = ProjectAssignment(
 // Example #1
 
 /** All possible properties are set (max example). */
-internal val employee_jane_doe = Employee(
+internal val employee_jane_doe = EmployeeEntity(
     id = employeeId("9e1ff73e-0f66-4b86-8548-040d4016bfc9"),
     version = 1,
     firstName = FirstName("Jane"),
@@ -382,7 +382,7 @@ internal val employee_suggestion_jane_doe = employee_jane_doe.toSuggestion()
 // Example #2
 
 /** Only required and some optional properties are set (medium example). */
-internal val employee_john_doe = Employee(
+internal val employee_john_doe = EmployeeEntity(
     id = employeeId("0370f159-2d3b-4e40-9438-10ff34dd62c5"),
     version = 1,
     firstName = FirstName("John"),
@@ -557,7 +557,7 @@ internal val employee_suggestion_john_doe = employee_john_doe.toSuggestion()
  * Only required properties are set (min example).
  *
  */
-internal val employee_john_smith = Employee(
+internal val employee_john_smith = EmployeeEntity(
     id = employeeId("53b5f462-0c39-4e2a-83bf-aa407cf309be"),
     version = 1,
     firstName = FirstName("John"),
@@ -643,7 +643,7 @@ fun projectAssignmentId() = ProjectAssignmentId(uuid())
 fun externalProjectId() = ProjectId(uuid())
 fun externalSkillId() = SkillId(uuid())
 
-private fun Employee.toResourceWithoutLinks() =
+private fun EmployeeEntity.toResourceWithoutLinks() =
     EmployeeResource(
         id = id,
         firstName = firstName,
@@ -677,7 +677,7 @@ private fun ProjectAssignment.toResourceWithoutLinks() =
         endDate = endDate
     )
 
-private fun Employee.toCreationData() =
+private fun EmployeeEntity.toCreationData() =
     EmployeeCreationData(
         firstName = firstName,
         lastName = lastName,
@@ -686,7 +686,7 @@ private fun Employee.toCreationData() =
         telephone = telephone
     )
 
-internal fun Employee.toSuggestion() =
+internal fun EmployeeEntity.toSuggestion() =
     Suggestion(
         id = id,
         label = compositeName()
@@ -701,7 +701,7 @@ internal fun employee(
     email: String = "$firstName.$lastName@example.com",
     telephone: String = "+49 123 456789",
     lastUpdate: String = "2021-03-26T12:34:56.789Z"
-) = Employee(
+) = EmployeeEntity(
     id = employeeId(id),
     version = version,
     firstName = FirstName(firstName),
@@ -713,12 +713,12 @@ internal fun employee(
 )
 
 /**
- * Creates an instance based on this [Employee] which contains only those
- * properties that would be set after creating a new [Employee] based on
+ * Creates an instance based on this [EmployeeEntity] which contains only those
+ * properties that would be set after creating a new [EmployeeEntity] based on
  * [EmployeeCreationData].
  */
-internal fun Employee.asFreshlyCreatedInstance() =
-    Employee(
+internal fun EmployeeEntity.asFreshlyCreatedInstance() =
+    EmployeeEntity(
         id = id,
         version = 1,
         firstName = firstName,

@@ -2,7 +2,7 @@ package skillmanagement.domain.employees.usecases.projectassignments.update
 
 import arrow.core.Either
 import skillmanagement.common.stereotypes.BusinessFunction
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.ProjectAssignment
 import skillmanagement.domain.employees.model.ProjectAssignmentId
@@ -23,7 +23,7 @@ class UpdateProjectAssignmentByIdFunction internal constructor(
         employeeId: EmployeeId,
         projectAssignmentId: ProjectAssignmentId,
         block: (ProjectAssignment) -> ProjectAssignment
-    ): Either<UpdateFailure, Employee> {
+    ): Either<UpdateFailure, EmployeeEntity> {
         var assignmentExists = false
         val updateResult = updateEmployeeById(employeeId) { employee ->
             val updatedProjects = employee.projects
@@ -64,5 +64,5 @@ class UpdateProjectAssignmentByIdFunction internal constructor(
 sealed class UpdateFailure {
     object EmployeeNotFound : UpdateFailure()
     object ProjectAssignmentNotFound : UpdateFailure()
-    data class ProjectAssignmentNotChanged(val employee: Employee) : UpdateFailure()
+    data class ProjectAssignmentNotChanged(val employee: EmployeeEntity) : UpdateFailure()
 }

@@ -18,7 +18,7 @@ import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.testit.testutils.logrecorder.api.LogRecord
 import org.testit.testutils.logrecorder.junit5.RecordLoggers
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.employeeId
 import skillmanagement.domain.employees.model.employee_jane_doe
@@ -95,7 +95,7 @@ internal class GetEmployeesFromDataStoreFunctionTests(
     @ResetMocksAfterEachTest
     inner class AllWithCallback {
 
-        private val callback: (Employee) -> Unit = mockk(relaxed = true)
+        private val callback: (EmployeeEntity) -> Unit = mockk(relaxed = true)
 
         @Test
         fun `callback is never invoked if there are no employees`() {
@@ -147,6 +147,6 @@ internal class GetEmployeesFromDataStoreFunctionTests(
 
     }
 
-    private fun insert(vararg employees: Employee) = employees.forEach { insertEmployeeIntoDataStore(it) }
+    private fun insert(vararg employees: EmployeeEntity) = employees.forEach { insertEmployeeIntoDataStore(it) }
 
 }

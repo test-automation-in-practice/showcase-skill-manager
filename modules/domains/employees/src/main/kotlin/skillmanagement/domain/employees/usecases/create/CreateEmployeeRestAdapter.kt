@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest
 import skillmanagement.common.stereotypes.RestAdapter
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeCreationData
 import skillmanagement.domain.employees.model.EmployeeResource
 import skillmanagement.domain.employees.model.toResource
@@ -29,6 +29,6 @@ internal class CreateEmployeeRestAdapter(
         return created(location).body(resource)
     }
 
-    private fun locationOf(employee: Employee) = fromCurrentRequest().path("/${employee.id}").build().toUri()
+    private fun locationOf(employee: EmployeeEntity) = fromCurrentRequest().path("/${employee.id}").build().toUri()
 
 }

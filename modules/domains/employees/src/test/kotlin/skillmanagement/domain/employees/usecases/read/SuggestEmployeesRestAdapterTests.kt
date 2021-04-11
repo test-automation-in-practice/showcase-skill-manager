@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.SearchIndex
-import skillmanagement.domain.employees.model.Employee
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.employee_suggestion_jane_doe
 import skillmanagement.domain.employees.model.employee_suggestion_john_doe
@@ -30,7 +30,7 @@ import skillmanagement.test.strictJson
 @AutoConfigureRestDocs("build/generated-snippets/employees/suggest", uriPort = 80)
 internal class SuggestEmployeesRestAdapterTests(
     @Autowired val mockMvc: MockMvc,
-    @Autowired val searchIndex: SearchIndex<Employee, EmployeeId>
+    @Autowired val searchIndex: SearchIndex<EmployeeEntity, EmployeeId>
 ) {
 
     @Test
@@ -93,5 +93,5 @@ internal class SuggestEmployeesRestAdapterTests(
 
 private class SuggestEmployeesRestAdapterTestsConfiguration {
     @Bean
-    fun searchIndex(): SearchIndex<Employee, EmployeeId> = mockk(relaxUnitFun = true)
+    fun searchIndex(): SearchIndex<EmployeeEntity, EmployeeId> = mockk(relaxUnitFun = true)
 }
