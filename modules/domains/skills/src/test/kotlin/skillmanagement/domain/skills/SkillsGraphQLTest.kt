@@ -18,7 +18,7 @@ import skillmanagement.common.model.PageSize
 import skillmanagement.common.model.Pagination
 import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.SearchIndex
-import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.model.SkillId
 import skillmanagement.domain.skills.model.skill_creation_data_kotlin
 import skillmanagement.domain.skills.model.skill_creation_data_python
@@ -129,7 +129,7 @@ internal class SkillsGraphQLTest(
     }
 
     @Test
-    fun `suggest skills - found`(@Autowired searchIndex: SearchIndex<Skill, SkillId>) {
+    fun `suggest skills - found`(@Autowired searchIndex: SearchIndex<SkillEntity, SkillId>) {
         every { searchIndex.suggest("ko", MaxSuggestions(10)) } returns listOf(skill_suggestion_kotlin)
         assertRequestResponse(
             request = "/graphql/suggestSkills/request.graphql",
@@ -138,7 +138,7 @@ internal class SkillsGraphQLTest(
     }
 
     @Test
-    fun `suggest skills - empty`(@Autowired searchIndex: SearchIndex<Skill, SkillId>) {
+    fun `suggest skills - empty`(@Autowired searchIndex: SearchIndex<SkillEntity, SkillId>) {
         every { searchIndex.suggest("ko", MaxSuggestions(10)) } returns emptyList()
         assertRequestResponse(
             request = "/graphql/suggestSkills/request.graphql",
@@ -189,6 +189,6 @@ private class TestConfiguration {
     fun getSkillsFunction(): GetSkillsPageFunction = mockk()
 
     @Bean
-    fun searchIndex(): SearchIndex<Skill, SkillId> = mockk()
+    fun searchIndex(): SearchIndex<SkillEntity, SkillId> = mockk()
 
 }

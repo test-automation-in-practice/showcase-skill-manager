@@ -8,7 +8,7 @@ import io.mockk.verify
 import org.junit.jupiter.api.Test
 import org.springframework.util.IdGenerator
 import skillmanagement.common.events.PublishEventFunction
-import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.model.SkillAddedEvent
 import skillmanagement.domain.skills.model.SkillCreationData
 import skillmanagement.domain.skills.model.SkillDescription
@@ -42,7 +42,7 @@ internal class CreateSkillFunctionTests {
                 label = SkillLabel("Skill #1")
             )
         )
-        val expected = Skill(
+        val expected = SkillEntity(
             id = skillId("312f3bfc-c9b0-4b4c-9cc4-33242cdfc39e"),
             version = 1,
             label = SkillLabel("Skill #1"),
@@ -70,7 +70,7 @@ internal class CreateSkillFunctionTests {
                 tags = sortedSetOf(Tag("foo-bar"))
             )
         )
-        val expected = Skill(
+        val expected = SkillEntity(
             id = skillId("da8748e1-405b-456c-92d4-26fdad09a0c9"),
             version = 1,
             label = SkillLabel("Skill #2"),

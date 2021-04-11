@@ -6,7 +6,7 @@ import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import skillmanagement.domain.employees.model.externalSkillId
 import skillmanagement.domain.employees.model.skill_kotlin
-import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.model.SkillDescription
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.Tag
@@ -25,7 +25,7 @@ internal class GetSkillByIdAdapterFunctionTests {
 
     @Test
     fun `delegates to function of other module and converts the result`() {
-        val skill = Skill(
+        val skill = SkillEntity(
             id = skillId("3f7985b9-f5f0-4662-bda9-1dcde01f5f3b"),
             version = 1,
             label = SkillLabel("Kotlin"),

@@ -8,13 +8,13 @@ import skillmanagement.common.model.Suggestion
 import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.common.stereotypes.RestAdapter
-import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.model.SkillId
 
 @RestAdapter
 @RequestMapping("/api/skills/_suggest")
 internal class SuggestSkillsRestAdapter(
-    private val searchIndex: SearchIndex<Skill, SkillId>
+    private val searchIndex: SearchIndex<SkillEntity, SkillId>
 ) {
 
     @PostMapping

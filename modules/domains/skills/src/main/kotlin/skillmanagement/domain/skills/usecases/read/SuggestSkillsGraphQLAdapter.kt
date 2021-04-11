@@ -5,12 +5,12 @@ import skillmanagement.common.model.Suggestion
 import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.SearchIndex
 import skillmanagement.common.stereotypes.GraphQLAdapter
-import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.model.SkillId
 
 @GraphQLAdapter
 internal class SuggestSkillsGraphQLAdapter(
-    private val searchIndex: SearchIndex<Skill, SkillId>
+    private val searchIndex: SearchIndex<SkillEntity, SkillId>
 ) : GraphQLQueryResolver {
 
     fun suggestSkills(input: String, max: MaxSuggestions?): List<Suggestion> =

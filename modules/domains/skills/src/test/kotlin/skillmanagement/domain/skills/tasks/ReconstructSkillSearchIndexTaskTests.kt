@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test
 import org.testit.testutils.logrecorder.api.LogRecord
 import org.testit.testutils.logrecorder.junit5.RecordLoggers
 import skillmanagement.common.searchindices.SearchIndexAdmin
-import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.model.skill_java
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_python
@@ -17,11 +17,11 @@ import skillmanagement.test.tasks.AbstractReconstructSearchIndexTaskTests
 
 @UnitTest
 @ResetMocksAfterEachTest
-internal class ReconstructSkillSearchIndexTaskTests : AbstractReconstructSearchIndexTaskTests<Skill>() {
+internal class ReconstructSkillSearchIndexTaskTests : AbstractReconstructSearchIndexTaskTests<SkillEntity>() {
 
     private val getSkillsFromDataStore: GetSkillsFromDataStoreFunction = mockk()
 
-    override val searchIndexAdmin: SearchIndexAdmin<Skill> = mockk(relaxUnitFun = true)
+    override val searchIndexAdmin: SearchIndexAdmin<SkillEntity> = mockk(relaxUnitFun = true)
     override val cut = ReconstructSkillSearchIndexTask(searchIndexAdmin, getSkillsFromDataStore)
 
     override val instance1 = skill_kotlin
@@ -34,12 +34,12 @@ internal class ReconstructSkillSearchIndexTaskTests : AbstractReconstructSearchI
 
     override fun stubDataStoreToBeEmpty() = stubDataStoreToContain(emptyList())
 
-    override fun stubDataStoreToContain(instances: Collection<Skill>) {
-        every { getSkillsFromDataStore(any<(Skill) -> Unit>()) } answers {
-            instances.forEach { firstArg<(Skill) -> Unit>()(it) }
+    override fun stubDataStoreToContain(instances: Collection<SkillEntity>) {
+        every { getSkillsFromDataStore(any<(SkillEntity) -> Unit>()) } answers {
+            instances.forEach { firstArg<(SkillEntity) -> Unit>()(it) }
         }
     }
 
-    override fun expectedShortDescription(instance: Skill) = "${instance.id} - ${instance.label}"
+    override fun expectedShortDescription(instance: SkillEntity) = "${instance.id} - ${instance.label}"
 
 }

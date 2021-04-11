@@ -10,8 +10,8 @@ internal data class SkillChangeData(
     val tags: SortedSet<Tag>
 )
 
-internal fun Skill.toChangeData(): SkillChangeData =
+internal fun SkillEntity.toChangeData(): SkillChangeData =
     SkillChangeData(label = label, description = description, tags = tags)
 
-internal fun Skill.merge(changes: SkillChangeData): Skill =
+internal fun SkillEntity.merge(changes: SkillChangeData): SkillEntity =
     copy(label = changes.label, description = changes.description, tags = changes.tags)

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component
 import skillmanagement.common.searchindices.AbstractReconstructSearchIndexTask
 import skillmanagement.common.searchindices.SearchIndexAdmin
 import skillmanagement.common.stereotypes.Task
-import skillmanagement.domain.skills.model.Skill
+import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.usecases.read.GetSkillsFromDataStoreFunction
 
 @Component
@@ -23,13 +23,13 @@ internal class ReconstructSkillSearchIndexTaskWebEndpoint(
 
 @Task
 internal class ReconstructSkillSearchIndexTask(
-    override val searchIndexAdmin: SearchIndexAdmin<Skill>,
+    override val searchIndexAdmin: SearchIndexAdmin<SkillEntity>,
     private val getSkillsFromDataStore: GetSkillsFromDataStoreFunction
-) : AbstractReconstructSearchIndexTask<Skill>() {
+) : AbstractReconstructSearchIndexTask<SkillEntity>() {
 
     override val log = logger {}
 
-    override fun executeForAllInstancesInDataStore(callback: (Skill) -> Unit) = getSkillsFromDataStore(callback)
-    override fun shortDescription(instance: Skill) = "${instance.id} - ${instance.label}"
+    override fun executeForAllInstancesInDataStore(callback: (SkillEntity) -> Unit) = getSkillsFromDataStore(callback)
+    override fun shortDescription(instance: SkillEntity) = "${instance.id} - ${instance.label}"
 
 }
