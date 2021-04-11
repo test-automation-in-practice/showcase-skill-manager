@@ -26,7 +26,7 @@ internal class GetSkillByIdAdapterFunction(
 
     private fun SkillEntity.toData() = SkillData(
         id = skillId(id),
-        label = label.toString()
+        label = data.label.toString()
     )
 
 }

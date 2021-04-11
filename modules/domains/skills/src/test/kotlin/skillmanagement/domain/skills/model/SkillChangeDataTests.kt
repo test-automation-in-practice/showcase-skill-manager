@@ -14,13 +14,10 @@ internal class SkillChangeDataTests {
     @UnitTest
     inner class SkillExtensionFunctionTests {
 
-        private val skill = SkillEntity(
-            id = skillId("3039df54-e86f-4973-9887-738510305e48"),
-            version = 42,
+        private val skill = Skill(
             label = SkillLabel("Changing Data"),
             description = SkillDescription("Much needed for these tests."),
-            tags = sortedSetOf(Tag("foo"), Tag("bar")),
-            lastUpdate = instant("2021-03-03T12:34:56.789Z")
+            tags = sortedSetOf(Tag("foo"), Tag("bar"))
         )
         private val changeData = SkillChangeData(
             label = SkillLabel("Changing Data"),

@@ -40,6 +40,6 @@ internal class ReconstructSkillSearchIndexTaskTests : AbstractReconstructSearchI
         }
     }
 
-    override fun expectedShortDescription(instance: SkillEntity) = "${instance.id} - ${instance.label}"
+    override fun expectedShortDescription(instance: SkillEntity) = "${instance.id} - ${instance.data.label}"
 
 }

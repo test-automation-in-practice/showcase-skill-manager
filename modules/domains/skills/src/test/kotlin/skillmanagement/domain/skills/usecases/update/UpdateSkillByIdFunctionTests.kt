@@ -5,11 +5,8 @@ import io.mockk.called
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import org.junit.jupiter.api.DynamicTest
-import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -19,8 +16,9 @@ import org.springframework.retry.annotation.EnableRetry
 import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.failure
 import skillmanagement.common.success
-import skillmanagement.domain.skills.model.SkillEntity
+import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillDescription
+import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.model.SkillLabel
 import skillmanagement.domain.skills.model.SkillUpdatedEvent
 import skillmanagement.domain.skills.model.Tag
@@ -39,9 +37,11 @@ internal class UpdateSkillByIdFunctionTests {
     private val skill = SkillEntity(
         id = id,
         version = 2,
-        label = SkillLabel("Old Label"),
-        description = SkillDescription("Old Description"),
-        tags = sortedSetOf(Tag("old")),
+        data = Skill(
+            label = SkillLabel("Old Label"),
+            description = SkillDescription("Old Description"),
+            tags = sortedSetOf(Tag("old"))
+        ),
         lastUpdate = instant("2020-07-16T12:34:56.789Z")
     )
 
@@ -58,7 +58,7 @@ internal class UpdateSkillByIdFunctionTests {
 
         @Test
         fun `updating an existing skill stores it in the data store and publishes an event`() {
-            val change: (SkillEntity) -> (SkillEntity) = {
+            val change: (Skill) -> (Skill) = {
                 it.copy(
                     label = SkillLabel("New Label"),
                     description = SkillDescription("New Description"),
@@ -66,7 +66,7 @@ internal class UpdateSkillByIdFunctionTests {
                 )
             }
 
-            val expectedChangedSkill = change(skill)
+            val expectedChangedSkill = skill.update(change)
             val expectedUpdatedSkill = expectedChangedSkill
                 .copy(version = 3, lastUpdate = instant("2020-07-16T12:35:06.789Z"))
 
@@ -103,28 +103,6 @@ internal class UpdateSkillByIdFunctionTests {
             verify { publishEvent wasNot called }
         }
 
-        @TestFactory
-        fun `certain modifications are prohibited`(): List<DynamicTest> = listOf(
-            prohibitedModificationTest("Changing the ID") {
-                it.copy(id = skillId())
-            },
-            prohibitedModificationTest("Changing the Version") {
-                it.copy(version = 5)
-            },
-            prohibitedModificationTest("Changing the Last Update") {
-                it.copy(lastUpdate = instant("2020-01-01T12:00:00.789Z"))
-            }
-        )
-
-        private fun prohibitedModificationTest(name: String, operation: (SkillEntity) -> (SkillEntity)) = dynamicTest(name) {
-            every { getSkillById(id) } returns skill
-            assertThrows<IllegalStateException> {
-                updateSkillById(id, operation)
-            }
-            verify { updateSkillInDataStore wasNot called }
-            verify { publishEvent wasNot called }
-        }
-
         private fun simulateUpdate(it: SkillEntity) =
             it.copy(version = it.version + 1, lastUpdate = it.lastUpdate.plusSeconds(10))
 
@@ -140,7 +118,7 @@ internal class UpdateSkillByIdFunctionTests {
         @Autowired private val updateSkillById: UpdateSkillByIdFunction
     ) {
 
-        private val change: (SkillEntity) -> SkillEntity = { it.copy(label = SkillLabel("new")) }
+        private val change: (Skill) -> Skill = { it.copy(label = SkillLabel("new")) }
 
         @Test
         fun `operation is retried up to 5 times in case of concurrent update exceptions`() {

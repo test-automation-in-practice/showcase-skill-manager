@@ -25,13 +25,15 @@ internal class SkillSearchIndex(
     override val mappingResource = ClassPathResource("/indices/skills-mapping.json")
 
     override fun toSource(instance: SkillEntity) =
-        mutableMapOf(
-            "label" to instance.label.toString(),
-            "tags" to instance.tags.map(Tag::toString),
-            "_sort" to instance.label.toString()
-        ).apply {
-            if (instance.description != null) {
-                put("description", instance.description.toString())
+        with(instance.data) {
+            mutableMapOf(
+                "label" to label.toString(),
+                "tags" to tags.map(Tag::toString),
+                "_sort" to label.toString()
+            ).apply {
+                if (description != null) {
+                    put("description", description.toString())
+                }
             }
         }
 

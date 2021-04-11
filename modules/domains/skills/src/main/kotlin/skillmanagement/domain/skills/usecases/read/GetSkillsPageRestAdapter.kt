@@ -8,7 +8,7 @@ import skillmanagement.common.model.PageIndex
 import skillmanagement.common.model.PageSize
 import skillmanagement.common.model.Pagination
 import skillmanagement.common.stereotypes.RestAdapter
-import skillmanagement.domain.skills.model.SkillResource
+import skillmanagement.domain.skills.model.SkillRepresentation
 import skillmanagement.domain.skills.model.toResource
 
 @RestAdapter
@@ -21,7 +21,7 @@ internal class GetSkillsPageRestAdapter(
     fun get(
         @RequestParam(required = false) page: Int?,
         @RequestParam(required = false) size: Int?
-    ): PagedModel<SkillResource> {
+    ): PagedModel<SkillRepresentation> {
         val skills = getSkillsPage(query(page, size))
         return skills.toResource()
     }

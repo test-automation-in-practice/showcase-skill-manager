@@ -9,7 +9,7 @@ import skillmanagement.common.model.PageIndex
 import skillmanagement.common.model.PageSize
 import skillmanagement.common.model.Pagination
 import skillmanagement.common.stereotypes.RestAdapter
-import skillmanagement.domain.skills.model.SkillResource
+import skillmanagement.domain.skills.model.SkillRepresentation
 import skillmanagement.domain.skills.model.toSearchResource
 
 @RestAdapter
@@ -23,7 +23,7 @@ internal class SearchSkillsRestAdapter(
         @RequestParam(required = false) page: Int?,
         @RequestParam(required = false) size: Int?,
         @RequestBody request: Request
-    ): PagedModel<SkillResource> {
+    ): PagedModel<SkillRepresentation> {
         val skills = getSkillsPage(query(request.query, page, size))
         return skills.toSearchResource()
     }

@@ -11,24 +11,28 @@ import java.util.Collections.emptySortedSet
 internal val skill_kotlin = SkillEntity(
     id = skillId("3f7985b9-f5f0-4662-bda9-1dcde01f5f3b"),
     version = 1,
-    label = SkillLabel("Kotlin"),
-    description = SkillDescription("The coolest programming language."),
-    tags = sortedSetOf(Tag("language"), Tag("cool")),
+    data = Skill(
+        label = SkillLabel("Kotlin"),
+        description = SkillDescription("The coolest programming language."),
+        tags = sortedSetOf(Tag("language"), Tag("cool"))
+    ),
     lastUpdate = instant("2020-07-14T12:34:56.789Z")
 )
 internal val skill_kotlin_json = """
     {
       "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
       "version": 1,
-      "label": "Kotlin",
-      "description": "The coolest programming language.",
-      "tags": [ "cool", "language" ],
+      "data": {
+        "label": "Kotlin",
+        "description": "The coolest programming language.",
+        "tags": [ "cool", "language" ]
+      },
       "lastUpdate": "2020-07-14T12:34:56.789Z"
     }
     """.trimIndent()
 
-internal val skill_resource_kotlin = skill_kotlin.toResourceWithoutLinks()
-internal val skill_resource_kotlin_json = """
+internal val skill_representation_kotlin = skill_kotlin.toRepresentation()
+internal val skill_representation_kotlin_json = """
     {
       "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
       "label": "Kotlin",
@@ -64,23 +68,27 @@ internal val skill_suggestion_kotlin = skill_kotlin.toSuggestion()
 internal val skill_java = SkillEntity(
     id = skillId("f8948935-dab6-4c33-80d0-9f66ae546a7c"),
     version = 1,
-    label = SkillLabel("Java"),
-    description = null,
-    tags = sortedSetOf(Tag("language")),
+    data = Skill(
+        label = SkillLabel("Java"),
+        description = null,
+        tags = sortedSetOf(Tag("language"))
+    ),
     lastUpdate = instant("2020-07-14T12:34:56.789Z")
 )
 internal val skill_java_json = """
     {
       "id": "f8948935-dab6-4c33-80d0-9f66ae546a7c",
       "version": 1,
-      "label": "Java",
-      "tags": [ "language" ],
+      "data": {
+        "label": "Java",
+        "tags": [ "language" ]
+      },
       "lastUpdate": "2020-07-14T12:34:56.789Z"
     }
     """.trimIndent()
 
-internal val skill_resource_java = skill_java.toResourceWithoutLinks()
-internal val skill_resource_java_json = """
+internal val skill_representation_java = skill_java.toRepresentation()
+internal val skill_representation_java_json = """
     {
       "id": "f8948935-dab6-4c33-80d0-9f66ae546a7c",
       "label": "Java",
@@ -113,23 +121,27 @@ internal val skill_suggestion_java = skill_java.toSuggestion()
 internal val skill_python = SkillEntity(
     id = skillId("6935e550-d041-418a-9070-e37431069232"),
     version = 1,
-    label = SkillLabel("Python"),
-    description = null,
-    tags = emptySortedSet(),
+    data = Skill(
+        label = SkillLabel("Python"),
+        description = null,
+        tags = emptySortedSet()
+    ),
     lastUpdate = instant("2020-07-14T12:34:56.789Z")
 )
 internal val skill_python_json = """
     {
       "id": "6935e550-d041-418a-9070-e37431069232",
       "version": 1,
-      "label": "Python",
-      "tags": [],
+      "data": {
+        "label": "Python",
+        "tags": []
+      },
       "lastUpdate": "2020-07-14T12:34:56.789Z"
     }
     """.trimIndent()
 
-internal val skill_resource_python = skill_python.toResourceWithoutLinks()
-internal val skill_resource_python_json = """
+internal val skill_representation_python = skill_python.toRepresentation()
+internal val skill_representation_python_json = """
     {
       "id": "6935e550-d041-418a-9070-e37431069232",
       "label": "Python",
@@ -160,16 +172,15 @@ internal val skill_suggestion_python = skill_python.toSuggestion()
 
 fun skillId() = SkillId(uuid())
 
-private fun SkillEntity.toResourceWithoutLinks() =
-    SkillResource(id = id, label = label, description = description, tags = tags)
-
 private fun SkillEntity.toCreationData() =
-    SkillCreationData(label, description, tags)
+    SkillCreationData(data.label, data.description, data.tags)
+
+private fun SkillEntity.toChangeData() = data.toChangeData()
 
 internal fun SkillEntity.toSuggestion() =
-    Suggestion(id = id, label = label.toString())
+    Suggestion(id = id, label = data.label.toString())
 
-internal fun SkillResource.toSuggestion() =
+internal fun SkillRepresentation.toSuggestion() =
     Suggestion(id = id, label = label.toString())
 
 internal fun skill(
@@ -182,9 +193,11 @@ internal fun skill(
 ) = SkillEntity(
     id = skillId(id),
     version = version,
-    label = SkillLabel(label),
-    description = description?.let(::SkillDescription),
-    tags = tags.map(::Tag).toSortedSet(),
+    data = Skill(
+        label = SkillLabel(label),
+        description = description?.let(::SkillDescription),
+        tags = tags.map(::Tag).toSortedSet()
+    ),
     lastUpdate = instant(lastUpdate)
 )
 
@@ -197,8 +210,10 @@ internal fun SkillEntity.asFreshlyCreatedInstance() =
     SkillEntity(
         id = id,
         version = 1,
-        label = label,
-        description = description,
-        tags = tags,
+        data = Skill(
+            label = data.label,
+            description = data.description,
+            tags = data.tags
+        ),
         lastUpdate = lastUpdate
     )

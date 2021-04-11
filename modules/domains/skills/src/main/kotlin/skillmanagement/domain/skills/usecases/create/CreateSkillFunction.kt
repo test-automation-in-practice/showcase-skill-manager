@@ -3,9 +3,10 @@ package skillmanagement.domain.skills.usecases.create
 import org.springframework.util.IdGenerator
 import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.stereotypes.BusinessFunction
-import skillmanagement.domain.skills.model.SkillEntity
+import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillAddedEvent
 import skillmanagement.domain.skills.model.SkillCreationData
+import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.model.SkillId
 import java.time.Clock
 
@@ -28,9 +29,11 @@ class CreateSkillFunction internal constructor(
         SkillEntity(
             id = SkillId(idGenerator.generateId()),
             version = 1,
-            label = label,
-            description = description,
-            tags = tags,
+            data = Skill(
+                label = label,
+                description = description,
+                tags = tags
+            ),
             lastUpdate = clock.instant()
         )
 

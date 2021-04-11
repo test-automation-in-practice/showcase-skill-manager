@@ -5,6 +5,7 @@ import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.failure
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.common.success
+import skillmanagement.domain.skills.model.Skill
 import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.model.SkillId
 import skillmanagement.domain.skills.model.SkillUpdatedEvent
@@ -20,25 +21,15 @@ class UpdateSkillByIdFunction internal constructor(
 ) {
 
     @RetryOnConcurrentSkillUpdate
-    operator fun invoke(
-        skillId: SkillId,
-        block: (SkillEntity) -> SkillEntity
-    ): Either<SkillUpdateFailure, SkillEntity> {
+    operator fun invoke(skillId: SkillId, block: (Skill) -> Skill): Either<SkillUpdateFailure, SkillEntity> {
         val currentSkill = getSkillById(skillId) ?: return failure(SkillNotFound)
-        val modifiedSkill = block(currentSkill)
+        val modifiedSkill = currentSkill.update(block)
 
         if (modifiedSkill == currentSkill) return failure(SkillNotChanged(currentSkill))
-        assertNoInvalidModifications(currentSkill, modifiedSkill)
 
         val updatedSkill = updateSkillInDataStore(modifiedSkill)
         publishEvent(SkillUpdatedEvent(updatedSkill))
         return success(updatedSkill)
-    }
-
-    private fun assertNoInvalidModifications(currentSkill: SkillEntity, modifiedSkill: SkillEntity) {
-        check(currentSkill.id == modifiedSkill.id) { "ID must not be changed!" }
-        check(currentSkill.version == modifiedSkill.version) { "Version must not be changed!" }
-        check(currentSkill.lastUpdate == modifiedSkill.lastUpdate) { "Last update must not be changed!" }
     }
 
 }
