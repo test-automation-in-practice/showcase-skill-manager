@@ -6,10 +6,11 @@ import io.mockk.verifyOrder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.testit.testutils.logrecorder.api.LogRecord
+import skillmanagement.common.model.Entity
 import skillmanagement.common.searchindices.AbstractReconstructSearchIndexTask
 import skillmanagement.common.searchindices.SearchIndexAdmin
 
-abstract class AbstractReconstructSearchIndexTaskTests<T : Any> {
+abstract class AbstractReconstructSearchIndexTaskTests<T : Entity<*>> {
 
     abstract val searchIndexAdmin: SearchIndexAdmin<T>
     abstract val cut: AbstractReconstructSearchIndexTask<T>

@@ -1,9 +1,10 @@
 package skillmanagement.common.searchindices
 
 import mu.KLogger
+import skillmanagement.common.model.Entity
 import kotlin.system.measureTimeMillis
 
-abstract class AbstractReconstructSearchIndexTask<T : Any> : Runnable {
+abstract class AbstractReconstructSearchIndexTask<T : Entity<*>> : Runnable {
 
     protected abstract val log: KLogger
     protected abstract val searchIndexAdmin: SearchIndexAdmin<T>

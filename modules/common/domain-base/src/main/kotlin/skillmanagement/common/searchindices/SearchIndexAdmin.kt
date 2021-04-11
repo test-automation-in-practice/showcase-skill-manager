@@ -1,6 +1,8 @@
 package skillmanagement.common.searchindices
 
-interface SearchIndexAdmin<T : Any> {
+import skillmanagement.common.model.Entity
+
+interface SearchIndexAdmin<T : Entity<*>> {
     fun index(instance: T)
     fun reset()
     fun refresh()
