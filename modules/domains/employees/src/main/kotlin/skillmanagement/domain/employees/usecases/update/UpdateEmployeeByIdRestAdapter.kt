@@ -15,7 +15,7 @@ import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeChangeData
 import skillmanagement.domain.employees.model.EmployeeId
-import skillmanagement.domain.employees.model.EmployeeResource
+import skillmanagement.domain.employees.model.EmployeeRepresentation
 import skillmanagement.domain.employees.model.merge
 import skillmanagement.domain.employees.model.toChangeData
 import skillmanagement.domain.employees.model.toResource
@@ -30,11 +30,11 @@ internal class UpdateEmployeeByIdRestAdapter(
 ) {
 
     @PutMapping
-    fun put(@PathVariable id: EmployeeId, @RequestBody request: EmployeeChangeData): ResponseEntity<EmployeeResource> =
+    fun put(@PathVariable id: EmployeeId, @RequestBody request: EmployeeChangeData): ResponseEntity<EmployeeRepresentation> =
         update(id) { employee -> employee.merge(request) }
 
     @PatchMapping(consumes = ["application/json-patch+json"])
-    fun patch(@PathVariable id: EmployeeId, @RequestBody patch: JsonPatch): ResponseEntity<EmployeeResource> =
+    fun patch(@PathVariable id: EmployeeId, @RequestBody patch: JsonPatch): ResponseEntity<EmployeeRepresentation> =
         update(id) { employee -> employee.merge(applyPatch(patch, employee.toChangeData())) }
 
     private fun update(id: EmployeeId, block: (EmployeeEntity) -> EmployeeEntity) = updateEmployeeById(id, block)

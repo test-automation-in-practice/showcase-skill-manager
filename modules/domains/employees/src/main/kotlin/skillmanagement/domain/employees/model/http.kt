@@ -11,87 +11,111 @@ import skillmanagement.common.http.toMetaData
 import skillmanagement.common.model.Page
 import java.time.LocalDate
 
-private const val RESOURCE_BASE = "api/employees"
-
 @JsonInclude(NON_NULL)
 @Relation(itemRelation = "employee", collectionRelation = "employees")
-internal data class EmployeeResource(
+internal data class EmployeeRepresentation(
     val id: EmployeeId,
-
     val firstName: FirstName,
     val lastName: LastName,
     val title: JobTitle,
     val email: EmailAddress,
     val telephone: TelephoneNumber,
-
     val description: EmployeeDescription?,
     val academicDegrees: List<AcademicDegree>,
     val certifications: List<Certification>,
     val publications: List<Publication>,
     val languages: List<LanguageProficiency>,
     val jobHistory: List<Job>,
+    val skills: List<SkillKnowledgeRepresentation>,
+    val projects: List<ProjectAssignmentRepresentation>
+) : RepresentationModel<EmployeeRepresentation>()
 
-    val skills: List<SkillKnowledgeResource>,
-    val projects: List<ProjectAssignmentResource>
-) : RepresentationModel<EmployeeResource>()
-
-internal data class SkillKnowledgeResource(
+internal data class SkillKnowledgeRepresentation(
     val label: String,
     val level: SkillLevel,
     val secret: Boolean
-) : RepresentationModel<SkillKnowledgeResource>()
+) : RepresentationModel<SkillKnowledgeRepresentation>()
 
-internal data class ProjectAssignmentResource(
+internal data class ProjectAssignmentRepresentation(
     val label: String,
     val description: String,
     val contribution: ProjectContribution,
     val startDate: LocalDate,
     val endDate: LocalDate?
-) : RepresentationModel<SkillKnowledgeResource>()
+) : RepresentationModel<SkillKnowledgeRepresentation>()
 
-internal fun EmployeeEntity.toResource() = EmployeeResource(
-    id = id,
-    firstName = firstName,
-    lastName = lastName,
-    title = title,
-    email = email,
-    telephone = telephone,
-    description = description,
-    academicDegrees = academicDegrees,
-    certifications = certifications,
-    publications = publications,
-    languages = languages,
-    jobHistory = jobHistory,
-    skills = skills.map { it.toResource(id) },
-    projects = projects.map { it.toResource(id) }
-).apply {
-    add(linkToEmployee(id).withSelfRel())
-    add(linkToEmployee(id).withRel("delete"))
-}
+internal fun EmployeeEntity.toRepresentation() =
+    EmployeeRepresentation(
+        id = id,
+        firstName = firstName,
+        lastName = lastName,
+        title = title,
+        email = email,
+        telephone = telephone,
+        description = description,
+        academicDegrees = academicDegrees,
+        certifications = certifications,
+        publications = publications,
+        languages = languages,
+        jobHistory = jobHistory,
+        skills = skills.map(SkillKnowledge::toRepresentation),
+        projects = projects.map(ProjectAssignment::toRepresentation)
+    )
 
-internal fun SkillKnowledge.toResource(employeeId: EmployeeId) = SkillKnowledgeResource(
-    label = skill.label,
-    level = level,
-    secret = secret
-).apply {
-    add(linkToSkillKnowledge(employeeId, skill.id).withSelfRel())
-    add(linkToEmployee(employeeId).withRel("employee"))
-    add(linkToSkill(skill.id).withRel("skill"))
-}
+internal fun SkillKnowledge.toRepresentation() =
+    SkillKnowledgeRepresentation(
+        label = skill.label,
+        level = level,
+        secret = secret
+    )
 
-internal fun ProjectAssignment.toResource(employeeId: EmployeeId) = ProjectAssignmentResource(
-    label = project.label,
-    description = project.description,
-    contribution = contribution,
-    startDate = startDate,
-    endDate = endDate
-).apply {
-    add(linkToProjectAssignment(employeeId, id).withSelfRel())
-    add(linkToEmployee(employeeId).withRel("employee"))
-    add(linkToProject(project.id).withRel("project"))
-}
+internal fun ProjectAssignment.toRepresentation() =
+    ProjectAssignmentRepresentation(
+        label = project.label,
+        description = project.description,
+        contribution = contribution,
+        startDate = startDate,
+        endDate = endDate
+    )
 
-internal fun Page<EmployeeEntity>.toResource(): PagedModel<EmployeeResource> =
+internal fun EmployeeEntity.toResource() =
+    EmployeeRepresentation(
+        id = id,
+        firstName = firstName,
+        lastName = lastName,
+        title = title,
+        email = email,
+        telephone = telephone,
+        description = description,
+        academicDegrees = academicDegrees,
+        certifications = certifications,
+        publications = publications,
+        languages = languages,
+        jobHistory = jobHistory,
+        skills = skills.map { knowledge -> knowledge.toResource(id) },
+        projects = projects.map { assignment -> assignment.toResource(id) }
+    ).apply {
+        add(linkToEmployee(id).withSelfRel())
+        add(linkToEmployee(id).withRel("delete"))
+    }
+
+internal fun SkillKnowledge.toResource(employeeId: EmployeeId) = toRepresentation()
+    .apply {
+        add(linkToSkillKnowledge(employeeId, skill.id).withSelfRel())
+        add(linkToEmployee(employeeId).withRel("employee"))
+        add(linkToSkill(skill.id).withRel("skill"))
+    }
+
+internal fun ProjectAssignment.toResource(employeeId: EmployeeId) = toRepresentation()
+    .apply {
+        add(linkToProjectAssignment(employeeId, id).withSelfRel())
+        add(linkToEmployee(employeeId).withRel("employee"))
+        add(linkToProject(project.id).withRel("project"))
+    }
+
+internal fun Page<EmployeeEntity>.toRepresentations() = withOtherContent(content.map(EmployeeEntity::toRepresentation))
+
+internal fun Page<EmployeeEntity>.toResource(): PagedModel<EmployeeRepresentation> =
     PagedModel.of(content.map(EmployeeEntity::toResource), toMetaData())
         .apply {
             add(linkToEmployees(pageIndex, pageSize).withSelfRel())
@@ -101,10 +125,10 @@ internal fun Page<EmployeeEntity>.toResource(): PagedModel<EmployeeResource> =
 
 internal fun linkToEmployees(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
     val queryPart = "?page=$pageIndex&size=$pageSize"
-    return linkToCurrentMapping().slash(RESOURCE_BASE + queryPart)
+    return linkToCurrentMapping().slash("api/employees" + queryPart)
 }
 
-internal fun Page<EmployeeEntity>.toSearchResource(): PagedModel<EmployeeResource> =
+internal fun Page<EmployeeEntity>.toSearchResource(): PagedModel<EmployeeRepresentation> =
     PagedModel.of(content.map(EmployeeEntity::toResource), toMetaData())
         .apply {
             add(linkToEmployeesSearch(pageIndex, pageSize).withSelfRel())
@@ -114,20 +138,20 @@ internal fun Page<EmployeeEntity>.toSearchResource(): PagedModel<EmployeeResourc
 
 internal fun linkToEmployeesSearch(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
     val queryPart = "/_search?page=$pageIndex&size=$pageSize"
-    return linkToCurrentMapping().slash(RESOURCE_BASE + queryPart)
+    return linkToCurrentMapping().slash("api/employees" + queryPart)
 }
 
 internal fun linkToEmployee(id: EmployeeId) =
-    linkToCurrentMapping().slash("$RESOURCE_BASE/$id")
+    linkToCurrentMapping().slash("api/employees/$id")
 
 internal fun linkToSkillKnowledge(employeeId: EmployeeId, skillId: SkillId) =
-    linkToCurrentMapping().slash("$RESOURCE_BASE/$employeeId/skills/$skillId")
+    linkToCurrentMapping().slash("api/employees/$employeeId/skills/$skillId")
 
 internal fun linkToSkill(id: SkillId) =
     linkToCurrentMapping().slash("api/employees/$id")
 
 internal fun linkToProjectAssignment(employeeId: EmployeeId, assignmentId: ProjectAssignmentId) =
-    linkToCurrentMapping().slash("$RESOURCE_BASE/$employeeId/projects/$assignmentId")
+    linkToCurrentMapping().slash("api/employees/$employeeId/projects/$assignmentId")
 
 internal fun linkToProject(id: ProjectId) =
     linkToCurrentMapping().slash("api/projects/$id")

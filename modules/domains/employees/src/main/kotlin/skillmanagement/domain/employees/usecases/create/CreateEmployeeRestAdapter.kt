@@ -11,7 +11,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromC
 import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeCreationData
-import skillmanagement.domain.employees.model.EmployeeResource
+import skillmanagement.domain.employees.model.EmployeeRepresentation
 import skillmanagement.domain.employees.model.toResource
 
 @RestAdapter
@@ -22,7 +22,7 @@ internal class CreateEmployeeRestAdapter(
 
     @PostMapping
     @ResponseStatus(CREATED)
-    fun post(@RequestBody request: EmployeeCreationData): ResponseEntity<EmployeeResource> {
+    fun post(@RequestBody request: EmployeeCreationData): ResponseEntity<EmployeeRepresentation> {
         val employee = createEmployee(request)
         val location = locationOf(employee)
         val resource = employee.toResource()

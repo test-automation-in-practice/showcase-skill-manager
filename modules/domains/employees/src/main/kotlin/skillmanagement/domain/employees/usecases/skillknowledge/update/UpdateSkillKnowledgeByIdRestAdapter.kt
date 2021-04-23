@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.http.patch.ApplyPatch
 import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.domain.employees.model.EmployeeId
-import skillmanagement.domain.employees.model.EmployeeResource
+import skillmanagement.domain.employees.model.EmployeeRepresentation
 import skillmanagement.domain.employees.model.SkillId
 import skillmanagement.domain.employees.model.SkillKnowledge
 import skillmanagement.domain.employees.model.SkillKnowledgeChangeData
@@ -36,7 +36,7 @@ internal class UpdateSkillKnowledgeByIdRestAdapter(
         @PathVariable employeeId: EmployeeId,
         @PathVariable skillId: SkillId,
         @RequestBody request: SkillKnowledgeChangeData
-    ): ResponseEntity<EmployeeResource> =
+    ): ResponseEntity<EmployeeRepresentation> =
         update(employeeId, skillId) { knowledge -> knowledge.merge(request) }
 
     @PatchMapping(consumes = ["application/json-patch+json"])
@@ -44,7 +44,7 @@ internal class UpdateSkillKnowledgeByIdRestAdapter(
         @PathVariable employeeId: EmployeeId,
         @PathVariable skillId: SkillId,
         @RequestBody patch: JsonPatch
-    ): ResponseEntity<EmployeeResource> =
+    ): ResponseEntity<EmployeeRepresentation> =
         update(employeeId, skillId) { knowledge -> knowledge.merge(applyPatch(patch, knowledge.toChangeData())) }
 
     private fun update(employeeId: EmployeeId, skillId: SkillId, block: (SkillKnowledge) -> SkillKnowledge) =
