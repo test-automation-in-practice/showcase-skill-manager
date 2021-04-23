@@ -19,6 +19,7 @@ plugins {
 allprojects {
     extra["okhttp3.version"] = "4.9.1"
     extra["rest-assured.version"] = "4.3.3"
+    extra["groovy.version"] = "3.0.7" // avoid illegal access warning
 
     repositories { mavenCentral(); jcenter() }
 
@@ -42,6 +43,7 @@ allprojects {
             implementation("com.github.java-json-tools:json-patch:1.13")
             implementation("com.graphql-java-kickstart:graphql-spring-boot-starter:11.0.0")
             implementation("com.graphql-java-kickstart:graphql-spring-boot-starter-test:11.0.0")
+            implementation("com.sun.xml.bind:jaxb-osgi:2.3.4")
             implementation("com.tngtech.archunit:archunit:0.16.0")
             implementation("info.novatec.testit:testutils-logrecorder-logback:0.3.4")
             implementation("io.arrow-kt:arrow-core:0.13.0")

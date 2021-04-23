@@ -17,6 +17,11 @@ tasks {
         dependsOn(":modules:domains:projects:asciidoctor")
         dependsOn(":modules:domains:skills:asciidoctor")
     }
+    build {
+        dependsOn(":modules:domains:employees:test")
+        dependsOn(":modules:domains:projects:test")
+        dependsOn(":modules:domains:skills:test")
+    }
     bootJar {
         dependsOn("asciidoctor")
         from("$rootDir/modules/domains/employees/build/docs/asciidoc/api.html") {
