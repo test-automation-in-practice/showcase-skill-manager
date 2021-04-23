@@ -1,7 +1,5 @@
 package skillmanagement.domain.employees
 
-import com.tngtech.archunit.base.DescribedPredicate.alwaysTrue
-import com.tngtech.archunit.core.domain.JavaClass.Predicates.resideInAPackage
 import com.tngtech.archunit.core.domain.JavaClasses
 import com.tngtech.archunit.core.importer.ClassFileImporter
 import com.tngtech.archunit.core.importer.ImportOption.DoNotIncludeTests
@@ -33,32 +31,17 @@ internal class DomainArchitectureTests {
     @Test
     fun `sub domains boundaries are respected`() {
         Architectures.layeredArchitecture()
-            .layer("gateways").definedBy("$basePackage.gateways..")
             .layer("metrics").definedBy("$basePackage.metrics..")
             .layer("model").definedBy("$basePackage.model..")
             .layer("searchindex").definedBy("$basePackage.searchindex..")
             .layer("tasks").definedBy("$basePackage.tasks..")
             .layer("usecases").definedBy("$basePackage.usecases..")
-            .whereLayer("gateways").mayOnlyBeAccessedByLayers("usecases")
             .whereLayer("metrics").mayNotBeAccessedByAnyLayer()
-            .whereLayer("model").mayOnlyBeAccessedByLayers("gateways", "searchindex", "tasks", "usecases")
+            .whereLayer("model").mayOnlyBeAccessedByLayers("searchindex", "tasks", "usecases")
             .whereLayer("searchindex").mayNotBeAccessedByAnyLayer()
             .whereLayer("tasks").mayNotBeAccessedByAnyLayer()
             .whereLayer("usecases").mayOnlyBeAccessedByLayers("tasks")
             .check(classesOf(basePackage))
-    }
-
-    @Test
-    fun `access to other domains`() {
-        val domains = "skillmanagement.domain"
-        Architectures.layeredArchitecture()
-            .ignoreDependency(resideInAPackage("$basePackage.gateways"), alwaysTrue())
-            .layer("employees").definedBy("$domains.employees..")
-            .layer("projects").definedBy("$domains.projects..")
-            .layer("skills").definedBy("$domains.skills..")
-            .whereLayer("projects").mayNotBeAccessedByAnyLayer()
-            .whereLayer("skills").mayNotBeAccessedByAnyLayer()
-            .check(classesOf(domains))
     }
 
     private fun classesOf(vararg packages: String): JavaClasses =
