@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest
 import skillmanagement.common.stereotypes.RestAdapter
-import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectCreationData
-import skillmanagement.domain.projects.model.ProjectResource
+import skillmanagement.domain.projects.model.ProjectEntity
+import skillmanagement.domain.projects.model.ProjectRepresentation
 import skillmanagement.domain.projects.model.toResource
 
 @RestAdapter
@@ -22,7 +22,7 @@ internal class CreateProjectRestAdapter(
 
     @PostMapping
     @ResponseStatus(CREATED)
-    fun post(@RequestBody request: ProjectCreationData): ResponseEntity<ProjectResource> {
+    fun post(@RequestBody request: ProjectCreationData): ResponseEntity<ProjectRepresentation> {
         val project = createProject(request)
         val location = locationOf(project)
         val resource = project.toResource()

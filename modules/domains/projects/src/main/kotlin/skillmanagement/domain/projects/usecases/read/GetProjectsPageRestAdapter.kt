@@ -8,7 +8,7 @@ import skillmanagement.common.model.PageIndex
 import skillmanagement.common.model.PageSize
 import skillmanagement.common.model.Pagination
 import skillmanagement.common.stereotypes.RestAdapter
-import skillmanagement.domain.projects.model.ProjectResource
+import skillmanagement.domain.projects.model.ProjectRepresentation
 import skillmanagement.domain.projects.model.toResource
 
 @RestAdapter
@@ -21,10 +21,8 @@ internal class GetProjectsPageRestAdapter(
     fun get(
         @RequestParam(required = false) page: Int?,
         @RequestParam(required = false) size: Int?
-    ): PagedModel<ProjectResource> {
-        val projects = getProjectsPage(query(page, size))
-        return projects.toResource()
-    }
+    ): PagedModel<ProjectRepresentation> =
+        getProjectsPage(query(page, size)).toResource()
 
     private fun query(page: Int?, size: Int?) =
         AllProjectsQuery(Pagination(PageIndex.of(page), PageSize.of(size)))

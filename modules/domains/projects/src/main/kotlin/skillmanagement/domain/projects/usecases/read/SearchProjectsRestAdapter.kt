@@ -9,7 +9,7 @@ import skillmanagement.common.model.PageIndex
 import skillmanagement.common.model.PageSize
 import skillmanagement.common.model.Pagination
 import skillmanagement.common.stereotypes.RestAdapter
-import skillmanagement.domain.projects.model.ProjectResource
+import skillmanagement.domain.projects.model.ProjectRepresentation
 import skillmanagement.domain.projects.model.toSearchResource
 
 @RestAdapter
@@ -23,7 +23,7 @@ internal class SearchProjectsRestAdapter(
         @RequestParam(required = false) page: Int?,
         @RequestParam(required = false) size: Int?,
         @RequestBody request: Request
-    ): PagedModel<ProjectResource> {
+    ): PagedModel<ProjectRepresentation> {
         val projects = getProjectsPage(query(request.query, page, size))
         return projects.toSearchResource()
     }

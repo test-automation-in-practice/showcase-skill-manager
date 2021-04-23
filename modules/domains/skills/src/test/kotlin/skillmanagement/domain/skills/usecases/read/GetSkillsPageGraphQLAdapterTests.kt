@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 import skillmanagement.common.model.PageIndex
 import skillmanagement.common.model.PageSize
 import skillmanagement.common.model.Pagination
-import skillmanagement.common.model.pageOf
+import skillmanagement.common.model.asPage
 import skillmanagement.domain.skills.model.skill_java
 import skillmanagement.domain.skills.model.skill_kotlin
 import skillmanagement.domain.skills.model.skill_representation_java
@@ -24,7 +24,7 @@ internal class GetSkillsPageGraphQLAdapterTests {
 
     @Test
     fun `translates and delegates retrieval to business function`() {
-        val page = pageOf(listOf(skill_kotlin), 3, 42, totalElements = (3 * 42) + 1)
+        val page = listOf(skill_kotlin).asPage()
         every { getSkillsPage(AllSkillsQuery(Pagination(PageIndex(3), PageSize(42)))) } returns page
         val actual = tryToGetSkillsPage(index = 3, size = 42)
         assertThat(actual).isEqualTo(page.withOtherContent(listOf(skill_representation_kotlin)))
@@ -32,7 +32,7 @@ internal class GetSkillsPageGraphQLAdapterTests {
 
     @Test
     fun `default values are used when necessary`() {
-        val page = pageOf(listOf(skill_java))
+        val page = listOf(skill_java).asPage()
         every { getSkillsPage(AllSkillsQuery(Pagination.DEFAULT)) } returns page
         val actual = tryToGetSkillsPage()
         assertThat(actual).isEqualTo(page.withOtherContent(listOf(skill_representation_java)))

@@ -11,22 +11,28 @@ import skillmanagement.common.http.toMetaData
 import skillmanagement.common.model.Page
 
 @Relation(itemRelation = "project", collectionRelation = "projects")
-internal data class ProjectResource(
+internal data class ProjectRepresentation(
     val id: ProjectId,
     val label: ProjectLabel,
     val description: ProjectDescription
-) : RepresentationModel<ProjectResource>()
+) : RepresentationModel<ProjectRepresentation>()
 
-internal fun ProjectEntity.toResource() = ProjectResource(
-    id = id,
-    label = label,
-    description = description
-).apply {
-    add(linkToProject(id).withSelfRel())
-    add(linkToProject(id).withRel("delete"))
-}
+internal fun ProjectEntity.toRepresentation() =
+    ProjectRepresentation(
+        id = id,
+        label = label,
+        description = description
+    )
 
-internal fun Page<ProjectEntity>.toResource(): PagedModel<ProjectResource> =
+internal fun ProjectEntity.toResource() = toRepresentation()
+    .apply {
+        add(linkToProject(id).withSelfRel())
+        add(linkToProject(id).withRel("delete"))
+    }
+
+internal fun Page<ProjectEntity>.toRepresentations() = withOtherContent(content.map(ProjectEntity::toRepresentation))
+
+internal fun Page<ProjectEntity>.toResource(): PagedModel<ProjectRepresentation> =
     PagedModel.of(content.map(ProjectEntity::toResource), toMetaData())
         .apply {
             add(linkToProjects(pageIndex, pageSize).withSelfRel())
@@ -39,7 +45,7 @@ internal fun linkToProjects(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
     return linkToCurrentMapping().slash("api/projects$queryPart")
 }
 
-internal fun Page<ProjectEntity>.toSearchResource(): PagedModel<ProjectResource> =
+internal fun Page<ProjectEntity>.toSearchResource(): PagedModel<ProjectRepresentation> =
     PagedModel.of(content.map(ProjectEntity::toResource), toMetaData())
         .apply {
             add(linkToProjectsSearch(pageIndex, pageSize).withSelfRel())

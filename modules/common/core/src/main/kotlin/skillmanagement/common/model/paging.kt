@@ -61,3 +61,11 @@ fun <T : Any> pageOf(elements: List<T>, index: Int = 0, size: Int = 100, totalEl
         pageSize = size,
         totalElements = totalElements
     )
+
+fun <T : Any> List<T>.asPage(index: Int = 0, size: Int = 100, totalElements: Long = size.toLong()) =
+    Page(
+        content = toList(),
+        pageIndex = index,
+        pageSize = size,
+        totalElements = totalElements
+    )
