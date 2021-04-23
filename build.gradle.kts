@@ -64,7 +64,7 @@ allprojects {
 
     tasks {
         asciidoctor {
-            shouldRunAfter("test")
+            mustRunAfter("test")
             baseDirFollowsSourceDir()
             options(
                 mapOf(
