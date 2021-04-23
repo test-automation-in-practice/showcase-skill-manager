@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.domain.employees.gateways.GetSkillByIdAdapterFunction
 import skillmanagement.domain.employees.model.EmployeeId
-import skillmanagement.domain.employees.model.EmployeeResource
+import skillmanagement.domain.employees.model.EmployeeRepresentation
 import skillmanagement.domain.employees.model.SkillId
 import skillmanagement.domain.employees.model.SkillData
 import skillmanagement.domain.employees.model.SkillLevel
@@ -31,7 +31,7 @@ internal class SetSkillKnowledgeOfEmployeeRestAdapter(
     fun post(
         @PathVariable employeeId: EmployeeId,
         @RequestBody request: Request
-    ): ResponseEntity<EmployeeResource> {
+    ): ResponseEntity<EmployeeRepresentation> {
         val skillId = request.skillId
         log.info { "Setting knowledge for skill [$skillId] of employee [$employeeId]" }
 

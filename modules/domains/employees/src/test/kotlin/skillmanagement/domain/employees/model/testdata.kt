@@ -233,8 +233,8 @@ internal val employee_jane_doe_json = """
     }
     """.trimIndent()
 
-internal val employee_resource_jane_doe = employee_jane_doe.toResourceWithoutLinks()
-internal val employee_resource_jane_doe_json = """
+internal val employee_representation_jane_doe = employee_jane_doe.toRepresentation()
+internal val employee_representation_jane_doe_json = """
     {
       "id": "9e1ff73e-0f66-4b86-8548-040d4016bfc9",
       "firstName": "Jane",
@@ -462,8 +462,8 @@ internal val employee_john_doe_json = """
     }
     """.trimIndent()
 
-internal val employee_resource_john_doe = employee_john_doe.toResourceWithoutLinks()
-internal val employee_resource_john_doe_json = """
+internal val employee_representation_john_doe = employee_john_doe.toRepresentation()
+internal val employee_representation_john_doe_json = """
     {
       "id": "0370f159-2d3b-4e40-9438-10ff34dd62c5",
       "firstName": "John",
@@ -587,8 +587,8 @@ internal val employee_john_smith_json = """
     }
     """.trimIndent()
 
-internal val employee_resource_john_smith = employee_john_smith.toResourceWithoutLinks()
-internal val employee_resource_john_smith_json = """
+internal val employee_representation_john_smith = employee_john_smith.toRepresentation()
+internal val employee_representation_john_smith_json = """
     {
       "id": "53b5f462-0c39-4e2a-83bf-aa407cf309be",
       "firstName": "John",
@@ -642,40 +642,6 @@ fun employeeId() = EmployeeId(uuid())
 fun projectAssignmentId() = ProjectAssignmentId(uuid())
 fun externalProjectId() = ProjectId(uuid())
 fun externalSkillId() = SkillId(uuid())
-
-private fun EmployeeEntity.toResourceWithoutLinks() =
-    EmployeeResource(
-        id = id,
-        firstName = firstName,
-        lastName = lastName,
-        title = title,
-        email = email,
-        telephone = telephone,
-        description = description,
-        academicDegrees = academicDegrees,
-        certifications = certifications,
-        publications = publications,
-        languages = languages,
-        jobHistory = jobHistory,
-        skills = skills.map(SkillKnowledge::toResourceWithoutLinks),
-        projects = projects.map(ProjectAssignment::toResourceWithoutLinks)
-    )
-
-private fun SkillKnowledge.toResourceWithoutLinks() =
-    SkillKnowledgeResource(
-        label = skill.label,
-        level = level,
-        secret = secret
-    )
-
-private fun ProjectAssignment.toResourceWithoutLinks() =
-    ProjectAssignmentResource(
-        label = project.label,
-        description = project.description,
-        contribution = contribution,
-        startDate = startDate,
-        endDate = endDate
-    )
 
 private fun EmployeeEntity.toCreationData() =
     EmployeeCreationData(

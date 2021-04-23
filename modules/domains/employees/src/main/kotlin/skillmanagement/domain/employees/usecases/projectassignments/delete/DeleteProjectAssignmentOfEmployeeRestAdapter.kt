@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.domain.employees.model.EmployeeId
-import skillmanagement.domain.employees.model.EmployeeResource
+import skillmanagement.domain.employees.model.EmployeeRepresentation
 import skillmanagement.domain.employees.model.ProjectAssignmentId
 import skillmanagement.domain.employees.model.toResource
 import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure.EmployeeNotChanged
@@ -28,7 +28,7 @@ internal class DeleteProjectAssignmentOfEmployeeRestAdapter(
     fun delete(
         @PathVariable employeeId: EmployeeId,
         @PathVariable assignmentId: ProjectAssignmentId
-    ): ResponseEntity<EmployeeResource> {
+    ): ResponseEntity<EmployeeRepresentation> {
         log.info { "Deleting project assignment [$assignmentId] of employee [$employeeId]" }
         return deleteProjectAssignmentOfEmployee(employeeId, assignmentId)
             .map { employee -> ok(employee.toResource()) }

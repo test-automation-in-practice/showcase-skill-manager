@@ -34,28 +34,17 @@ type Job {
 }
 
 type SkillKnowledge {
-    skill: SkillData!
+    label: String!
     level: Int!
     secret: Boolean!
 }
 
-type SkillData {
-    id: String!
-    label: String!
-}
-
 type ProjectAssignment {
-    id: String!
-    project: ProjectData!
+    label: String!
+    description: String!
     contribution: String!
     startDate: String!
     endDate: String
-}
-
-type ProjectData {
-    id: String!
-    label: String!
-    description: String!
 }
 
 type EmployeesPage {

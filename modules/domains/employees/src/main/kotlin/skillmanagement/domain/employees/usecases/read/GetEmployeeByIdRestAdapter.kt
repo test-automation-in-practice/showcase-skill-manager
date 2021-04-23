@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.domain.employees.model.EmployeeId
-import skillmanagement.domain.employees.model.EmployeeResource
+import skillmanagement.domain.employees.model.EmployeeRepresentation
 import skillmanagement.domain.employees.model.toResource
 
 @RestAdapter
@@ -18,7 +18,7 @@ internal class GetEmployeeByIdRestAdapter(
 ) {
 
     @GetMapping
-    fun get(@PathVariable id: EmployeeId): ResponseEntity<EmployeeResource> =
+    fun get(@PathVariable id: EmployeeId): ResponseEntity<EmployeeRepresentation> =
         getEmployeeById(id)
             ?.let { ok(it.toResource()) }
             ?: noContent().build()

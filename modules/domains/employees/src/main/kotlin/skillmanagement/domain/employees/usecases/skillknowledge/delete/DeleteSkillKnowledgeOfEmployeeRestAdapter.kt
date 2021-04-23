@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.domain.employees.model.EmployeeId
-import skillmanagement.domain.employees.model.EmployeeResource
+import skillmanagement.domain.employees.model.EmployeeRepresentation
 import skillmanagement.domain.employees.model.SkillId
 import skillmanagement.domain.employees.model.toResource
 import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure.EmployeeNotChanged
@@ -28,7 +28,7 @@ internal class DeleteSkillKnowledgeOfEmployeeRestAdapter(
     fun delete(
         @PathVariable employeeId: EmployeeId,
         @PathVariable skillId: SkillId
-    ): ResponseEntity<EmployeeResource> {
+    ): ResponseEntity<EmployeeRepresentation> {
         log.info { "Deleting knowledge of skill [$skillId] of employee [$employeeId]" }
         return deleteSkillKnowledgeOfEmployee(employeeId, skillId)
             .map { employee -> ok(employee.toResource()) }

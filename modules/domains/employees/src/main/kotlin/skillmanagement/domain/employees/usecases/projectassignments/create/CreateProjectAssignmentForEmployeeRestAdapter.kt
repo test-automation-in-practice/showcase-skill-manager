@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.domain.employees.gateways.GetProjectByIdAdapterFunction
 import skillmanagement.domain.employees.model.EmployeeId
-import skillmanagement.domain.employees.model.EmployeeResource
+import skillmanagement.domain.employees.model.EmployeeRepresentation
 import skillmanagement.domain.employees.model.ProjectContribution
 import skillmanagement.domain.employees.model.ProjectData
 import skillmanagement.domain.employees.model.ProjectId
@@ -32,7 +32,7 @@ internal class CreateProjectAssignmentForEmployeeRestAdapter(
     fun post(
         @PathVariable employeeId: EmployeeId,
         @RequestBody request: Request
-    ): ResponseEntity<EmployeeResource> {
+    ): ResponseEntity<EmployeeRepresentation> {
         val projectId = request.projectId
         log.info { "Creating assignment for project [$projectId] by employee [$employeeId]" }
 

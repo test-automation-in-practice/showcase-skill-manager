@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.http.patch.ApplyPatch
 import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.domain.employees.model.EmployeeId
-import skillmanagement.domain.employees.model.EmployeeResource
+import skillmanagement.domain.employees.model.EmployeeRepresentation
 import skillmanagement.domain.employees.model.ProjectAssignment
 import skillmanagement.domain.employees.model.ProjectAssignmentChangeData
 import skillmanagement.domain.employees.model.ProjectAssignmentId
@@ -36,7 +36,7 @@ internal class UpdateProjectAssignmentByIdRestAdapter(
         @PathVariable employeeId: EmployeeId,
         @PathVariable assignmentId: ProjectAssignmentId,
         @RequestBody request: ProjectAssignmentChangeData
-    ): ResponseEntity<EmployeeResource> =
+    ): ResponseEntity<EmployeeRepresentation> =
         update(employeeId, assignmentId) { assignment ->
             assignment.merge(request)
         }
@@ -46,7 +46,7 @@ internal class UpdateProjectAssignmentByIdRestAdapter(
         @PathVariable employeeId: EmployeeId,
         @PathVariable assignmentId: ProjectAssignmentId,
         @RequestBody patch: JsonPatch
-    ): ResponseEntity<EmployeeResource> =
+    ): ResponseEntity<EmployeeRepresentation> =
         update(employeeId, assignmentId) { assignment ->
             assignment.merge(applyPatch(patch, assignment.toChangeData()))
         }
@@ -55,7 +55,7 @@ internal class UpdateProjectAssignmentByIdRestAdapter(
         employeeId: EmployeeId,
         assignmentId: ProjectAssignmentId,
         block: (ProjectAssignment) -> ProjectAssignment
-    ): ResponseEntity<EmployeeResource> = updateProjectAssignmentById(employeeId, assignmentId, block)
+    ): ResponseEntity<EmployeeRepresentation> = updateProjectAssignmentById(employeeId, assignmentId, block)
         .map { employee -> ok(employee.toResource()) }
         .getOrHandle { failure ->
             when (failure) {
