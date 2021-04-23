@@ -10,21 +10,25 @@ import skillmanagement.test.uuid
 internal val project_neo = ProjectEntity(
     id = projectId("f804d83f-466c-4eab-a58f-4b25ca1778f3"),
     version = 1,
-    label = ProjectLabel("Neo"),
-    description = ProjectDescription("The PlayStation 4 Pro."),
+    data = Project(
+        label = ProjectLabel("Neo"),
+        description = ProjectDescription("The PlayStation 4 Pro.")
+    ),
     lastUpdate = instant("2021-03-11T12:34:56.789Z")
 )
 internal val project_neo_json = """
     {
       "id": "f804d83f-466c-4eab-a58f-4b25ca1778f3",
       "version": 1,
-      "label": "Neo",
-      "description": "The PlayStation 4 Pro.",
+      "data": {
+        "label": "Neo",
+        "description": "The PlayStation 4 Pro."
+      },
       "lastUpdate": "2021-03-11T12:34:56.789Z"
     }
     """.trimIndent()
 
-internal val project_representation_neo = project_neo.toResourceWithoutLinks()
+internal val project_representation_neo = project_neo.toRepresentation()
 internal val project_representation_neo_json = """
     {
       "id": "f804d83f-466c-4eab-a58f-4b25ca1778f3",
@@ -58,21 +62,25 @@ internal val project_suggestion_neo = project_neo.toSuggestion()
 internal val project_orbis = ProjectEntity(
     id = projectId("dce233f1-7c20-4250-817e-6676485ddb6e"),
     version = 1,
-    label = ProjectLabel("Orbis"),
-    description = ProjectDescription("The PlayStation 4."),
+    data = Project(
+        label = ProjectLabel("Orbis"),
+        description = ProjectDescription("The PlayStation 4.")
+    ),
     lastUpdate = instant("2020-07-14T12:34:56.789Z")
 )
 internal val project_orbis_json = """
     {
       "id": "dce233f1-7c20-4250-817e-6676485ddb6e",
       "version": 1,
-      "label": "Orbis",
-      "description": "The PlayStation 4.",
+      "data": {
+        "label": "Orbis",
+        "description": "The PlayStation 4."
+      },
       "lastUpdate": "2020-07-14T12:34:56.789Z"
     }
     """.trimIndent()
 
-internal val project_representation_orbis = project_orbis.toResourceWithoutLinks()
+internal val project_representation_orbis = project_orbis.toRepresentation()
 internal val project_representation_orbis_json = """
     {
       "id": "dce233f1-7c20-4250-817e-6676485ddb6e",
@@ -106,21 +114,25 @@ internal val project_suggestion_orbis = project_orbis.toSuggestion()
 internal val project_morpheus = ProjectEntity(
     id = projectId("d5370813-a4cb-42d5-9d28-ce624c718538"),
     version = 1,
-    label = ProjectLabel("Morpheus"),
-    description = ProjectDescription("The PlayStation VR Headset."),
+    data = Project(
+        label = ProjectLabel("Morpheus"),
+        description = ProjectDescription("The PlayStation VR Headset.")
+    ),
     lastUpdate = instant("2020-07-14T12:34:56.789Z")
 )
 internal val project_morpheus_json = """
     {
       "id": "d5370813-a4cb-42d5-9d28-ce624c718538",
       "version": 1,
-      "label": "Morpheus",
-      "description": "The PlayStation VR Headset.",
+      "data": {
+        "label": "Morpheus",
+        "description": "The PlayStation VR Headset."
+      },
       "lastUpdate": "2020-07-14T12:34:56.789Z"
     }
     """.trimIndent()
 
-internal val project_representation_morpheus = project_morpheus.toResourceWithoutLinks()
+internal val project_representation_morpheus = project_morpheus.toRepresentation()
 internal val project_representation_morpheus_json = """
     {
       "id": "d5370813-a4cb-42d5-9d28-ce624c718538",
@@ -152,14 +164,13 @@ internal val project_suggestion_morpheus = project_morpheus.toSuggestion()
 
 fun projectId() = ProjectId(uuid())
 
-private fun ProjectEntity.toResourceWithoutLinks() =
-    ProjectRepresentation(id = id, label = label, description = description)
-
 private fun ProjectEntity.toCreationData() =
-    ProjectCreationData(label = label, description = description)
+    ProjectCreationData(label = data.label, description = data.description)
+
+private fun ProjectEntity.toChangeData() = data.toChangeData()
 
 internal fun ProjectEntity.toSuggestion() =
-    Suggestion(id = id, label = label.toString())
+    Suggestion(id = id, label = data.label.toString())
 
 internal fun ProjectRepresentation.toSuggestion() =
     Suggestion(id = id, label = label.toString())
@@ -173,8 +184,10 @@ internal fun project(
 ) = ProjectEntity(
     id = projectId(id),
     version = version,
-    label = ProjectLabel(label),
-    description = ProjectDescription(description),
+    data = Project(
+        label = ProjectLabel(label),
+        description = ProjectDescription(description)
+    ),
     lastUpdate = instant(lastUpdate)
 )
 
@@ -187,7 +200,9 @@ internal fun ProjectEntity.asFreshlyCreatedInstance() =
     ProjectEntity(
         id = id,
         version = 1,
-        label = label,
-        description = description,
+        data = Project(
+            label = data.label,
+            description = data.description
+        ),
         lastUpdate = lastUpdate
     )

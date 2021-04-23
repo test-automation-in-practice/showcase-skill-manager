@@ -24,11 +24,13 @@ internal class ProjectSearchIndex(
     override val mappingResource = ClassPathResource("/indices/projects-mapping.json")
 
     override fun toSource(instance: ProjectEntity) =
-        mapOf(
-            "label" to instance.label.toString(),
-            "description" to instance.description.toString(),
-            "_sort" to instance.label.toString()
-        )
+        with(instance.data) {
+            mapOf(
+                "label" to label.toString(),
+                "description" to description.toString(),
+                "_sort" to label.toString()
+            )
+        }
 
     override fun id(hit: SearchHit) = projectId(hit.id)
 

@@ -31,6 +31,7 @@ internal class ReconstructProjectSearchIndexTask(
 
     override fun executeForAllInstancesInDataStore(callback: (ProjectEntity) -> Unit) =
         getProjectsFromDataStore(callback)
-    override fun shortDescription(instance: ProjectEntity) = "${instance.id} - ${instance.label}"
+
+    override fun shortDescription(instance: ProjectEntity) = with(instance) { "$id - ${data.label}" }
 
 }

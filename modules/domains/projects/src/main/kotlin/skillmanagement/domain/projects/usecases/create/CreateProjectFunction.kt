@@ -3,9 +3,10 @@ package skillmanagement.domain.projects.usecases.create
 import org.springframework.util.IdGenerator
 import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.stereotypes.BusinessFunction
-import skillmanagement.domain.projects.model.ProjectEntity
+import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.model.ProjectAddedEvent
 import skillmanagement.domain.projects.model.ProjectCreationData
+import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectId
 import java.time.Clock
 
@@ -24,12 +25,15 @@ class CreateProjectFunction internal constructor(
         return project
     }
 
-    private fun ProjectCreationData.toProject() = ProjectEntity(
-        id = ProjectId(idGenerator.generateId()),
-        version = 1,
-        label = label,
-        description = description,
-        lastUpdate = clock.instant()
-    )
+    private fun ProjectCreationData.toProject() =
+        ProjectEntity(
+            id = ProjectId(idGenerator.generateId()),
+            version = 1,
+            data = Project(
+                label = label,
+                description = description
+            ),
+            lastUpdate = clock.instant()
+        )
 
 }

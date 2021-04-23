@@ -10,10 +10,16 @@ import java.util.UUID
 data class ProjectEntity(
     override val id: ProjectId,
     override val version: Int,
+    val data: Project,
+    override val lastUpdate: Instant
+) : Entity<ProjectId> {
+    fun update(block: (Project) -> Project) = copy(data = block(data))
+}
+
+data class Project(
     val label: ProjectLabel,
     val description: ProjectDescription,
-    override val lastUpdate: Instant
-) : Entity<ProjectId>
+)
 
 class ProjectId(value: UUID) : IdType(value)
 class ProjectLabel(value: String) : Label(value)
