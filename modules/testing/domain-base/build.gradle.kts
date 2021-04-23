@@ -1,10 +1,3 @@
-plugins {
-    id("org.springframework.boot") apply false
-
-    kotlin("jvm")
-    kotlin("plugin.spring")
-}
-
 dependencies {
     api(project(":modules:common:core"))
     api(project(":modules:common:domain-base"))
@@ -15,8 +8,8 @@ dependencies {
     api("com.fasterxml.jackson.module:jackson-module-kotlin")
     api("io.rest-assured:rest-assured")
 
-    api("org.testcontainers:testcontainers:1.15.1")
-    api("com.graphql-java-kickstart:graphql-spring-boot-starter-test:11.0.0")
+    api("org.testcontainers:testcontainers")
+    api("com.graphql-java-kickstart:graphql-spring-boot-starter-test")
 
     api("org.springframework.boot:spring-boot-starter-test")
     api("org.springframework.restdocs:spring-restdocs-mockmvc")

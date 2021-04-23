@@ -1,12 +1,3 @@
-plugins {
-    id("org.springframework.boot")
-    id("io.spring.dependency-management")
-    id("org.asciidoctor.jvm.convert")
-
-    kotlin("jvm")
-    kotlin("plugin.spring")
-}
-
 dependencies {
     implementation(project(":modules:domains:employees"))
     implementation(project(":modules:domains:projects"))
@@ -17,8 +8,6 @@ dependencies {
 
     testImplementation(project(":modules:testing:domain-base"))
     testImplementation("org.springframework.security:spring-security-test")
-
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 }
 
 tasks {
@@ -27,28 +16,6 @@ tasks {
         dependsOn(":modules:domains:employees:asciidoctor")
         dependsOn(":modules:domains:projects:asciidoctor")
         dependsOn(":modules:domains:skills:asciidoctor")
-
-        baseDirFollowsSourceDir()
-        options(
-            mapOf(
-                "doctype" to "book",
-                "backend" to "html5"
-            )
-        )
-        attributes(
-            mapOf(
-                "snippets" to file("$buildDir/generated-snippets"),
-                "source-highlighter" to "coderay",
-                "toclevels" to "3",
-                "sectlinks" to "true",
-                "data-uri" to "true",
-                "nofooter" to "true"
-            )
-        )
-    }
-    asciidoctorj {
-        fatalWarnings("include file not found")
-        modules { diagram.use() }
     }
     bootJar {
         dependsOn("asciidoctor")

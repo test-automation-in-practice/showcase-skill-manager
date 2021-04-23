@@ -17,26 +17,26 @@ include::../plantuml/module_structure.puml[]
 
 [plantuml, consistency_database_employees, svg, align="center"]
 ....
-include::../../../../modules/domains/employees/src/docs/plantuml/consistency_database.puml[]
+include::../../../../../modules/domains/employees/src/docs/plantuml/consistency_database.puml[]
 ....
 
 === Employee Search Index
 
 [plantuml, consistency_search-index_employees, svg, align="center"]
 ....
-include::../../../../modules/domains/employees/src/docs/plantuml/consistency_search-index.puml[]
+include::../../../../../modules/domains/employees/src/docs/plantuml/consistency_search-index.puml[]
 ....
 
 === Project Search Index
 
 [plantuml, consistency_search-index_projects, svg, align="center"]
 ....
-include::../../../../modules/domains/projects/src/docs/plantuml/consistency_search-index.puml[]
+include::../../../../../modules/domains/projects/src/docs/plantuml/consistency_search-index.puml[]
 ....
 
 === Skills Search Index
 
 [plantuml, consistency_search-index_skills, svg, align="center"]
 ....
-include::../../../../modules/domains/skills/src/docs/plantuml/consistency_search-index.puml[]
+include::../../../../../modules/domains/skills/src/docs/plantuml/consistency_search-index.puml[]
 ....
