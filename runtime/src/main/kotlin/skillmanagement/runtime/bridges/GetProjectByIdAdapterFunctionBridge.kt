@@ -1,8 +1,9 @@
-package skillmanagement.domain.employees.gateways
+package skillmanagement.runtime.gluecode
 
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.ProjectData
 import skillmanagement.domain.employees.model.ProjectId
+import skillmanagement.domain.employees.usecases.projectassignments.create.GetProjectByIdAdapterFunction
 import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.usecases.read.GetProjectByIdFunction
 import skillmanagement.domain.projects.model.ProjectId as ExternalProjectId
@@ -17,11 +18,11 @@ import skillmanagement.domain.projects.model.ProjectId as ExternalProjectId
  * (e.g. HTTP or RSocket etc.).
  */
 @BusinessFunction
-internal class GetProjectByIdAdapterFunction(
+internal class GetProjectByIdAdapterFunctionBridge(
     private val getProjectById: GetProjectByIdFunction
-) {
+) : GetProjectByIdAdapterFunction {
 
-    operator fun invoke(id: ProjectId): ProjectData? =
+    override operator fun invoke(id: ProjectId): ProjectData? =
         getProjectById(projectId(id))?.toData()
 
     private fun ProjectEntity.toData() = ProjectData(

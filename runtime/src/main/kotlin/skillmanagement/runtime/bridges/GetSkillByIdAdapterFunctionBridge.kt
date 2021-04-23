@@ -1,8 +1,9 @@
-package skillmanagement.domain.employees.gateways
+package skillmanagement.runtime.gluecode
 
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.SkillData
 import skillmanagement.domain.employees.model.SkillId
+import skillmanagement.domain.employees.usecases.skillknowledge.set.GetSkillByIdAdapterFunction
 import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.usecases.read.GetSkillByIdFunction
 import skillmanagement.domain.skills.model.SkillId as ExternalSkillId
@@ -17,11 +18,11 @@ import skillmanagement.domain.skills.model.SkillId as ExternalSkillId
  * (e.g. HTTP or RSocket etc.).
  */
 @BusinessFunction
-internal class GetSkillByIdAdapterFunction(
+internal class GetSkillByIdAdapterFunctionBridge(
     private val getSkillById: GetSkillByIdFunction
-) {
+) : GetSkillByIdAdapterFunction {
 
-    operator fun invoke(id: SkillId): SkillData? =
+    override operator fun invoke(id: SkillId): SkillData? =
         getSkillById(skillId(id))?.toData()
 
     private fun SkillEntity.toData() = SkillData(

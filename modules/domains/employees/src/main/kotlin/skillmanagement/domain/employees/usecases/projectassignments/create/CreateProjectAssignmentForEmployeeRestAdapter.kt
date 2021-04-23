@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.stereotypes.RestAdapter
-import skillmanagement.domain.employees.gateways.GetProjectByIdAdapterFunction
 import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.EmployeeRepresentation
 import skillmanagement.domain.employees.model.ProjectContribution

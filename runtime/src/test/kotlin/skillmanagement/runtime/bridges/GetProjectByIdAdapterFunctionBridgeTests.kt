@@ -1,11 +1,9 @@
-package skillmanagement.domain.employees.gateways
+package skillmanagement.runtime.gluecode
 
 import io.kotlintest.shouldBe
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
-import skillmanagement.domain.employees.model.externalProjectId
-import skillmanagement.domain.employees.model.project_neo
 import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.model.ProjectDescription
 import skillmanagement.domain.projects.model.ProjectEntity
@@ -18,10 +16,10 @@ import skillmanagement.test.instant
 
 @UnitTest
 @ResetMocksAfterEachTest
-internal class GetProjectByIdAdapterFunctionTests {
+internal class GetProjectByIdAdapterFunctionBridgeTests {
 
     private val getProjectById: GetProjectByIdFunction = mockk()
-    private val getProjectByIdAdapter = GetProjectByIdAdapterFunction(getProjectById)
+    private val getProjectByIdAdapter = GetProjectByIdAdapterFunctionBridge(getProjectById)
 
     @Test
     fun `delegates to function of other module and converts the result`() {
