@@ -14,27 +14,13 @@ import java.util.UUID
 data class EmployeeEntity(
     override val id: EmployeeId,
     override val version: Int,
-
-    val firstName: FirstName,
-    val lastName: LastName,
-    val title: JobTitle,
-    val email: EmailAddress,
-    val telephone: TelephoneNumber,
-
-    val description: EmployeeDescription? = null,
-    val academicDegrees: List<AcademicDegree> = emptyList(),
-    val certifications: List<Certification> = emptyList(),
-    val publications: List<Publication> = emptyList(),
-    val languages: List<LanguageProficiency> = emptyList(),
-    val jobHistory: List<Job> = emptyList(),
-
+    val data: Employee,
     val skills: List<SkillKnowledge> = emptyList(),
     val projects: List<ProjectAssignment> = emptyList(),
-
     override val lastUpdate: Instant
 ) : Entity<EmployeeId> {
 
-    fun compositeName() = "$firstName $lastName"
+    fun update(block: (Employee) -> Employee) = copy(data = block(data))
 
     fun addOrUpdateProjectAssignment(assignment: ProjectAssignment): EmployeeEntity =
         removeProjectAssignment { it.id == assignment.id }
@@ -56,6 +42,22 @@ data class EmployeeEntity(
     fun updateSkillKnowledge(skillId: SkillId, block: (SkillKnowledge) -> SkillKnowledge): EmployeeEntity =
         copy(skills = skills.map { if (it.skill.id == skillId) block(it) else it })
 
+}
+
+data class Employee(
+    val firstName: FirstName,
+    val lastName: LastName,
+    val title: JobTitle,
+    val email: EmailAddress,
+    val telephone: TelephoneNumber,
+    val description: EmployeeDescription? = null,
+    val academicDegrees: List<AcademicDegree> = emptyList(),
+    val certifications: List<Certification> = emptyList(),
+    val publications: List<Publication> = emptyList(),
+    val languages: List<LanguageProficiency> = emptyList(),
+    val jobHistory: List<Job> = emptyList(),
+) {
+    fun compositeName() = "$firstName $lastName"
 }
 
 class EmployeeId(value: UUID) : IdType(value)

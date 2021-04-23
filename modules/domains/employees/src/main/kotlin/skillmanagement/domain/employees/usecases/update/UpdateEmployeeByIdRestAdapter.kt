@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import skillmanagement.common.http.patch.ApplyPatch
 import skillmanagement.common.stereotypes.RestAdapter
-import skillmanagement.domain.employees.model.EmployeeEntity
+import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.EmployeeChangeData
 import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.EmployeeRepresentation
@@ -30,20 +30,21 @@ internal class UpdateEmployeeByIdRestAdapter(
 ) {
 
     @PutMapping
-    fun put(@PathVariable id: EmployeeId, @RequestBody request: EmployeeChangeData): ResponseEntity<EmployeeRepresentation> =
+    fun put(@PathVariable id: EmployeeId, @RequestBody request: EmployeeChangeData) =
         update(id) { employee -> employee.merge(request) }
 
     @PatchMapping(consumes = ["application/json-patch+json"])
-    fun patch(@PathVariable id: EmployeeId, @RequestBody patch: JsonPatch): ResponseEntity<EmployeeRepresentation> =
+    fun patch(@PathVariable id: EmployeeId, @RequestBody patch: JsonPatch) =
         update(id) { employee -> employee.merge(applyPatch(patch, employee.toChangeData())) }
 
-    private fun update(id: EmployeeId, block: (EmployeeEntity) -> EmployeeEntity) = updateEmployeeById(id, block)
-        .map { employee -> ok(employee.toResource()) }
-        .getOrHandle { failure ->
-            when (failure) {
-                is EmployeeNotFound -> notFound().build()
-                is EmployeeNotChanged -> ok(failure.employee.toResource())
+    private fun update(id: EmployeeId, block: (Employee) -> Employee): ResponseEntity<EmployeeRepresentation> =
+        updateEmployeeById(id, block)
+            .map { employee -> ok(employee.toResource()) }
+            .getOrHandle { failure ->
+                when (failure) {
+                    is EmployeeNotFound -> notFound().build()
+                    is EmployeeNotChanged -> ok(failure.employee.toResource())
+                }
             }
-        }
 
 }

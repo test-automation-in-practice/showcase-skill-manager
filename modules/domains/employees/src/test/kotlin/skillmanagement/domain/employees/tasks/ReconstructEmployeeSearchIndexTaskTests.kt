@@ -40,6 +40,6 @@ internal class ReconstructEmployeeSearchIndexTaskTests : AbstractReconstructSear
         }
     }
 
-    override fun expectedShortDescription(instance: EmployeeEntity) = "${instance.id} - ${instance.compositeName()}"
+    override fun expectedShortDescription(instance: EmployeeEntity) = with(instance) { "$id - ${data.compositeName()}" }
 
 }

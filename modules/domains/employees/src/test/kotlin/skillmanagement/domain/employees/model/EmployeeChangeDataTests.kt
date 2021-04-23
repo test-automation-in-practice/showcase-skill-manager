@@ -16,7 +16,7 @@ internal class EmployeeChangeDataTests {
 
         @Test
         fun `toChangeData function creates correct instance`() {
-            employee_jane_doe.toChangeData() shouldBe EmployeeChangeData(
+            employee_jane_doe.data.toChangeData() shouldBe EmployeeChangeData(
                 firstName = FirstName("Jane"),
                 lastName = LastName("Doe"),
                 title = JobTitle("Senior Software Engineer"),
@@ -67,27 +67,14 @@ internal class EmployeeChangeDataTests {
 
         @Test
         fun `merge function creates employee with overridden properties`() {
-            val employee1 = employee_john_smith // data for only required properties
-            val employee2 = employee_jane_doe // data for all properties
+            val employee1 = employee_john_smith.data // data for only required properties
+            val employee2 = employee_jane_doe.data // data for all properties
 
             val changeData1 = employee1.toChangeData()
             val changeData2 = employee2.toChangeData()
 
-            employee1.merge(changeData2) shouldBe employee2.copy(
-                id = employee1.id,
-                version = employee1.version,
-                skills = employee1.skills,
-                projects = employee1.projects,
-                lastUpdate = employee1.lastUpdate
-            )
-
-            employee2.merge(changeData1) shouldBe employee1.copy(
-                id = employee2.id,
-                version = employee2.version,
-                skills = employee2.skills,
-                projects = employee2.projects,
-                lastUpdate = employee2.lastUpdate
-            )
+            employee1.merge(changeData2) shouldBe employee2
+            employee2.merge(changeData1) shouldBe employee1
         }
 
     }

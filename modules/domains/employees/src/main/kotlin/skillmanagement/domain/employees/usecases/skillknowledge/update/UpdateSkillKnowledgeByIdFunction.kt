@@ -10,11 +10,11 @@ import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateFai
 import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateFailure.SkillKnowledgeNotChanged
 import skillmanagement.domain.employees.usecases.skillknowledge.update.UpdateFailure.SkillKnowledgeNotFound
 import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeEntityByIdFunction
 
 @BusinessFunction
 class UpdateSkillKnowledgeByIdFunction internal constructor(
-    private val updateEmployeeById: UpdateEmployeeByIdFunction
+    private val updateEmployeeEntityById: UpdateEmployeeEntityByIdFunction
 ) {
 
     // TODO: extract update function to Employee
@@ -25,7 +25,7 @@ class UpdateSkillKnowledgeByIdFunction internal constructor(
         block: (SkillKnowledge) -> SkillKnowledge
     ): Either<UpdateFailure, EmployeeEntity> {
         var knowledgeExists = false
-        val updateResult = updateEmployeeById(employeeId) { employee ->
+        val updateResult = updateEmployeeEntityById(employeeId) { employee ->
             val updatedSkills = employee.skills
                 .map { skillKnowledge ->
                     if (skillKnowledge.skill.id == skillId) {
