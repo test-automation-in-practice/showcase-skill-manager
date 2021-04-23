@@ -20,8 +20,8 @@ internal data class ProjectRepresentation(
 internal fun ProjectEntity.toRepresentation() =
     ProjectRepresentation(
         id = id,
-        label = label,
-        description = description
+        label = data.label,
+        description = data.description
     )
 
 internal fun ProjectEntity.toResource() = toRepresentation()

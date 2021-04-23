@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test
 import skillmanagement.test.AbstractJsonSerializationTests
 import skillmanagement.test.TechnologyIntegrationTest
 import skillmanagement.test.UnitTest
-import skillmanagement.test.instant
 
 internal class ProjectChangeDataTests {
 
@@ -14,12 +13,9 @@ internal class ProjectChangeDataTests {
     @UnitTest
     inner class ProjectExtensionFunctionTests {
 
-        private val project = ProjectEntity(
-            id = projectId("3039df54-e86f-4973-9887-738510305e48"),
-            version = 42,
+        private val project = Project(
             label = ProjectLabel("Changing Data"),
-            description = ProjectDescription("Much needed for these tests."),
-            lastUpdate = instant("2021-03-03T12:34:56.789Z")
+            description = ProjectDescription("Much needed for these tests.")
         )
         private val changeData = ProjectChangeData(
             label = ProjectLabel("Changing Data"),

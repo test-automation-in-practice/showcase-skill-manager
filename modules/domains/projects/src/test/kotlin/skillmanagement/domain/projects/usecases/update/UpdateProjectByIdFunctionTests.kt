@@ -19,6 +19,7 @@ import org.springframework.retry.annotation.EnableRetry
 import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.failure
 import skillmanagement.common.success
+import skillmanagement.domain.projects.model.Project
 import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectDescription
 import skillmanagement.domain.projects.model.ProjectLabel
@@ -38,8 +39,10 @@ internal class UpdateProjectByIdFunctionTests {
     private val project = ProjectEntity(
         id = id,
         version = 2,
-        label = ProjectLabel("Old Label"),
-        description = ProjectDescription("Old Description"),
+        data = Project(
+            label = ProjectLabel("Old Label"),
+            description = ProjectDescription("Old Description")
+        ),
         lastUpdate = instant("2021-03-24T12:34:56.789Z")
     )
 
@@ -57,14 +60,14 @@ internal class UpdateProjectByIdFunctionTests {
 
         @Test
         fun `updating an existing project stores it in the data store and publishes an event`() {
-            val change: (ProjectEntity) -> (ProjectEntity) = {
+            val change: (Project) -> (Project) = {
                 it.copy(
                     label = ProjectLabel("New Label"),
                     description = ProjectDescription("New Description")
                 )
             }
 
-            val expectedChangedProject = change(project)
+            val expectedChangedProject = project.update(change)
             val expectedUpdatedProject = expectedChangedProject
                 .copy(version = 3, lastUpdate = instant("2021-03-24T12:35:06.789Z"))
 
@@ -101,29 +104,6 @@ internal class UpdateProjectByIdFunctionTests {
             verify { publishEvent wasNot called }
         }
 
-        @TestFactory
-        fun `certain modifications are prohibited`(): List<DynamicTest> = listOf(
-            prohibitedModificationTest("Changing the ID") {
-                it.copy(id = projectId())
-            },
-            prohibitedModificationTest("Changing the Version") {
-                it.copy(version = 5)
-            },
-            prohibitedModificationTest("Changing the Last Update") {
-                it.copy(lastUpdate = instant("2021-03-24T12:00:00.789Z"))
-            }
-        )
-
-        private fun prohibitedModificationTest(name: String, operation: (ProjectEntity) -> (ProjectEntity)) =
-            dynamicTest(name) {
-                every { getProjectById(id) } returns project
-                assertThrows<IllegalStateException> {
-                    updateProjectById(id, operation)
-                }
-                verify { updateProjectInDataStore wasNot called }
-                verify { publishEvent wasNot called }
-            }
-
         private fun simulateUpdate(it: ProjectEntity) =
             it.copy(version = it.version + 1, lastUpdate = it.lastUpdate.plusSeconds(10))
 
@@ -139,7 +119,7 @@ internal class UpdateProjectByIdFunctionTests {
         @Autowired private val updateProjectById: UpdateProjectByIdFunction
     ) {
 
-        private val change: (ProjectEntity) -> ProjectEntity = { it.copy(label = ProjectLabel("new")) }
+        private val change: (Project) -> Project = { it.copy(label = ProjectLabel("new")) }
 
         @Test
         fun `operation is retried up to 5 times in case of concurrent update exceptions`() {

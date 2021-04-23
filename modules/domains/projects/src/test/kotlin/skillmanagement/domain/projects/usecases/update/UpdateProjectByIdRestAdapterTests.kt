@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.put
 import skillmanagement.common.failure
 import skillmanagement.common.http.patch.ApplyPatch
 import skillmanagement.common.success
-import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.project_change_data_morpheus_json
 import skillmanagement.domain.projects.model.project_morpheus
 import skillmanagement.domain.projects.model.project_neo
@@ -38,17 +37,12 @@ internal class UpdateProjectByIdRestAdapterTests(
     @Autowired val updateProjectById: UpdateProjectByIdFunction
 ) {
 
-    private val project = project_neo
-
     @Test
     fun `PUT - when updating a complete project it's updated state is returned`() {
-        every { updateProjectById(project.id, any()) } answers {
-            val block: (ProjectEntity) -> (ProjectEntity) = secondArg()
-            success(block(project))
-        }
+        every { updateProjectById(project_neo.id, any()) } answers { success(project_neo.update(secondArg())) }
 
         mockMvc
-            .put("/api/projects/${project.id}") {
+            .put("/api/projects/${project_neo.id}") {
                 contentType = APPLICATION_JSON
                 content = """{ "label": "Project Neo", "description": "description" }"""
             }
@@ -115,10 +109,10 @@ internal class UpdateProjectByIdRestAdapterTests(
 
     @Test
     fun `PUT - when updating a non-existing project the response will be a 404`() {
-        every { updateProjectById(project.id, any()) } returns failure(ProjectNotFound)
+        every { updateProjectById(project_neo.id, any()) } returns failure(ProjectNotFound)
 
         mockMvc
-            .put("/api/projects/${project.id}") {
+            .put("/api/projects/${project_neo.id}") {
                 contentType = APPLICATION_JSON
                 content = """{ "label": "Project Neo", "description": "description" }"""
             }
@@ -131,13 +125,10 @@ internal class UpdateProjectByIdRestAdapterTests(
 
     @Test
     fun `PATCH - JSON Patch can be used to update properties of a project - label`() {
-        every { updateProjectById(project.id, any()) } answers {
-            val block: (ProjectEntity) -> (ProjectEntity) = secondArg()
-            success(block(project))
-        }
+        every { updateProjectById(project_neo.id, any()) } answers { success(project_neo.update(secondArg())) }
 
         mockMvc
-            .patch("/api/projects/${project.id}") {
+            .patch("/api/projects/${project_neo.id}") {
                 contentType = MediaType("application", "json-patch+json")
                 content = """
                     [
@@ -225,10 +216,10 @@ internal class UpdateProjectByIdRestAdapterTests(
 
     @Test
     fun `PATCH - when updating a non-existing project the response will be a 404`() {
-        every { updateProjectById(project.id, any()) } returns failure(ProjectNotFound)
+        every { updateProjectById(project_neo.id, any()) } returns failure(ProjectNotFound)
 
         mockMvc
-            .patch("/api/projects/${project.id}") {
+            .patch("/api/projects/${project_neo.id}") {
                 contentType = MediaType("application", "json-patch+json")
                 content = """
                     [

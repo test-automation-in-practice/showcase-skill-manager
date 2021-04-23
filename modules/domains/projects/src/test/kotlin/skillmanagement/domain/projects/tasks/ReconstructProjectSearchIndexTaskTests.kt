@@ -40,6 +40,6 @@ internal class ReconstructProjectSearchIndexTaskTests : AbstractReconstructSearc
         }
     }
 
-    override fun expectedShortDescription(instance: ProjectEntity) = "${instance.id} - ${instance.label}"
+    override fun expectedShortDescription(instance: ProjectEntity) = "${instance.id} - ${instance.data.label}"
 
 }

@@ -26,8 +26,8 @@ internal class GetProjectByIdAdapterFunction(
 
     private fun ProjectEntity.toData() = ProjectData(
         id = projectId(id),
-        label = label.toString(),
-        description = description.toString()
+        label = data.label.toString(),
+        description = data.description.toString()
     )
 
 }
