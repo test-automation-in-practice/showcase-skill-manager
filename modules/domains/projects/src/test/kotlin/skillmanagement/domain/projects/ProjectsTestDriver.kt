@@ -6,7 +6,7 @@ import skillmanagement.domain.projects.model.ProjectCreationData
 import skillmanagement.domain.projects.model.ProjectDescription
 import skillmanagement.domain.projects.model.ProjectId
 import skillmanagement.domain.projects.model.ProjectLabel
-import skillmanagement.domain.projects.model.ProjectResource
+import skillmanagement.domain.projects.model.ProjectRepresentation
 import skillmanagement.domain.projects.usecases.read.SearchProjectsRestAdapter
 import skillmanagement.domain.projects.usecases.read.SuggestProjectsRestAdapter
 import skillmanagement.test.AbstractHttpTestDriver
@@ -19,7 +19,7 @@ internal class ProjectsTestDriver(
     fun create(
         label: String = "Dummy Project",
         description: String = "Lorem Ipsum ..."
-    ): ProjectResource {
+    ): ProjectRepresentation {
         val response = post("/api/projects") {
             ProjectCreationData(
                 label = ProjectLabel(label),
@@ -27,21 +27,21 @@ internal class ProjectsTestDriver(
             )
         }
         return when (response.code) {
-            201 -> response.readBodyAs(ProjectResource::class)
+            201 -> response.readBodyAs(ProjectRepresentation::class)
             else -> error(unmappedCase(response))
         }
     }
 
-    fun get(id: ProjectId): ProjectResource? {
+    fun get(id: ProjectId): ProjectRepresentation? {
         val response = get("/api/projects/$id")
         return when (response.code) {
-            200 -> response.readBodyAs(ProjectResource::class)
+            200 -> response.readBodyAs(ProjectRepresentation::class)
             204 -> null
             else -> error(unmappedCase(response))
         }
     }
 
-    fun getAll(page: Int = 0, size: Int = 100): PagedModel<ProjectResource> {
+    fun getAll(page: Int = 0, size: Int = 100): PagedModel<ProjectRepresentation> {
         val response = get("/api/projects?page=$page&size=$size")
         return when (response.code) {
             200 -> response.readBodyAs(ProjectsPageModel::class)
@@ -49,7 +49,7 @@ internal class ProjectsTestDriver(
         }
     }
 
-    fun search(query: String, page: Int = 0, size: Int = 100): PagedModel<ProjectResource> {
+    fun search(query: String, page: Int = 0, size: Int = 100): PagedModel<ProjectRepresentation> {
         val response = post("/api/projects/_search?page=$page&size=$size") {
             SearchProjectsRestAdapter.Request(query)
         }
@@ -83,7 +83,7 @@ internal class ProjectsTestDriver(
         }
     }
 
-    private class ProjectsPageModel : PagedModel<ProjectResource>()
+    private class ProjectsPageModel : PagedModel<ProjectRepresentation>()
     private class ProjectSuggestions : ArrayList<Suggestion>()
 
 }

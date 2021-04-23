@@ -24,8 +24,8 @@ internal val project_neo_json = """
     }
     """.trimIndent()
 
-internal val project_resource_neo = project_neo.toResourceWithoutLinks()
-internal val project_resource_neo_json = """
+internal val project_representation_neo = project_neo.toResourceWithoutLinks()
+internal val project_representation_neo_json = """
     {
       "id": "f804d83f-466c-4eab-a58f-4b25ca1778f3",
       "label": "Neo",
@@ -72,8 +72,8 @@ internal val project_orbis_json = """
     }
     """.trimIndent()
 
-internal val project_resource_orbis = project_orbis.toResourceWithoutLinks()
-internal val project_resource_orbis_json = """
+internal val project_representation_orbis = project_orbis.toResourceWithoutLinks()
+internal val project_representation_orbis_json = """
     {
       "id": "dce233f1-7c20-4250-817e-6676485ddb6e",
       "label": "Orbis",
@@ -120,8 +120,8 @@ internal val project_morpheus_json = """
     }
     """.trimIndent()
 
-internal val project_resource_morpheus = project_morpheus.toResourceWithoutLinks()
-internal val project_resource_morpheus_json = """
+internal val project_representation_morpheus = project_morpheus.toResourceWithoutLinks()
+internal val project_representation_morpheus_json = """
     {
       "id": "d5370813-a4cb-42d5-9d28-ce624c718538",
       "label": "Morpheus",
@@ -153,7 +153,7 @@ internal val project_suggestion_morpheus = project_morpheus.toSuggestion()
 fun projectId() = ProjectId(uuid())
 
 private fun ProjectEntity.toResourceWithoutLinks() =
-    ProjectResource(id = id, label = label, description = description)
+    ProjectRepresentation(id = id, label = label, description = description)
 
 private fun ProjectEntity.toCreationData() =
     ProjectCreationData(label = label, description = description)
@@ -161,7 +161,7 @@ private fun ProjectEntity.toCreationData() =
 internal fun ProjectEntity.toSuggestion() =
     Suggestion(id = id, label = label.toString())
 
-internal fun ProjectResource.toSuggestion() =
+internal fun ProjectRepresentation.toSuggestion() =
     Suggestion(id = id, label = label.toString())
 
 internal fun project(

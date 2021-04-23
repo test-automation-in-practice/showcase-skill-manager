@@ -15,7 +15,7 @@ import skillmanagement.common.stereotypes.RestAdapter
 import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectChangeData
 import skillmanagement.domain.projects.model.ProjectId
-import skillmanagement.domain.projects.model.ProjectResource
+import skillmanagement.domain.projects.model.ProjectRepresentation
 import skillmanagement.domain.projects.model.merge
 import skillmanagement.domain.projects.model.toChangeData
 import skillmanagement.domain.projects.model.toResource
@@ -30,11 +30,11 @@ internal class UpdateProjectByIdRestAdapter(
 ) {
 
     @PutMapping
-    fun put(@PathVariable id: ProjectId, @RequestBody request: ProjectChangeData): ResponseEntity<ProjectResource> =
+    fun put(@PathVariable id: ProjectId, @RequestBody request: ProjectChangeData): ResponseEntity<ProjectRepresentation> =
         update(id) { project -> project.merge(request) }
 
     @PatchMapping(consumes = ["application/json-patch+json"])
-    fun patch(@PathVariable id: ProjectId, @RequestBody patch: JsonPatch): ResponseEntity<ProjectResource> =
+    fun patch(@PathVariable id: ProjectId, @RequestBody patch: JsonPatch): ResponseEntity<ProjectRepresentation> =
         update(id) { project -> project.merge(applyPatch(patch, project.toChangeData())) }
 
     private fun update(id: ProjectId, block: (ProjectEntity) -> ProjectEntity) = updateProjectById(id, block)
