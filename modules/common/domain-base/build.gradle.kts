@@ -1,10 +1,3 @@
-plugins {
-    id("org.springframework.boot") apply false
-
-    kotlin("jvm")
-    kotlin("plugin.spring")
-}
-
 dependencies {
     api(project(":modules:common:core"))
 
@@ -23,8 +16,8 @@ dependencies {
     api("com.fasterxml.jackson.module:jackson-module-kotlin")
     api("org.elasticsearch.client:elasticsearch-rest-high-level-client")
 
-    api("com.github.java-json-tools:json-patch:1.13")
-    api("com.graphql-java-kickstart:graphql-spring-boot-starter:11.0.0")
+    api("com.github.java-json-tools:json-patch")
+    api("com.graphql-java-kickstart:graphql-spring-boot-starter")
 
     implementation("org.springframework.security:spring-security-core")
 
