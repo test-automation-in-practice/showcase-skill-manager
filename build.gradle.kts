@@ -1,27 +1,32 @@
-import io.gitlab.arturbosch.detekt.detekt
+import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
-buildscript { repositories { mavenCentral(); jcenter() } }
+buildscript {
+    repositories { mavenCentral() }
+}
 
 plugins {
     id("org.springframework.boot") version "2.4.4" apply false
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
-    id("org.asciidoctor.jvm.convert") version "3.3.0"
+    id("org.asciidoctor.jvm.convert") version "3.3.2"
     id("io.gitlab.arturbosch.detekt") version "1.16.0"
 
     kotlin("jvm") version "1.4.32"
     kotlin("plugin.spring") version "1.4.32"
 }
 
+apply {
+    plugin("io.gitlab.arturbosch.detekt")
+}
+
 allprojects {
     extra["okhttp3.version"] = "4.9.1"
     extra["rest-assured.version"] = "4.3.3"
-    extra["groovy.version"] = "3.0.7" // avoid illegal access warning
 
-    repositories { mavenCentral(); jcenter() }
+    repositories { mavenCentral() }
 
     apply {
         plugin("org.asciidoctor.jvm.convert")
@@ -52,6 +57,8 @@ allprojects {
             implementation("io.mockk:mockk:1.10.5")
             implementation("net.jqwik:jqwik:1.3.10")
             implementation("org.testcontainers:testcontainers:1.15.1")
+
+            detekt("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.3")
         }
     }
 
@@ -84,7 +91,7 @@ allprojects {
         build {
             dependsOn("asciidoctor")
         }
-        detekt {
+        the<DetektExtension>().apply {
             config = rootProject.files("detekt.yml")
             buildUponDefaultConfig = true
             ignoreFailures = false
