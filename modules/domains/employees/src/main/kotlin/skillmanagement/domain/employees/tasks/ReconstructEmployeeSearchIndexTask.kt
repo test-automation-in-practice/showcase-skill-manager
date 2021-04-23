@@ -32,7 +32,6 @@ internal class ReconstructEmployeeSearchIndexTask(
     override fun executeForAllInstancesInDataStore(callback: (EmployeeEntity) -> Unit) =
         getEmployeeFromDataStore(callback)
 
-    override fun shortDescription(instance: EmployeeEntity) =
-        "${instance.id} - ${instance.firstName} ${instance.lastName}"
+    override fun shortDescription(instance: EmployeeEntity) = with(instance) { "${id} - ${data.compositeName()}" }
 
 }

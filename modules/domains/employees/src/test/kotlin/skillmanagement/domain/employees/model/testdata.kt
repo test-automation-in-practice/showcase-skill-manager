@@ -85,49 +85,51 @@ internal val project_assignment_morpheus = ProjectAssignment(
 internal val employee_jane_doe = EmployeeEntity(
     id = employeeId("9e1ff73e-0f66-4b86-8548-040d4016bfc9"),
     version = 1,
-    firstName = FirstName("Jane"),
-    lastName = LastName("Doe"),
-    title = JobTitle("Senior Software Engineer"),
-    email = EmailAddress("jane.doe@example.com"),
-    telephone = TelephoneNumber("+49 123 456789"),
-    description = EmployeeDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit ..."),
-    academicDegrees = listOf(
-        AcademicDegree(
-            subject = AcademicSubject("Computer Science"),
-            title = AcademicTitle("Dr."),
-            institution = AcademicInstitution("MIT")
-        )
-    ),
-    certifications = listOf(
-        Certification("CPSA Advanced Level"),
-        Certification("CPSA Foundation Level")
-    ),
-    publications = listOf(
-        Publication("https://github.com/jane_doe11"),
-        Publication("Lorem ipsum dolor (Lorem Magazine, 2021)")
-    ),
-    languages = listOf(
-        LanguageProficiency(
-            language = Language("English"),
-            qualifier = LanguageQualifier("native speaker")
+    data = Employee(
+        firstName = FirstName("Jane"),
+        lastName = LastName("Doe"),
+        title = JobTitle("Senior Software Engineer"),
+        email = EmailAddress("jane.doe@example.com"),
+        telephone = TelephoneNumber("+49 123 456789"),
+        description = EmployeeDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit ..."),
+        academicDegrees = listOf(
+            AcademicDegree(
+                subject = AcademicSubject("Computer Science"),
+                title = AcademicTitle("Dr."),
+                institution = AcademicInstitution("MIT")
+            )
         ),
-        LanguageProficiency(
-            language = Language("German"),
-            qualifier = LanguageQualifier("B2")
-        )
-    ),
-    jobHistory = listOf(
-        Job(
-            employer = Employer("Example AG"),
-            title = JobTitle("Senior Software Engineer"),
-            start = yearMonth("2020-01"),
-            end = null
+        certifications = listOf(
+            Certification("CPSA Advanced Level"),
+            Certification("CPSA Foundation Level")
         ),
-        Job(
-            employer = Employer("Example AG"),
-            title = JobTitle("Software Engineer"),
-            start = yearMonth("2017-11"),
-            end = yearMonth("2019-12")
+        publications = listOf(
+            Publication("https://github.com/jane_doe11"),
+            Publication("Lorem ipsum dolor (Lorem Magazine, 2021)")
+        ),
+        languages = listOf(
+            LanguageProficiency(
+                language = Language("English"),
+                qualifier = LanguageQualifier("native speaker")
+            ),
+            LanguageProficiency(
+                language = Language("German"),
+                qualifier = LanguageQualifier("B2")
+            )
+        ),
+        jobHistory = listOf(
+            Job(
+                employer = Employer("Example AG"),
+                title = JobTitle("Senior Software Engineer"),
+                start = yearMonth("2020-01"),
+                end = null
+            ),
+            Job(
+                employer = Employer("Example AG"),
+                title = JobTitle("Software Engineer"),
+                start = yearMonth("2017-11"),
+                end = yearMonth("2019-12")
+            )
         )
     ),
     skills = listOf(
@@ -144,50 +146,52 @@ internal val employee_jane_doe_json = """
     {
       "id": "9e1ff73e-0f66-4b86-8548-040d4016bfc9",
       "version": 1,
-      "firstName": "Jane",
-      "lastName": "Doe",
-      "title": "Senior Software Engineer",
-      "email": "jane.doe@example.com",
-      "telephone": "+49 123 456789",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ...",
-      "academicDegrees": [
-        {
-          "subject": "Computer Science",
-          "title": "Dr.",
-          "institution": "MIT"
-        }
-      ],
-      "certifications": [
-        "CPSA Advanced Level",
-        "CPSA Foundation Level"
-      ],
-      "publications": [
-        "https://github.com/jane_doe11",
-        "Lorem ipsum dolor (Lorem Magazine, 2021)"
-      ],
-      "languages": [
-        {
-          "language": "English",
-          "qualifier": "native speaker"
-        },
-        {
-          "language": "German",
-          "qualifier": "B2"
-        }
-      ],
-      "jobHistory": [
-        {
-          "employer": "Example AG",
-          "title": "Senior Software Engineer",
-          "start": "2020-01"
-        },
-        {
-          "employer": "Example AG",
-          "title": "Software Engineer",
-          "start": "2017-11",
-          "end": "2019-12"
-        }
-      ],
+      "data": {
+        "firstName": "Jane",
+        "lastName": "Doe",
+        "title": "Senior Software Engineer",
+        "email": "jane.doe@example.com",
+        "telephone": "+49 123 456789",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ...",
+        "academicDegrees": [
+          {
+            "subject": "Computer Science",
+            "title": "Dr.",
+            "institution": "MIT"
+          }
+        ],
+        "certifications": [
+          "CPSA Advanced Level",
+          "CPSA Foundation Level"
+        ],
+        "publications": [
+          "https://github.com/jane_doe11",
+          "Lorem ipsum dolor (Lorem Magazine, 2021)"
+        ],
+        "languages": [
+          {
+            "language": "English",
+            "qualifier": "native speaker"
+          },
+          {
+            "language": "German",
+            "qualifier": "B2"
+          }
+        ],
+        "jobHistory": [
+          {
+            "employer": "Example AG",
+            "title": "Senior Software Engineer",
+            "start": "2020-01"
+          },
+          {
+            "employer": "Example AG",
+            "title": "Software Engineer",
+            "start": "2017-11",
+            "end": "2019-12"
+          }
+        ]
+      },
       "skills": [
         {
           "skill": {
@@ -385,24 +389,26 @@ internal val employee_suggestion_jane_doe = employee_jane_doe.toSuggestion()
 internal val employee_john_doe = EmployeeEntity(
     id = employeeId("0370f159-2d3b-4e40-9438-10ff34dd62c5"),
     version = 1,
-    firstName = FirstName("John"),
-    lastName = LastName("Doe"),
-    title = JobTitle("Hardware Engineer"),
-    email = EmailAddress("john.doe@example.com"),
-    telephone = TelephoneNumber("+49 123 987654"),
-    description = EmployeeDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit ..."),
-    languages = listOf(
-        LanguageProficiency(
-            language = Language("English"),
-            qualifier = LanguageQualifier("native speaker")
-        )
-    ),
-    jobHistory = listOf(
-        Job(
-            employer = Employer("Example AG"),
-            title = JobTitle("Consultant"),
-            start = yearMonth("2009-03"),
-            end = null
+    data = Employee(
+        firstName = FirstName("John"),
+        lastName = LastName("Doe"),
+        title = JobTitle("Hardware Engineer"),
+        email = EmailAddress("john.doe@example.com"),
+        telephone = TelephoneNumber("+49 123 987654"),
+        description = EmployeeDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit ..."),
+        languages = listOf(
+            LanguageProficiency(
+                language = Language("English"),
+                qualifier = LanguageQualifier("native speaker")
+            )
+        ),
+        jobHistory = listOf(
+            Job(
+                employer = Employer("Example AG"),
+                title = JobTitle("Consultant"),
+                start = yearMonth("2009-03"),
+                end = null
+            )
         )
     ),
     skills = listOf(skill_knowledge_java),
@@ -413,28 +419,30 @@ internal val employee_john_doe_json = """
     {
       "id": "0370f159-2d3b-4e40-9438-10ff34dd62c5",
       "version": 1,
-      "firstName": "John",
-      "lastName": "Doe",
-      "title": "Hardware Engineer",
-      "email": "john.doe@example.com",
-      "telephone": "+49 123 987654",
-      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ...",
-      "academicDegrees": [],
-      "certifications": [],
-      "publications": [],
-      "languages": [
-        {
-          "language": "English",
-          "qualifier": "native speaker"
-        }
-      ],
-      "jobHistory": [
-        {
-          "employer": "Example AG",
-          "title": "Consultant",
-          "start": "2009-03"
-        }
-      ],
+      "data": {
+        "firstName": "John",
+        "lastName": "Doe",
+        "title": "Hardware Engineer",
+        "email": "john.doe@example.com",
+        "telephone": "+49 123 987654",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ...",
+        "academicDegrees": [],
+        "certifications": [],
+        "publications": [],
+        "languages": [
+          {
+            "language": "English",
+            "qualifier": "native speaker"
+          }
+        ],
+        "jobHistory": [
+          {
+            "employer": "Example AG",
+            "title": "Consultant",
+            "start": "2009-03"
+          }
+        ]
+      },
       "skills": [
         {
           "skill": {
@@ -560,27 +568,31 @@ internal val employee_suggestion_john_doe = employee_john_doe.toSuggestion()
 internal val employee_john_smith = EmployeeEntity(
     id = employeeId("53b5f462-0c39-4e2a-83bf-aa407cf309be"),
     version = 1,
-    firstName = FirstName("John"),
-    lastName = LastName("Smith"),
-    title = JobTitle("Junior Software Engineer"),
-    email = EmailAddress("john.smith@example.com"),
-    telephone = TelephoneNumber("+49 123 948675"),
+    data = Employee(
+        firstName = FirstName("John"),
+        lastName = LastName("Smith"),
+        title = JobTitle("Junior Software Engineer"),
+        email = EmailAddress("john.smith@example.com"),
+        telephone = TelephoneNumber("+49 123 948675")
+    ),
     lastUpdate = instant("2021-03-24T12:34:56.789Z")
 )
 internal val employee_john_smith_json = """
     {
       "id": "53b5f462-0c39-4e2a-83bf-aa407cf309be",
       "version": 1,
-      "firstName": "John",
-      "lastName": "Smith",
-      "title": "Junior Software Engineer",
-      "email": "john.smith@example.com",
-      "telephone": "+49 123 948675",
-      "academicDegrees": [],
-      "certifications": [],
-      "publications": [],
-      "languages": [],
-      "jobHistory": [],
+      "data": {
+        "firstName": "John",
+        "lastName": "Smith",
+        "title": "Junior Software Engineer",
+        "email": "john.smith@example.com",
+        "telephone": "+49 123 948675",
+        "academicDegrees": [],
+        "certifications": [],
+        "publications": [],
+        "languages": [],
+        "jobHistory": []
+      },
       "skills": [],
       "projects": [],
       "lastUpdate": "2021-03-24T12:34:56.789Z"
@@ -643,19 +655,21 @@ fun projectAssignmentId() = ProjectAssignmentId(uuid())
 fun externalProjectId() = ProjectId(uuid())
 fun externalSkillId() = SkillId(uuid())
 
+private fun EmployeeEntity.toChangeData() = data.toChangeData()
+
 private fun EmployeeEntity.toCreationData() =
     EmployeeCreationData(
-        firstName = firstName,
-        lastName = lastName,
-        title = title,
-        email = email,
-        telephone = telephone
+        firstName = data.firstName,
+        lastName = data.lastName,
+        title = data.title,
+        email = data.email,
+        telephone = data.telephone
     )
 
 internal fun EmployeeEntity.toSuggestion() =
     Suggestion(
         id = id,
-        label = compositeName()
+        label = data.compositeName()
     )
 
 internal fun employee(
@@ -670,11 +684,13 @@ internal fun employee(
 ) = EmployeeEntity(
     id = employeeId(id),
     version = version,
-    firstName = FirstName(firstName),
-    lastName = LastName(lastName),
-    title = JobTitle(title),
-    email = EmailAddress(email),
-    telephone = TelephoneNumber(telephone),
+    data = Employee(
+        firstName = FirstName(firstName),
+        lastName = LastName(lastName),
+        title = JobTitle(title),
+        email = EmailAddress(email),
+        telephone = TelephoneNumber(telephone)
+    ),
     lastUpdate = instant(lastUpdate)
 )
 
@@ -687,10 +703,12 @@ internal fun EmployeeEntity.asFreshlyCreatedInstance() =
     EmployeeEntity(
         id = id,
         version = 1,
-        firstName = firstName,
-        lastName = lastName,
-        title = title,
-        email = email,
-        telephone = telephone,
+        data = Employee(
+            firstName = data.firstName,
+            lastName = data.lastName,
+            title = data.title,
+            email = data.email,
+            telephone = data.telephone
+        ),
         lastUpdate = lastUpdate
     )

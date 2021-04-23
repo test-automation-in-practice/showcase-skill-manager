@@ -3,9 +3,10 @@ package skillmanagement.domain.employees.usecases.create
 import org.springframework.util.IdGenerator
 import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.stereotypes.BusinessFunction
-import skillmanagement.domain.employees.model.EmployeeEntity
+import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.EmployeeAddedEvent
 import skillmanagement.domain.employees.model.EmployeeCreationData
+import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeId
 import java.time.Clock
 
@@ -28,11 +29,13 @@ class CreateEmployeeFunction internal constructor(
         EmployeeEntity(
             id = EmployeeId(idGenerator.generateId()),
             version = 1,
-            firstName = firstName,
-            lastName = lastName,
-            title = title,
-            email = email,
-            telephone = telephone,
+            data = Employee(
+                firstName = firstName,
+                lastName = lastName,
+                title = title,
+                email = email,
+                telephone = telephone
+            ),
             lastUpdate = clock.instant()
         )
 

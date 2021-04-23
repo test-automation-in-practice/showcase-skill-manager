@@ -13,7 +13,7 @@ import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.employees.model.ProjectDeletedEvent
 import skillmanagement.domain.employees.usecases.read.EmployeesWhoWorkedOnProject
 import skillmanagement.domain.employees.usecases.read.GetEmployeeIdsFunction
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeEntityByIdFunction
 
 private const val CONTEXT = "ProjectAssignmentDeletingEventHandler"
 private const val PROJECT_DELETED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.ProjectDeletedEvent"
@@ -21,7 +21,7 @@ private const val PROJECT_DELETED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.ProjectDeleted
 @EventHandler
 internal class ProjectAssignmentDeletingEventHandler(
     private val getEmployeeIds: GetEmployeeIdsFunction,
-    private val updateEmployeeById: UpdateEmployeeByIdFunction
+    private val updateEmployeeEntityById: UpdateEmployeeEntityByIdFunction
 ) {
 
     private val log = logger {}
@@ -36,7 +36,7 @@ internal class ProjectAssignmentDeletingEventHandler(
         getEmployeeIds(EmployeesWhoWorkedOnProject(projectId, Pagination(size = PageSize.MAX)))
             .onEach { log.info { "Removing projects assignments of project [$projectId] from employee [${it}]" } }
             .forEach { employeeId ->
-                updateEmployeeById(employeeId) { employee ->
+                updateEmployeeEntityById(employeeId) { employee ->
                     employee.removeProjectAssignment { it.project.id == projectId }
                 }
             }

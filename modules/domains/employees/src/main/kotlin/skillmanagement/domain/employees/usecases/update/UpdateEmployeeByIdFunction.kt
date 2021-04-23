@@ -5,6 +5,7 @@ import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.failure
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.common.success
+import skillmanagement.domain.employees.model.Employee
 import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.EmployeeUpdatedEvent
@@ -14,6 +15,16 @@ import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure.Em
 
 @BusinessFunction
 class UpdateEmployeeByIdFunction internal constructor(
+    private val updateEmployeeEntityById: UpdateEmployeeEntityByIdFunction
+) {
+
+    operator fun invoke(employeeId: EmployeeId, block: (Employee) -> Employee) =
+        updateEmployeeEntityById(employeeId) { it.update(block) }
+
+}
+
+@BusinessFunction
+internal class UpdateEmployeeEntityByIdFunction internal constructor(
     private val getEmployeeById: GetEmployeeByIdFunction,
     private val updateEmployeeInDataStore: UpdateEmployeeInDataStoreFunction,
     private val publishEvent: PublishEventFunction

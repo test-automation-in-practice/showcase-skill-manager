@@ -26,14 +26,14 @@ internal class EmployeeSearchIndex(
     override fun toSource(instance: EmployeeEntity) =
         with(instance) {
             mapOf(
-                "name" to compositeName(),
-                "firstName" to firstName.toString(),
-                "lastName" to lastName.toString(),
-                "title" to title.toString(),
-                "email" to email.toString(),
+                "name" to data.compositeName(),
+                "firstName" to data.firstName.toString(),
+                "lastName" to data.lastName.toString(),
+                "title" to data.title.toString(),
+                "email" to data.email.toString(),
                 "skills" to skills.map { it.skill.label },
                 "projects" to projects.map { it.project.label },
-                "_sort" to "$lastName, $firstName",
+                "_sort" to "${data.lastName}, ${data.firstName}",
                 "_skillIds" to skills.map { it.skill.id.toString() },
                 "_projectIds" to projects.map { it.project.id.toString() }
             )
