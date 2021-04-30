@@ -15,16 +15,6 @@ import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure.Em
 
 @BusinessFunction
 class UpdateEmployeeByIdFunction internal constructor(
-    private val updateEmployeeEntityById: UpdateEmployeeEntityByIdFunction
-) {
-
-    operator fun invoke(employeeId: EmployeeId, block: (Employee) -> Employee) =
-        updateEmployeeEntityById(employeeId) { it.update(block) }
-
-}
-
-@BusinessFunction
-internal class UpdateEmployeeEntityByIdFunction internal constructor(
     private val getEmployeeById: GetEmployeeByIdFunction,
     private val updateEmployeeInDataStore: UpdateEmployeeInDataStoreFunction,
     private val publishEvent: PublishEventFunction
@@ -33,23 +23,16 @@ internal class UpdateEmployeeEntityByIdFunction internal constructor(
     @RetryOnConcurrentEmployeeUpdate
     operator fun invoke(
         employeeId: EmployeeId,
-        block: (EmployeeEntity) -> EmployeeEntity
+        block: (Employee) -> Employee
     ): Either<EmployeeUpdateFailure, EmployeeEntity> {
         val currentEmployee = getEmployeeById(employeeId) ?: return failure(EmployeeNotFound)
-        val modifiedEmployee = block(currentEmployee)
+        val modifiedEmployee = currentEmployee.update(block)
 
         if (currentEmployee == modifiedEmployee) return failure(EmployeeNotChanged(currentEmployee))
-        assertNoInvalidModifications(currentEmployee, modifiedEmployee)
 
         val updatedEmployee = updateEmployeeInDataStore(modifiedEmployee)
         publishEvent(EmployeeUpdatedEvent(updatedEmployee))
         return success(updatedEmployee)
-    }
-
-    private fun assertNoInvalidModifications(currentEmployee: EmployeeEntity, modifiedEmployee: EmployeeEntity) {
-        check(currentEmployee.id == modifiedEmployee.id) { "ID must not be changed!" }
-        check(currentEmployee.version == modifiedEmployee.version) { "Version must not be changed!" }
-        check(currentEmployee.lastUpdate == modifiedEmployee.lastUpdate) { "Last update must not be changed!" }
     }
 
 }

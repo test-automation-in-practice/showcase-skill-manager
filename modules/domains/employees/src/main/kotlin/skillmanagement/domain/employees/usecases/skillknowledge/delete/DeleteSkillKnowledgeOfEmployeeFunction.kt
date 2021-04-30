@@ -3,15 +3,15 @@ package skillmanagement.domain.employees.usecases.skillknowledge.delete
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.SkillId
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeEntityByIdFunction
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
 
 @BusinessFunction
 class DeleteSkillKnowledgeOfEmployeeFunction internal constructor(
-    private val updateEmployeeEntityById: UpdateEmployeeEntityByIdFunction
+    private val updateEmployeeById: UpdateEmployeeByIdFunction
 ) {
 
     operator fun invoke(employeeId: EmployeeId, skillId: SkillId) =
-        updateEmployeeEntityById(employeeId) { employee ->
+        updateEmployeeById(employeeId) { employee ->
             employee.removeSkillKnowledge { it.skill.id == skillId }
         }
 

@@ -31,11 +31,11 @@ internal class EmployeeSearchIndex(
                 "lastName" to data.lastName.toString(),
                 "title" to data.title.toString(),
                 "email" to data.email.toString(),
-                "skills" to skills.map { it.skill.label },
-                "projects" to projects.map { it.project.label },
+                "skills" to data.skills.map { it.skill.label },
+                "projects" to data.projects.map { it.project.label },
                 "_sort" to "${data.lastName}, ${data.firstName}",
-                "_skillIds" to skills.map { it.skill.id.toString() },
-                "_projectIds" to projects.map { it.project.id.toString() }
+                "_skillIds" to data.skills.map { it.skill.id.toString() },
+                "_projectIds" to data.projects.map { it.project.id.toString() }
             )
         }
 

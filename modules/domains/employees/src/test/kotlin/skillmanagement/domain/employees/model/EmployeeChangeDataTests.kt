@@ -67,14 +67,15 @@ internal class EmployeeChangeDataTests {
 
         @Test
         fun `merge function creates employee with overridden properties`() {
-            val employee1 = employee_john_smith.data // data for only required properties
-            val employee2 = employee_jane_doe.data // data for all properties
+            val e1 = employee_john_smith.data // data for only required properties
+            val e2 = employee_jane_doe.data // data for all properties
 
-            val changeData1 = employee1.toChangeData()
-            val changeData2 = employee2.toChangeData()
+            val cd1 = e1.toChangeData()
+            val cd2 = e2.toChangeData()
 
-            employee1.merge(changeData2) shouldBe employee2
-            employee2.merge(changeData1) shouldBe employee1
+            // skills and projects are not changed
+            e1.merge(cd2) shouldBe e2.copy(skills = e1.skills, projects = e1.projects)
+            e2.merge(cd1) shouldBe e1.copy(skills = e2.skills, projects = e2.projects)
         }
 
     }

@@ -130,15 +130,15 @@ internal val employee_jane_doe = EmployeeEntity(
                 start = yearMonth("2017-11"),
                 end = yearMonth("2019-12")
             )
+        ),
+        skills = listOf(
+            skill_knowledge_kotlin,
+            skill_knowledge_python
+        ),
+        projects = listOf(
+            project_assignment_neo,
+            project_assignment_morpheus
         )
-    ),
-    skills = listOf(
-        skill_knowledge_kotlin,
-        skill_knowledge_python
-    ),
-    projects = listOf(
-        project_assignment_neo,
-        project_assignment_morpheus
     ),
     lastUpdate = instant("2021-03-26T12:34:56.789Z")
 )
@@ -190,49 +190,49 @@ internal val employee_jane_doe_json = """
             "start": "2017-11",
             "end": "2019-12"
           }
+        ],
+        "skills": [
+          {
+            "skill": {
+              "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
+              "label": "Kotlin"
+            },
+            "level": 8,
+            "secret": false
+          },
+          {
+            "skill": {
+              "id": "6935e550-d041-418a-9070-e37431069232",
+              "label": "Python"
+            },
+            "level": 4,
+            "secret": true
+          }
+        ],
+        "projects": [
+          {
+            "id": "c35af600-4457-4a99-a40d-9570f339d284",
+            "project": {
+              "id": "f804d83f-466c-4eab-a58f-4b25ca1778f3",
+              "label": "Neo",
+              "description": "The PlayStation 4 Pro."
+            },
+            "contribution": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ...",
+            "startDate": "2018-01-01",
+            "endDate": "2020-01-31"
+          },
+          {
+            "id": "bb125fd7-29bc-4661-bf4f-25d7f239801e",
+            "project": {
+              "id": "d5370813-a4cb-42d5-9d28-ce624c718538",
+              "label": "Morpheus",
+              "description": "The PlayStation VR Headset."
+            },
+            "contribution": "Ut enim ad minim veniam ...",
+            "startDate": "2019-02-01"
+          }
         ]
       },
-      "skills": [
-        {
-          "skill": {
-            "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
-            "label": "Kotlin"
-          },
-          "level": 8,
-          "secret": false
-        },
-        {
-          "skill": {
-            "id": "6935e550-d041-418a-9070-e37431069232",
-            "label": "Python"
-          },
-          "level": 4,
-          "secret": true
-        }
-      ],
-      "projects": [
-        {
-          "id": "c35af600-4457-4a99-a40d-9570f339d284",
-          "project": {
-            "id": "f804d83f-466c-4eab-a58f-4b25ca1778f3",
-            "label": "Neo",
-            "description": "The PlayStation 4 Pro."
-          },
-          "contribution": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ...",
-          "startDate": "2018-01-01",
-          "endDate": "2020-01-31"
-        },
-        {
-          "id": "bb125fd7-29bc-4661-bf4f-25d7f239801e",
-          "project": {
-            "id": "d5370813-a4cb-42d5-9d28-ce624c718538",
-            "label": "Morpheus",
-            "description": "The PlayStation VR Headset."
-          },
-          "contribution": "Ut enim ad minim veniam ...",
-          "startDate": "2019-02-01"
-        }
-      ],
       "lastUpdate": "2021-03-26T12:34:56.789Z"
     }
     """.trimIndent()
@@ -409,10 +409,10 @@ internal val employee_john_doe = EmployeeEntity(
                 start = yearMonth("2009-03"),
                 end = null
             )
-        )
+        ),
+        skills = listOf(skill_knowledge_java),
+        projects = listOf(project_assignment_orbis)
     ),
-    skills = listOf(skill_knowledge_java),
-    projects = listOf(project_assignment_orbis),
     lastUpdate = instant("2021-03-25T12:34:56.789Z")
 )
 internal val employee_john_doe_json = """
@@ -441,31 +441,31 @@ internal val employee_john_doe_json = """
             "title": "Consultant",
             "start": "2009-03"
           }
+        ],
+        "skills": [
+          {
+            "skill": {
+              "id": "f8948935-dab6-4c33-80d0-9f66ae546a7c",
+              "label": "Java"
+            },
+            "level": 7,
+            "secret": false
+          }
+        ],
+        "projects": [
+          {
+            "id": "b825f016-aa79-4eb8-a896-ae3627efdab7",
+            "project": {
+              "id": "dce233f1-7c20-4250-817e-6676485ddb6e",
+              "label": "Orbis",
+              "description": "The PlayStation 4."
+            },
+            "contribution": "... sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            "startDate": "2009-03-16",
+            "endDate": "2010-10-31"
+          }
         ]
       },
-      "skills": [
-        {
-          "skill": {
-            "id": "f8948935-dab6-4c33-80d0-9f66ae546a7c",
-            "label": "Java"
-          },
-          "level": 7,
-          "secret": false
-        }
-      ],
-      "projects": [
-        {
-          "id": "b825f016-aa79-4eb8-a896-ae3627efdab7",
-          "project": {
-            "id": "dce233f1-7c20-4250-817e-6676485ddb6e",
-            "label": "Orbis",
-            "description": "The PlayStation 4."
-          },
-          "contribution": "... sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-          "startDate": "2009-03-16",
-          "endDate": "2010-10-31"
-        }
-      ],
       "lastUpdate": "2021-03-25T12:34:56.789Z"
     }
     """.trimIndent()
@@ -591,10 +591,10 @@ internal val employee_john_smith_json = """
         "certifications": [],
         "publications": [],
         "languages": [],
-        "jobHistory": []
+        "jobHistory": [],
+        "skills": [],
+        "projects": []
       },
-      "skills": [],
-      "projects": [],
       "lastUpdate": "2021-03-24T12:34:56.789Z"
     }
     """.trimIndent()

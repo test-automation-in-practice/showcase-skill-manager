@@ -7,17 +7,17 @@ import skillmanagement.domain.employees.model.ProjectAssignment
 import skillmanagement.domain.employees.model.ProjectAssignmentId
 import skillmanagement.domain.employees.model.ProjectContribution
 import skillmanagement.domain.employees.model.ProjectData
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeEntityByIdFunction
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
 import java.time.LocalDate
 
 @BusinessFunction
 class CreateProjectAssignmentForEmployeeFunction internal constructor(
-    private val updateEmployeeEntityById: UpdateEmployeeEntityByIdFunction,
+    private val updateEmployeeById: UpdateEmployeeByIdFunction,
     private val idGenerator: IdGenerator
 ) {
 
     operator fun invoke(employeeId: EmployeeId, data: ProjectAssignmentCreationData) =
-        updateEmployeeEntityById(employeeId) { employee ->
+        updateEmployeeById(employeeId) { employee ->
             employee.addOrUpdateProjectAssignment(projectAssignment(data))
         }
 
