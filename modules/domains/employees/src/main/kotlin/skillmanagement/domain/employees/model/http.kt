@@ -58,8 +58,8 @@ internal fun EmployeeEntity.toRepresentation() =
         publications = data.publications,
         languages = data.languages,
         jobHistory = data.jobHistory,
-        skills = skills.map(SkillKnowledge::toRepresentation),
-        projects = projects.map(ProjectAssignment::toRepresentation)
+        skills = data.skills.map(SkillKnowledge::toRepresentation),
+        projects = data.projects.map(ProjectAssignment::toRepresentation)
     )
 
 internal fun SkillKnowledge.toRepresentation() =
@@ -92,8 +92,8 @@ internal fun EmployeeEntity.toResource() =
         publications = data.publications,
         languages = data.languages,
         jobHistory = data.jobHistory,
-        skills = skills.map { knowledge -> knowledge.toResource(id) },
-        projects = projects.map { assignment -> assignment.toResource(id) }
+        skills = data.skills.map { knowledge -> knowledge.toResource(id) },
+        projects = data.projects.map { assignment -> assignment.toResource(id) }
     ).apply {
         add(linkToEmployee(id).withSelfRel())
         add(linkToEmployee(id).withRel("delete"))

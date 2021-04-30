@@ -13,7 +13,7 @@ import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.employees.model.ProjectUpdatedEvent
 import skillmanagement.domain.employees.usecases.read.EmployeesWhoWorkedOnProject
 import skillmanagement.domain.employees.usecases.read.GetEmployeeIdsFunction
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeEntityByIdFunction
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
 
 private const val CONTEXT = "ProjectAssignmentUpdatingEventHandler"
 private const val PROJECT_UPDATED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.ProjectUpdatedEvent"
@@ -21,7 +21,7 @@ private const val PROJECT_UPDATED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.ProjectUpdated
 @EventHandler
 internal class ProjectAssignmentUpdatingEventHandler(
     private val getEmployeeIds: GetEmployeeIdsFunction,
-    private val updateEmployeeEntityById: UpdateEmployeeEntityByIdFunction
+    private val updateEmployeeById: UpdateEmployeeByIdFunction
 ) {
 
     private val log = logger {}
@@ -36,7 +36,7 @@ internal class ProjectAssignmentUpdatingEventHandler(
         getEmployeeIds(EmployeesWhoWorkedOnProject(project.id, Pagination(size = PageSize.MAX)))
             .onEach { log.info { "Updating project assignments for project [${project.id}] of employee [${it}]" } }
             .forEach { employeeId ->
-                updateEmployeeEntityById(employeeId) { employee ->
+                updateEmployeeById(employeeId) { employee ->
                     employee.updateProjectAssignment(project.id) { assignment ->
                         assignment.copy(project = project)
                     }

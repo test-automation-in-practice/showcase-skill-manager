@@ -15,33 +15,9 @@ data class EmployeeEntity(
     override val id: EmployeeId,
     override val version: Int,
     val data: Employee,
-    val skills: List<SkillKnowledge> = emptyList(),
-    val projects: List<ProjectAssignment> = emptyList(),
     override val lastUpdate: Instant
 ) : Entity<EmployeeId> {
-
     fun update(block: (Employee) -> Employee) = copy(data = block(data))
-
-    fun addOrUpdateProjectAssignment(assignment: ProjectAssignment): EmployeeEntity =
-        removeProjectAssignment { it.id == assignment.id }
-            .copy(projects = projects + assignment)
-
-    fun addOrUpdateSkillKnowledge(knowledge: SkillKnowledge): EmployeeEntity =
-        removeSkillKnowledge { it.skill.id == knowledge.skill.id }
-            .copy(skills = skills + knowledge)
-
-    fun removeProjectAssignment(shouldRemove: (ProjectAssignment) -> Boolean): EmployeeEntity =
-        copy(projects = projects.filter { !shouldRemove(it) })
-
-    fun removeSkillKnowledge(shouldRemove: (SkillKnowledge) -> Boolean): EmployeeEntity =
-        copy(skills = skills.filter { !shouldRemove(it) })
-
-    fun updateProjectAssignment(projectId: ProjectId, block: (ProjectAssignment) -> ProjectAssignment): EmployeeEntity =
-        copy(projects = projects.map { if (it.project.id == projectId) block(it) else it })
-
-    fun updateSkillKnowledge(skillId: SkillId, block: (SkillKnowledge) -> SkillKnowledge): EmployeeEntity =
-        copy(skills = skills.map { if (it.skill.id == skillId) block(it) else it })
-
 }
 
 data class Employee(
@@ -56,8 +32,32 @@ data class Employee(
     val publications: List<Publication> = emptyList(),
     val languages: List<LanguageProficiency> = emptyList(),
     val jobHistory: List<Job> = emptyList(),
+    val skills: List<SkillKnowledge> = emptyList(),
+    val projects: List<ProjectAssignment> = emptyList()
 ) {
+
     fun compositeName() = "$firstName $lastName"
+
+    fun addOrUpdateProjectAssignment(assignment: ProjectAssignment): Employee =
+        removeProjectAssignment { it.id == assignment.id }
+            .copy(projects = projects + assignment)
+
+    fun addOrUpdateSkillKnowledge(knowledge: SkillKnowledge): Employee =
+        removeSkillKnowledge { it.skill.id == knowledge.skill.id }
+            .copy(skills = skills + knowledge)
+
+    fun removeProjectAssignment(shouldRemove: (ProjectAssignment) -> Boolean): Employee =
+        copy(projects = projects.filter { !shouldRemove(it) })
+
+    fun removeSkillKnowledge(shouldRemove: (SkillKnowledge) -> Boolean): Employee =
+        copy(skills = skills.filter { !shouldRemove(it) })
+
+    fun updateProjectAssignment(projectId: ProjectId, block: (ProjectAssignment) -> ProjectAssignment): Employee =
+        copy(projects = projects.map { if (it.project.id == projectId) block(it) else it })
+
+    fun updateSkillKnowledge(skillId: SkillId, block: (SkillKnowledge) -> SkillKnowledge): Employee =
+        copy(skills = skills.map { if (it.skill.id == skillId) block(it) else it })
+
 }
 
 class EmployeeId(value: UUID) : IdType(value)

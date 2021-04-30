@@ -10,11 +10,11 @@ import skillmanagement.domain.employees.usecases.projectassignments.update.Updat
 import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateFailure.ProjectAssignmentNotChanged
 import skillmanagement.domain.employees.usecases.projectassignments.update.UpdateFailure.ProjectAssignmentNotFound
 import skillmanagement.domain.employees.usecases.update.EmployeeUpdateFailure
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeEntityByIdFunction
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
 
 @BusinessFunction
 class UpdateProjectAssignmentByIdFunction internal constructor(
-    private val updateEmployeeEntityById: UpdateEmployeeEntityByIdFunction
+    private val updateEmployeeById: UpdateEmployeeByIdFunction
 ) {
 
     // TODO: extract update function to Employee
@@ -25,7 +25,7 @@ class UpdateProjectAssignmentByIdFunction internal constructor(
         block: (ProjectAssignment) -> ProjectAssignment
     ): Either<UpdateFailure, EmployeeEntity> {
         var assignmentExists = false
-        val updateResult = updateEmployeeEntityById(employeeId) { employee ->
+        val updateResult = updateEmployeeById(employeeId) { employee ->
             val updatedProjects = employee.projects
                 .map { projectAssignment ->
                     if (projectAssignment.id == projectAssignmentId) {

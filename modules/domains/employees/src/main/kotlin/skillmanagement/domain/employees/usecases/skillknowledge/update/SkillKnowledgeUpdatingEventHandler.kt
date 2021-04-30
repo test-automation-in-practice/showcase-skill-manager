@@ -13,7 +13,7 @@ import skillmanagement.common.stereotypes.EventHandler
 import skillmanagement.domain.employees.model.SkillUpdatedEvent
 import skillmanagement.domain.employees.usecases.read.EmployeesWithSkill
 import skillmanagement.domain.employees.usecases.read.GetEmployeeIdsFunction
-import skillmanagement.domain.employees.usecases.update.UpdateEmployeeEntityByIdFunction
+import skillmanagement.domain.employees.usecases.update.UpdateEmployeeByIdFunction
 
 private const val CONTEXT = "SkillKnowledgeUpdatingEventHandler"
 private const val SKILL_UPDATED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.SkillUpdatedEvent"
@@ -21,7 +21,7 @@ private const val SKILL_UPDATED_QUEUE = "$QUEUE_PREFIX.$CONTEXT.SkillUpdatedEven
 @EventHandler
 internal class SkillKnowledgeUpdatingEventHandler(
     private val getEmployeeIds: GetEmployeeIdsFunction,
-    private val updateEmployeeEntityById: UpdateEmployeeEntityByIdFunction
+    private val updateEmployeeById: UpdateEmployeeByIdFunction
 ) {
 
     private val log = logger {}
@@ -36,7 +36,7 @@ internal class SkillKnowledgeUpdatingEventHandler(
         getEmployeeIds(EmployeesWithSkill(skill.id, Pagination(size = PageSize.MAX)))
             .onEach { log.info { "Updating knowledge of skill [${skill.id}] of employee [${it}]" } }
             .forEach { employeeId ->
-                updateEmployeeEntityById(employeeId) { employee ->
+                updateEmployeeById(employeeId) { employee ->
                     employee.updateSkillKnowledge(skill.id) { knowledge -> knowledge.copy(skill = skill) }
                 }
             }
