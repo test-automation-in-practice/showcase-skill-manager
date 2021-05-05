@@ -11,14 +11,21 @@ internal class InsertProjectIntoDataStoreFunction(
     private val objectMapper: ObjectMapper
 ) {
 
-    private val statement = "INSERT INTO projects (id, version, data) VALUES (:id, :version, :data)"
+    private val statement = """
+        INSERT INTO projects (id, version, data, created_utc, last_update_utc)
+        VALUES (:id, :version, :data, :created, :lastUpdate)
+        """
 
     operator fun invoke(project: ProjectEntity) {
-        val parameters = mapOf(
-            "id" to project.id.toString(),
-            "version" to project.version,
-            "data" to objectMapper.writeValueAsString(project)
-        )
+        val parameters = with(project) {
+            mapOf(
+                "id" to "$id",
+                "version" to version,
+                "data" to objectMapper.writeValueAsString(data),
+                "created" to "$created",
+                "lastUpdate" to "$lastUpdate"
+            )
+        }
         jdbcTemplate.update(statement, parameters)
     }
 

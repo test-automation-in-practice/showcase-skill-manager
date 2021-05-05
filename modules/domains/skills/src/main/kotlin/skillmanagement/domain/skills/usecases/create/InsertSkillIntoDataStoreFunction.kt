@@ -11,14 +11,21 @@ internal class InsertSkillIntoDataStoreFunction(
     private val objectMapper: ObjectMapper
 ) {
 
-    private val statement = "INSERT INTO skills (id, version, data) VALUES (:id, :version, :data)"
+    private val statement = """
+        INSERT INTO skills (id, version, data, created_utc, last_update_utc)
+        VALUES (:id, :version, :data, :created, :lastUpdate)
+        """
 
     operator fun invoke(skill: SkillEntity) {
-        val parameters = mapOf(
-            "id" to skill.id.toString(),
-            "version" to skill.version,
-            "data" to objectMapper.writeValueAsString(skill)
-        )
+        val parameters = with(skill) {
+            mapOf(
+                "id" to "$id",
+                "version" to version,
+                "data" to objectMapper.writeValueAsString(data),
+                "created" to "$created",
+                "lastUpdate" to "$lastUpdate"
+            )
+        }
         jdbcTemplate.update(statement, parameters)
     }
 

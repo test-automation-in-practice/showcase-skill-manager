@@ -15,8 +15,11 @@ internal class UpdateSkillInDataStoreFunction(
 
     private val statement = """
         UPDATE skills
-        SET version = :version, data = :data
-        WHERE id = :id AND version = :expectedVersion
+        SET version = :version,
+            data = :data,
+            last_update_utc = :lastUpdate
+        WHERE id = :id
+          AND version = :expectedVersion
         """
 
     /**
@@ -35,12 +38,15 @@ internal class UpdateSkillInDataStoreFunction(
     )
 
     private fun doUpdateSkill(skill: SkillEntity, expectedVersion: Int): SkillEntity {
-        val parameters = mapOf(
-            "id" to skill.id.toString(),
-            "version" to skill.version,
-            "data" to objectMapper.writeValueAsString(skill),
-            "expectedVersion" to expectedVersion
-        )
+        val parameters = with(skill) {
+            mapOf(
+                "id" to "$id",
+                "version" to version,
+                "data" to objectMapper.writeValueAsString(data),
+                "lastUpdate" to "$lastUpdate",
+                "expectedVersion" to expectedVersion
+            )
+        }
         if (jdbcTemplate.update(statement, parameters) == 0) throw ConcurrentSkillUpdateException()
         return skill
     }

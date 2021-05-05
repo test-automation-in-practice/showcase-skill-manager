@@ -12,16 +12,20 @@ internal class InsertEmployeeIntoDataStoreFunction(
 ) {
 
     private val statement = """
-        INSERT INTO employees (id, version, data)
-        VALUES (:id, :version, :data)
+        INSERT INTO employees (id, version, data, created_utc, last_update_utc)
+        VALUES (:id, :version, :data, :created, :lastUpdate)
         """
 
     operator fun invoke(employee: EmployeeEntity) {
-        val parameters = mapOf(
-            "id" to employee.id.toString(),
-            "version" to employee.version,
-            "data" to objectMapper.writeValueAsString(employee)
-        )
+        val parameters = with(employee) {
+            mapOf(
+                "id" to "$id",
+                "version" to version,
+                "data" to objectMapper.writeValueAsString(data),
+                "created" to "$created",
+                "lastUpdate" to "$lastUpdate"
+            )
+        }
         jdbcTemplate.update(statement, parameters)
     }
 

@@ -15,8 +15,11 @@ internal class UpdateProjectInDataStoreFunction(
 
     private val statement = """
         UPDATE projects
-        SET version = :version, data = :data
-        WHERE id = :id AND version = :expectedVersion
+        SET version = :version,
+            data = :data,
+            last_update_utc = :lastUpdate
+        WHERE id = :id
+          AND version = :expectedVersion
         """
 
     /**
@@ -35,12 +38,15 @@ internal class UpdateProjectInDataStoreFunction(
     )
 
     private fun doUpdateProject(project: ProjectEntity, expectedVersion: Int): ProjectEntity {
-        val parameters = mapOf(
-            "id" to project.id.toString(),
-            "version" to project.version,
-            "data" to objectMapper.writeValueAsString(project),
-            "expectedVersion" to expectedVersion
-        )
+        val parameters = with(project) {
+            mapOf(
+                "id" to "$id",
+                "version" to version,
+                "data" to objectMapper.writeValueAsString(data),
+                "lastUpdate" to "$lastUpdate",
+                "expectedVersion" to expectedVersion
+            )
+        }
         if (jdbcTemplate.update(statement, parameters) == 0) throw ConcurrentProjectUpdateException()
         return project
     }

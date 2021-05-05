@@ -11,6 +11,7 @@ import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.model.SkillId
 import skillmanagement.domain.skills.model.skillId
 import java.sql.ResultSet
+import java.time.Instant
 
 @TechnicalFunction
 internal class GetSkillsFromDataStoreFunction(
@@ -20,9 +21,9 @@ internal class GetSkillsFromDataStoreFunction(
 
     private val rowMapper = SkillRowMapper(objectMapper)
 
-    private val singleIdQuery = "SELECT id, data FROM skills WHERE id = :id"
-    private val multipleIdsQuery = "SELECT id, data FROM skills WHERE id IN (:ids)"
-    private val allQuery = "SELECT id, data FROM skills"
+    private val singleIdQuery = "SELECT * FROM skills WHERE id = :id"
+    private val multipleIdsQuery = "SELECT * FROM skills WHERE id IN (:ids)"
+    private val allQuery = "SELECT * FROM skills"
 
     operator fun invoke(id: SkillId): SkillEntity? =
         jdbcTemplate.query(singleIdQuery, mapOf("id" to "$id"), rowMapper).firstOrNull()
@@ -45,19 +46,30 @@ internal class SkillRowMapper(private val objectMapper: ObjectMapper) : RowMappe
 
     private val log = logger {}
 
-    override fun mapRow(rs: ResultSet, rowNum: Int): SkillEntity? = tryToDeserialize(rs.data, rs.id)
-
-    private fun tryToDeserialize(data: String, id: SkillId): SkillEntity? = try {
-        objectMapper.readValue<SkillEntity>(data)
-    } catch (e: JsonProcessingException) {
-        log.error(e) { "Could not read data of skill [$id]: ${e.message}" }
-        log.debug { "Corrupted data: $data" }
-        null
-    }
+    override fun mapRow(rs: ResultSet, rowNum: Int): SkillEntity? =
+        try {
+            SkillEntity(
+                id = rs.id,
+                version = rs.version,
+                data = objectMapper.readValue(rs.data),
+                created = rs.created,
+                lastUpdate = rs.lastUpdate
+            )
+        } catch (e: JsonProcessingException) {
+            log.error(e) { "Could not read data of skill [${rs.id}]: ${e.message}" }
+            log.debug { "Corrupted data: ${rs.data}" }
+            null
+        }
 
     private val ResultSet.id: SkillId
         get() = skillId(getString("id"))
+    private val ResultSet.version: Int
+        get() = getInt("version")
     private val ResultSet.data: String
         get() = getString("data")
+    private val ResultSet.created: Instant
+        get() = Instant.parse(getString("created_utc"))
+    private val ResultSet.lastUpdate: Instant
+        get() = Instant.parse(getString("last_update_utc"))
 
 }
