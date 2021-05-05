@@ -16,6 +16,7 @@ internal val skill_kotlin = SkillEntity(
         description = SkillDescription("The coolest programming language."),
         tags = sortedSetOf(Tag("language"), Tag("cool"))
     ),
+    created = instant("2020-07-14T12:34:56.789Z"),
     lastUpdate = instant("2020-07-14T12:34:56.789Z")
 )
 internal val skill_kotlin_json = """
@@ -27,6 +28,7 @@ internal val skill_kotlin_json = """
         "description": "The coolest programming language.",
         "tags": [ "cool", "language" ]
       },
+      "created": "2020-07-14T12:34:56.789Z",
       "lastUpdate": "2020-07-14T12:34:56.789Z"
     }
     """.trimIndent()
@@ -73,6 +75,7 @@ internal val skill_java = SkillEntity(
         description = null,
         tags = sortedSetOf(Tag("language"))
     ),
+    created = instant("2020-07-14T12:34:56.789Z"),
     lastUpdate = instant("2020-07-14T12:34:56.789Z")
 )
 internal val skill_java_json = """
@@ -83,6 +86,7 @@ internal val skill_java_json = """
         "label": "Java",
         "tags": [ "language" ]
       },
+      "created": "2020-07-14T12:34:56.789Z",
       "lastUpdate": "2020-07-14T12:34:56.789Z"
     }
     """.trimIndent()
@@ -126,6 +130,7 @@ internal val skill_python = SkillEntity(
         description = null,
         tags = emptySortedSet()
     ),
+    created = instant("2020-07-14T12:34:56.789Z"),
     lastUpdate = instant("2020-07-14T12:34:56.789Z")
 )
 internal val skill_python_json = """
@@ -136,6 +141,7 @@ internal val skill_python_json = """
         "label": "Python",
         "tags": []
       },
+      "created": "2020-07-14T12:34:56.789Z",
       "lastUpdate": "2020-07-14T12:34:56.789Z"
     }
     """.trimIndent()
@@ -189,7 +195,8 @@ internal fun skill(
     label: String = "skill",
     description: String? = null,
     tags: Collection<String> = emptyList(),
-    lastUpdate: String = "2020-08-13T12:34:56.789Z"
+    created: String = "2020-08-13T12:34:56.789Z",
+    lastUpdate: String = created
 ) = SkillEntity(
     id = skillId(id),
     version = version,
@@ -198,6 +205,7 @@ internal fun skill(
         description = description?.let(::SkillDescription),
         tags = tags.map(::Tag).toSortedSet()
     ),
+    created = instant(created),
     lastUpdate = instant(lastUpdate)
 )
 
@@ -215,5 +223,6 @@ internal fun SkillEntity.asFreshlyCreatedInstance() =
             description = data.description,
             tags = data.tags
         ),
-        lastUpdate = lastUpdate
+        created = created,
+        lastUpdate = created
     )

@@ -25,8 +25,9 @@ class CreateSkillFunction internal constructor(
         return skill
     }
 
-    private fun SkillCreationData.toSkill() =
-        SkillEntity(
+    private fun SkillCreationData.toSkill(): SkillEntity {
+        val now = clock.instant()
+        return SkillEntity(
             id = SkillId(idGenerator.generateId()),
             version = 1,
             data = Skill(
@@ -34,7 +35,9 @@ class CreateSkillFunction internal constructor(
                 description = description,
                 tags = tags
             ),
-            lastUpdate = clock.instant()
+            created = now,
+            lastUpdate = now
         )
+    }
 
 }

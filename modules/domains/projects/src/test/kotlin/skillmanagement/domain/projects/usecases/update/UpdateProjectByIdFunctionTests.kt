@@ -5,11 +5,8 @@ import io.mockk.called
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import org.junit.jupiter.api.DynamicTest
-import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -20,8 +17,8 @@ import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.common.failure
 import skillmanagement.common.success
 import skillmanagement.domain.projects.model.Project
-import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectDescription
+import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectLabel
 import skillmanagement.domain.projects.model.ProjectUpdatedEvent
 import skillmanagement.domain.projects.model.projectId
@@ -43,6 +40,7 @@ internal class UpdateProjectByIdFunctionTests {
             label = ProjectLabel("Old Label"),
             description = ProjectDescription("Old Description")
         ),
+        created = instant("2021-03-24T12:34:56.789Z"),
         lastUpdate = instant("2021-03-24T12:34:56.789Z")
     )
 

@@ -1,4 +1,4 @@
-package skillmanagement.runtime.gluecode
+package skillmanagement.runtime.bridges
 
 import io.kotlintest.shouldBe
 import io.mockk.every
@@ -32,11 +32,12 @@ internal class GetSkillByIdAdapterFunctionBridgeTests {
                 description = SkillDescription("The coolest programming language."),
                 tags = sortedSetOf(Tag("language"), Tag("cool"))
             ),
+            created = instant("2020-07-14T12:34:56.789Z"),
             lastUpdate = instant("2020-07-14T12:34:56.789Z")
         )
         every { getSkillById(skill.id) } returns skill
 
-        getSkillByIdAdapter(skillId(skill.id)) shouldBe skill_kotlin
+        getSkillByIdAdapter(skillId(skill.id)) shouldBe skill_data_kotlin
     }
 
     @Test

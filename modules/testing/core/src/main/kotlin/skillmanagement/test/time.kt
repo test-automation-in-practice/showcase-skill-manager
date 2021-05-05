@@ -19,7 +19,7 @@ fun yearMonth(value: String): YearMonth = YearMonth.parse(value)
  * it is invoked.
  */
 fun fixedClock(timestamps: String): Clock =
-    Clock.fixed(Instant.parse(timestamps), ZoneId.of("UTC"))
+    Clock.fixed(instant(timestamps), ZoneId.of("UTC"))
 
 /**
  * Creates a [Clock] which will return a pre defined sequence of timestamps.

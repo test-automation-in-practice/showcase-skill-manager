@@ -17,6 +17,7 @@ data class SkillEntity(
     override val id: SkillId,
     override val version: Int,
     override val data: Skill,
+    override val created: Instant,
     override val lastUpdate: Instant
 ) : Entity<SkillId> {
     fun update(block: (Skill) -> Skill) = copy(data = block(data))

@@ -9,17 +9,17 @@ import org.junit.jupiter.api.Test
 import org.springframework.util.IdGenerator
 import skillmanagement.common.events.PublishEventFunction
 import skillmanagement.domain.projects.model.Project
-import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectAddedEvent
 import skillmanagement.domain.projects.model.ProjectCreationData
 import skillmanagement.domain.projects.model.ProjectDescription
+import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectLabel
 import skillmanagement.domain.projects.model.projectId
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.UnitTest
 import skillmanagement.test.fixedClock
+import skillmanagement.test.instant
 import skillmanagement.test.uuid
-import java.time.Instant
 
 @UnitTest
 @ResetMocksAfterEachTest
@@ -49,7 +49,8 @@ internal class CreateProjectFunctionTests {
                 label = ProjectLabel("Project #1"),
                 description = ProjectDescription("Description #1")
             ),
-            lastUpdate = Instant.parse("2021-03-24T12:34:56.789Z")
+            created = instant("2021-03-24T12:34:56.789Z"),
+            lastUpdate = instant("2021-03-24T12:34:56.789Z")
         )
         actual shouldBe expected
 

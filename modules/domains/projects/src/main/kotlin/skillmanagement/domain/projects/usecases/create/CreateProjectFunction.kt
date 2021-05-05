@@ -25,15 +25,18 @@ class CreateProjectFunction internal constructor(
         return project
     }
 
-    private fun ProjectCreationData.toProject() =
-        ProjectEntity(
+    private fun ProjectCreationData.toProject(): ProjectEntity {
+        val now = clock.instant()
+        return ProjectEntity(
             id = ProjectId(idGenerator.generateId()),
             version = 1,
             data = Project(
                 label = label,
                 description = description
             ),
-            lastUpdate = clock.instant()
+            created = now,
+            lastUpdate = now
         )
+    }
 
 }

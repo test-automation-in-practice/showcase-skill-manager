@@ -25,8 +25,9 @@ class CreateEmployeeFunction internal constructor(
         return employee
     }
 
-    private fun EmployeeCreationData.toEmployee() =
-        EmployeeEntity(
+    private fun EmployeeCreationData.toEmployee(): EmployeeEntity {
+        val now = clock.instant()
+        return EmployeeEntity(
             id = EmployeeId(idGenerator.generateId()),
             version = 1,
             data = Employee(
@@ -36,7 +37,9 @@ class CreateEmployeeFunction internal constructor(
                 email = email,
                 telephone = telephone
             ),
-            lastUpdate = clock.instant()
+            created = now,
+            lastUpdate = now
         )
+    }
 
 }
