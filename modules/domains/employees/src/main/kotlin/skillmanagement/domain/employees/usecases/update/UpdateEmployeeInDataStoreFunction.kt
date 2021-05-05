@@ -15,8 +15,11 @@ internal class UpdateEmployeeInDataStoreFunction(
 
     private val statement = """
         UPDATE employees
-        SET version = :version, data = :data
-        WHERE id = :id AND version = :expectedVersion
+        SET version = :version,
+            data = :data,
+            last_update_utc = :lastUpdate
+        WHERE id = :id
+          AND version = :expectedVersion
         """
 
     /**
@@ -35,12 +38,15 @@ internal class UpdateEmployeeInDataStoreFunction(
     )
 
     private fun doUpdateEmployee(employee: EmployeeEntity, expectedVersion: Int): EmployeeEntity {
-        val parameters = mapOf(
-            "id" to employee.id.toString(),
-            "version" to employee.version,
-            "data" to objectMapper.writeValueAsString(employee),
-            "expectedVersion" to expectedVersion
-        )
+        val parameters = with(employee) {
+            mapOf(
+                "id" to "$id",
+                "version" to version,
+                "data" to objectMapper.writeValueAsString(data),
+                "lastUpdate" to "$lastUpdate",
+                "expectedVersion" to expectedVersion
+            )
+        }
         if (jdbcTemplate.update(statement, parameters) == 0) throw ConcurrentEmployeeUpdateException()
         return employee
     }

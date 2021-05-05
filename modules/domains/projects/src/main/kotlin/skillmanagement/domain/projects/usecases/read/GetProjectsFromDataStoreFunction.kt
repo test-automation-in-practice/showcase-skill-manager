@@ -11,6 +11,7 @@ import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectId
 import skillmanagement.domain.projects.model.projectId
 import java.sql.ResultSet
+import java.time.Instant
 
 @TechnicalFunction
 internal class GetProjectsFromDataStoreFunction(
@@ -20,9 +21,9 @@ internal class GetProjectsFromDataStoreFunction(
 
     private val rowMapper = ProjectRowMapper(objectMapper)
 
-    private val singleIdQuery = "SELECT id, data FROM projects WHERE id = :id"
-    private val multipleIdsQuery = "SELECT id, data FROM projects WHERE id IN (:ids)"
-    private val allQuery = "SELECT id, data FROM projects"
+    private val singleIdQuery = "SELECT * FROM projects WHERE id = :id"
+    private val multipleIdsQuery = "SELECT * FROM projects WHERE id IN (:ids)"
+    private val allQuery = "SELECT * FROM projects"
 
     operator fun invoke(id: ProjectId): ProjectEntity? =
         jdbcTemplate.query(singleIdQuery, mapOf("id" to "$id"), rowMapper).firstOrNull()
@@ -46,19 +47,30 @@ internal class ProjectRowMapper(private val objectMapper: ObjectMapper) : RowMap
 
     private val log = logger {}
 
-    override fun mapRow(rs: ResultSet, rowNum: Int): ProjectEntity? = tryToDeserialize(rs.data, rs.id)
-
-    private fun tryToDeserialize(data: String, id: ProjectId): ProjectEntity? = try {
-        objectMapper.readValue<ProjectEntity>(data)
-    } catch (e: JsonProcessingException) {
-        log.error(e) { "Could not read data of project [$id]: ${e.message}" }
-        log.debug { "Corrupted data: $data" }
-        null
-    }
+    override fun mapRow(rs: ResultSet, rowNum: Int): ProjectEntity? =
+        try {
+            ProjectEntity(
+                id = rs.id,
+                version = rs.version,
+                data = objectMapper.readValue(rs.data),
+                created = rs.created,
+                lastUpdate = rs.lastUpdate
+            )
+        } catch (e: JsonProcessingException) {
+            log.error(e) { "Could not read data of project [${rs.id}]: ${e.message}" }
+            log.debug { "Corrupted data: ${rs.data}" }
+            null
+        }
 
     private val ResultSet.id: ProjectId
         get() = projectId(getString("id"))
+    private val ResultSet.version: Int
+        get() = getInt("version")
     private val ResultSet.data: String
         get() = getString("data")
+    private val ResultSet.created: Instant
+        get() = Instant.parse(getString("created_utc"))
+    private val ResultSet.lastUpdate: Instant
+        get() = Instant.parse(getString("last_update_utc"))
 
 }

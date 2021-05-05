@@ -3,7 +3,7 @@ package skillmanagement.domain.employees.usecases.read
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import mu.KotlinLogging
+import mu.KotlinLogging.logger
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import skillmanagement.common.stereotypes.TechnicalFunction
@@ -11,6 +11,7 @@ import skillmanagement.domain.employees.model.EmployeeEntity
 import skillmanagement.domain.employees.model.EmployeeId
 import skillmanagement.domain.employees.model.employeeId
 import java.sql.ResultSet
+import java.time.Instant
 
 @TechnicalFunction
 internal class GetEmployeesFromDataStoreFunction(
@@ -18,9 +19,9 @@ internal class GetEmployeesFromDataStoreFunction(
     objectMapper: ObjectMapper
 ) {
 
-    private val singleIdQuery = "SELECT id, data FROM employees WHERE id = :id"
-    private val multipleIdsQuery = "SELECT id, data FROM employees WHERE id IN (:ids)"
-    private val allQuery = "SELECT id, data FROM employees"
+    private val singleIdQuery = "SELECT * FROM employees WHERE id = :id"
+    private val multipleIdsQuery = "SELECT * FROM employees WHERE id IN (:ids)"
+    private val allQuery = "SELECT * FROM employees"
 
     private val rowMapper = EmployeeRowMapper(objectMapper)
 
@@ -44,21 +45,32 @@ internal class GetEmployeesFromDataStoreFunction(
 
 internal class EmployeeRowMapper(private val objectMapper: ObjectMapper) : RowMapper<EmployeeEntity?> {
 
-    private val log = KotlinLogging.logger {}
+    private val log = logger {}
 
-    override fun mapRow(rs: ResultSet, rowNum: Int): EmployeeEntity? = tryToDeserialize(rs.data, rs.id)
-
-    private fun tryToDeserialize(data: String, id: EmployeeId): EmployeeEntity? = try {
-        objectMapper.readValue<EmployeeEntity>(data)
-    } catch (e: JsonProcessingException) {
-        log.error(e) { "Could not read data of employee [$id]: ${e.message}" }
-        log.debug { "Corrupted data: $data" }
-        null
-    }
+    override fun mapRow(rs: ResultSet, rowNum: Int): EmployeeEntity? =
+        try {
+            EmployeeEntity(
+                id = rs.id,
+                version = rs.version,
+                data = objectMapper.readValue(rs.data),
+                created = rs.created,
+                lastUpdate = rs.lastUpdate
+            )
+        } catch (e: JsonProcessingException) {
+            log.error(e) { "Could not read data of employee [${rs.id}]: ${e.message}" }
+            log.debug { "Corrupted data: ${rs.data}" }
+            null
+        }
 
     private val ResultSet.id: EmployeeId
         get() = employeeId(getString("id"))
+    private val ResultSet.version: Int
+        get() = getInt("version")
     private val ResultSet.data: String
         get() = getString("data")
+    private val ResultSet.created: Instant
+        get() = Instant.parse(getString("created_utc"))
+    private val ResultSet.lastUpdate: Instant
+        get() = Instant.parse(getString("last_update_utc"))
 
 }
