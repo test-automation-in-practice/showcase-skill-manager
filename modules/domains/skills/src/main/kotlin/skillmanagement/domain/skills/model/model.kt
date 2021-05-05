@@ -16,7 +16,7 @@ private val TAG_PATTERN = Regex("""[a-z]+([-_][a-z]+)*""")
 data class SkillEntity(
     override val id: SkillId,
     override val version: Int,
-    val data: Skill,
+    override val data: Skill,
     override val lastUpdate: Instant
 ) : Entity<SkillId> {
     fun update(block: (Skill) -> Skill) = copy(data = block(data))
