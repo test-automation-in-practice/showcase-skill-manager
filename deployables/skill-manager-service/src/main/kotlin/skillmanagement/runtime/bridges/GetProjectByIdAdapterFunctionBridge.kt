@@ -1,4 +1,4 @@
-package skillmanagement.runtime.gluecode
+package skillmanagement.runtime.bridges
 
 import skillmanagement.common.stereotypes.BusinessFunction
 import skillmanagement.domain.employees.model.ProjectData

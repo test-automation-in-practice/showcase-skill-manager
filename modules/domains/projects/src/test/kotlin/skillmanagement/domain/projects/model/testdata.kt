@@ -14,6 +14,7 @@ internal val project_neo = ProjectEntity(
         label = ProjectLabel("Neo"),
         description = ProjectDescription("The PlayStation 4 Pro.")
     ),
+    created = instant("2021-03-11T12:34:56.789Z"),
     lastUpdate = instant("2021-03-11T12:34:56.789Z")
 )
 internal val project_neo_json = """
@@ -24,6 +25,7 @@ internal val project_neo_json = """
         "label": "Neo",
         "description": "The PlayStation 4 Pro."
       },
+      "created": "2021-03-11T12:34:56.789Z",
       "lastUpdate": "2021-03-11T12:34:56.789Z"
     }
     """.trimIndent()
@@ -66,6 +68,7 @@ internal val project_orbis = ProjectEntity(
         label = ProjectLabel("Orbis"),
         description = ProjectDescription("The PlayStation 4.")
     ),
+    created = instant("2020-07-14T12:34:56.789Z"),
     lastUpdate = instant("2020-07-14T12:34:56.789Z")
 )
 internal val project_orbis_json = """
@@ -76,6 +79,7 @@ internal val project_orbis_json = """
         "label": "Orbis",
         "description": "The PlayStation 4."
       },
+      "created": "2020-07-14T12:34:56.789Z",
       "lastUpdate": "2020-07-14T12:34:56.789Z"
     }
     """.trimIndent()
@@ -118,6 +122,7 @@ internal val project_morpheus = ProjectEntity(
         label = ProjectLabel("Morpheus"),
         description = ProjectDescription("The PlayStation VR Headset.")
     ),
+    created = instant("2020-07-14T12:34:56.789Z"),
     lastUpdate = instant("2020-07-14T12:34:56.789Z")
 )
 internal val project_morpheus_json = """
@@ -128,6 +133,7 @@ internal val project_morpheus_json = """
         "label": "Morpheus",
         "description": "The PlayStation VR Headset."
       },
+      "created": "2020-07-14T12:34:56.789Z",
       "lastUpdate": "2020-07-14T12:34:56.789Z"
     }
     """.trimIndent()
@@ -180,7 +186,8 @@ internal fun project(
     version: Int = 1,
     label: String = "project",
     description: String = "description",
-    lastUpdate: String = "2020-08-13T12:34:56.789Z"
+    created: String = "2020-08-13T12:34:56.789Z",
+    lastUpdate: String = created
 ) = ProjectEntity(
     id = projectId(id),
     version = version,
@@ -188,6 +195,7 @@ internal fun project(
         label = ProjectLabel(label),
         description = ProjectDescription(description)
     ),
+    created = instant(created),
     lastUpdate = instant(lastUpdate)
 )
 
@@ -204,5 +212,6 @@ internal fun ProjectEntity.asFreshlyCreatedInstance() =
             label = data.label,
             description = data.description
         ),
-        lastUpdate = lastUpdate
+        created = created,
+        lastUpdate = created
     )

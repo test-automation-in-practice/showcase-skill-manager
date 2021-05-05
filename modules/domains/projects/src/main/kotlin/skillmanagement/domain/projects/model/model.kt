@@ -11,6 +11,7 @@ data class ProjectEntity(
     override val id: ProjectId,
     override val version: Int,
     override val data: Project,
+    override val created: Instant,
     override val lastUpdate: Instant
 ) : Entity<ProjectId> {
     fun update(block: (Project) -> Project) = copy(data = block(data))

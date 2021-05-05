@@ -58,6 +58,7 @@ internal class CreateEmployeeFunctionTests {
                 email = EmailAddress("jane.doe@example.com"),
                 telephone = TelephoneNumber("+49 123 456789")
             ),
+            created = instant("2021-03-24T12:34:56.789Z"),
             lastUpdate = instant("2021-03-24T12:34:56.789Z")
         )
         actual shouldBe expected

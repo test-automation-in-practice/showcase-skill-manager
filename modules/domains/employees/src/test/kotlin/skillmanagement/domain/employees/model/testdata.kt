@@ -140,6 +140,7 @@ internal val employee_jane_doe = EmployeeEntity(
             project_assignment_morpheus
         )
     ),
+    created = instant("2021-03-26T12:34:56.789Z"),
     lastUpdate = instant("2021-03-26T12:34:56.789Z")
 )
 internal val employee_jane_doe_json = """
@@ -233,6 +234,7 @@ internal val employee_jane_doe_json = """
           }
         ]
       },
+      "created": "2021-03-26T12:34:56.789Z",
       "lastUpdate": "2021-03-26T12:34:56.789Z"
     }
     """.trimIndent()
@@ -413,6 +415,7 @@ internal val employee_john_doe = EmployeeEntity(
         skills = listOf(skill_knowledge_java),
         projects = listOf(project_assignment_orbis)
     ),
+    created = instant("2021-03-25T12:34:56.789Z"),
     lastUpdate = instant("2021-03-25T12:34:56.789Z")
 )
 internal val employee_john_doe_json = """
@@ -466,6 +469,7 @@ internal val employee_john_doe_json = """
           }
         ]
       },
+      "created": "2021-03-25T12:34:56.789Z",
       "lastUpdate": "2021-03-25T12:34:56.789Z"
     }
     """.trimIndent()
@@ -575,6 +579,7 @@ internal val employee_john_smith = EmployeeEntity(
         email = EmailAddress("john.smith@example.com"),
         telephone = TelephoneNumber("+49 123 948675")
     ),
+    created = instant("2021-03-24T12:34:56.789Z"),
     lastUpdate = instant("2021-03-24T12:34:56.789Z")
 )
 internal val employee_john_smith_json = """
@@ -595,6 +600,7 @@ internal val employee_john_smith_json = """
         "skills": [],
         "projects": []
       },
+      "created": "2021-03-24T12:34:56.789Z",
       "lastUpdate": "2021-03-24T12:34:56.789Z"
     }
     """.trimIndent()
@@ -680,7 +686,8 @@ internal fun employee(
     title: String = "Senior Software Engineer",
     email: String = "$firstName.$lastName@example.com",
     telephone: String = "+49 123 456789",
-    lastUpdate: String = "2021-03-26T12:34:56.789Z"
+    created: String = "2021-03-26T12:34:56.789Z",
+    lastUpdate: String = created
 ) = EmployeeEntity(
     id = employeeId(id),
     version = version,
@@ -691,6 +698,7 @@ internal fun employee(
         email = EmailAddress(email),
         telephone = TelephoneNumber(telephone)
     ),
+    created = instant(created),
     lastUpdate = instant(lastUpdate)
 )
 
@@ -710,5 +718,6 @@ internal fun EmployeeEntity.asFreshlyCreatedInstance() =
             email = data.email,
             telephone = data.telephone
         ),
-        lastUpdate = lastUpdate
+        created = created,
+        lastUpdate = created
     )

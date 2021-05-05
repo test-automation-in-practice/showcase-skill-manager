@@ -46,6 +46,7 @@ internal class UpdateEmployeeByIdFunctionTests {
             email = EmailAddress("john.smith@old-example.com"),
             telephone = TelephoneNumber("+49 123 948675")
         ),
+        created = instant("2020-07-16T12:34:56.789Z"),
         lastUpdate = instant("2020-07-16T12:34:56.789Z")
     )
 

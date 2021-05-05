@@ -19,8 +19,8 @@ import skillmanagement.domain.skills.model.skillId
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.UnitTest
 import skillmanagement.test.fixedClock
+import skillmanagement.test.instant
 import skillmanagement.test.uuid
-import java.time.Instant
 import java.util.Collections.emptySortedSet
 
 @UnitTest
@@ -51,7 +51,8 @@ internal class CreateSkillFunctionTests {
                 description = null,
                 tags = emptySortedSet()
             ),
-            lastUpdate = Instant.parse("2020-07-14T12:34:56.789Z")
+            created = instant("2020-07-14T12:34:56.789Z"),
+            lastUpdate = instant("2020-07-14T12:34:56.789Z")
         )
         actual shouldBe expected
 
@@ -81,7 +82,8 @@ internal class CreateSkillFunctionTests {
                 description = SkillDescription("description"),
                 tags = sortedSetOf(Tag("foo-bar"))
             ),
-            lastUpdate = Instant.parse("2020-07-14T12:34:56.789Z")
+            created = instant("2020-07-14T12:34:56.789Z"),
+            lastUpdate = instant("2020-07-14T12:34:56.789Z")
         )
         actual shouldBe expected
 

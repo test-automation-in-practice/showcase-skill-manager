@@ -42,6 +42,7 @@ internal class UpdateSkillByIdFunctionTests {
             description = SkillDescription("Old Description"),
             tags = sortedSetOf(Tag("old"))
         ),
+        created = instant("2020-07-16T12:34:56.789Z"),
         lastUpdate = instant("2020-07-16T12:34:56.789Z")
     )
 

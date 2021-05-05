@@ -1,4 +1,4 @@
-package skillmanagement.runtime.gluecode
+package skillmanagement.runtime.bridges
 
 import io.kotlintest.shouldBe
 import io.mockk.every
@@ -30,11 +30,12 @@ internal class GetProjectByIdAdapterFunctionBridgeTests {
                 label = ProjectLabel("Neo"),
                 description = ProjectDescription("The PlayStation 4 Pro.")
             ),
+            created = instant("2021-03-11T12:34:56.789Z"),
             lastUpdate = instant("2021-03-11T12:34:56.789Z")
         )
         every { getProjectById(project.id) } returns project
 
-        getProjectByIdAdapter(projectId(project.id)) shouldBe project_neo
+        getProjectByIdAdapter(projectId(project.id)) shouldBe project_data_neo
     }
 
     @Test
