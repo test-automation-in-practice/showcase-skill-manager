@@ -1,6 +1,8 @@
 graphql:
   servlet:
+    actuator-metrics: true
     mapping: /api/graphql
+    exception-handlers-enabled: false
 
 logging:
   level:
@@ -12,18 +14,14 @@ management:
     web:
       exposure:
         include: '*'
-
-metrics:
-  skills:
-    total:
-      update:
-        rate: "PT1M"
-        delay: "PT1M"
+  endpoint:
+    health:
+      show-details: when_authorized
 
 spring:
   datasource:
-    url: "jdbc:h2:mem:${random.uuid}"
-    username: sa
+    url: "jdbc:postgresql://localhost:5432/database"
+    username: user
     password: password
   elasticsearch:
     rest:

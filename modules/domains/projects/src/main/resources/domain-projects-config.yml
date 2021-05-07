@@ -1,0 +1,9 @@
+spring.config.import:
+  - classpath:domain-base-config.yml
+
+metrics:
+  projects:
+    total:
+      update:
+        rate: "PT1M"
+        delay: "PT10S"
