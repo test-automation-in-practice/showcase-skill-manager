@@ -1,58 +1,12 @@
-graphql:
-  servlet:
-    actuator-metrics: true
-    mapping: /api/graphql
-    exception-handlers-enabled: false
+spring.config.import:
+  - classpath:domain-employees-config.yml
+  - classpath:domain-projects-config.yml
+  - classpath:domain-skills-config.yml
 
-logging:
-  level:
-    root: INFO
-    skillmanagement: INFO
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-  endpoint:
-    health:
-      show-details: when_authorized
-
-metrics:
-  employees:
-    total:
-      update:
-        rate: "PT1M"
-        delay: "PT10S"
-  projects:
-    total:
-      update:
-        rate: "PT1M"
-        delay: "PT10S"
-  skills:
-    total:
-      update:
-        rate: "PT1M"
-        delay: "PT10S"
+---
 
 server:
   shutdown: graceful
-
-spring:
-  datasource:
-    url: "jdbc:postgresql://localhost:5432/database"
-    username: user
-    password: password
-  elasticsearch:
-    rest:
-      uris: "http://localhost:9200"
-  jackson:
-    default-property-inclusion: non_null
-  main:
-    allow-bean-definition-overriding: false
-  rabbitmq:
-    host: localhost
-    port: 5672
 
 custom:
   security:

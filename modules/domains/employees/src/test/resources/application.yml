@@ -1,0 +1,25 @@
+spring.config.import:
+  - classpath:domain-employees-config.yml
+
+---
+spring.config.activate.on-profile: test
+
+graphql:
+  servlet:
+    actuator-metrics: false
+
+metrics:
+  employees:
+    total:
+      update:
+        rate: "PT1M"
+        delay: "PT1M"
+
+server:
+  shutdown: immediate
+
+spring:
+  datasource:
+    url: "jdbc:h2:mem:${random.uuid}"
+    username: sa
+    password: password
