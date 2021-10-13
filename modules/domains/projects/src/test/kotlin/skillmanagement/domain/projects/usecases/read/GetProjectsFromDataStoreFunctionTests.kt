@@ -1,6 +1,9 @@
 package skillmanagement.domain.projects.usecases.read
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import info.novatec.testit.logrecorder.api.LogRecord
+import info.novatec.testit.logrecorder.assertion.LogRecordAssertion.Companion.assertThat
+import info.novatec.testit.logrecorder.logback.junit5.RecordLoggers
 import io.kotlintest.shouldBe
 import io.mockk.called
 import io.mockk.confirmVerified
@@ -16,8 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJson
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
-import org.testit.testutils.logrecorder.api.LogRecord
-import org.testit.testutils.logrecorder.junit5.RecordLoggers
 import skillmanagement.domain.projects.model.ProjectEntity
 import skillmanagement.domain.projects.model.ProjectId
 import skillmanagement.domain.projects.model.projectId
@@ -135,10 +136,12 @@ internal class GetProjectsFromDataStoreFunctionTests(
             corruptData(projectId)
             assertThat(getProjectsFromDataStore(projectId)).isNull()
 
-            val messages = log.messages
-            assertThat(messages).hasSize(2)
-            assertThat(messages[0]).startsWith("Could not read data of project [$projectId]: Instantiation of")
-            assertThat(messages[1]).startsWith("Corrupted data: {}")
+            assertThat(log) {
+                containsInOrder {
+                    error(startsWith("Could not read data of project [$projectId]: Instantiation of"))
+                    debug(startsWith("Corrupted data: {}"))
+                }
+            }
         }
 
         private fun corruptData(projectId: ProjectId) {

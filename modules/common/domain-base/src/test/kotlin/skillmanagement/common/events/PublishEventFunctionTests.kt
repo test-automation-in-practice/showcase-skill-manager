@@ -1,14 +1,14 @@
 package skillmanagement.common.events
 
+import info.novatec.testit.logrecorder.api.LogRecord
+import info.novatec.testit.logrecorder.assertion.LogRecordAssertion.Companion.assertThat
+import info.novatec.testit.logrecorder.logback.junit5.RecordLoggers
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.amqp.rabbit.core.RabbitTemplate
-import org.testit.testutils.logrecorder.api.LogRecord
-import org.testit.testutils.logrecorder.junit5.RecordLoggers
 import skillmanagement.test.ResetMocksAfterEachTest
 import skillmanagement.test.UnitTest
 
@@ -30,8 +30,13 @@ internal class PublishEventFunctionTests {
     @RecordLoggers(PublishEventFunction::class)
     fun `published events are logged`(log: LogRecord) {
         listOf(TestEventOne, TestEventTwo).forEach { publishEvent(it) }
-        assertThat(log.messages)
-            .containsExactly("Publishing $TestEventOne", "Publishing $TestEventTwo")
+
+        assertThat(log) {
+            containsInOrder {
+                any("Publishing $TestEventOne")
+                any("Publishing $TestEventTwo")
+            }
+        }
     }
 
     @Test

@@ -1,10 +1,10 @@
 package skillmanagement.domain.skills.tasks
 
+import info.novatec.testit.logrecorder.api.LogRecord
+import info.novatec.testit.logrecorder.logback.junit5.RecordLoggers
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
-import org.testit.testutils.logrecorder.api.LogRecord
-import org.testit.testutils.logrecorder.junit5.RecordLoggers
 import skillmanagement.common.searchindices.SearchIndexAdmin
 import skillmanagement.domain.skills.model.SkillEntity
 import skillmanagement.domain.skills.model.skill_java

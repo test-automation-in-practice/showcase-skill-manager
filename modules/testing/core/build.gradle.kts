@@ -7,7 +7,8 @@ dependencies {
     api("io.kotlintest:kotlintest-assertions") {
         exclude(group = "io.arrow-kt") // TODO
     }
-    api("info.novatec.testit:testutils-logrecorder-logback")
+    api("info.novatec.testit:logrecorder-assertions")
+    api("info.novatec.testit:logrecorder-logback")
     api("com.tngtech.archunit:archunit")
 
     implementation("org.springframework.boot:spring-boot-starter-test")

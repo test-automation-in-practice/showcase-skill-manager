@@ -1,11 +1,11 @@
 package skillmanagement.test.tasks
 
+import info.novatec.testit.logrecorder.api.LogRecord
+import info.novatec.testit.logrecorder.assertion.LogRecordAssertion.Companion.assertThat
 import io.mockk.confirmVerified
 import io.mockk.verify
 import io.mockk.verifyOrder
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import org.testit.testutils.logrecorder.api.LogRecord
 import skillmanagement.common.model.Entity
 import skillmanagement.common.searchindices.AbstractReconstructSearchIndexTask
 import skillmanagement.common.searchindices.SearchIndexAdmin
@@ -57,15 +57,17 @@ abstract class AbstractReconstructSearchIndexTaskTests<T : Entity<*>> {
 
         cut.run()
 
-        with(log.messages) {
-            assertThat(get(0)).isEqualTo("Reconstructing '$searchIndexAdmin':")
-            assertThat(get(1)).isEqualTo("Resetting '$searchIndexAdmin':")
-            assertThat(get(2)).containsSubsequence("Reset of '$searchIndexAdmin' finished. Took ", "ms.")
-            assertThat(get(3)).isEqualTo("Repopulating '$searchIndexAdmin':")
-            assertThat(get(4)).isEqualTo("Indexing [${expectedShortDescription(instance1)}]")
-            assertThat(get(5)).isEqualTo("Indexing [${expectedShortDescription(instance2)}]")
-            assertThat(get(6)).containsSubsequence("Repopulation of '$searchIndexAdmin' finished. Took ", "ms.")
-            assertThat(get(7)).containsSubsequence("Reconstruction of '$searchIndexAdmin' finished. Took ", "ms.")
+        assertThat(log) {
+            containsInOrder {
+                info("Reconstructing '$searchIndexAdmin':")
+                debug("Resetting '$searchIndexAdmin':")
+                debug(containsInOrder("Reset of '$searchIndexAdmin' finished. Took ", "ms."))
+                debug("Repopulating '$searchIndexAdmin':")
+                debug("Indexing [${expectedShortDescription(instance1)}]")
+                debug("Indexing [${expectedShortDescription(instance2)}]")
+                debug(containsInOrder("Repopulation of '$searchIndexAdmin' finished. Took ", "ms."))
+                info(containsInOrder("Reconstruction of '$searchIndexAdmin' finished. Took ", "ms."))
+            }
         }
     }
 
