@@ -40,24 +40,25 @@ allprojects {
         imports {
             mavenBom(SpringBootPlugin.BOM_COORDINATES)
         }
+        dependencies {
+            // define versions of unmanaged dependencies
+            dependency("com.github.java-json-tools:json-patch:1.13")
+            dependency("com.graphql-java-kickstart:graphql-spring-boot-starter:11.0.0")
+            dependency("com.graphql-java-kickstart:graphql-spring-boot-starter-test:11.0.0")
+            dependency("com.sun.xml.bind:jaxb-osgi:2.3.4")
+            dependency("com.tngtech.archunit:archunit:0.16.0")
+            dependency("info.novatec.testit:testutils-logrecorder-logback:0.3.4")
+            dependency("io.arrow-kt:arrow-core:0.13.0")
+            dependency("io.github.microutils:kotlin-logging:2.0.4")
+            dependency("io.kotlintest:kotlintest-assertions:3.4.2")
+            dependency("io.mockk:mockk:1.10.5")
+            dependency("net.jqwik:jqwik:1.3.10")
+            dependency("org.testcontainers:testcontainers:1.15.1")
+        }
     }
 
     dependencies {
         constraints {
-            // define versions of unmanaged dependencies
-            implementation("com.github.java-json-tools:json-patch:1.13")
-            implementation("com.graphql-java-kickstart:graphql-spring-boot-starter:11.0.0")
-            implementation("com.graphql-java-kickstart:graphql-spring-boot-starter-test:11.0.0")
-            implementation("com.sun.xml.bind:jaxb-osgi:2.3.4")
-            implementation("com.tngtech.archunit:archunit:0.16.0")
-            implementation("info.novatec.testit:testutils-logrecorder-logback:0.3.4")
-            implementation("io.arrow-kt:arrow-core:0.13.0")
-            implementation("io.github.microutils:kotlin-logging:2.0.4")
-            implementation("io.kotlintest:kotlintest-assertions:3.4.2")
-            implementation("io.mockk:mockk:1.10.5")
-            implementation("net.jqwik:jqwik:1.3.10")
-            implementation("org.testcontainers:testcontainers:1.15.1")
-
             detekt("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.3")
         }
     }
