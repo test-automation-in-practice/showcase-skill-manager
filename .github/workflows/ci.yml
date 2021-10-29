@@ -45,3 +45,11 @@ jobs:
         with:
           name: detekt-reports
           path: "**/build/reports/detekt/*.html"
+
+      - name: Quodana Linter
+        uses: JetBrains/qodana-action@v3.2.1
+        with:
+          linter: qodana-jvm-community
+          fail-threshold: 10
+          additional-env-variables: |
+            IDEA_PROPERTIES='/data/project/idea.properties'
