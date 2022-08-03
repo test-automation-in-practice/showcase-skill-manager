@@ -1,9 +1,10 @@
 package skillmanagement.domain.employees.usecases.read
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import info.novatec.testit.logrecorder.api.LogRecord
-import info.novatec.testit.logrecorder.assertion.LogRecordAssertion.Companion.assertThat
-import info.novatec.testit.logrecorder.logback.junit5.RecordLoggers
+import io.github.logrecorder.api.LogRecord
+import io.github.logrecorder.assertion.LogRecordAssertion.Companion.assertThat
+import io.github.logrecorder.assertion.containsInOrder
+import io.github.logrecorder.logback.junit5.RecordLoggers
 import io.kotlintest.shouldBe
 import io.mockk.called
 import io.mockk.confirmVerified
@@ -88,7 +89,8 @@ internal class GetEmployeesFromDataStoreFunctionTests(
             actualEmployees shouldBe expectedEmployees
         }
 
-        private fun getMultipleEmployees(vararg ids: EmployeeId) = getEmployeesFromDataStore(ids.toList(), chunkSize = 2)
+        private fun getMultipleEmployees(vararg ids: EmployeeId) =
+            getEmployeesFromDataStore(ids.toList(), chunkSize = 2)
 
     }
 
@@ -136,11 +138,9 @@ internal class GetEmployeesFromDataStoreFunctionTests(
             corruptData(employeeId)
             assertThat(getEmployeesFromDataStore(employeeId)).isNull()
 
-            assertThat(log) {
-                containsInOrder {
-                    error(startsWith("Could not read data of employee [$employeeId]: Instantiation of"))
-                    debug(startsWith("Corrupted data: {}"))
-                }
+            assertThat(log) containsInOrder  {
+                error(startsWith("Could not read data of employee [$employeeId]: Instantiation of"))
+                debug(startsWith("Corrupted data: {}"))
             }
         }
 

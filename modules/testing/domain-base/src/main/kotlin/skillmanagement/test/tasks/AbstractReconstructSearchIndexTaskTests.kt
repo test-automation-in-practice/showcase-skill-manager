@@ -1,7 +1,8 @@
 package skillmanagement.test.tasks
 
-import info.novatec.testit.logrecorder.api.LogRecord
-import info.novatec.testit.logrecorder.assertion.LogRecordAssertion.Companion.assertThat
+import io.github.logrecorder.api.LogRecord
+import io.github.logrecorder.assertion.LogRecordAssertion.Companion.assertThat
+import io.github.logrecorder.assertion.containsInOrder
 import io.mockk.confirmVerified
 import io.mockk.verify
 import io.mockk.verifyOrder
@@ -57,17 +58,15 @@ abstract class AbstractReconstructSearchIndexTaskTests<T : Entity<*>> {
 
         cut.run()
 
-        assertThat(log) {
-            containsInOrder {
-                info("Reconstructing '$searchIndexAdmin':")
-                debug("Resetting '$searchIndexAdmin':")
-                debug(containsInOrder("Reset of '$searchIndexAdmin' finished. Took ", "ms."))
-                debug("Repopulating '$searchIndexAdmin':")
-                debug("Indexing [${expectedShortDescription(instance1)}]")
-                debug("Indexing [${expectedShortDescription(instance2)}]")
-                debug(containsInOrder("Repopulation of '$searchIndexAdmin' finished. Took ", "ms."))
-                info(containsInOrder("Reconstruction of '$searchIndexAdmin' finished. Took ", "ms."))
-            }
+        assertThat(log) containsInOrder {
+            info("Reconstructing '$searchIndexAdmin':")
+            debug("Resetting '$searchIndexAdmin':")
+            debug(containsInOrder("Reset of '$searchIndexAdmin' finished. Took ", "ms."))
+            debug("Repopulating '$searchIndexAdmin':")
+            debug("Indexing [${expectedShortDescription(instance1)}]")
+            debug("Indexing [${expectedShortDescription(instance2)}]")
+            debug(containsInOrder("Repopulation of '$searchIndexAdmin' finished. Took ", "ms."))
+            info(containsInOrder("Reconstruction of '$searchIndexAdmin' finished. Took ", "ms."))
         }
     }
 

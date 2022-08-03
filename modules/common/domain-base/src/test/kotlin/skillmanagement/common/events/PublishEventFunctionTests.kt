@@ -1,8 +1,9 @@
 package skillmanagement.common.events
 
-import info.novatec.testit.logrecorder.api.LogRecord
-import info.novatec.testit.logrecorder.assertion.LogRecordAssertion.Companion.assertThat
-import info.novatec.testit.logrecorder.logback.junit5.RecordLoggers
+import io.github.logrecorder.api.LogRecord
+import io.github.logrecorder.assertion.LogRecordAssertion.Companion.assertThat
+import io.github.logrecorder.assertion.containsInOrder
+import io.github.logrecorder.logback.junit5.RecordLoggers
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -31,11 +32,9 @@ internal class PublishEventFunctionTests {
     fun `published events are logged`(log: LogRecord) {
         listOf(TestEventOne, TestEventTwo).forEach { publishEvent(it) }
 
-        assertThat(log) {
-            containsInOrder {
-                any("Publishing $TestEventOne")
-                any("Publishing $TestEventTwo")
-            }
+        assertThat(log) containsInOrder  {
+            any("Publishing $TestEventOne")
+            any("Publishing $TestEventTwo")
         }
     }
 

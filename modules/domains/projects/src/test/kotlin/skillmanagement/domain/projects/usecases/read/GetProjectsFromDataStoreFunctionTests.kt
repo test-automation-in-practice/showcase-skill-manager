@@ -1,9 +1,10 @@
 package skillmanagement.domain.projects.usecases.read
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import info.novatec.testit.logrecorder.api.LogRecord
-import info.novatec.testit.logrecorder.assertion.LogRecordAssertion.Companion.assertThat
-import info.novatec.testit.logrecorder.logback.junit5.RecordLoggers
+import io.github.logrecorder.api.LogRecord
+import io.github.logrecorder.assertion.LogRecordAssertion.Companion.assertThat
+import io.github.logrecorder.assertion.containsInOrder
+import io.github.logrecorder.logback.junit5.RecordLoggers
 import io.kotlintest.shouldBe
 import io.mockk.called
 import io.mockk.confirmVerified
@@ -136,11 +137,9 @@ internal class GetProjectsFromDataStoreFunctionTests(
             corruptData(projectId)
             assertThat(getProjectsFromDataStore(projectId)).isNull()
 
-            assertThat(log) {
-                containsInOrder {
-                    error(startsWith("Could not read data of project [$projectId]: Instantiation of"))
-                    debug(startsWith("Corrupted data: {}"))
-                }
+            assertThat(log) containsInOrder {
+                error(startsWith("Could not read data of project [$projectId]: Instantiation of"))
+                debug(startsWith("Corrupted data: {}"))
             }
         }
 

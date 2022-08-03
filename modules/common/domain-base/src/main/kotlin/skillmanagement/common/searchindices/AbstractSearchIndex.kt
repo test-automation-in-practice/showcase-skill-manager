@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION") // TODO migrate from RestHighLevelClient to ElasticsearchClient
+
 package skillmanagement.common.searchindices
 
 import org.elasticsearch.action.DocWriteRequest.OpType.INDEX
@@ -13,8 +15,7 @@ import org.elasticsearch.client.RequestOptions.DEFAULT
 import org.elasticsearch.client.RestHighLevelClient
 import org.elasticsearch.client.indices.CreateIndexRequest
 import org.elasticsearch.client.indices.GetIndexRequest
-import org.elasticsearch.common.unit.TimeValue.timeValueMinutes
-import org.elasticsearch.common.xcontent.XContentType.JSON
+import org.elasticsearch.core.TimeValue.timeValueMinutes
 import org.elasticsearch.index.query.MatchAllQueryBuilder
 import org.elasticsearch.index.query.Operator.AND
 import org.elasticsearch.index.query.QueryBuilder
@@ -26,6 +27,7 @@ import org.elasticsearch.search.sort.FieldSortBuilder
 import org.elasticsearch.search.sort.ScoreSortBuilder
 import org.elasticsearch.search.sort.SortBuilder
 import org.elasticsearch.search.sort.SortOrder.DESC
+import org.elasticsearch.xcontent.XContentType.JSON
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.core.io.Resource
 import skillmanagement.common.model.Entity

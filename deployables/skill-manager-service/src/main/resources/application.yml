@@ -5,10 +5,24 @@ spring.config.import:
 
 ---
 
+security:
+  users:
+    basic-auth:
+      - username: "user"
+        password: "resu"
+        authorities:
+          - "SCOPE_API"
+          - "ROLE_USER"
+      - username: "admin"
+        password: "nimda"
+        authorities:
+          - "SCOPE_API"
+          - "ROLE_USER"
+          - "ROLE_ADMIN"
+      - username: "actuator"
+        password: "rotautca"
+        authorities:
+          - "SCOPE_ACTUATOR"
+
 server:
   shutdown: graceful
-
-custom:
-  security:
-    cors:
-      allowed-origins: "http://localhost:4200"

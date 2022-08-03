@@ -5,10 +5,10 @@ dependencies {
     api("io.mockk:mockk")
     api("org.assertj:assertj-core")
     api("io.kotlintest:kotlintest-assertions") {
-        exclude(group = "io.arrow-kt") // TODO
+        exclude(group = "io.arrow-kt")
     }
-    api("info.novatec.testit:logrecorder-assertions")
-    api("info.novatec.testit:logrecorder-logback")
+    api("io.github.logrecorder:logrecorder-assertions")
+    api("io.github.logrecorder:logrecorder-logback")
     api("com.tngtech.archunit:archunit")
 
     implementation("org.springframework.boot:spring-boot-starter-test")

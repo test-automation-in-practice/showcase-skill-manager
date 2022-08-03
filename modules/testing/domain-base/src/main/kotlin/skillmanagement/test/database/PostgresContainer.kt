@@ -6,7 +6,7 @@ import skillmanagement.test.docker.DockerContainerFactory
 
 const val POSTGRES_DOCKER_PORT_PROPERTY = "POSTGRES_PORT"
 
-class PostgresContainer : Container("postgres:9.6") {
+class PostgresContainer : Container("postgres:14.4") {
     override val port = 5432
     override val portProperty = POSTGRES_DOCKER_PORT_PROPERTY
 }

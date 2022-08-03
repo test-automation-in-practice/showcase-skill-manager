@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   postgres:
-    image: postgres:9.6
+    image: postgres:14.4
     container_name: postgres
     ports:
       - 5432:5432
@@ -10,7 +10,7 @@ services:
       - modules/testing/domain-base/src/main/resources/postgres.env
 
   elasticsearch:
-    image: elasticsearch:7.6.2
+    image: elasticsearch:7.17.5
     container_name: elasticsearch
     ports:
       - 9200:9200
@@ -28,7 +28,7 @@ services:
       - IPC_LOCK
 
   rabbitmq:
-    image: rabbitmq:3.8-management
+    image: rabbitmq:3.9-management
     container_name: rabbitmq
     ports:
       - 5672:5672
