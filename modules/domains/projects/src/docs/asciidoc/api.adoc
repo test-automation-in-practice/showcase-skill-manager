@@ -111,7 +111,7 @@ include::{snippets}/projects/suggest/empty/http-response.adoc[]
 
 [source]
 ----
-include::../../../../../common/domain-base/src/main/resources/graphql/base.graphqls[]
+include::../../../../../common/domain-base/src/main/resources/graphql/base/base.graphqls[]
 
 include::../../main/resources/graphql/projects.graphqls[]
 ----

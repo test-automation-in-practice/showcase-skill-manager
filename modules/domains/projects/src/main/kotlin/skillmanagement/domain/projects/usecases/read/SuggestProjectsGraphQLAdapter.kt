@@ -1,6 +1,7 @@
 package skillmanagement.domain.projects.usecases.read
 
-import graphql.kickstart.tools.GraphQLQueryResolver
+import org.springframework.graphql.data.method.annotation.Argument
+import org.springframework.graphql.data.method.annotation.QueryMapping
 import skillmanagement.common.model.Suggestion
 import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.SearchIndex
@@ -11,9 +12,10 @@ import skillmanagement.domain.projects.model.ProjectId
 @GraphQLAdapter
 internal class SuggestProjectsGraphQLAdapter(
     private val searchIndex: SearchIndex<ProjectEntity, ProjectId>
-) : GraphQLQueryResolver {
+) {
 
-    fun suggestProjects(input: String, max: MaxSuggestions?): List<Suggestion> =
-        searchIndex.suggest(input = input, max = max ?: MaxSuggestions.DEFAULT)
+    @QueryMapping
+    fun suggestProjects(@Argument input: String, @Argument max: MaxSuggestions): List<Suggestion> =
+        searchIndex.suggest(input = input, max = max)
 
 }

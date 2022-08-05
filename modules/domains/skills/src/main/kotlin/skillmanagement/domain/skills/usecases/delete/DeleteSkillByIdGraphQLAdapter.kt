@@ -1,14 +1,16 @@
 package skillmanagement.domain.skills.usecases.delete
 
-import graphql.kickstart.tools.GraphQLMutationResolver
+import org.springframework.graphql.data.method.annotation.Argument
+import org.springframework.graphql.data.method.annotation.MutationMapping
 import skillmanagement.common.stereotypes.GraphQLAdapter
-import skillmanagement.domain.skills.model.skillId
+import skillmanagement.domain.skills.model.SkillId
 
 @GraphQLAdapter
 internal class DeleteSkillByIdGraphQLAdapter(
-    private val deleteSkillById: DeleteSkillByIdFunction
-) : GraphQLMutationResolver {
+    private val delegate: DeleteSkillByIdFunction
+) {
 
-    fun deleteSkillById(id: String): Boolean = deleteSkillById(skillId(id))
+    @MutationMapping
+    fun deleteSkillById(@Argument id: SkillId): Boolean = delegate(id)
 
 }

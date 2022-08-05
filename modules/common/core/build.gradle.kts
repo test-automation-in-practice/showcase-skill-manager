@@ -11,5 +11,5 @@ dependencies {
     implementation("org.springframework:spring-tx")
     implementation("org.springframework:spring-web")
 
-    testImplementation(project(":modules:testing:core"))
+    testImplementation(project(":modules:testing:testing-core"))
 }

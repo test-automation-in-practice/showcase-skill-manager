@@ -4,6 +4,6 @@ dependencies {
 
     runtimeOnly("org.postgresql:postgresql")
 
-    testImplementation(project(":modules:testing:core"))
-    testImplementation(project(":modules:testing:domain-base"))
+    testImplementation(project(":modules:testing:testing-core"))
+    testImplementation(project(":modules:testing:testing-domain-base"))
 }

@@ -1,0 +1,16 @@
+mutation {
+    createEmployee(
+        firstName: "John",
+        lastName: "Smith",
+        title: "Junior Software Engineer",
+        email: "john.smith@example.com",
+        telephone:  "+49 123 948675"
+    ) {
+        id
+        firstName
+        lastName
+        title
+        email
+        telephone
+    }
+}

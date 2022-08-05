@@ -1,33 +1,39 @@
 package skillmanagement.domain.projects.usecases.read
 
+import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
-import io.mockk.mockk
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
+import org.springframework.graphql.test.tester.GraphQlTester
 import skillmanagement.domain.projects.model.project_neo
-import skillmanagement.domain.projects.model.project_representation_neo
-import skillmanagement.test.ResetMocksAfterEachTest
-import skillmanagement.test.UnitTest
+import skillmanagement.test.TechnologyIntegrationTest
+import skillmanagement.test.graphql.AbstractGraphQlTest
 
-@UnitTest
-@ResetMocksAfterEachTest
-internal class GetProjectByIdGraphQLAdapterTests {
-
-    private val getProjectById: GetProjectByIdFunction = mockk()
-    private val cut = GetProjectByIdGraphQLAdapter(getProjectById)
+@TechnologyIntegrationTest
+@MockkBean(GetProjectByIdFunction::class)
+@GraphQlTest(GetProjectByIdGraphQLAdapter::class)
+internal class GetProjectByIdGraphQLAdapterTests(
+    @Autowired override val graphQlTester: GraphQlTester,
+    @Autowired val getProjectById: GetProjectByIdFunction
+) : AbstractGraphQlTest() {
 
     @Test
     fun `translates and delegates retrieval to business function - found`() {
         every { getProjectById(project_neo.id) } returns project_neo
-        assertThat(tryToGetProject()).isEqualTo(project_representation_neo)
+        assertRequestResponse(
+            documentPath = "/examples/graphql/getProjectById/neo.graphql",
+            responsePath = "/examples/graphql/getProjectById/neo.json"
+        )
     }
 
     @Test
     fun `translates and delegates retrieval to business function - not found`() {
         every { getProjectById(project_neo.id) } returns null
-        assertThat(tryToGetProject()).isNull()
+        assertRequestResponse(
+            documentPath = "/examples/graphql/getProjectById/neo.graphql",
+            responsePath = "/examples/graphql/getProjectById/not-found.json"
+        )
     }
-
-    private fun tryToGetProject(id: String = "f804d83f-466c-4eab-a58f-4b25ca1778f3") = cut.getProjectById(id)
 
 }

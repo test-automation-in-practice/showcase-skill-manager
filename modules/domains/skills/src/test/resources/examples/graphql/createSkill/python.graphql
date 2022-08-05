@@ -1,0 +1,10 @@
+mutation {
+    createSkill(
+        label: "Python"
+    ) {
+        id
+        label
+        description
+        tags
+    }
+}

@@ -18,6 +18,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
 import skillmanagement.runtime.security.Authorities.SCOPE_ACTUATOR
 import skillmanagement.runtime.security.Authorities.SCOPE_API
+import skillmanagement.runtime.security.Authorities.SCOPE_GRAPHIQL
 
 @Configuration
 @EnableWebSecurity
@@ -54,6 +55,22 @@ class WebSecurityConfiguration {
             authorizeRequests {
                 authorize(EndpointRequest.to(InfoEndpoint::class.java), permitAll)
                 authorize(EndpointRequest.toAnyEndpoint(), hasAuthority(SCOPE_ACTUATOR))
+            }
+        }
+        return http.build()
+    }
+
+    @Bean
+    @Order(103)
+    fun graphiqlSecurityFilterChain(http: HttpSecurity): SecurityFilterChain {
+        http {
+            securityMatcher("/graphiql")
+
+            defaults()
+
+            httpBasic {}
+            authorizeRequests {
+                authorize("/graphiql", hasAuthority(SCOPE_GRAPHIQL))
             }
         }
         return http.build()

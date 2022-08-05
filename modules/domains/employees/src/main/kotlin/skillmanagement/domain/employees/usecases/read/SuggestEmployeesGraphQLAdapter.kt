@@ -1,6 +1,7 @@
 package skillmanagement.domain.employees.usecases.read
 
-import graphql.kickstart.tools.GraphQLQueryResolver
+import org.springframework.graphql.data.method.annotation.Argument
+import org.springframework.graphql.data.method.annotation.QueryMapping
 import skillmanagement.common.model.Suggestion
 import skillmanagement.common.searchindices.MaxSuggestions
 import skillmanagement.common.searchindices.SearchIndex
@@ -11,9 +12,10 @@ import skillmanagement.domain.employees.model.EmployeeId
 @GraphQLAdapter
 internal class SuggestEmployeesGraphQLAdapter(
     private val searchIndex: SearchIndex<EmployeeEntity, EmployeeId>
-) : GraphQLQueryResolver {
+) {
 
-    fun suggestEmployees(input: String, max: MaxSuggestions?): List<Suggestion> =
-        searchIndex.suggest(input = input, max = max ?: MaxSuggestions.DEFAULT)
+    @QueryMapping
+    fun suggestEmployees(@Argument input: String, @Argument max: MaxSuggestions): List<Suggestion> =
+        searchIndex.suggest(input = input, max = max)
 
 }

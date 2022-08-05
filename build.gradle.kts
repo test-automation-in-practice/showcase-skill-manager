@@ -40,8 +40,7 @@ allprojects {
         dependencies {
             // define versions of unmanaged dependencies
             dependency("com.github.java-json-tools:json-patch:1.13")
-            dependency("com.graphql-java-kickstart:graphql-spring-boot-starter:12.0.0")
-            dependency("com.graphql-java-kickstart:graphql-spring-boot-starter-test:12.0.0")
+            dependency("com.ninja-squad:springmockk:3.1.1")
             dependency("com.tngtech.archunit:archunit:0.23.1")
             dependency("io.github.logrecorder:logrecorder-assertions:2.2.0")
             dependency("io.github.logrecorder:logrecorder-logback:2.2.0")

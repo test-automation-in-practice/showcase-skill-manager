@@ -6,7 +6,7 @@ dependencies {
 
     runtimeOnly("org.postgresql:postgresql")
 
-    testImplementation(project(":modules:testing:domain-base"))
+    testImplementation(project(":modules:testing:testing-domain-base"))
     testImplementation("org.springframework.security:spring-security-test")
 }
 

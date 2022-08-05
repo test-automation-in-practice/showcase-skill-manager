@@ -1,0 +1,80 @@
+{
+  "data": {
+    "getEmployeeById": {
+      "id": "9e1ff73e-0f66-4b86-8548-040d4016bfc9",
+      "firstName": "Jane",
+      "lastName": "Doe",
+      "title": "Senior Software Engineer",
+      "email": "jane.doe@example.com",
+      "telephone": "+49 123 456789",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ...",
+      "academicDegrees": [
+        {
+          "subject": "Computer Science",
+          "title": "Dr.",
+          "institution": "MIT"
+        }
+      ],
+      "certifications": [
+        "CPSA Advanced Level",
+        "CPSA Foundation Level"
+      ],
+      "publications": [
+        "https://github.com/jane_doe11",
+        "Lorem ipsum dolor (Lorem Magazine, 2021)"
+      ],
+      "languages": [
+        {
+          "language": "English",
+          "qualifier": "native speaker"
+        },
+        {
+          "language": "German",
+          "qualifier": "B2"
+        }
+      ],
+      "jobHistory": [
+        {
+          "employer": "Example AG",
+          "title": "Senior Software Engineer",
+          "start": "2020-01",
+          "end": null
+        },
+        {
+          "employer": "Example AG",
+          "title": "Software Engineer",
+          "start": "2017-11",
+          "end": "2019-12"
+        }
+      ],
+      "skills": [
+        {
+          "label": "Kotlin",
+          "level": 8,
+          "secret": false
+        },
+        {
+          "label": "Python",
+          "level": 4,
+          "secret": true
+        }
+      ],
+      "projects": [
+        {
+          "label": "Neo",
+          "description": "The PlayStation 4 Pro.",
+          "contribution": "Lorem ipsum dolor sit amet, consectetur adipiscing elit ...",
+          "startDate": "2018-01-01",
+          "endDate": "2020-01-31"
+        },
+        {
+          "label": "Morpheus",
+          "description": "The PlayStation VR Headset.",
+          "contribution": "Ut enim ad minim veniam ...",
+          "startDate": "2019-02-01",
+          "endDate": null
+        }
+      ]
+    }
+  }
+}

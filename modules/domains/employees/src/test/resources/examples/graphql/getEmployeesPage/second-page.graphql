@@ -1,0 +1,14 @@
+query {
+    getEmployeesPage(pageIndex: 1, pageSize: 10) {
+        content {
+            id
+            firstName
+            lastName
+        }
+        pageIndex
+        pageSize
+        totalElements
+        hasPrevious
+        hasNext
+    }
+}

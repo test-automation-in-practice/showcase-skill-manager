@@ -1,0 +1,6 @@
+query {
+    suggestEmployees(input: "-") {
+        id
+        label
+    }
+}

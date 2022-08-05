@@ -17,6 +17,7 @@ security:
         password: "nimda"
         authorities:
           - "SCOPE_API"
+          - "SCOPE_GRAPHIQL"
           - "ROLE_USER"
           - "ROLE_ADMIN"
       - username: "actuator"
@@ -26,3 +27,12 @@ security:
 
 server:
   shutdown: graceful
+
+spring:
+  graphql:
+    schema:
+      locations:
+        - classpath:/graphql/base/**
+        - classpath:/graphql/employees/**
+        - classpath:/graphql/projects/**
+        - classpath:/graphql/skills/**

@@ -143,6 +143,8 @@ internal val employee_jane_doe = EmployeeEntity(
     created = instant("2021-03-26T12:34:56.789Z"),
     lastUpdate = instant("2021-03-26T12:34:56.789Z")
 )
+
+@org.intellij.lang.annotations.Language("json")
 internal val employee_jane_doe_json = """
     {
       "id": "9e1ff73e-0f66-4b86-8548-040d4016bfc9",
@@ -240,6 +242,8 @@ internal val employee_jane_doe_json = """
     """.trimIndent()
 
 internal val employee_representation_jane_doe = employee_jane_doe.toRepresentation()
+
+@org.intellij.lang.annotations.Language("json")
 internal val employee_representation_jane_doe_json = """
     {
       "id": "9e1ff73e-0f66-4b86-8548-040d4016bfc9",
@@ -323,6 +327,8 @@ internal val employee_representation_jane_doe_json = """
     """.trimIndent()
 
 internal val employee_creation_data_jane_doe = employee_jane_doe.toCreationData()
+
+@org.intellij.lang.annotations.Language("json")
 internal val employee_creation_data_jane_doe_json = """
     {
       "firstName": "Jane",
@@ -334,6 +340,8 @@ internal val employee_creation_data_jane_doe_json = """
     """.trimIndent()
 
 internal val employee_change_data_jane_doe = employee_jane_doe.toChangeData()
+
+@org.intellij.lang.annotations.Language("json")
 internal val employee_change_data_jane_doe_json = """
     {
       "firstName": "Jane",
@@ -418,6 +426,8 @@ internal val employee_john_doe = EmployeeEntity(
     created = instant("2021-03-25T12:34:56.789Z"),
     lastUpdate = instant("2021-03-25T12:34:56.789Z")
 )
+
+@org.intellij.lang.annotations.Language("json")
 internal val employee_john_doe_json = """
     {
       "id": "0370f159-2d3b-4e40-9438-10ff34dd62c5",
@@ -475,6 +485,8 @@ internal val employee_john_doe_json = """
     """.trimIndent()
 
 internal val employee_representation_john_doe = employee_john_doe.toRepresentation()
+
+@org.intellij.lang.annotations.Language("json")
 internal val employee_representation_john_doe_json = """
     {
       "id": "0370f159-2d3b-4e40-9438-10ff34dd62c5",
@@ -523,6 +535,8 @@ internal val employee_representation_john_doe_json = """
     """.trimIndent()
 
 internal val employee_creation_data_john_doe = employee_john_doe.toCreationData()
+
+@org.intellij.lang.annotations.Language("json")
 internal val employee_creation_data_john_doe_json = """
     {
       "firstName": "John",
@@ -534,6 +548,8 @@ internal val employee_creation_data_john_doe_json = """
     """.trimIndent()
 
 internal val employee_change_data_john_doe = employee_john_doe.toChangeData()
+
+@org.intellij.lang.annotations.Language("json")
 internal val employee_change_data_john_doe_json = """
     {
       "firstName": "John",
@@ -565,10 +581,7 @@ internal val employee_suggestion_john_doe = employee_john_doe.toSuggestion()
 
 // Example #3
 
-/**
- * Only required properties are set (min example).
- *
- */
+/** Only required properties are set (min example). */
 internal val employee_john_smith = EmployeeEntity(
     id = employeeId("53b5f462-0c39-4e2a-83bf-aa407cf309be"),
     version = 1,
@@ -582,6 +595,8 @@ internal val employee_john_smith = EmployeeEntity(
     created = instant("2021-03-24T12:34:56.789Z"),
     lastUpdate = instant("2021-03-24T12:34:56.789Z")
 )
+
+@org.intellij.lang.annotations.Language("json")
 internal val employee_john_smith_json = """
     {
       "id": "53b5f462-0c39-4e2a-83bf-aa407cf309be",
@@ -606,6 +621,8 @@ internal val employee_john_smith_json = """
     """.trimIndent()
 
 internal val employee_representation_john_smith = employee_john_smith.toRepresentation()
+
+@org.intellij.lang.annotations.Language("json")
 internal val employee_representation_john_smith_json = """
     {
       "id": "53b5f462-0c39-4e2a-83bf-aa407cf309be",
@@ -626,6 +643,8 @@ internal val employee_representation_john_smith_json = """
     """.trimIndent()
 
 internal val employee_creation_data_john_smith = employee_john_smith.toCreationData()
+
+@org.intellij.lang.annotations.Language("json")
 internal val employee_creation_data_john_smith_json = """
     {
       "firstName": "John",
@@ -637,6 +656,8 @@ internal val employee_creation_data_john_smith_json = """
     """.trimIndent()
 
 internal val employee_change_data_john_smith = employee_john_smith.toChangeData()
+
+@org.intellij.lang.annotations.Language("json")
 internal val employee_change_data_john_smith_json = """
     {
       "firstName": "John",

@@ -1,0 +1,6 @@
+query {
+    suggestEmployees(input: "jan", max: 10) {
+        id
+        label
+    }
+}

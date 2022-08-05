@@ -1,0 +1,6 @@
+query {
+    suggestProjects(input: "-") {
+        id
+        label
+    }
+}

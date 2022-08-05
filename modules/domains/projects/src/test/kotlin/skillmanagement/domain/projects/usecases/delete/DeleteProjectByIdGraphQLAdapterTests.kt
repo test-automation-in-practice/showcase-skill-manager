@@ -1,31 +1,39 @@
 package skillmanagement.domain.projects.usecases.delete
 
+import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
-import io.mockk.mockk
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
+import org.springframework.graphql.test.tester.GraphQlTester
 import skillmanagement.domain.projects.model.project_neo
-import skillmanagement.test.ResetMocksAfterEachTest
-import skillmanagement.test.UnitTest
+import skillmanagement.test.TechnologyIntegrationTest
+import skillmanagement.test.graphql.AbstractGraphQlTest
 
-@UnitTest
-@ResetMocksAfterEachTest
-internal class DeleteProjectByIdGraphQLAdapterTests {
-
-    private val deleteProjectById: DeleteProjectByIdFunction = mockk()
-    private val cut = DeleteProjectByIdGraphQLAdapter(deleteProjectById)
+@TechnologyIntegrationTest
+@MockkBean(DeleteProjectByIdFunction::class)
+@GraphQlTest(DeleteProjectByIdGraphQLAdapter::class)
+internal class DeleteProjectByIdGraphQLAdapterTests(
+    @Autowired override val graphQlTester: GraphQlTester,
+    @Autowired val deleteProjectById: DeleteProjectByIdFunction
+) : AbstractGraphQlTest() {
 
     @Test
     fun `translates and delegates deletion to business function - deleted`() {
         every { deleteProjectById(project_neo.id) } returns true
-        assertThat(tryToDeleteSkill()).isTrue()
+        assertRequestResponse(
+            documentPath = "/examples/graphql/deleteProjectById/neo.graphql",
+            responsePath = "/examples/graphql/deleteProjectById/deleted.json"
+        )
     }
 
     @Test
     fun `translates and delegates deletion to business function - not found`() {
         every { deleteProjectById(project_neo.id) } returns false
-        assertThat(tryToDeleteSkill()).isFalse()
+        assertRequestResponse(
+            documentPath = "/examples/graphql/deleteProjectById/neo.graphql",
+            responsePath = "/examples/graphql/deleteProjectById/not-found.json"
+        )
     }
 
-    private fun tryToDeleteSkill(id: String = "f804d83f-466c-4eab-a58f-4b25ca1778f3") = cut.deleteProjectById(id)
 }

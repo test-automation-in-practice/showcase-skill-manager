@@ -1,26 +1,42 @@
 package skillmanagement.domain.employees.usecases.create
 
+import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
-import io.mockk.mockk
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
+import org.springframework.graphql.test.tester.GraphQlTester
 import skillmanagement.domain.employees.model.employee_creation_data_jane_doe
+import skillmanagement.domain.employees.model.employee_creation_data_john_smith
 import skillmanagement.domain.employees.model.employee_jane_doe
-import skillmanagement.domain.employees.model.employee_representation_jane_doe
-import skillmanagement.test.ResetMocksAfterEachTest
-import skillmanagement.test.UnitTest
+import skillmanagement.domain.employees.model.employee_john_smith
+import skillmanagement.test.TechnologyIntegrationTest
+import skillmanagement.test.graphql.AbstractGraphQlTest
 
-@UnitTest
-@ResetMocksAfterEachTest
-internal class CreateEmployeeGraphQLAdapterTests {
-
-    private val createEmployee: CreateEmployeeFunction = mockk()
-    private val cut = CreateEmployeeGraphQLAdapter(createEmployee)
+@TechnologyIntegrationTest
+@MockkBean(CreateEmployeeFunction::class)
+@GraphQlTest(CreateEmployeeGraphQLAdapter::class)
+internal class CreateEmployeeGraphQLAdapterTests(
+    @Autowired override val graphQlTester: GraphQlTester,
+    @Autowired val createEmployee: CreateEmployeeFunction
+) : AbstractGraphQlTest() {
 
     @Test
-    fun `delegates creation to business function`() {
+    fun `delegates creation to business function - max`() {
         every { createEmployee(employee_creation_data_jane_doe) } returns employee_jane_doe
-        assertThat(cut.createEmployee(employee_creation_data_jane_doe)).isEqualTo(employee_representation_jane_doe)
+        assertRequestResponse(
+            documentPath = "/examples/graphql/createEmployee/jane-doe.graphql",
+            responsePath = "/examples/graphql/createEmployee/jane-doe.json"
+        )
+    }
+
+    @Test
+    fun `delegates creation to business function - min`() {
+        every { createEmployee(employee_creation_data_john_smith) } returns employee_john_smith
+        assertRequestResponse(
+            documentPath = "/examples/graphql/createEmployee/john-smith.graphql",
+            responsePath = "/examples/graphql/createEmployee/john-smith.json"
+        )
     }
 
 }

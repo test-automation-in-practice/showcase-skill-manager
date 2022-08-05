@@ -1,33 +1,39 @@
 package skillmanagement.domain.employees.usecases.read
 
+import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
-import io.mockk.mockk
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
+import org.springframework.graphql.test.tester.GraphQlTester
 import skillmanagement.domain.employees.model.employee_jane_doe
-import skillmanagement.domain.employees.model.employee_representation_jane_doe
-import skillmanagement.test.ResetMocksAfterEachTest
-import skillmanagement.test.UnitTest
+import skillmanagement.test.TechnologyIntegrationTest
+import skillmanagement.test.graphql.AbstractGraphQlTest
 
-@UnitTest
-@ResetMocksAfterEachTest
-internal class GetEmployeeByIdGraphQLAdapterTests {
-
-    private val getEmployeeById: GetEmployeeByIdFunction = mockk()
-    private val cut = GetEmployeeByIdGraphQLAdapter(getEmployeeById)
+@TechnologyIntegrationTest
+@MockkBean(GetEmployeeByIdFunction::class)
+@GraphQlTest(GetEmployeeByIdGraphQLAdapter::class)
+internal class GetEmployeeByIdGraphQLAdapterTests(
+    @Autowired override val graphQlTester: GraphQlTester,
+    @Autowired val getEmployeeById: GetEmployeeByIdFunction
+) : AbstractGraphQlTest() {
 
     @Test
     fun `translates and delegates retrieval to business function - found`() {
         every { getEmployeeById(employee_jane_doe.id) } returns employee_jane_doe
-        assertThat(tryToGetEmployee()).isEqualTo(employee_representation_jane_doe)
+        assertRequestResponse(
+            documentPath = "/examples/graphql/getEmployeeById/jane-doe.graphql",
+            responsePath = "/examples/graphql/getEmployeeById/jane-doe.json"
+        )
     }
 
     @Test
     fun `translates and delegates retrieval to business function - not found`() {
         every { getEmployeeById(employee_jane_doe.id) } returns null
-        assertThat(tryToGetEmployee()).isNull()
+        assertRequestResponse(
+            documentPath = "/examples/graphql/getEmployeeById/jane-doe.graphql",
+            responsePath = "/examples/graphql/getEmployeeById/not-found.json"
+        )
     }
-
-    private fun tryToGetEmployee(id: String = "9e1ff73e-0f66-4b86-8548-040d4016bfc9") = cut.getEmployeeById(id)
 
 }
