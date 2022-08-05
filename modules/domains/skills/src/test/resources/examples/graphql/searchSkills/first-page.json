@@ -1,0 +1,30 @@
+{
+  "data": {
+    "searchSkills": {
+      "content": [
+        {
+          "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
+          "label": "Kotlin",
+          "description": "The coolest programming language.",
+          "tags": [
+            "cool",
+            "language"
+          ]
+        },
+        {
+          "id": "f8948935-dab6-4c33-80d0-9f66ae546a7c",
+          "label": "Java",
+          "description": null,
+          "tags": [
+            "language"
+          ]
+        }
+      ],
+      "pageIndex": 0,
+      "pageSize": 10,
+      "totalElements": 2,
+      "hasPrevious": false,
+      "hasNext": false
+    }
+  }
+}

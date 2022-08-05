@@ -1,26 +1,42 @@
 package skillmanagement.domain.skills.usecases.create
 
+import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
-import io.mockk.mockk
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
+import org.springframework.graphql.test.tester.GraphQlTester
 import skillmanagement.domain.skills.model.skill_creation_data_kotlin
+import skillmanagement.domain.skills.model.skill_creation_data_python
 import skillmanagement.domain.skills.model.skill_kotlin
-import skillmanagement.domain.skills.model.skill_representation_kotlin
-import skillmanagement.test.ResetMocksAfterEachTest
-import skillmanagement.test.UnitTest
+import skillmanagement.domain.skills.model.skill_python
+import skillmanagement.test.TechnologyIntegrationTest
+import skillmanagement.test.graphql.AbstractGraphQlTest
 
-@UnitTest
-@ResetMocksAfterEachTest
-internal class CreateSkillGraphQLAdapterTests {
-
-    private val createSkill: CreateSkillFunction = mockk()
-    private val cut = CreateSkillGraphQLAdapter(createSkill)
+@TechnologyIntegrationTest
+@MockkBean(CreateSkillFunction::class)
+@GraphQlTest(CreateSkillGraphQLAdapter::class)
+internal class CreateSkillGraphQLAdapterTests(
+    @Autowired override val graphQlTester: GraphQlTester,
+    @Autowired val createSkill: CreateSkillFunction
+) : AbstractGraphQlTest() {
 
     @Test
-    fun `delegates creation to business function`() {
+    fun `translates and delegates creation to business function - max`() {
         every { createSkill(skill_creation_data_kotlin) } returns skill_kotlin
-        assertThat(cut.createSkill(skill_creation_data_kotlin)).isEqualTo(skill_representation_kotlin)
+        assertRequestResponse(
+            documentPath = "/examples/graphql/createSkill/kotlin.graphql",
+            responsePath = "/examples/graphql/createSkill/kotlin.json"
+        )
+    }
+
+    @Test
+    fun `translates and delegates creation to business function - min`() {
+        every { createSkill(skill_creation_data_python) } returns skill_python
+        assertRequestResponse(
+            documentPath = "/examples/graphql/createSkill/python.graphql",
+            responsePath = "/examples/graphql/createSkill/python.json"
+        )
     }
 
 }

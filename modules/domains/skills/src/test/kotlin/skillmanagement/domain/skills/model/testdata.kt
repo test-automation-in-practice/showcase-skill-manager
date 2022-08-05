@@ -1,5 +1,6 @@
 package skillmanagement.domain.skills.model
 
+import org.intellij.lang.annotations.Language
 import skillmanagement.common.model.Suggestion
 import skillmanagement.test.instant
 import skillmanagement.test.uuid
@@ -19,6 +20,8 @@ internal val skill_kotlin = SkillEntity(
     created = instant("2020-07-14T12:34:56.789Z"),
     lastUpdate = instant("2020-07-14T12:34:56.789Z")
 )
+
+@Language("json")
 internal val skill_kotlin_json = """
     {
       "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
@@ -34,6 +37,8 @@ internal val skill_kotlin_json = """
     """.trimIndent()
 
 internal val skill_representation_kotlin = skill_kotlin.toRepresentation()
+
+@Language("json")
 internal val skill_representation_kotlin_json = """
     {
       "id": "3f7985b9-f5f0-4662-bda9-1dcde01f5f3b",
@@ -45,6 +50,8 @@ internal val skill_representation_kotlin_json = """
     """.trimIndent()
 
 internal val skill_creation_data_kotlin = skill_kotlin.toCreationData()
+
+@Language("json")
 internal val skill_creation_data_kotlin_json = """
     {
       "label": "Kotlin",
@@ -54,6 +61,8 @@ internal val skill_creation_data_kotlin_json = """
     """.trimIndent()
 
 internal val skill_change_data_kotlin = skill_kotlin.toChangeData()
+
+@Language("json")
 internal val skill_change_data_kotlin_json = """
     {
       "label": "Kotlin",
@@ -78,6 +87,8 @@ internal val skill_java = SkillEntity(
     created = instant("2020-07-14T12:34:56.789Z"),
     lastUpdate = instant("2020-07-14T12:34:56.789Z")
 )
+
+@Language("json")
 internal val skill_java_json = """
     {
       "id": "f8948935-dab6-4c33-80d0-9f66ae546a7c",
@@ -92,6 +103,8 @@ internal val skill_java_json = """
     """.trimIndent()
 
 internal val skill_representation_java = skill_java.toRepresentation()
+
+@Language("json")
 internal val skill_representation_java_json = """
     {
       "id": "f8948935-dab6-4c33-80d0-9f66ae546a7c",
@@ -102,6 +115,8 @@ internal val skill_representation_java_json = """
     """.trimIndent()
 
 internal val skill_creation_data_java = skill_java.toCreationData()
+
+@Language("json")
 internal val skill_creation_data_java_json = """
     {
       "label": "Java",
@@ -110,6 +125,8 @@ internal val skill_creation_data_java_json = """
     """.trimIndent()
 
 internal val skill_change_data_java = skill_java.toChangeData()
+
+@Language("json")
 internal val skill_change_data_java_json = """
     {
       "label": "Java",
@@ -133,6 +150,8 @@ internal val skill_python = SkillEntity(
     created = instant("2020-07-14T12:34:56.789Z"),
     lastUpdate = instant("2020-07-14T12:34:56.789Z")
 )
+
+@Language("json")
 internal val skill_python_json = """
     {
       "id": "6935e550-d041-418a-9070-e37431069232",
@@ -147,6 +166,8 @@ internal val skill_python_json = """
     """.trimIndent()
 
 internal val skill_representation_python = skill_python.toRepresentation()
+
+@Language("json")
 internal val skill_representation_python_json = """
     {
       "id": "6935e550-d041-418a-9070-e37431069232",
@@ -157,6 +178,8 @@ internal val skill_representation_python_json = """
     """.trimIndent()
 
 internal val skill_creation_data_python = skill_python.toCreationData()
+
+@Language("json")
 internal val skill_creation_data_python_json = """
     {
       "label": "Python",
@@ -165,6 +188,8 @@ internal val skill_creation_data_python_json = """
     """.trimIndent()
 
 internal val skill_change_data_python = skill_python.toChangeData()
+
+@Language("json")
 internal val skill_change_data_python_json = """
     {
       "label": "Python",

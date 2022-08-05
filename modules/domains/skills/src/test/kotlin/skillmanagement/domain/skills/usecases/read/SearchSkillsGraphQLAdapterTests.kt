@@ -1,44 +1,67 @@
 package skillmanagement.domain.skills.usecases.read
 
+import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
-import io.mockk.mockk
+import io.mockk.slot
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
+import org.springframework.graphql.test.tester.GraphQlTester
 import skillmanagement.common.model.PageIndex
 import skillmanagement.common.model.PageSize
 import skillmanagement.common.model.Pagination
+import skillmanagement.common.model.emptyPage
 import skillmanagement.common.model.pageOf
 import skillmanagement.domain.skills.model.skill_java
 import skillmanagement.domain.skills.model.skill_kotlin
-import skillmanagement.domain.skills.model.skill_representation_java
-import skillmanagement.domain.skills.model.skill_representation_kotlin
-import skillmanagement.test.ResetMocksAfterEachTest
-import skillmanagement.test.UnitTest
+import skillmanagement.test.TechnologyIntegrationTest
+import skillmanagement.test.graphql.AbstractGraphQlTest
 
-@UnitTest
-@ResetMocksAfterEachTest
-internal class SearchSkillsGraphQLAdapterTests {
-
-    private val getSkillsPage: GetSkillsPageFunction = mockk()
-    private val cut = SearchSkillsGraphQLAdapter(getSkillsPage)
+@TechnologyIntegrationTest
+@MockkBean(GetSkillsPageFunction::class)
+@GraphQlTest(SearchSkillsGraphQLAdapter::class)
+internal class SearchSkillsGraphQLAdapterTests(
+    @Autowired override val graphQlTester: GraphQlTester,
+    @Autowired val getSkillsPage: GetSkillsPageFunction
+) : AbstractGraphQlTest() {
 
     @Test
-    fun `translates and delegates retrieval to business function`() {
-        val page = pageOf(listOf(skill_kotlin), 3, 42, totalElements = (3 * 42) + 1)
-        every { getSkillsPage(SkillsMatchingQuery("query", Pagination(PageIndex(3), PageSize(42)))) } returns page
-        val actual = tryToSearchSkills(query = "query", index = 3, size = 42)
-        assertThat(actual).isEqualTo(page.withOtherContent(listOf(skill_representation_kotlin)))
+    fun `translates and delegates retrieval to business function - default page`() {
+        val slot = slot<SkillsMatchingQuery>()
+        every { getSkillsPage(capture(slot)) } returns emptyPage()
+
+        assertRequestResponse(
+            documentPath = "/examples/graphql/searchSkills/default-page.graphql",
+            responsePath = "/examples/graphql/searchSkills/default-page.json"
+        )
+        assertThat(slot.captured.pagination).isEqualTo(Pagination.DEFAULT)
     }
 
     @Test
-    fun `default values are used when necessary`() {
-        val page = pageOf(listOf(skill_java))
-        every { getSkillsPage(SkillsMatchingQuery("query", Pagination.DEFAULT)) } returns page
-        val actual = tryToSearchSkills(query = "query")
-        assertThat(actual).isEqualTo(page.withOtherContent(listOf(skill_representation_java)))
+    fun `translates and delegates retrieval to business function - page 1`() {
+        val pagination = Pagination(PageIndex(0), PageSize(10))
+        val query = SkillsMatchingQuery("tags:language", pagination)
+        every { getSkillsPage(query) } returns
+                pageOf(listOf(skill_kotlin, skill_java), index = 0, size = 10, totalElements = 2)
+
+        assertRequestResponse(
+            documentPath = "/examples/graphql/searchSkills/first-page.graphql",
+            responsePath = "/examples/graphql/searchSkills/first-page.json"
+        )
     }
 
-    private fun tryToSearchSkills(query: String = "*", index: Int? = null, size: Int? = null) =
-        cut.searchSkills(query, Pagination(PageIndex.of(index), PageSize.of(size)))
+    @Test
+    fun `translates and delegates retrieval to business function - page 2`() {
+        val pagination = Pagination(PageIndex(1), PageSize(10))
+        val query = SkillsMatchingQuery("tags:language", pagination)
+        every { getSkillsPage(query) } returns
+                emptyPage(index = 1, size = 10, totalElements = 2)
+
+        assertRequestResponse(
+            documentPath = "/examples/graphql/searchSkills/second-page.graphql",
+            responsePath = "/examples/graphql/searchSkills/second-page.json"
+        )
+    }
 
 }

@@ -31,13 +31,14 @@ internal class DomainArchitectureTests {
     @Test
     fun `sub domains boundaries are respected`() {
         Architectures.layeredArchitecture()
+            .layer("root").definedBy(basePackage)
             .layer("metrics").definedBy("$basePackage.metrics..")
             .layer("model").definedBy("$basePackage.model..")
             .layer("searchindex").definedBy("$basePackage.searchindex..")
             .layer("tasks").definedBy("$basePackage.tasks..")
             .layer("usecases").definedBy("$basePackage.usecases..")
             .whereLayer("metrics").mayNotBeAccessedByAnyLayer()
-            .whereLayer("model").mayOnlyBeAccessedByLayers("searchindex", "tasks", "usecases")
+            .whereLayer("model").mayOnlyBeAccessedByLayers("root", "searchindex", "tasks", "usecases")
             .whereLayer("searchindex").mayNotBeAccessedByAnyLayer()
             .whereLayer("tasks").mayNotBeAccessedByAnyLayer()
             .whereLayer("usecases").mayOnlyBeAccessedByLayers("tasks")

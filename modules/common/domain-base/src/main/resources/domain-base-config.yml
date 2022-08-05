@@ -1,9 +1,3 @@
-graphql:
-  servlet:
-    actuator-metrics: true
-    mapping: /api/graphql
-    exception-handlers-enabled: false
-
 logging:
   level:
     root: INFO
@@ -26,6 +20,13 @@ spring:
   elasticsearch:
     rest:
       uris: "http://localhost:9200"
+  graphql:
+    graphiql:
+      enabled: true
+    path: /api/graphql
+    schema:
+      printer:
+        enabled: true
   jackson:
     default-property-inclusion: non_null
   main:

@@ -1,0 +1,12 @@
+query {
+    getProjectsPage {
+        content {
+            id
+        }
+        pageIndex
+        pageSize
+        totalElements
+        hasPrevious
+        hasNext
+    }
+}

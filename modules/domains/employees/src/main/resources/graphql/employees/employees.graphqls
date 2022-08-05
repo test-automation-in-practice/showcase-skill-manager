@@ -1,0 +1,77 @@
+scalar SkillLevel
+
+type Employee {
+    id: ID!
+    firstName: String!
+    lastName: String!
+    title: String!
+    email: String!
+    telephone: String!
+    description: String
+    academicDegrees: [AcademicDegree]
+    certifications: [String]
+    publications: [String]
+    languages: [LanguageProficiency]
+    jobHistory: [Job]
+    skills: [SkillKnowledge]
+    projects: [ProjectAssignment]
+}
+
+type AcademicDegree {
+    subject: String!
+    title: String!
+    institution: String!
+}
+
+type LanguageProficiency {
+    language: String!
+    qualifier: String!
+}
+
+type Job {
+    employer: String!
+    title: String!
+    start: String!
+    end: String
+}
+
+type SkillKnowledge {
+    label: String!
+    level: SkillLevel!
+    secret: Boolean!
+}
+
+type ProjectAssignment {
+    label: String!
+    description: String!
+    contribution: String!
+    startDate: String!
+    endDate: String
+}
+
+type EmployeesPage {
+    content: [Employee]!
+    pageIndex: Int!
+    pageSize: Int!
+    totalElements: Int!
+    hasPrevious: Boolean!
+    hasNext: Boolean!
+}
+
+extend type Query {
+    getEmployeeById(id: ID!): Employee
+    getEmployeesPage(pageIndex: PageIndex = 0, pageSize: PageSize = 100): EmployeesPage!
+    searchEmployees(query: String!, pageIndex: PageIndex = 0, pageSize: PageSize = 100): EmployeesPage!
+    suggestEmployees(input: String!, max: MaxSuggestions = 100): [Suggestion]!
+}
+
+extend type Mutation {
+    createEmployee(
+        firstName: String!,
+        lastName: String!,
+        title: String!,
+        email: String!,
+        telephone: String!
+    ) : Employee!
+    deleteEmployeeById(id: ID!) : Boolean!
+}

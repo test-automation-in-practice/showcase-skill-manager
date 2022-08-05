@@ -1,0 +1,12 @@
+{
+  "data": {
+    "getSkillsPage": {
+      "content": [],
+      "pageIndex": 0,
+      "pageSize": 100,
+      "totalElements": 0,
+      "hasPrevious": false,
+      "hasNext": false
+    }
+  }
+}

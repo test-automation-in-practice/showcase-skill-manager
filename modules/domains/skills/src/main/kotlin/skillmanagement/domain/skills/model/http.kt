@@ -39,8 +39,8 @@ internal fun Page<SkillEntity>.toResource(): PagedModel<SkillRepresentation> =
     PagedModel.of(content.map(SkillEntity::toResource), toMetaData())
         .apply {
             add(linkToSkills(pageIndex, pageSize).withSelfRel())
-            if (hasPrevious()) add(linkToSkills(pageIndex - 1, pageSize).withRel("previousPage"))
-            if (hasNext()) add(linkToSkills(pageIndex + 1, pageSize).withRel("nextPage"))
+            if (hasPrevious) add(linkToSkills(pageIndex - 1, pageSize).withRel("previousPage"))
+            if (hasNext) add(linkToSkills(pageIndex + 1, pageSize).withRel("nextPage"))
         }
 
 internal fun linkToSkills(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
@@ -52,8 +52,8 @@ internal fun Page<SkillEntity>.toSearchResource(): PagedModel<SkillRepresentatio
     PagedModel.of(content.map(SkillEntity::toResource), toMetaData())
         .apply {
             add(linkToSkillsSearch(pageIndex, pageSize).withSelfRel())
-            if (hasPrevious()) add(linkToSkillsSearch(pageIndex - 1, pageSize).withRel("previousPage"))
-            if (hasNext()) add(linkToSkillsSearch(pageIndex + 1, pageSize).withRel("nextPage"))
+            if (hasPrevious) add(linkToSkillsSearch(pageIndex - 1, pageSize).withRel("previousPage"))
+            if (hasNext) add(linkToSkillsSearch(pageIndex + 1, pageSize).withRel("nextPage"))
         }
 
 internal fun linkToSkillsSearch(pageIndex: Int, pageSize: Int): BasicLinkBuilder {

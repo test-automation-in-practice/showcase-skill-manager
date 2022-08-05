@@ -119,8 +119,8 @@ internal fun Page<EmployeeEntity>.toResource(): PagedModel<EmployeeRepresentatio
     PagedModel.of(content.map(EmployeeEntity::toResource), toMetaData())
         .apply {
             add(linkToEmployees(pageIndex, pageSize).withSelfRel())
-            if (hasPrevious()) add(linkToEmployees(pageIndex - 1, pageSize).withRel("previousPage"))
-            if (hasNext()) add(linkToEmployees(pageIndex + 1, pageSize).withRel("nextPage"))
+            if (hasPrevious) add(linkToEmployees(pageIndex - 1, pageSize).withRel("previousPage"))
+            if (hasNext) add(linkToEmployees(pageIndex + 1, pageSize).withRel("nextPage"))
         }
 
 internal fun linkToEmployees(pageIndex: Int, pageSize: Int): BasicLinkBuilder {
@@ -132,8 +132,8 @@ internal fun Page<EmployeeEntity>.toSearchResource(): PagedModel<EmployeeReprese
     PagedModel.of(content.map(EmployeeEntity::toResource), toMetaData())
         .apply {
             add(linkToEmployeesSearch(pageIndex, pageSize).withSelfRel())
-            if (hasPrevious()) add(linkToEmployeesSearch(pageIndex - 1, pageSize).withRel("previousPage"))
-            if (hasNext()) add(linkToEmployeesSearch(pageIndex + 1, pageSize).withRel("nextPage"))
+            if (hasPrevious) add(linkToEmployeesSearch(pageIndex - 1, pageSize).withRel("previousPage"))
+            if (hasNext) add(linkToEmployeesSearch(pageIndex + 1, pageSize).withRel("nextPage"))
         }
 
 internal fun linkToEmployeesSearch(pageIndex: Int, pageSize: Int): BasicLinkBuilder {

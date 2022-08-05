@@ -1,0 +1,12 @@
+query {
+    searchSkills(query: "-") {
+        content {
+            id
+        }
+        pageIndex
+        pageSize
+        totalElements
+        hasPrevious
+        hasNext
+    }
+}

@@ -1,0 +1,27 @@
+type Skill {
+    id: ID!
+    label: String!
+    description: String
+    tags: [String]!
+}
+
+type SkillsPage {
+    content: [Skill]!
+    pageIndex: Int!
+    pageSize: Int!
+    totalElements: Int!
+    hasPrevious: Boolean!
+    hasNext: Boolean!
+}
+
+extend type Query {
+    getSkillById(id: ID!): Skill
+    getSkillsPage(pageIndex: PageIndex = 0, pageSize: PageSize = 100): SkillsPage!
+    searchSkills(query: String!, pageIndex: PageIndex = 0, pageSize: PageSize = 100): SkillsPage!
+    suggestSkills(input: String!, max: MaxSuggestions = 100): [Suggestion]!
+}
+
+extend type Mutation {
+    createSkill(label: String!, description: String, tags: [String] = []) : Skill!
+    deleteSkillById(id: ID!) : Boolean!
+}

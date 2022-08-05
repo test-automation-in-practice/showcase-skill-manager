@@ -1,40 +1,60 @@
 package skillmanagement.domain.employees.usecases.read
 
+import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
-import io.mockk.mockk
+import io.mockk.slot
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
-import skillmanagement.common.model.Page
-import skillmanagement.common.model.Suggestion
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
+import org.springframework.graphql.test.tester.GraphQlTester
+import skillmanagement.common.model.emptyPage
+import skillmanagement.common.model.pageOf
 import skillmanagement.common.searchindices.MaxSuggestions
-import skillmanagement.common.searchindices.SearchIndex
-import skillmanagement.domain.employees.model.EmployeeEntity
-import skillmanagement.domain.employees.model.EmployeeId
-import skillmanagement.test.ResetMocksAfterEachTest
-import skillmanagement.test.UnitTest
+import skillmanagement.domain.employees.model.employee_suggestion_jane_doe
+import skillmanagement.domain.employees.searchindex.EmployeeSearchIndex
+import skillmanagement.test.TechnologyIntegrationTest
+import skillmanagement.test.graphql.AbstractGraphQlTest
 
-@UnitTest
-@ResetMocksAfterEachTest
-internal class SuggestEmployeesGraphQLAdapterTests {
-
-    private val searchIndex: SearchIndex<EmployeeEntity, EmployeeId> = mockk()
-    private val cut = SuggestEmployeesGraphQLAdapter(searchIndex)
+@TechnologyIntegrationTest
+@MockkBean(EmployeeSearchIndex::class)
+@GraphQlTest(SuggestEmployeesGraphQLAdapter::class)
+internal class SuggestEmployeesGraphQLAdapterTests(
+    @Autowired override val graphQlTester: GraphQlTester,
+    @Autowired val searchIndex: EmployeeSearchIndex
+) : AbstractGraphQlTest() {
 
     @Test
-    fun `translates and delegates retrieval to business function`() {
-        val page: Page<Suggestion> = mockk()
-        every { searchIndex.suggest("input", MaxSuggestions(42)) } returns page
-        assertThat(tryToSuggestEmployees(input = "input", max = 42)).isEqualTo(page)
+    fun `translates and delegates retrieval to business function - defaults`() {
+        val slot = slot<MaxSuggestions>()
+        every { searchIndex.suggest(any(), capture(slot)) } returns emptyPage()
+
+        assertRequestResponse(
+            documentPath = "/examples/graphql/suggestEmployees/request-defaults.graphql",
+            responsePath = "/examples/graphql/suggestEmployees/empty.json"
+        )
+        assertThat(slot.captured).isEqualTo(MaxSuggestions.DEFAULT)
     }
 
     @Test
-    fun `default values are used when necessary`() {
-        val page: Page<Suggestion> = mockk()
-        every { searchIndex.suggest("input", MaxSuggestions.DEFAULT) } returns page
-        assertThat(tryToSuggestEmployees(input = "input")).isEqualTo(page)
+    fun `translates and delegates retrieval to business function - found`() {
+        every { searchIndex.suggest("jan", MaxSuggestions(10)) } returns
+                pageOf(listOf(employee_suggestion_jane_doe))
+
+        assertRequestResponse(
+            documentPath = "/examples/graphql/suggestEmployees/request.graphql",
+            responsePath = "/examples/graphql/suggestEmployees/found.json"
+        )
     }
 
-    private fun tryToSuggestEmployees(input: String = "*", max: Int? = null) =
-        cut.suggestEmployees(input, MaxSuggestions.of(max))
+    @Test
+    fun `translates and delegates retrieval to business function - empty`() {
+        every { searchIndex.suggest("jan", MaxSuggestions(10)) } returns emptyPage()
+
+        assertRequestResponse(
+            documentPath = "/examples/graphql/suggestEmployees/request.graphql",
+            responsePath = "/examples/graphql/suggestEmployees/empty.json"
+        )
+    }
 
 }

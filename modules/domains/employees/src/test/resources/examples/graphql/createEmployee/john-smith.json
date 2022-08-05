@@ -1,0 +1,12 @@
+{
+  "data": {
+    "createEmployee": {
+      "id": "53b5f462-0c39-4e2a-83bf-aa407cf309be",
+      "firstName": "John",
+      "lastName": "Smith",
+      "title": "Junior Software Engineer",
+      "email": "john.smith@example.com",
+      "telephone": "+49 123 948675"
+    }
+  }
+}

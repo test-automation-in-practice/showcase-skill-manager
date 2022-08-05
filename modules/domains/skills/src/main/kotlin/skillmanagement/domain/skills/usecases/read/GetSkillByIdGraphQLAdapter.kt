@@ -1,16 +1,18 @@
 package skillmanagement.domain.skills.usecases.read
 
-import graphql.kickstart.tools.GraphQLQueryResolver
+import org.springframework.graphql.data.method.annotation.Argument
+import org.springframework.graphql.data.method.annotation.QueryMapping
 import skillmanagement.common.stereotypes.GraphQLAdapter
+import skillmanagement.domain.skills.model.SkillId
 import skillmanagement.domain.skills.model.SkillRepresentation
-import skillmanagement.domain.skills.model.skillId
 import skillmanagement.domain.skills.model.toRepresentation
 
 @GraphQLAdapter
 internal class GetSkillByIdGraphQLAdapter(
-    private val getSkillById: GetSkillByIdFunction
-) : GraphQLQueryResolver {
+    private val delegate: GetSkillByIdFunction
+) {
 
-    fun getSkillById(id: String): SkillRepresentation? = getSkillById(skillId(id))?.toRepresentation()
+    @QueryMapping
+    fun getSkillById(@Argument id: SkillId): SkillRepresentation? = delegate(id)?.toRepresentation()
 
 }

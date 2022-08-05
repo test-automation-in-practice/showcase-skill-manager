@@ -1,5 +1,6 @@
 package skillmanagement.domain.projects.model
 
+import org.intellij.lang.annotations.Language
 import skillmanagement.common.model.Suggestion
 import skillmanagement.test.instant
 import skillmanagement.test.uuid
@@ -17,6 +18,8 @@ internal val project_neo = ProjectEntity(
     created = instant("2021-03-11T12:34:56.789Z"),
     lastUpdate = instant("2021-03-11T12:34:56.789Z")
 )
+
+@Language("json")
 internal val project_neo_json = """
     {
       "id": "f804d83f-466c-4eab-a58f-4b25ca1778f3",
@@ -31,6 +34,8 @@ internal val project_neo_json = """
     """.trimIndent()
 
 internal val project_representation_neo = project_neo.toRepresentation()
+
+@Language("json")
 internal val project_representation_neo_json = """
     {
       "id": "f804d83f-466c-4eab-a58f-4b25ca1778f3",
@@ -41,6 +46,8 @@ internal val project_representation_neo_json = """
     """.trimIndent()
 
 internal val project_creation_data_neo = project_neo.toCreationData()
+
+@Language("json")
 internal val project_creation_data_neo_json = """
     {
       "label": "Neo",
@@ -49,6 +56,8 @@ internal val project_creation_data_neo_json = """
     """.trimIndent()
 
 internal val project_change_data_neo = project_neo.toChangeData()
+
+@Language("json")
 internal val project_change_data_neo_json = """
     {
       "label": "Neo",
@@ -71,6 +80,8 @@ internal val project_orbis = ProjectEntity(
     created = instant("2020-07-14T12:34:56.789Z"),
     lastUpdate = instant("2020-07-14T12:34:56.789Z")
 )
+
+@Language("json")
 internal val project_orbis_json = """
     {
       "id": "dce233f1-7c20-4250-817e-6676485ddb6e",
@@ -85,6 +96,8 @@ internal val project_orbis_json = """
     """.trimIndent()
 
 internal val project_representation_orbis = project_orbis.toRepresentation()
+
+@Language("json")
 internal val project_representation_orbis_json = """
     {
       "id": "dce233f1-7c20-4250-817e-6676485ddb6e",
@@ -95,6 +108,8 @@ internal val project_representation_orbis_json = """
     """.trimIndent()
 
 internal val project_creation_data_orbis = project_orbis.toCreationData()
+
+@Language("json")
 internal val project_creation_data_orbis_json = """
     {
       "label": "Orbis",
@@ -103,6 +118,8 @@ internal val project_creation_data_orbis_json = """
     """.trimIndent()
 
 internal val project_change_data_orbis = project_orbis.toChangeData()
+
+@Language("json")
 internal val project_change_data_orbis_json = """
     {
       "label": "Orbis",
@@ -125,6 +142,8 @@ internal val project_morpheus = ProjectEntity(
     created = instant("2020-07-14T12:34:56.789Z"),
     lastUpdate = instant("2020-07-14T12:34:56.789Z")
 )
+
+@Language("json")
 internal val project_morpheus_json = """
     {
       "id": "d5370813-a4cb-42d5-9d28-ce624c718538",
@@ -139,6 +158,8 @@ internal val project_morpheus_json = """
     """.trimIndent()
 
 internal val project_representation_morpheus = project_morpheus.toRepresentation()
+
+@Language("json")
 internal val project_representation_morpheus_json = """
     {
       "id": "d5370813-a4cb-42d5-9d28-ce624c718538",
@@ -149,6 +170,8 @@ internal val project_representation_morpheus_json = """
     """.trimIndent()
 
 internal val project_creation_data_morpheus = project_morpheus.toCreationData()
+
+@Language("json")
 internal val project_creation_data_morpheus_json = """
     {
       "label": "Morpheus",
@@ -157,6 +180,8 @@ internal val project_creation_data_morpheus_json = """
     """.trimIndent()
 
 internal val project_change_data_morpheus = project_morpheus.toChangeData()
+
+@Language("json")
 internal val project_change_data_morpheus_json = """
     {
       "label": "Morpheus",

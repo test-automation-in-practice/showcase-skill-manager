@@ -7,8 +7,8 @@ data class Page<T : Any>(
     val totalElements: Long
 ) : List<T> by content {
 
-    fun hasPrevious(): Boolean = pageIndex > 0
-    fun hasNext(): Boolean = pageIndex < totalElements / pageSize
+    val hasPrevious: Boolean = pageIndex > 0
+    val hasNext: Boolean = pageIndex < totalElements / pageSize
 
     fun <C : Any> withOtherContent(content: List<C>) = Page(
         content = content,
@@ -47,11 +47,11 @@ class PageSize(value: Int) : IntType(value, min = 1, max = 10_000) {
     }
 }
 
-fun <T : Any> emptyPage(index: Int = 0, size: Int = 100): Page<T> = Page(
+fun <T : Any> emptyPage(index: Int = 0, size: Int = 100, totalElements: Long = 0): Page<T> = Page(
     content = emptyList(),
     pageIndex = index,
     pageSize = size,
-    totalElements = 0
+    totalElements = totalElements
 )
 
 fun <T : Any> pageOf(elements: List<T>, index: Int = 0, size: Int = 100, totalElements: Long = elements.size.toLong()) =

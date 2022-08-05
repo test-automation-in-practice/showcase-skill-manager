@@ -1,31 +1,39 @@
 package skillmanagement.domain.employees.usecases.delete
 
+import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
-import io.mockk.mockk
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest
+import org.springframework.graphql.test.tester.GraphQlTester
 import skillmanagement.domain.employees.model.employee_jane_doe
-import skillmanagement.test.ResetMocksAfterEachTest
-import skillmanagement.test.UnitTest
+import skillmanagement.test.TechnologyIntegrationTest
+import skillmanagement.test.graphql.AbstractGraphQlTest
 
-@UnitTest
-@ResetMocksAfterEachTest
-internal class DeleteEmployeeByIdGraphQLAdapterTests {
-
-    private val deleteEmployeeById: DeleteEmployeeByIdFunction = mockk()
-    private val cut = DeleteEmployeeByIdGraphQLAdapter(deleteEmployeeById)
+@TechnologyIntegrationTest
+@MockkBean(DeleteEmployeeByIdFunction::class)
+@GraphQlTest(DeleteEmployeeByIdGraphQLAdapter::class)
+internal class DeleteEmployeeByIdGraphQLAdapterTests(
+    @Autowired override val graphQlTester: GraphQlTester,
+    @Autowired val deleteEmployeeById: DeleteEmployeeByIdFunction
+) : AbstractGraphQlTest() {
 
     @Test
     fun `translates and delegates deletion to business function - deleted`() {
         every { deleteEmployeeById(employee_jane_doe.id) } returns true
-        assertThat(tryToDeleteSkill()).isTrue()
+        assertRequestResponse(
+            documentPath = "/examples/graphql/deleteEmployeeById/jane-doe.graphql",
+            responsePath = "/examples/graphql/deleteEmployeeById/deleted.json"
+        )
     }
 
     @Test
     fun `translates and delegates deletion to business function - not found`() {
         every { deleteEmployeeById(employee_jane_doe.id) } returns false
-        assertThat(tryToDeleteSkill()).isFalse()
+        assertRequestResponse(
+            documentPath = "/examples/graphql/deleteEmployeeById/jane-doe.graphql",
+            responsePath = "/examples/graphql/deleteEmployeeById/not-found.json"
+        )
     }
 
-    private fun tryToDeleteSkill(id: String = "9e1ff73e-0f66-4b86-8548-040d4016bfc9") = cut.deleteEmployeeById(id)
 }

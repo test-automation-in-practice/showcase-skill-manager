@@ -1,0 +1,23 @@
+{
+  "data": {
+    "searchEmployees": {
+      "content": [
+        {
+          "id": "9e1ff73e-0f66-4b86-8548-040d4016bfc9",
+          "firstName": "Jane",
+          "lastName": "Doe"
+        },
+        {
+          "id": "0370f159-2d3b-4e40-9438-10ff34dd62c5",
+          "firstName": "John",
+          "lastName": "Doe"
+        }
+      ],
+      "pageIndex": 0,
+      "pageSize": 10,
+      "totalElements": 2,
+      "hasPrevious": false,
+      "hasNext": false
+    }
+  }
+}

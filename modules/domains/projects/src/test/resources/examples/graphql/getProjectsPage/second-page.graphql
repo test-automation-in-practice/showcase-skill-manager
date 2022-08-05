@@ -1,0 +1,14 @@
+query {
+    getProjectsPage(pageIndex: 1, pageSize: 10) {
+        content {
+            id
+            label
+            description
+        }
+        pageIndex
+        pageSize
+        totalElements
+        hasPrevious
+        hasNext
+    }
+}

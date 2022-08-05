@@ -1,0 +1,40 @@
+query {
+    getEmployeeById(id: "9e1ff73e-0f66-4b86-8548-040d4016bfc9") {
+        id
+        firstName
+        lastName
+        title
+        email
+        telephone
+        description
+        academicDegrees {
+            subject
+            title
+            institution
+        }
+        certifications
+        publications
+        languages {
+            language
+            qualifier
+        }
+        jobHistory {
+            employer
+            title
+            start
+            end
+        }
+        skills {
+            label
+            level
+            secret
+        }
+        projects {
+            label
+            description
+            contribution
+            startDate
+            endDate
+        }
+    }
+}

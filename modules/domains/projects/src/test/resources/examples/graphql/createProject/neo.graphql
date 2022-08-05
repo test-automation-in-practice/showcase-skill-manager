@@ -1,0 +1,10 @@
+mutation {
+    createProject(
+        label: "Neo",
+        description: "The PlayStation 4 Pro."
+    ) {
+        id
+        label
+        description
+    }
+}

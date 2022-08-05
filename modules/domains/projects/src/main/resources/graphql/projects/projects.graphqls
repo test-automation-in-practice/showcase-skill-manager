@@ -1,0 +1,26 @@
+type Project {
+    id: ID!
+    label: String!
+    description: String!
+}
+
+type ProjectsPage {
+    content: [Project]!
+    pageIndex: Int!
+    pageSize: Int!
+    totalElements: Int!
+    hasPrevious: Boolean!
+    hasNext: Boolean!
+}
+
+extend type Query {
+    getProjectById(id: ID!): Project
+    getProjectsPage(pageIndex: PageIndex = 0, pageSize: PageSize = 100): ProjectsPage!
+    searchProjects(query: String!, pageIndex: PageIndex = 0, pageSize: PageSize = 100): ProjectsPage!
+    suggestProjects(input: String!, max: MaxSuggestions = 100): [Suggestion]!
+}
+
+extend type Mutation {
+    createProject(label: String!, description: String!) : Project!
+    deleteProjectById(id: ID!) : Boolean!
+}

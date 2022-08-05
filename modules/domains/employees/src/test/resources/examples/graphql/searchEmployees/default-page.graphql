@@ -1,0 +1,12 @@
+query {
+    searchEmployees(query: "-") {
+        content {
+            id
+        }
+        pageIndex
+        pageSize
+        totalElements
+        hasPrevious
+        hasNext
+    }
+}

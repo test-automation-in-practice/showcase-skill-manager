@@ -16,7 +16,7 @@
 
 [source]
 ----
-include::../../../../../common/domain-base/src/main/resources/graphql/base.graphqls[]
+include::../../../../../common/domain-base/src/main/resources/graphql/base/base.graphqls[]
 
 include::../../main/resources/graphql/employees.graphqls[]
 ----

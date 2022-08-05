@@ -1,0 +1,23 @@
+{
+  "data": {
+    "getEmployeesPage": {
+      "content": [
+        {
+          "id": "9e1ff73e-0f66-4b86-8548-040d4016bfc9",
+          "firstName": "Jane",
+          "lastName": "Doe"
+        },
+        {
+          "id": "53b5f462-0c39-4e2a-83bf-aa407cf309be",
+          "firstName": "John",
+          "lastName": "Smith"
+        }
+      ],
+      "pageIndex": 0,
+      "pageSize": 10,
+      "totalElements": 2,
+      "hasPrevious": false,
+      "hasNext": false
+    }
+  }
+}
