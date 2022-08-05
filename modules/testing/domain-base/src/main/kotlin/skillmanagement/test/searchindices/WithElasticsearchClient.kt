@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION") // TODO migrate from RestHighLevelClient to ElasticsearchClient
+
 package skillmanagement.test.searchindices
 
 import org.apache.http.HttpHost

@@ -1,7 +1,7 @@
 package skillmanagement.domain.employees.tasks
 
-import info.novatec.testit.logrecorder.api.LogRecord
-import info.novatec.testit.logrecorder.logback.junit5.RecordLoggers
+import io.github.logrecorder.api.LogRecord
+import io.github.logrecorder.logback.junit5.RecordLoggers
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Test

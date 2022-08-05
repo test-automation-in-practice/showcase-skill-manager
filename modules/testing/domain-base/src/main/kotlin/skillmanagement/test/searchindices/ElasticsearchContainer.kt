@@ -6,7 +6,7 @@ import skillmanagement.test.docker.DockerContainerFactory
 
 const val ELASTICSEARCH_DOCKER_PORT_PROPERTY = "ELASTICSEARCH_PORT"
 
-class ElasticsearchContainer : Container("elasticsearch:7.6.2") {
+class ElasticsearchContainer : Container("elasticsearch:7.17.5") {
     override val port = 9200
     override val portProperty = ELASTICSEARCH_DOCKER_PORT_PROPERTY
 }

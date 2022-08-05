@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION") // TODO migrate from RestHighLevelClient to ElasticsearchClient
+
 package skillmanagement.domain.skills.searchindex
 
 import org.elasticsearch.client.RestHighLevelClient

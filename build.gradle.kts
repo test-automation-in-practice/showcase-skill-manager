@@ -9,13 +9,13 @@ buildscript {
 }
 
 plugins {
-    id("org.springframework.boot") version "2.4.5" apply false
-    id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("org.springframework.boot") version "2.7.2" apply false
+    id("io.spring.dependency-management") version "1.0.12.RELEASE"
     id("org.asciidoctor.jvm.convert") version "3.3.2"
     id("io.gitlab.arturbosch.detekt") version "1.16.0"
 
-    kotlin("jvm") version "1.4.32"
-    kotlin("plugin.spring") version "1.4.32"
+    kotlin("jvm") version "1.6.21"
+    kotlin("plugin.spring") version "1.6.21"
 }
 
 apply {
@@ -23,9 +23,6 @@ apply {
 }
 
 allprojects {
-    extra["okhttp3.version"] = "4.9.1"
-    extra["rest-assured.version"] = "4.3.3"
-
     repositories { mavenCentral() }
 
     apply {
@@ -43,24 +40,23 @@ allprojects {
         dependencies {
             // define versions of unmanaged dependencies
             dependency("com.github.java-json-tools:json-patch:1.13")
-            dependency("com.graphql-java-kickstart:graphql-spring-boot-starter:11.0.0")
-            dependency("com.graphql-java-kickstart:graphql-spring-boot-starter-test:11.0.0")
-            dependency("com.sun.xml.bind:jaxb-osgi:2.3.4")
-            dependency("com.tngtech.archunit:archunit:0.16.0")
-            dependency("info.novatec.testit:logrecorder-assertions:1.0.0")
-            dependency("info.novatec.testit:logrecorder-logback:1.0.0")
-            dependency("io.arrow-kt:arrow-core:0.13.0")
-            dependency("io.github.microutils:kotlin-logging:2.0.4")
+            dependency("com.graphql-java-kickstart:graphql-spring-boot-starter:12.0.0")
+            dependency("com.graphql-java-kickstart:graphql-spring-boot-starter-test:12.0.0")
+            dependency("com.tngtech.archunit:archunit:0.23.1")
+            dependency("io.github.logrecorder:logrecorder-assertions:2.2.0")
+            dependency("io.github.logrecorder:logrecorder-logback:2.2.0")
+            dependency("io.arrow-kt:arrow-core:1.1.2")
+            dependency("io.github.microutils:kotlin-logging:2.1.23")
             dependency("io.kotlintest:kotlintest-assertions:3.4.2")
-            dependency("io.mockk:mockk:1.10.5")
-            dependency("net.jqwik:jqwik:1.3.10")
-            dependency("org.testcontainers:testcontainers:1.15.1")
+            dependency("io.mockk:mockk:1.12.5")
+            dependency("net.jqwik:jqwik:1.6.5")
+            dependency("org.testcontainers:testcontainers:1.17.3")
         }
     }
 
     dependencies {
         constraints {
-            detekt("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.3")
+            detekt("org.jetbrains.kotlinx:kotlinx-html-jvm:0.8.0")
         }
     }
 
@@ -104,13 +100,13 @@ allprojects {
             }
         }
         withType<JavaCompile> {
-            sourceCompatibility = "11"
-            targetCompatibility = "11"
+            sourceCompatibility = "17"
+            targetCompatibility = "17"
         }
         withType<KotlinCompile> {
             kotlinOptions {
                 freeCompilerArgs = listOf("-Xjsr305=strict", "-Xjvm-default=all")
-                jvmTarget = "11"
+                jvmTarget = "17"
                 javaParameters = true
                 allWarningsAsErrors = true
             }
