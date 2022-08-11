@@ -18,7 +18,7 @@
 ----
 include::../../../../../common/domain-base/src/main/resources/graphql/base/base.graphqls[]
 
-include::../../main/resources/graphql/employees.graphqls[]
+include::../../main/resources/graphql/employees/employees.graphqls[]
 ----
 
 == Important Notes
