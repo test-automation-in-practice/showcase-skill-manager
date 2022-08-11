@@ -2,7 +2,8 @@
 	"info": {
 		"_postman_id": "94df9125-d379-49a8-b0cc-6793bb5c9520",
 		"name": "Skill Manager",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12783311"
 	},
 	"item": [
 		{
@@ -155,7 +156,7 @@
 												"body": {
 													"mode": "graphql",
 													"graphql": {
-														"query": "mutation {\n    createProject(\n        input: {\n            label: \"Orbis\",\n            description: \"PS4\"\n        }\n    ) {\n        id\n        label\n        description\n    }\n}\n",
+														"query": "mutation {\n    createProject(\n        label: \"Orbis\",\n        description: \"PS4\"\n    ) {\n        id\n        label\n        description\n    }\n}\n",
 														"variables": ""
 													}
 												},
@@ -208,7 +209,7 @@
 												"body": {
 													"mode": "graphql",
 													"graphql": {
-														"query": "query {\n    getProjectsPage(\n        pagination: { index: 0, size: 10 }\n    ) {\n        content {\n            id\n            label\n            description\n        }\n        pageIndex\n        pageSize\n        totalElements\n        hasPrevious\n        hasNext\n    }\n}\n",
+														"query": "query {\n    getProjectsPage(pageIndex: 0, pageSize: 10) {\n        content {\n            id\n            label\n            description\n        }\n        pageIndex\n        pageSize\n        totalElements\n        hasPrevious\n        hasNext\n    }\n}\n",
 														"variables": ""
 													}
 												},
@@ -349,7 +350,7 @@
 										"body": {
 											"mode": "graphql",
 											"graphql": {
-												"query": "query {\n    searchProjects(\n        query: \"description:ps4\", \n        pagination: { index: 0, size: 10 }\n    ) {\n        content {\n            id\n            label\n            description\n        }\n        pageIndex\n        pageSize\n        totalElements\n        hasPrevious\n        hasNext\n    }\n}\n",
+												"query": "query {\n    searchProjects(\n        query: \"description:ps4\", \n        pageIndex: 0,\n        pageSize: 10\n    ) {\n        content {\n            id\n            label\n            description\n        }\n        pageIndex\n        pageSize\n        totalElements\n        hasPrevious\n        hasNext\n    }\n}\n",
 												"variables": ""
 											}
 										},
@@ -412,17 +413,15 @@
 												"body": {
 													"mode": "graphql",
 													"graphql": {
-														"query": "mutation {\n    createSkill(\n        input: { \n            label: \"Kotlin\",\n            description: \"The coolest programming language.\", \n            tags: [\"cool\", \"language\"]\n        }\n    ) {\n        id\n        label\n        description\n        tags\n    }\n}\n",
+														"query": "mutation {\n    createSkill(\n        label: \"Kotlin\",\n        description: \"The coolest programming language.\", \n        tags: [\"cool\", \"language\"]\n    ) {\n        id\n        label\n        description\n        tags\n    }\n}\n",
 														"variables": ""
 													}
 												},
 												"url": {
-													"raw": "http://localhost:8080/api/graphql",
-													"protocol": "http",
+													"raw": "{{base-url}}/api/graphql",
 													"host": [
-														"localhost"
+														"{{base-url}}"
 													],
-													"port": "8080",
 													"path": [
 														"api",
 														"graphql"
@@ -465,7 +464,7 @@
 												"body": {
 													"mode": "graphql",
 													"graphql": {
-														"query": "query {\n    getSkillsPage(\n        pagination: { index: 0, size: 10 }\n    ) {\n        content {\n            id\n            label\n            description\n            tags\n        }\n        pageIndex\n        pageSize\n        totalElements\n        hasPrevious\n        hasNext\n    }\n}\n",
+														"query": "query {\n    getSkillsPage(pageIndex: 0, pageSize: 10) {\n        content {\n            id\n            label\n            description\n            tags\n        }\n        pageIndex\n        pageSize\n        totalElements\n        hasPrevious\n        hasNext\n    }\n}\n",
 														"variables": ""
 													}
 												},
@@ -606,7 +605,7 @@
 										"body": {
 											"mode": "graphql",
 											"graphql": {
-												"query": "query {\n    searchSkills(\n        query: \"tags:language\",\n        pagination: { index: 0, size: 10 }\n    ) {\n        content {\n            id\n            label\n            description\n            tags\n        }\n        pageIndex\n        pageSize\n        totalElements\n        hasPrevious\n        hasNext\n    }\n}\n",
+												"query": "query {\n    searchSkills(\n        query: \"tags:language\",\n        pageIndex: 0,\n        pageSize: 10\n    ) {\n        content {\n            id\n            label\n            description\n            tags\n        }\n        pageIndex\n        pageSize\n        totalElements\n        hasPrevious\n        hasNext\n    }\n}\n",
 												"variables": ""
 											}
 										},
@@ -651,6 +650,41 @@
 							]
 						}
 					]
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "password",
+						"value": "resu",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "user",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -2913,6 +2947,41 @@
 						}
 					},
 					"response": []
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "password",
+						"value": "resu",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "user",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
