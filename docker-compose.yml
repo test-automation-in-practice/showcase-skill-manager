@@ -7,7 +7,7 @@ services:
     ports:
       - 5432:5432
     env_file:
-      - modules/testing/domain-base/src/main/resources/postgres.env
+      - modules/testing/testing-domain-base/src/main/resources/postgres.env
 
   elasticsearch:
     image: elasticsearch:7.17.5
@@ -16,7 +16,7 @@ services:
       - 9200:9200
       - 9300:9300
     env_file:
-      - modules/testing/domain-base/src/main/resources/elasticsearch.env
+      - modules/testing/testing-domain-base/src/main/resources/elasticsearch.env
     ulimits:
       memlock:
         soft: -1
